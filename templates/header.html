@@ -1,0 +1,16 @@
+{% load static %}
+
+<header class="header">
+    <div class="container header_container">
+      <div class="header_filter">
+        
+        {% for category in categories  %}
+        <a href="#" class="header_filter_link">{{category.CATname}}</a>
+          
+        {% endfor %}
+          
+
+      </div>
+      <img src= "{% static './image/header.png' %}" alt="" class="header_img" />
+    </div>
+  </header>

@@ -1,0 +1,39 @@
+{% load static %}
+
+<section class="section">
+
+    <div class="container">
+      <div class="section_category">
+        <p class="section_category_p">Featured</p>
+      </div>
+
+      <div class="section_header">
+        <h3 class="section_title">New Arrivals</h3>
+      </div>
+      <div class="gallery">
+        {% for product in all_products|slice:":4" %}
+        <div class="gallery_item {% cycle 'gallery_item_1' 'gallery_item_2' 'gallery_item_3' 'gallery_item_4' %}">
+
+          
+              <img
+              {% if product.PRDimage.PIMGimage %}
+              src="{{ product.PRDimage.PIMGimage.url }}"
+                {% else %}
+                  src="{% static 'image/gallery/gallery-1.png' %}"
+                {% endif %}
+                alt="{{ product.PRDname }}"
+                class="gallery_item_img" />
+      
+              <div class="gallery_item_content">
+                <div class="gallery_item_title">{{ product.PRDname }}</div>
+                <p class="gallery_item_p">{{ product.PRDdescription }}</p>
+                <a href="#" class="gallery_item_link">SHOP NOW</a>
+              </div>
+      
+        </div>
+      {% endfor %}
+      
+
+      </div>
+    </div>
+  </section>

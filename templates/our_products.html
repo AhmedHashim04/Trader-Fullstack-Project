@@ -1,0 +1,50 @@
+
+{% load static %}
+
+<section class="section">
+    <div class="container">
+      <div class="section_category">
+        <p class="section_category_p">Our Products</p>
+      </div>
+      <div class="section_header">
+        <h3 class="section_title">Explore Our Products</h3>
+        <p id="demo"></p>
+      </div>
+      <div class="products">
+        
+        {% for product in all_products|slice:":4" %}
+
+          
+          
+        <div class="card">
+        
+            <div class="card_top">
+                <!-- عرض الصورة الديناميكية للمنتج -->
+                <img src="{% if product.PRDimage %}{{ product.PRDimage.PIMGimage.url }}{% else %}{% static 'image/items/item-9.png' %}{% endif %}" alt="{{ product.PRDname }}" class="card_img" />
+                
+                <div class="card_top_icons">
+
+                </div>
+            </div>
+        
+            <div class="card_body">
+                <!-- عرض الاسم الديناميكي للمنتج -->
+                <h3 class="card_title">{{ product.PRDname }}</h3>
+                <!-- عرض السعر الديناميكي للمنتج -->
+                <p class="card_price">${{ product.PRDprice }}</p>
+                <div class="card_ratings">
+                    <!-- يمكنك هنا إضافة تقييمات أو أي محتوى إضافي -->
+                </div>
+            </div>
+        
+        </div>
+        {% endfor %}
+
+
+
+      </div>
+      <div class="container_btn">
+        <a href="{% url 'products:products_list' %}" class="container_btn_a">VIEW ALL PRODUCTS</a>
+      </div>
+    </div>
+  </section>
