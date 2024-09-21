@@ -1,0 +1,39 @@
+
+{% load static %}
+
+{% block body %}
+  
+
+<section class="section">
+  
+  <div class="container">
+    <div class="section_category">
+      
+      <p class="section_category_p">categories</p>
+    </div>
+    
+    <div class="section_header">
+      <h3 class="section_title">Browse by Category</h3>
+    </div>
+
+    
+    
+    <div class="categories">
+      {% for categorie in categories  %}
+      <div class="category">
+        <a href="YOUR_URL_HERE">
+          <img src={{categorie.CATimage.url}} alt="Category Icon" class="category_icon" />
+          <p class="category_name">{{categorie.CATname}}</p>
+        </a>
+      </div>
+    {% endfor %}
+    
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+{% endblock body %}
+  
