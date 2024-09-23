@@ -492,7 +492,6 @@ ul {
   align-items: center;
   border-radius: 1px;
 }
-
 .cart_item {
   margin-top: 2rem;
   padding: 1.5rem;
@@ -500,19 +499,24 @@ ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 1px;
+  border-radius: 5px;
 }
+
 .cart_product {
   display: flex;
   flex-direction: column;
 }
+
 .cart_img {
   width: 7%;
+  height: auto;
 }
+
 .cart_total {
   margin-top: 2rem;
   text-align: right;
 }
+
 .add_to_cart {
   padding: 1rem 2rem;
   background-color: var(--colo-primary);
@@ -521,6 +525,25 @@ ul {
   border: none;
   outline: none;
   margin-top: 2rem;
+  border-radius: 5px;
+}
+
+.cart_header {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--colo-white-1);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.cart_delete_button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
 /* Authentications */
@@ -635,6 +658,62 @@ ul {
 .product-carousel {
   -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
   scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+.star-rating {
+  font-size: 1.2em;
+  color: gold;
+}
+
+.product-header {
+  background-color: #f8f9fa;
+  padding: 30px;
+  text-align: center;
+}
+.product-info {
+  margin-top: 20px;
+}
+.rating-stars input[type="radio"] {
+  display: none;
+}
+.rating-stars label {
+  font-size: 2em;
+  color: gray;
+  cursor: pointer;
+}
+.rating-stars input[type="radio"]:checked ~ label {
+  color: gold;
+}
+.rating-stars label:hover,
+.rating-stars label:hover ~ label {
+  color: gold;
+}
+.review-section {
+  margin-top: 40px;
+}
+
+.product-carousel {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px 0;
+}
+.product-carousel img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 8px;
+}
+.product-carousel::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for WebKit browsers */
+}
+.product-carousel {
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+.product-header {
+  background-color: #f8f9fa;
+  padding: 30px;
+  text-align: center;
 }
 .star-rating {
   font-size: 1.2em;

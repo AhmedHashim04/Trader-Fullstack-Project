@@ -17,11 +17,12 @@
     </div>
 
     
+    <div class="container" style="border: 2px solid #ccc; padding: 20px; background-color: #f8f9fa; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
     
     <div class="categories">
       {% for categorie in categories  %}
       <div class="category">
-        <a href="YOUR_URL_HERE">
+        <a href='{% url "products:category_detail" categorie.pk  %}'>
           <img src={{categorie.CATimage.url}} alt="Category Icon" class="category_icon" />
           <p class="category_name">{{categorie.CATname}}</p>
         </a>
@@ -29,6 +30,7 @@
     {% endfor %}
     
       </div>
+      </div>  
 
     </div>
   </div>

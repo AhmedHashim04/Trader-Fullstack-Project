@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: #f4f4f4;
         }
         .container {
@@ -18,30 +17,11 @@
             background-color: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-top: 50px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
             border-radius: 5px;
-        }
-        .form-group textarea {
-            height: 150px;
         }
         .btn {
             background-color: #007bff;
             color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
         .btn:hover {
             background-color: #0056b3;
@@ -51,29 +31,31 @@
 <body>
 
 <div class="container">
-    <div class="header">
-        <a href="{% url 'product:products' %}" class="home-link">← Back to Home</a>
-        <br>
-
+    <div class="header text-center mb-4">
+        <a href="{% url 'home:home' %}" class="home-link">← Back to Home</a>
     </div>
-    <h1>Contact Us</h1>
+    <h1 class="text-center">Contact Us</h1>
     <form method="post">
         {% csrf_token %}
         <div class="form-group">
-            {{ form.subject.label_tag }}
-            {{ form.subject }}
+            {{ form.title.label_tag }}
+            {{ form.title }}
         </div>
         <div class="form-group">
-            {{ form.email.label_tag }}
-            {{ form.email }}
+            {{ form.from_email.label_tag }}
+            {{ form.from_email }}
         </div>
         <div class="form-group">
             {{ form.message.label_tag }}
             {{ form.message }}
         </div>
-        <button type="submit" class="btn">Send</button>
+        <button type="submit" class="btn btn-block">Send</button>
     </form>
 </div>
 
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

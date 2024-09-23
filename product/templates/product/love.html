@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block body %}
+
+
+<section class="section">
+    <div class="container">
+        <div class="container" style="border: 2px solid #ccc; padding: 20px; background-color: #f8f9fa; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+
+        <div class="cart">
+            <div class="container" style="border: 2px solid #ccc; padding: 20px; background-color: #f8f9fa; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+            
+            <div class="cart_header">
+                <p class="cart_header_title">Product Title</p>
+                <p class="cart_header_image">Product Image</p>
+                <p class="cart_header_price">Price</p>
+                <p class="cart_header_delete">Delete</p>
+            </div>
+            <hr>
+            {% for item in profile.PRFlove.all %}
+            <div class="cart_item">
+                
+                <a href='{% url "product:product_detail" item.pk %}' >
+
+                    <p class="cart_product_title">{{ item.PRDname }}</p>
+                </a>
+                
+                <img class="cart_img" src="{{ item.PRDimage.PIMGimage.url }}" alt="Product Image">
+                <p class="cart_product_price">{{ item.PRDprice }}</p>
+                <a href='{% url "product:cart" item.pk %}' class="cart_delete_button">Delete</a>
+            </div>
+            {% endfor %} 
+            <hr>
+        </div>
+
+        <hr>
+    </div>
+</section>
+{% endblock body %}

@@ -2,13 +2,15 @@
 {% load static %}
 
 <section class="section">
-    <div class="container">
-
-      <div class="section_category">
+  <div class="section_header">
+    <h3 class="section_title"> {{category}} :</h3>
+  </div>
+  <div class="container" style="border: 2px solid #ccc; padding: 20px; background-color: #f8f9fa; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+    <div class="section_category">
         <p class="section_category_p">Our Products</p>
       </div>
       <div class="section_header">
-        <h3 class="section_title">Explore Our Products</h3>
+        <h3 class="section_title">Explore Our {{category}} Products</h3>
         <p id="demo"></p>
       </div>
       <div class="products">
@@ -25,8 +27,9 @@
               <a href='{% url "products:view" product.pk  %}'>
                 <img src="{% if product.PRDimage %}{{ product.PRDimage.PIMGimage.url }}{% else %}{% static 'image/items/item-9.png' %}{% endif %}" alt="{{ product.PRDname }}" class="card_img" />
               </a>
-
+                
                 <div class="card_top_icons">
+
                   {% if request.user.profile %}
 
                   <a href='{% url "product:love" product.id %}'>
@@ -73,7 +76,6 @@
 
         </div>
         {% endfor %}
-      </div>
 
     </div>
   </section>

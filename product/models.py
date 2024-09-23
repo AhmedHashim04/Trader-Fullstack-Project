@@ -14,10 +14,8 @@ class Product(models.Model):
     PRDcost     = models.DecimalField(max_digits=20,decimal_places=2,verbose_name=_('Cost'))
     PRDcreated  = models.DateTimeField(auto_now=True)
     PRDimage    = models.ForeignKey("ProductImage",on_delete=models.PROTECT,verbose_name=_("Product Image"),blank=True, null=True)
-
+    
     PRDview     = models.ManyToManyField("accounts.profile", verbose_name=_("User see It"),related_name="users_see_it" , blank=True )
-    PRDlove     = models.ManyToManyField("accounts.profile", verbose_name=_("User Love It"),related_name="users_love_it" , blank=True )
-    PRDcart     = models.ManyToManyField("accounts.profile", verbose_name=_("User cart It"),related_name='users_cart_it' , blank=True )
 
 
     def get_absolute_url(self):
@@ -32,7 +30,7 @@ class Product(models.Model):
         ordering  = ['-PRDcreated']
     
 class ProductImage(models.Model):
-    PIMGproduct = models.ForeignKey(Product,on_delete=models.PROTECT,verbose_name=_("Product"))
+    PIMGproduct = models.ForeignKey(Product,on_delete=models.PROTECT,verbose_name=_("Product"),blank=True, null=True)
     PIMGimage   = models.ImageField(_("Product Image"), upload_to='products/', height_field=None, width_field=None, max_length=None)
 
     
