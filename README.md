@@ -1,4 +1,4 @@
-# e-Commerce Project
+# Tager - e-Commerce Project
 
 Welcome to the e-Commerce Project! This project aims to provide an online platform where users can browse products, add them to their shopping cart, and make purchases.
 
@@ -21,5 +21,5 @@ Welcome to the e-Commerce Project! This project aims to provide an online platfo
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/username/repo-name.git
+   git clone https://github.com/AhmedHashim04/Django-Ecommerce.git
    cd repo-name
