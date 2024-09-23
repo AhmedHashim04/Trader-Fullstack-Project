@@ -3,7 +3,18 @@
 
 {% block body %}
 
+<br>
+<br>
+<br>
+<br>
+{% if is_category %}
 
+<div class="container" style="border: 2px solid #ccc; padding: 20px; background-color: #f8f9fa; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
+{% include 'category_products.html' %} 
+</div>
+{% else %}
+<div class="container" style="border: 2px solid #ccc; padding: 20px; background-color: #f8f9fa; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
 {% include 'all_products.html' %} 
-
+</div>
+{% endif %}
 {% endblock body %}

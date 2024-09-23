@@ -1,12 +1,14 @@
 {% load static %}
-
+<hr>
 <header class="header">
+  
     <div class="container header_container">
+      <hr>
       <div class="header_filter">
         
         {% for category in categories  %}
-        <a href="#" class="header_filter_link">{{category.CATname}}</a>
-          
+        <a href='{% url "products:category_detail" category.pk  %}' class="header_filter_link">{{category.CATname}}</a>
+        
         {% endfor %}
           
 
@@ -14,3 +16,4 @@
       <img src= "{% static './image/header.png' %}" alt="" class="header_img" />
     </div>
   </header>
+  <hr>
