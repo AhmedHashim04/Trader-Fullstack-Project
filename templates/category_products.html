@@ -1,81 +1,65 @@
 
-{% load static %}
+<section class="product_section layout_padding">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2>
+        Our Products in {{category}} Category
+      </h2>
+    </div>
+    <div class="row">
+      {% for product in categoryProducts %}
 
-<section class="section">
-  <div class="section_header">
-    <h3 class="section_title"> {{category}} :</h3>
-  </div>
-  <div class="container" style="border: 2px solid #ccc; padding: 20px; background-color: #f8f9fa; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
-    <div class="section_category">
-        <p class="section_category_p">Our Products</p>
-      </div>
-      <div class="section_header">
-        <h3 class="section_title">Explore Our {{category}} Products</h3>
-        <p id="demo"></p>
-      </div>
-      <div class="products">
-
-        {% for product in all_products %}
-          
-          
-        <div class="card">
-            
-
-            <div class="card_top">
-
-
-              <a href='{% url "products:view" product.pk  %}'>
-                <img src="{% if product.PRDimage %}{{ product.PRDimage.PIMGimage.url }}{% else %}{% static 'image/items/item-9.png' %}{% endif %}" alt="{{ product.PRDname }}" class="card_img" />
+        <div class="col-sm-6 col-lg-4">
+          <div class="box">
+            <div class="img-box">
+              <img src="{% if product.PRDimage %}{{ product.PRDimage.PIMGimage.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.PRDname }}" class="img-fluid" />
+              <a href='{% url "products:cart" product.PRDslug  %}' class="add_cart_btn">
+                <span>
+                  {% if product not in user_cart or not user.is_authenticated %}Add To Cart{% else %}Remove from Cart{% endif %}
+                </span>
               </a>
-                
-                <div class="card_top_icons">
-
-                  {% if request.user.profile %}
-
-                  <a href='{% url "product:love" product.id %}'>
-                    {% if product in user_love %}
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="card_top_icon">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                    </svg>
-                    {% else %}
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="card_top_icon">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                    </svg>
-                    {% endif %}
-                  </a>
-                  {% endif %}
-
-                </div>
-            </div>
-        
-            <div class="card_body">
-                <!-- عرض الاسم الديناميكي للمنتج -->
-                <h3 class="card_title">  {{ product.PRDname }}</h3>
-                <!-- عرض السعر الديناميكي للمنتج -->
-                <p class="card_price">${{ product.PRDprice }}</p>
-                <div class="card_ratings">
-                    <!-- يمكنك هنا إضافة تقييمات أو أي محتوى إضافي -->
-                </div>
-            </div>
-            
-            {% if request.user.profile %}
               
-
-            {% if product not in user_cart %}
-            <a class="btn btn-success" href='{% url "products:cart" product.pk  %}'>
-              Add Cart
+            </div>
+            {% if product not in user_love or not user.is_authenticated %}
+            <a href='{% url "products:love" product.PRDslug  %}' class="add_cart_btn btn btn-success">
+              <span >
+                Add To Wishlist
+              </span>
             </a>
             {% else %}
-            <a class="btn btn-danger" href='{% url "products:cart" product.pk  %}'>
-              Remove Cart 
+            <a href='{% url "products:love" product.PRDslug  %}' class="add_cart_btn btn btn-danger">
+              <span >
+                Remove Wishlist
+              </span>
             </a>
             {% endif %}
+            <div class="detail-box">
+              <a href='{% url "product:product_detail" product.PRDslug %}' class="d-flex align-items-center">
 
+                <h5>
+                  {{ product.PRDname }}
+                </h5>
+              </a>
 
-            {% endif %}
+              <div class="product_info">
+                <h5>
+                  <span>$</span> {{ product.PRDprice }}
+                </h5>
+                
+                <div class="star_container">
+                  <i class="fa fa-star" aria-hidden="true"></i>
+                  <i class="fa fa-star" aria-hidden="true"></i>
+                  <i class="fa fa-star" aria-hidden="true"></i>
+                  <i class="fa fa-star" aria-hidden="true"></i>
+                  <i class="fa fa-star" aria-hidden="true"></i>
+                </div>
 
+              </div>
+            </div>
+          </div>
         </div>
-        {% endfor %}
+      {% endfor %}
 
     </div>
-  </section>
+  </div>
+</section>

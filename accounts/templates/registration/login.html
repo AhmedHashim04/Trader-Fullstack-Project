@@ -1,28 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .form-container {
-            max-width: 400px;
-            margin: auto;
-            padding: 20px;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .home-link {
-            font-size: 1.2rem;
-            text-decoration: none;
-            color: #007bff;
-        }
-    </style>
-</head>
+{% extends "base.html" %}
+
+
+{% block body %}
 <body>
     <div class="container mt-5" style="border: 2px solid #ccc; padding: 20px; background-color: #f8f9fa; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);">
         <div class="header">
@@ -39,16 +18,16 @@
                 <div class="form-group">
                     <label for="{{ form.username.id_for_label }}">Username</label>
                     <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" 
-                           class="form-control" 
-                           placeholder="{{ form.username.field.widget.attrs.placeholder }}">
+                    class="form-control" 
+                    placeholder="{{ form.username.field.widget.attrs.placeholder }}">
                     {{ form.username.errors }}
                 </div>
                 
                 <div class="form-group">
                     <label for="{{ form.password.id_for_label }}">Password</label>
                     <input type="password" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" 
-                           class="form-control" 
-                           placeholder="{{ form.password.field.widget.attrs.placeholder }}">
+                    class="form-control" 
+                    placeholder="{{ form.password.field.widget.attrs.placeholder }}">
                     {{ form.password.errors }}
                 </div>
                 
@@ -62,4 +41,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-</html>
+br
+
+{% endblock body %}

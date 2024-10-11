@@ -1,10 +1,14 @@
+from typing import Iterable
 from django.db import models
 from django.utils.translation import gettext as _
 from django.urls import reverse
 from django.contrib.auth.models import User
-
+from django.utils.text import slugify
+from taggit.managers import TaggableManager
+from django.db.models import Avg
 
 class Product(models.Model):
+
     PRDname     = models.CharField(max_length=40,verbose_name= _("Name") )
     PRDcategory = models.ForeignKey('Category',on_delete=models.PROTECT,verbose_name=_("Product Category"),blank=True, null=True)
     PRDBrand    = models.ForeignKey('settings.Brand',on_delete=models.PROTECT,verbose_name=_("Product Brand"),blank=True, null=True)
@@ -14,16 +18,30 @@ class Product(models.Model):
     PRDcost     = models.DecimalField(max_digits=20,decimal_places=2,verbose_name=_('Cost'))
     PRDcreated  = models.DateTimeField(auto_now=True)
     PRDimage    = models.ForeignKey("ProductImage",on_delete=models.PROTECT,verbose_name=_("Product Image"),blank=True, null=True)
-    
+    PRDslug     = models.SlugField(unique=True,blank=True, null=True)
     PRDview     = models.ManyToManyField("accounts.profile", verbose_name=_("User see It"),related_name="users_see_it" , blank=True )
-
+    overall_rating = models.FloatField(default=0.0)  
+    PRDtags     = TaggableManager()
 
     def get_absolute_url(self):
-        return reverse('products:product_detail', kwargs={'pk': self.pk})
+        return reverse('products:product_detail', kwargs={'slug': self.PRDslug})
+
+    @staticmethod
+    def calculate_overall_rating(reviews):
+        if not reviews.exists():
+            return 0  # إذا لم يكن هناك أي تقييمات
+        total_rating = sum(review.REVrating for review in reviews)  # احسب مجموع التقييمات
+        num_reviews = reviews.count()  # احسب عدد التقييمات
+        return total_rating / num_reviews
 
     def __str__(self) -> str:
         return self.PRDname
     
+    def save(self, *args, **kwargs):
+        if not self.PRDslug:
+            self.PRDslug = slugify(self.PRDname)
+        super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
@@ -40,10 +58,19 @@ class ProductImage(models.Model):
         verbose_name_plural = 'ProductImages'
 
 class Category(models.Model):
-    CATname  = models.CharField(_("Category Name"),max_length=50)
-    CATparent = models.ForeignKey('self',limit_choices_to={'CATparent__isnull':True},on_delete=models.CASCADE,verbose_name=_("Category Parent"),blank=True, null=True)
-    CATdesc  = models.TextField(_("Category Description"), max_length=1000)
-    CATimage   = models.ImageField(_("Category Image"), upload_to=None, height_field=None, width_field=None, max_length=None)
+    CATname        = models.CharField(_("Category Name"),max_length=50)
+    CATparent      = models.ForeignKey('self',limit_choices_to={'CATparent__isnull':True},on_delete=models.CASCADE,verbose_name=_("Category Parent"),blank=True, null=True)
+    CATdesc        = models.TextField(_("Category Description"), max_length=1000)
+    CATimage       = models.ImageField(_("Category Image"), upload_to='category_pictures/', height_field=None, width_field=None, max_length=None)
+    CATslug        = models.SlugField(unique=True,blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.CATslug:
+            self.CATslug = slugify(self.CATname)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('products:category_detail', kwargs={'slug': self.CATslug})
 
     def __str__(self) -> str:
         return self.CATname
@@ -67,3 +94,4 @@ class Review(models.Model):
     REVuser       = models.ForeignKey(User,on_delete=models.PROTECT,related_name="user_review")
     REVrating     = models.IntegerField(choices=rate_choices,default=3)
     REVcreated_at = models.DateTimeField(auto_now_add=True)
+

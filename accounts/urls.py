@@ -1,5 +1,5 @@
 from django.urls import path 
-from .views import MyLoginView ,MyLogoutView, RegisterView , ProfileView , UpdateProfile , PasswordResetView , PasswordChangeView  
+from .views import MyLoginView ,MyLogoutView, RegisterView , ProfileView , UpdateProfile , PasswordResetView , PasswordChangeView,ActivateAccountView
 app_name = 'accounts' 
 
 urlpatterns = [
@@ -9,8 +9,10 @@ urlpatterns = [
     path('passwordreset/' , PasswordResetView.as_view(),name='reset'),
     path('passwordchange/' ,PasswordChangeView.as_view(),name='chgpassword'),
     path('register/' ,RegisterView.as_view(),name='register'),
+    path('activate/<str:activation_key>/', ActivateAccountView.as_view(), name='activate'),
     path('profile/<slug:slug>' ,ProfileView.as_view(),name='profile'),
     path('update_profile/<slug:slug>' ,UpdateProfile.as_view(),name='update_profile'),
+
 
 ]
 
