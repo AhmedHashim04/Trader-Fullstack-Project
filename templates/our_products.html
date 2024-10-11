@@ -1,50 +1,74 @@
 
-{% load static %}
-
-<section class="section">
-    <div class="container">
-      <div class="section_category">
-        <p class="section_category_p">Our Products</p>
-      </div>
-      <div class="section_header">
-        <h3 class="section_title">Explore Our Products</h3>
-        <p id="demo"></p>
-      </div>
-      <div class="products">
-        
-        {% for product in all_products|slice:":4" %}
-
-          
-          
-        <div class="card">
-        
-            <div class="card_top">
-                <!-- عرض الصورة الديناميكية للمنتج -->
-                <img src="{% if product.PRDimage %}{{ product.PRDimage.PIMGimage.url }}{% else %}{% static 'image/items/item-9.png' %}{% endif %}" alt="{{ product.PRDname }}" class="card_img" />
-                
-                <div class="card_top_icons">
-
-                </div>
-            </div>
-        
-            <div class="card_body">
-                <!-- عرض الاسم الديناميكي للمنتج -->
-                <h3 class="card_title">{{ product.PRDname }}</h3>
-                <!-- عرض السعر الديناميكي للمنتج -->
-                <p class="card_price">${{ product.PRDprice }}</p>
-                <div class="card_ratings">
-                    <!-- يمكنك هنا إضافة تقييمات أو أي محتوى إضافي -->
-                </div>
-            </div>
-        
-        </div>
-        {% endfor %}
-
-
-
-      </div>
-      <div class="container_btn">
-        <a href="{% url 'products:products_list' %}" class="container_btn_a">VIEW ALL PRODUCTS</a>
-      </div>
+<section class="product_section layout_padding">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2>
+        Our Products
+      </h2>
     </div>
-  </section>
+    <div class="row">
+      {% for product in all_products|slice:":4" %}
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="box">
+            <div class="img-box">
+              <img src="{% if product.PRDimage %}{{ product.PRDimage.PIMGimage.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.PRDname }}" class="img-fluid" />
+
+              <a href='{% url "products:cart" product.PRDslug  %}' class="add_cart_btn">
+                <span>
+                  {% if product not in user_cart or not user.is_authenticated %}Add To Cart{% else %}Remove from Cart{% endif %}
+                </span>
+              </a>
+              
+            </div>
+            
+            {% if product not in user_love or not user.is_authenticated %}
+            <a href='{% url "products:love" product.PRDslug  %}' class="add_cart_btn btn btn-success w-50">
+              <span >
+                Add To Wishlist
+              </span>
+            </a>
+            {% else %}
+            <a href='{% url "products:love" product.PRDslug  %}' class="add_cart_btn btn btn-danger w-50">
+              <span >
+                Remove Wishlist
+              </span>
+            </a>
+            {% endif %}
+            
+            
+            <div class="detail-box">
+              <a href='{% url "product:product_detail" product.PRDslug %}' class="d-flex align-items-center">
+
+                <h5>
+                  {{ product.PRDname }}
+                </h5>
+              </a>
+              <div class="product_info">
+                <h5>
+                  <span>$</span> {{ product.PRDprice }}
+                </h5>
+                
+                <div class="star_container">
+                  {% if product.overall_rating >= 1 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                  {% if product.overall_rating >= 2 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                  {% if product.overall_rating >= 3 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                  {% if product.overall_rating >= 4 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                  {% if product.overall_rating >= 5 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+    </div>
+
+    <div class="btn_box">
+      <a href="{% url 'products:products_list' %}" class="view_more-link">
+        View More
+      </a>
+    </div>
+  </div>
+</section>
