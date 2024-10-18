@@ -12,14 +12,24 @@
         <div class="col-sm-6 col-lg-4">
           <div class="box">
             <div class="img-box">
-              <img src="{% if product.PRDimage %}{{ product.PRDimage.PIMGimage.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.PRDname }}" class="img-fluid" />
-              <a href='{% url "products:cart" product.PRDslug  %}' class="add_cart_btn">
+              <img src="{% if product.PRDimage %}{{ product.PRDimage.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.PRDname }}" class="img-fluid" />
+
+              {% if product.PRDslug not in Contextcart or not user.is_authenticated %}
+              <a href='{% url "cart:cart_add" product.PRDslug  %}' class="add_cart_btn">
                 <span>
-                  {% if product not in user_cart or not user.is_authenticated %}Add To Cart{% else %}Remove from Cart{% endif %}
+                  Add To Cart
                 </span>
               </a>
               
+            {% else %}
+            <a href='{% url "cart:cart_remove" product.PRDslug  %}' class="add_cart_btn ">
+              <span>
+                Remove from Cart
+              </span>
+            </a>
+            {% endif %}
             </div>
+
             {% if product not in user_love or not user.is_authenticated %}
             <a href='{% url "products:love" product.PRDslug  %}' class="add_cart_btn btn btn-success">
               <span >
@@ -27,6 +37,7 @@
               </span>
             </a>
             {% else %}
+
             <a href='{% url "products:love" product.PRDslug  %}' class="add_cart_btn btn btn-danger">
               <span >
                 Remove Wishlist
@@ -47,11 +58,11 @@
                 </h5>
                 
                 <div class="star_container">
-                  <i class="fa fa-star" aria-hidden="true"></i>
-                  <i class="fa fa-star" aria-hidden="true"></i>
-                  <i class="fa fa-star" aria-hidden="true"></i>
-                  <i class="fa fa-star" aria-hidden="true"></i>
-                  <i class="fa fa-star" aria-hidden="true"></i>
+                  {% if product.overall_rating >= 1 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                  {% if product.overall_rating >= 2 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                  {% if product.overall_rating >= 3 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                  {% if product.overall_rating >= 4 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                  {% if product.overall_rating >= 5 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
                 </div>
 
               </div>

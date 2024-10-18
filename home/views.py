@@ -15,7 +15,7 @@ class HomeView(TemplateView):
         context['random_products'] = random.sample(list(context['all_products']), min(len(context['all_products']), 3))
         
         context['all_categories'] = Category.objects.filter(CATparent=None) 
-        context['alternatives'] = Alternative.objects.all()
+        # context['alternatives'] = Alternative.objects.all()
         for product in context['all_products']:
             reviews = Review.objects.filter(REVproduct=product)  # استرجاع التقييمات الخاصة بالمنتج
             product.overall_rating = Product.calculate_overall_rating(reviews)  # حساب التقييم الكلي

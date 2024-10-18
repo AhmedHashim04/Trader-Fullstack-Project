@@ -6,12 +6,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from product.models import Product
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# class CustomUser(AbstractUser):
-#     is_active = models.BooleanField(default=False)  
-#     activation_key = models.CharField(max_length=255, blank=True, null=True)
+# class User:
 
 class Profile(models.Model):
     PRFuser          = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -27,7 +24,6 @@ class Profile(models.Model):
     PRFpostal_code   = models.CharField(max_length=10, verbose_name="Postal Code", blank=True, null=True)
     PRFprofile_image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True, verbose_name="Profile Image")
     PRFdate_of_birth = models.DateField(blank=True, null=True, verbose_name="Date of Birth")
-    PRFcart          = models.ManyToManyField(Product, verbose_name=_("User cart It"),related_name='users_cart_it' , blank=True )
     PRFlove          = models.ManyToManyField(Product, verbose_name=_("User Love It"),related_name="users_love_it" , blank=True )
 
     class Meta:
@@ -53,3 +49,4 @@ def create_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, **kwargs):
     instance.profile.save()
+

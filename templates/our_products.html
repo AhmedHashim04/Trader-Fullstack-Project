@@ -12,16 +12,22 @@
         <div class="col-sm-6 col-lg-4">
           <div class="box">
             <div class="img-box">
-              <img src="{% if product.PRDimage %}{{ product.PRDimage.PIMGimage.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.PRDname }}" class="img-fluid" />
-
-              <a href='{% url "products:cart" product.PRDslug  %}' class="add_cart_btn">
-                <span>
-                  {% if product not in user_cart or not user.is_authenticated %}Add To Cart{% else %}Remove from Cart{% endif %}
-                </span>
-              </a>
-              
-            </div>
-            
+              <img src="{% if product.PRDimage %}{{ product.PRDimage.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.PRDname }}" class="img-fluid" />
+                {% if product.PRDslug not in Contextcart or not user.is_authenticated %}
+              <a href='{% url "cart:cart_add" product.PRDslug  %}' class="add_cart_btn">
+                  <span>
+                              Add To Cart
+                            </span>
+                        </a>
+                      </div>
+                      {% else %}
+                      <a href='{% url "cart:cart_remove" product.PRDslug  %}' class="add_cart_btn">
+                          <span>
+                              Remove from Cart
+                            </span>
+                        </a>
+                      </div>
+                      {% endif %}
             {% if product not in user_love or not user.is_authenticated %}
             <a href='{% url "products:love" product.PRDslug  %}' class="add_cart_btn btn btn-success w-50">
               <span >
