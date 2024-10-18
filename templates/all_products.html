@@ -3,26 +3,43 @@
       <div class="heading_container heading_center">
           <h2>Our Products</h2>
       </div>
+      
       <div class="row">
+          <div class="col-12 mb-4">
+        <button id="compareButton" class="btn btn-primary" style="display: none;">Compare Selected Products</button>
+    </div>
           {% for product in all_products %}
               <div class="col-sm-6 col-lg-4">
                   <div class="box">
+                              <button class="btn btn-outline-primary btn-sm mt-2 compare-btn" data-product-id="{{ product.id }}">
+                Add to Compare
+            </button>
                       <div class="img-box">
-                          <img src="{% if product.PRDimage %}{{ product.PRDimage.PIMGimage.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.PRDname }}" class="img-fluid" />
+                          <img src="{% if product.PRDimage %}{{ product.PRDimage.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.PRDname }}" class="img-fluid" />
                       
-                      <a href='{% url "products:cart" product.PRDslug  %}' class="add_cart_btn">
+                      {% if product.PRDslug not in Contextcart or not user.is_authenticated %}
+                      <a href='{% url "cart:cart_add" product.PRDslug  %}' class="add_cart_btn">
                           <span>
-                              {% if product not in user_cart or not user.is_authenticated %}Add To Cart{% else %}Remove from Cart{% endif %}
+                              Add To Cart
                             </span>
                         </a>
                       </div>
+                      {% else %}
+                      <a href='{% url "cart:cart_remove" product.PRDslug  %}' class="add_cart_btn">
+                          <span>
+                              Remove from Cart
+                            </span>
+                        </a>
+                      </div>
+                      {% endif %}
+
                       {% if product not in user_love or not user.is_authenticated %}
                       <a href='{% url "products:love" product.PRDslug  %}' class="add_cart_btn btn btn-success">
                           <span>Add To Wishlist</span>
                         </a>
                         {% else %}
                         <a href='{% url "products:love" product.PRDslug  %}' class="add_cart_btn btn btn-danger">
-                            <span>Remove Wishlist</span>
+                            <span>Remove from Wishlist</span>
                         </a>
                         {% endif %}
                         <div class="detail-box">
@@ -50,24 +67,95 @@
       
         </div>
       
-      <!-- روابط الصفحات -->
-      <div class="pagination">
-        <span class="step-links">
-            {% if all_products.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ all_products.previous_page_number }}">previous</a>
+      <!-- Pagination -->
+      <nav aria-label="Product pages">
+        <ul class="pagination justify-content-center">
+          {% if all_products.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page=1" aria-label="First">
+                <span aria-hidden="true">&laquo;&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ all_products.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">&laquo;</span>
+            </li>
+          {% endif %}
+
+          {% for num in all_products.paginator.page_range %}
+            {% if all_products.number == num %}
+              <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% elif num > all_products.number|add:'-3' and num < all_products.number|add:'3' %}
+              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
             {% endif %}
-    
-            <span class="current">
-                Page {{ all_products.number }} of {{ all_products.paginator.num_pages }}.
-            </span>
-    
-            {% if all_products.has_next %}
-                <a href="?page={{ all_products.next_page_number }}">next</a>
-                <a href="?page={{ all_products.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
+          {% endfor %}
+
+          {% if all_products.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ all_products.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ all_products.paginator.num_pages }}" aria-label="Last">
+                <span aria-hidden="true">&raquo;&raquo;</span>
+              </a>
+            </li>
+          {% else %}
+            <li class="page-item disabled">
+              <span class="page-link">&raquo;</span>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
 
       </div>
 </section>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const compareButton = document.getElementById('compareButton');
+        const compareBtns = document.querySelectorAll('.compare-btn');
+        let selectedProducts = JSON.parse(localStorage.getItem('compareProducts')) || [];
+
+        function updateCompareButton() {
+            if (selectedProducts.length > 1) {
+                compareButton.style.display = 'block';
+            } else {
+                compareButton.style.display = 'none';
+            }
+        }
+
+        compareBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const productId = this.getAttribute('data-product-id');
+                if (selectedProducts.includes(productId)) {
+                    selectedProducts = selectedProducts.filter(id => id !== productId);
+                    this.textContent = 'Add to Compare';
+                } else {
+                    if (selectedProducts.length < 4) {
+                        selectedProducts.push(productId);
+                        this.textContent = 'Remove from Compare';
+                    } else {
+                        alert('You can compare up to 4 products only');
+                    }
+                }
+                localStorage.setItem('compareProducts', JSON.stringify(selectedProducts));
+                updateCompareButton();
+            });
+        });
+
+        compareButton.addEventListener('click', function() {
+            if (selectedProducts.length > 1) {
+                const queryString = selectedProducts.map(id => `product_id=${id}`).join('&');
+                window.location.href = `{% url 'product:compare_products' %}?${queryString}`;
+            }
+        });
+
+        updateCompareButton();
+    });
+</script>

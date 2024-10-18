@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container mt-5">
+    <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="{% url 'account:profile' user.profile.PRFslug %}" role="tab">Personal Information</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="../../products/orders" role="tab">Orders</a>
+        </li>
+    </ul>
+    <div class="card shadow">
+        <div class="card-body">
+            <h2 class="card-title mb-4">My Orders</h2>
+            {% if orders %}
+                {% for order in orders %}
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Order Number: {{ order.id }} - {{ order.created_at|date:"Y-m-d H:i" }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Status:</strong> <span class="badge bg-secondary">{{ order.get_status_display }}</span></p>
+                            <p><strong>Total Price:</strong> {{ order.total_price }} EGP</p>
+                            <h6>Products:</h6>
+                            <ul>
+                                {% for item in order.items.all %}
+                                    <li>{{ item.product.PRDname }} - Quantity: {{ item.quantity }} - Price: {{ item.price }} EGP</li>
+                                {% endfor %}
+                            </ul>
+                            {% if order.status == 'pending' %}
+                                <a href="{% url 'payment:payment' %}?amount={{ order.total_price }}" class="btn btn-primary">Pay Now</a>
+                            {% else %}
+                                <span class="badge bg-success">Paid</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No orders yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

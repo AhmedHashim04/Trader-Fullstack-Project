@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block body %}
+
+<section class="compare_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+                Product Comparison
+            </h2>
+            <br><br>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="compare_table">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Features</th>
+                                {% for product in products %}
+                                    <th scope="col">{{ product.PRDname }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Image</td>
+                                {% for product in products %}
+                                    <td>
+                                        <img src="{{ product.PRDimage.url }}" alt="{{ product.PRDname }}" class="img-fluid rounded" style="width: 100px; height: 100px; object-fit: cover;">
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Price</td>
+                                {% for product in products %}
+                                    <td>${{ product.PRDprice }}</td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Description</td>
+                                {% for product in products %}
+                                    <td>{{ product.PRDdesc|truncatewords:20 }}</td>
+                                {% endfor %}
+                            </tr>
+                            {% comment %} <tr>
+                                <td>Category</td>
+                                {% for product in products %}
+                                    <td>{{ product.PRDcategory.CATparent.CATname }}</td>
+                                {% endfor %}
+                            </tr> {% endcomment %}
+                            {% comment %} <tr>
+                                <td>Brand</td>
+                                {% for product in products %}
+                                    <td>{{ product.PRDBrand.BRDname }}</td>
+                                {% endfor %}
+                            </tr> {% endcomment %}
+                            <tr>
+                                <td>Rating</td>
+                                {% for product in products %}
+                                    <td>{{ product.overall_rating|floatformat:1 }} / 5</td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td>Actions</td>
+                                {% for product in products %}
+                                    <td>
+                                        <a href="{% url 'product:product_detail' product.PRDslug %}" class="btn btn-primary btn-sm">View Details</a>
+                                        {% if product.PRDslug not in Contextcart or not user.is_authenticated %}
+                                        <a href="{% url 'cart:cart_add' product.PRDslug %}" class="btn btn-success btn-sm mt-2">Add to Cart</a>
+                                        {% else %}
+                                        <a href="{% url 'cart:cart_remove' product.PRDslug %}" class="btn btn-danger btn-sm mt-2">Remove from Cart</a>
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .compare_section {
+        background-color: #f9f9f9;
+        padding: 60px 0;
+    }
+
+    .heading_container h2 {
+        font-size: 2.5rem;
+        color: #333;
+    }
+
+    .compare_table {
+        overflow-x: auto;
+    }
+
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .btn-primary, .btn-success {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+</style>
+
+{% endblock body %}

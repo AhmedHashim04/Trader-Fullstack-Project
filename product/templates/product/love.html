@@ -24,7 +24,7 @@
                                 <tr>
                                     <td>
                                         <a href='{% url "product:product_detail" item.PRDslug %}' class="d-flex align-items-center">
-                                            <img src="{{ item.PRDimage.PIMGimage.url }}" alt="{{ item.PRDname }}" class="img-fluid" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+                                            <img src="{{ item.PRDimage.url }}" alt="{{ item.PRDname }}" class="img-fluid" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
                                             {{ item.PRDname }}
                                         </a>
                                     </td>

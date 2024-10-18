@@ -16,7 +16,7 @@
     <div class="row">
       <div class="col-md-6">
         <div class="img-box">
-          <img src="{% if product.PRDimage %}{{ product.PRDimage.PIMGimage.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.PRDname }}" class="img-fluid" />
+          <img src="{% if product.PRDimage %}{{ product.PRDimage.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.PRDname }}" class="img-fluid" />
         </div>
       </div>
       <div class="col-md-6">
@@ -55,17 +55,18 @@
             </span>
           </a>
           {% endif %}
-
-          {% if in_cart %}
-          <a href='{% url "products:cart" product.PRDslug %}' class="add_cart_btn btn btn-danger">
+          
+          {% if product.PRDslug not in Contextcart or not user.is_authenticated %}
+          <a href='{% url "cart:cart_add" product.PRDslug %}' class="add_cart_btn btn btn-success">
             <span>
-              Remove from Cart
+            Add To Cart
+              
             </span>
           </a>
           {% else %}
-          <a href='{% url "products:cart" product.PRDslug %}' class="add_cart_btn btn btn-success">
+          <a href='{% url "cart:cart_remove" product.PRDslug %}' class="add_cart_btn btn btn-danger">
             <span>
-              Add To Cart
+              Remove from Cart
             </span>
           </a>
           {% endif %}

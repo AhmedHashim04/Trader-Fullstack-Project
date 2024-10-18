@@ -2,18 +2,14 @@
 
 
 {% block body %}
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <h1> successful Logout </h1>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+<div class="container text-center mt-5">
+    <div class="card shadow">
+        <div class="card-body">
+            <h1 class="card-title mb-4">Successful Logout</h1>
+            <p class="card-text">You have been successfully logged out.</p>
+            <a href="{% url 'login' %}" class="btn btn-primary">Log in again</a>
+        </div>
+    </div>
+</div>
 {% endblock body %}
     
