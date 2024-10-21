@@ -7,6 +7,8 @@ Welcome to the e-Commerce Project! This project aims to provide an online platfo
 - **Product Browsing:** Explore a wide range of products.
 - **Category Browsing:** Explore a wide range of categories.
 - **Shopping Cart:** Add or remove products from the cart.
+- **Orders:** Complete Order products from the cart.
+- **Payment:** Complete Payment from the order list.
 - **Wishlist:** Save favorite products in a special list.
 - **User Authentication:** Login to create an account and store user information.
 - **Product Pages:** Display product details beautifully.
@@ -22,4 +24,4 @@ Welcome to the e-Commerce Project! This project aims to provide an online platfo
 1. Clone the repository:
    ```bash
    git clone https://github.com/AhmedHashim04/Django-Ecommerce.git
-   cd repo-name
+   cd project
