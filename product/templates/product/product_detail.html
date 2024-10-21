@@ -4,7 +4,6 @@
 
 {% block body %}
 
-<!-- product details section -->
 <section class="product_details_section layout_padding">
   <div class="container">
     <div class="heading_container heading_center">
@@ -157,23 +156,21 @@
 <!-- end product details section -->
 
 <script>
-  // استرجاع الأزرار وحاوية التقييمات
   const filterAllButton = document.getElementById('filter-all');
   const filterGoodButton = document.getElementById('filter-good');
   const filterBadButton = document.getElementById('filter-bad');
   const reviewsContainer = document.getElementById('reviews-container');
   const reviewItems = reviewsContainer.getElementsByClassName('review-item');
 
-  // دالة لتصفية التقييمات
   function filterReviews(filter) {
       for (let i = 0; i < reviewItems.length; i++) {
           const reviewItem = reviewItems[i];
           if (filter === 'all') {
-              reviewItem.style.display = 'block'; // عرض جميع التقييمات
+              reviewItem.style.display = 'block';
           } else if (filter === 'good') {
-              reviewItem.style.display = reviewItem.classList.contains('good-review') ? 'block' : 'none'; // عرض التقييمات الجيدة
+              reviewItem.style.display = reviewItem.classList.contains('good-review') ? 'block' : 'none';
           } else if (filter === 'bad') {
-              reviewItem.style.display = reviewItem.classList.contains('bad-review') ? 'block' : 'none'; // عرض التقييمات السيئة
+              reviewItem.style.display = reviewItem.classList.contains('bad-review') ? 'block' : 'none';
           }
       }
   }

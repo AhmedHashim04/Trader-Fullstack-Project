@@ -44,7 +44,7 @@ class CartView(LoginRequiredMixin, ListView):
     model = cartmodel
     template_name = 'cart/cart.html'
     context_object_name = 'cart'
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['cart'] = cart_branch(self.request)

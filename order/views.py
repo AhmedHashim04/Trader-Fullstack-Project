@@ -50,9 +50,20 @@ def create_order(request):
     except ValueError as e:
         messages.error(request, str(e))
         return redirect('cart:cart_list')
-    # except Exception as e:
-    #     messages.error(request, 'An error occurred while creating the order. Please try again.')
-    #     return redirect('cart:cart_list')
+    except Exception as e:
+        messages.error(request, 'An error occurred while creating the order. Please try again.')
+        return redirect('cart:cart_list')
+
+@login_required
+@transaction.atomic
+def clear_order_history(request):
+    try:
+        Order.objects.filter(ORDuser=request.user).delete()
+        messages.success(request, 'Order history cleared successfully!')
+    except Exception as e:
+        messages.error(request, 'An error occurred while clearing the order history. Please try again.')
+    
+    return redirect('order:order_list')
 
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
