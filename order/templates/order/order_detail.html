@@ -3,7 +3,7 @@
 {% block body %}
 <div class="container mt-5">
     <h2>Order Details #{{ order.id }}</h2>
-    <p>Date: {{ order.created_at|date:"Y-m-d H:i" }}</p>
+    <p>Date: {{ order.ORDcreated_at|date:"Y-m-d H:i" }}</p>
     <p>Status: {{ order.get_status_display }}</p>
     
     <h3>Products:</h3>
@@ -14,23 +14,20 @@
                 <th>Quantity</th>
                 <th>Unit Price</th>
                 <th>Total</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for item in order.items.all %}
             <tr>
-                <td>{{ item.product.PRDname }}</td>
-
-                <td>{{ item.price }} EGP</td>
+                <td>{{ item.OITEMproduct.PRDname }}</td>
+                <td>{{ item.OITEMquantity }}</td>
+                <td>{{ item.OITEMprice }} EGP</td>
                 <td>{{ item.get_total_price }} EGP</td>
-                <td>
-                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
     
-    <h4>Total Price: {{ order.total_price }} EGP</h4>
+    <h4>Total Price: {{ order.ORDtotal_price }} EGP</h4>
 </div>
 {% endblock %}

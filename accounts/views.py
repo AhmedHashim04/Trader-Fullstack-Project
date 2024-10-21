@@ -10,8 +10,8 @@ from django.urls import reverse  , reverse_lazy
 from .models import Profile
 from .form import RegeisterForm , UpdateProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin 
-import uuid
-from django.core.mail import send_mail
+# import uuid
+# from django.core.mail import send_mail
 
 
 class MyLoginView(LoginView):

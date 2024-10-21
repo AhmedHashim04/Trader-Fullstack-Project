@@ -1,7 +1,7 @@
 from django.views.generic import FormView, TemplateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import PaymentForm
+from .form import PaymentForm
 from .models import Payment
 from product.models import Product  
 

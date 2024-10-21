@@ -8,8 +8,8 @@ from .form import EmailForm
 class SendEmailView(FormView):
     form_class = EmailForm
     template_name = 'contact/contact.html'
-    success_url = reverse_lazy('account:profile')  # بعد إرسال البريد بنجاح
-    send_mail = True  # تستخدم إذا كنت تريد تفعيل أو تعطيل الإرسال
+    success_url = reverse_lazy('account:profile')
+    send_mail = True  
 
     def form_valid(self, form):
         
@@ -23,8 +23,8 @@ class SendEmailView(FormView):
                 
                 title,
                 message,
-                from_email,  # البريد الإلكتروني للمرسل
-                [settings.DEFAULT_FROM_EMAIL],  # البريد الإلكتروني للمستقبل
+                from_email,  
+                [settings.DEFAULT_FROM_EMAIL], 
                 
             )
 

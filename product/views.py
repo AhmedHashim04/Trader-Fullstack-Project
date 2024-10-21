@@ -13,11 +13,12 @@ from django.contrib.auth.decorators import login_required
 
 from django.db.models import Q
 from django.db import transaction
+
 class ProductsView(ListView):
     model = Product
     context_object_name = 'all_products'
     template_name = 'product/products.html'
-    paginate_by = 12
+    # paginate_by = 2
 
     def get_queryset(self):
         queryset = super().get_queryset()

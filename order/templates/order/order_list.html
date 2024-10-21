@@ -13,23 +13,25 @@
     <div class="card shadow">
         <div class="card-body">
             <h2 class="card-title mb-4">My Orders</h2>
+            <a href="{% url 'order:clear_order_history' %}" class="btn btn-danger mb-3">Clear Order History</a>  <!-- زر مسح تاريخ الطلبات -->
             {% if orders %}
                 {% for order in orders %}
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h5 class="mb-0">Order Number: {{ order.id }} - {{ order.created_at|date:"Y-m-d H:i" }}</h5>
+                            <h5 class="mb-0">Order Number: {{ order.id }} - {{ order.ORDcreated_at|date:"Y-m-d H:i" }}</h5>
                         </div>
                         <div class="card-body">
                             <p><strong>Status:</strong> <span class="badge bg-secondary">{{ order.get_status_display }}</span></p>
-                            <p><strong>Total Price:</strong> {{ order.total_price }} EGP</p>
+                            <p><strong>Total Price:</strong> {{ order.ORDtotal_price }} EGP</p>
                             <h6>Products:</h6>
                             <ul>
                                 {% for item in order.items.all %}
-                                    <li>{{ item.product.PRDname }} - Quantity: {{ item.quantity }} - Price: {{ item.price }} EGP</li>
+                                    <li>{{ item.OITEMproduct.PRDname }} - Quantity: {{ item.OITEMquantity }} - Price: {{ item.OITEMprice }} EGP</li>
                                 {% endfor %}
                             </ul>
-                            {% if order.status == 'pending' %}
-                                <a href="{% url 'payment:payment' %}?amount={{ order.total_price }}" class="btn btn-primary">Pay Now</a>
+                            {% comment %} <a href="{% url 'order:order_detail' ORDorder.slug %}" class="btn btn-info">View Details</a>  {% endcomment %}
+                            {% if order.ORDstatus == 'pending' %}
+                                <a href="{% url 'payment:payment' %}?amount={{ order.ORDtotal_price }}" class="btn btn-primary">Pay Now</a>
                             {% else %}
                                 <span class="badge bg-success">Paid</span>
                             {% endif %}
@@ -42,4 +44,5 @@
         </div>
     </div>
 </div>
+<br>
 {% endblock %}

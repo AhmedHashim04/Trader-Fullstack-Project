@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from product.models import Product  # استيراد نموذج Product
+from product.models import Product  
 
 # Create your models here.
 
@@ -13,7 +13,7 @@ class Order(models.Model):
         ('delivered', 'Delivered'),
         ('cancelled', 'Cancelled'),
     )
-
+    
     ORDuser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     ORDcreated_at = models.DateTimeField(default=timezone.now)
     ORDupdated_at = models.DateTimeField(auto_now=True)

@@ -156,6 +156,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ahmedha4im7@gmail.com'
-EMAIL_HOST_PASSWORD = 'ncct kmrp vlab jmob'
+EMAIL_HOST_PASSWORD = ''
 
 CART_SESSION_ID = 'cart'

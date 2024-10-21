@@ -22,8 +22,9 @@ class Product(models.Model):
     PRDimage   = models.ImageField(_("Product Image"), upload_to='products/', height_field=None, width_field=None, max_length=None)
     PRDslug     = models.SlugField(unique=True,blank=True, null=True)
     PRDview     = models.ManyToManyField("accounts.profile", verbose_name=_("User see It"),related_name="users_see_it" , blank=True )
-    # PRDtags     = TaggableManager()
+    PRDtags     = TaggableManager()
     PRDstock   = models.PositiveIntegerField(default=0, verbose_name=_("Stock"))
+    
     overall_rating = models.FloatField(default=0.0)  
 
     def get_absolute_url(self):

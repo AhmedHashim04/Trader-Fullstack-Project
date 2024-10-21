@@ -23,14 +23,13 @@ urlpatterns = [
     # ... المسارات الأخرى ...
     path('admin/'  , admin.site.urls),
     path('',         include('home.urls',namespace='home')),
-    # path('about/',   include('home.urls', namespace='about')),  # إضافة صفحة "من نحن"
     path('products/',include('product.urls',namespace='products')),
     path('accounts/',include('accounts.urls',namespace='account')),
     path('cart/',    include('cart.urls',namespace='cart')),
     path('order/',   include('order.urls',namespace='order')),
     path('contact/', include('contact.urls',namespace='contact')),
     path('payment/', include('payment.urls',namespace='payment')),
-    path('compare/', include('product.urls',namespace='compare')),  # إضافة رابط للمقارنة
+    path('compare/', include('product.urls',namespace='compare')),  
 ]
  
 if settings.DEBUG:
