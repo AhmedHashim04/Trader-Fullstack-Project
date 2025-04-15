@@ -1,9 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-from product.models import Product  
-
-# Create your models here.
+from product.models import Product
+from django.utils.translation import gettext_lazy as _
 
 class Order(models.Model):
     ORDER_STATUS = (
@@ -13,30 +12,39 @@ class Order(models.Model):
         ('delivered', 'Delivered'),
         ('cancelled', 'Cancelled'),
     )
-    
-    ORDuser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
-    ORDcreated_at = models.DateTimeField(default=timezone.now)
-    ORDupdated_at = models.DateTimeField(auto_now=True)
-    ORDstatus = models.CharField(max_length=20, choices=ORDER_STATUS, default='pending')
-    ORDtotal_price = models.DecimalField(max_digits=10, decimal_places=2)
+    id = models.UUIDField(_("ID"), primary_key=True, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=20, choices=ORDER_STATUS, default='pending')
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    status_changed_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return f" {self.id} - {self.ORDuser.username}"
+        return f"Order {self.id} - {self.user.username}"
+
+    def save(self, *args, **kwargs):
+        if not self.total_price:
+            self.total_price = sum(item.get_total_price() for item in self.items.all())
+        super().save(*args, **kwargs)
 
     def get_items(self):
         return self.items.all()
 
+    def update_status(self, new_status):
+        self.status = new_status
+        self.status_changed_at = timezone.now()
+        self.save()
+
+
 class OrderItem(models.Model):
-    OITEMorder = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    OITEMproduct = models.ForeignKey(Product, on_delete=models.CASCADE)
-    OITEMquantity = models.PositiveIntegerField(default=1)
-    OITEMprice = models.DecimalField(max_digits=10, decimal_places=2)
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f"{self.OITEMquantity} x {self.OITEMproduct.PRDname} in {self.OITEMorder.id}"
-    
+        return f"{self.quantity} x {self.product.name} in Order {self.order.id}"
+
     def get_total_price(self):
-        return self.OITEMprice * self.OITEMquantity
-
-
-
+        return self.price * self.quantity

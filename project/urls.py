@@ -18,20 +18,23 @@ from django.contrib import admin
 from django.urls import path , include
 from django.conf import settings
 from django.conf.urls.static import static
- 
+from django.conf.urls import handler404, handler500
+
+
 urlpatterns = [
-    # ... المسارات الأخرى ...
     path('admin/'  , admin.site.urls),
+    path('account/',include('account.urls',namespace='account')),
     path('',         include('home.urls',namespace='home')),
-    path('products/',include('product.urls',namespace='products')),
-    path('accounts/',include('accounts.urls',namespace='account')),
+    path('products/',include('product.urls',namespace='product')),
     path('cart/',    include('cart.urls',namespace='cart')),
     path('order/',   include('order.urls',namespace='order')),
     path('contact/', include('contact.urls',namespace='contact')),
     path('payment/', include('payment.urls',namespace='payment')),
-    path('compare/', include('product.urls',namespace='compare')),  
 ]
- 
+
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# handler404 = 'home.views.handler404'
+# handler500 = 'home.views.handler500'

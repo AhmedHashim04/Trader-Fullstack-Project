@@ -1,24 +1,23 @@
 from typing import Any
 from django.db.models.base import Model as Model
 from django.shortcuts import redirect ,get_object_or_404 
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect
 from django.contrib import messages
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView ,DetailView, TemplateView
-from .models import *
-from accounts.models import Profile
+from .models import Product ,Category , Review
+from account.models import Profile
 from .form import ReviewForm
 from django.contrib.auth.decorators import login_required
 
 from django.db.models import Q
-from django.db import transaction
 
 class ProductsView(ListView):
     model = Product
     context_object_name = 'all_products'
     template_name = 'product/products.html'
-    # paginate_by = 2
+    paginate_by = 12
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -28,16 +27,16 @@ class ProductsView(ListView):
 
         if search_query:
             queryset = queryset.filter(
-                Q(PRDname__icontains=search_query) | 
-                Q(PRDdesc__icontains=search_query)
+                Q(name__icontains=search_query) | 
+                Q(desc__icontains=search_query)
             )
-        
+
         if category:
-            queryset = queryset.filter(PRDcategory__CATslug=category)
+            queryset = queryset.filter(category__slug=category)
         
         order_by_mapping = {
-            'price_asc': 'PRDprice',
-            'price_desc': '-PRDprice',
+            'price_asc': 'price',
+            'price_desc': '-price',
             'rating': '-overall_rating'
         }
         if sort_by in order_by_mapping:
@@ -60,9 +59,11 @@ class CompareProductsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         product_ids = self.request.GET.getlist('product_id')
         products = Product.objects.filter(id__in=product_ids)
         context['products'] = products
+        
         
         for product in products:
             product.overall_rating = self.calculate_product_rating(product)
@@ -70,9 +71,9 @@ class CompareProductsView(TemplateView):
         return context
     
     def calculate_product_rating(self, product):
-        reviews = Review.objects.filter(REVproduct=product)
+        reviews = Review.objects.filter(product=product)
         if reviews.exists():
-            total_rating = sum(review.REVrating for review in reviews)
+            total_rating = sum(review.rating for review in reviews)
             num_reviews = reviews.count()
             return round(total_rating / num_reviews, 1)
         return 0
@@ -81,7 +82,7 @@ class ProductViewDetail(DetailView):
     model = Product
     template_name = 'product/product_detail.html'
     context_object_name = 'product'
-    slug_field = "PRDslug"
+    slug_field = "slug"
     slug_url_kwarg = "slug"
 
 
@@ -89,24 +90,23 @@ class ProductViewDetail(DetailView):
         if not reviews.exists():
             return 0 
 
-        total_rating = sum([review.REVrating for review in reviews])
+        total_rating = sum([review.rating for review in reviews])
 
         num_reviews = reviews.count()
 
         return round(total_rating / num_reviews, 1)
 
-
     def get_context_data(self, **kwargs):
-        user_profile = Profile.objects.get(PRFuser=self.request.user)
+        user_profile = Profile.objects.get(user=self.request.user)
 
-        love_products = user_profile.PRFlove.all()
+        wishlist_products = user_profile.wishlist.all()
 
         context = super().get_context_data(**kwargs)
-        context['form']             = ReviewForm()
-        context['reviews']          = Review.objects.filter(REVproduct=self.get_object())
+        context['review_form']      = ReviewForm()
+        context['reviews']          = Review.objects.filter(product=self.get_object())
         context['overall_rating']   = self.calculate_overall_rating(context['reviews'])
 
-        context['in_love'] = self.get_object() in love_products
+        context['is_product_in_wishlist'] = self.get_object() in wishlist_products
 
         return context
 
@@ -115,15 +115,15 @@ class ProductViewDetail(DetailView):
         form = ReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
-            review.REVuser = request.user
-            review.REVproduct = product
+            review.user = request.user
+            review.product = product
             review.save()
             product.update_overall_rating()
             messages.success(self.request, 'Review and rating submitted successfully!')
             return redirect(product.get_absolute_url())
 
         return self.render_to_response(self.get_context_data(form=form))
- 
+
 class CategorysView(ListView):
     model = Category
     context_object_name = 'all_categories'
@@ -134,22 +134,22 @@ class CategoryViewDetail(DetailView):
     model = Category
     template_name = 'product/category_detail.html'
     context_object_name = 'category'
-    slug_field     = "CATslug"
+    slug_field     = "slug"
     slug_url_kwarg = "slug"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs) 
         obj = self.get_object()
-        context['categoryProducts'] = Product.objects.filter(PRDcategory=obj)  
+        context['category_products'] = Product.objects.filter(category=obj)  
         
         return context
 
-class LoveViewDetail(DetailView):
+class WishlistViewDetail(DetailView):
     model = Profile
-    template_name = 'product/love.html'
+    template_name = 'product/wishlist.html'
     context_object_name = 'profile'
-    slug_field     = "PRFslug"
-    slug_url_kwarg = "slug"
+    slug_field     = "id"
+    slug_url_kwarg = "id"
     
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -159,27 +159,27 @@ class LoveViewDetail(DetailView):
 
 
 @login_required
-def add_remove_love(request,slug):
-    product = Product.objects.get(PRDslug=slug)
+def add_remove_wishlist(request,slug):
+    product = Product.objects.get(slug=slug)
 
-    user = get_object_or_404(Profile, PRFuser=request.user)
+    user = get_object_or_404(Profile, user=request.user)
     
-    if product in user.PRFlove.all() :
-        user.PRFlove.remove(product)
+    if product in user.wishlist.all() :
+        user.wishlist.remove(product)
         messages.success(request, 'The product has been removed from the wishlist!')
     else:
-        user.PRFlove.add(product)
+        user.wishlist.add(product)
         messages.success(request, 'Product added to Wishlist successfully!')
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def user_see_product(request,slug):
-    product = Product.objects.get(PRDslug=slug)
+    product = Product.objects.get(slug=slug)
 
-    user = get_object_or_404(Profile, PRFuser=request.user)
+    user = get_object_or_404(Profile, user=request.user)
     
-    if user not in product.PRDview.all() :
-        product.PRDview.add(user)
+    if user not in product.viewed_by.all() :
+        product.viewed_by.add(user)
 
     return redirect(product.get_absolute_url())  
 

@@ -3,18 +3,18 @@ from product.models import Product
 from django.contrib.auth.models import User
 
 class CartModel(models.Model):
-    CRTuser = models.ForeignKey(User, on_delete=models.CASCADE)
-    CRTproduct = models.ForeignKey(Product, on_delete=models.CASCADE)
-    CRTquantity = models.IntegerField(default=1)
-    CRTcreated_at = models.DateTimeField(auto_now_add=True)
-    CRTupdated_at = models.DateTimeField(auto_now=True)
-    CRTslug = models.SlugField(unique=True, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     
     def __str__(self):
-        return f"{self.CRTuser.username} - {self.CRTproduct.name}"
+        return f"{self.user.username} - {self.product.name}"
     
     def get_total_price(self):
-        return self.CRTquantity * self.CRTproduct.price
+        return self.quantity * self.product.price
     
     # def get_total_price_after_discount(self):
     #     return self.get_total_price() - self.get_discount()
