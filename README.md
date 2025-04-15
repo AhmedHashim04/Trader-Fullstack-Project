@@ -23,5 +23,5 @@ Welcome to the e-Commerce Project! This project aims to provide an online platfo
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/AhmedHashim04/Django-Ecommerce.git
-   cd project
+    mkdir project ; cd project ;python3 -m venv .;mkdir src ;cd src
+    git clone https://github.com/AhmedHashim04/Django-Ecommerce.git .
