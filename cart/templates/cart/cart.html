@@ -25,23 +25,22 @@
                         <tbody>
                             {% for item in cart %}
                             <tr>
-                            
-                                <td> <img src="{{ item.product.PRDimage.url }}" alt="{{ item.product.PRDname }}" class="img-fluid" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
-                                <a href='{% url "product:product_detail" item.product.PRDslug %}'>  {{ item.product.PRDname }}</a></td>
-                                <td>{{ item.product.PRDprice }} EGP</td>
+                                <td> <img src="{% if product.image %}{{ item.product.image.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ item.product.name }}" class="img-fluid" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+                                <a href='{% url "product:product_detail" item.product.slug %}'>  {{ item.product.name }}</a></td>
+                                <td>{{ item.product.price }} EGP</td>
                                 <td>
-                                    <form method="post" action="{% url 'cart:cart_update' item.product.PRDslug %}" class="d-flex align-items-center justify-content-between">
+                                    <form method="post" action="{% url 'cart:cart_update' item.product.slug %}" class="d-flex align-items-center justify-content-between">
                                         {% csrf_token %}
                                         <input type="hidden" name="product_id" value="{{ item.product.id }}">
                                         <div class="input-group" style="width: 120px;">
-                                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.PRDstock }}" class="form-control">
+                                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="form-control">
                                             <button type="submit" class="btn btn-sm btn-primary">Update</button>
                                         </div>
                                     </form>
                                 </td>
                                 <td>{{ item.total }} EGP</td>
                                 <td>
-                                    <a href="{% url 'cart:cart_remove' item.product.PRDslug %}" class="btn btn-sm btn-danger">Remove</a>
+                                    <a href="{% url 'cart:cart_remove' item.product.slug %}" class="btn btn-sm btn-danger">Remove</a>
                                 </td>
                             </tr>
                             {% endfor %}

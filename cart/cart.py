@@ -12,19 +12,19 @@ class Cart(models.Model):
         self.cart = cart
 
     def add(self, product):
-        product_id = product.PRDslug
+        product_id = product.slug
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 1, 'price': float(product.PRDprice)}
+            self.cart[product_id] = {'quantity': 1, 'price': float(product.price)}
         self.save()
 
     def update(self, product, quantity):
-        product_id = product.PRDslug
+        product_id = product.slug
         if product_id in self.cart:
             self.cart[product_id]['quantity'] = quantity
         self.save()
 
     def remove(self, product):
-        product_id = str(product.PRDslug)
+        product_id = str(product.slug)
         if product_id in self.cart:
             del self.cart[product_id]
         self.save()
@@ -39,10 +39,10 @@ class Cart(models.Model):
         
     def __iter__(self):
         product_ids = self.cart.keys()
-        products = Product.objects.filter(PRDslug__in=product_ids)
+        products = Product.objects.filter(slug__in=product_ids)
         cart = self.cart.copy()
         for product in products:
-            cart[str(product.PRDslug)]['product'] = product
+            cart[str(product.slug)]['product'] = product
         for item in cart.values():
             item['price'] = float(item['price'])
             item['quantity'] = int(item['quantity'])

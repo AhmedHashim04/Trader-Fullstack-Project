@@ -12,26 +12,26 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def cart_add(request, slug ):
     cart = cart_branch(request)
-    product = get_object_or_404(Product, PRDslug = slug)
+    product = get_object_or_404(Product, slug = slug)
     cart.add(product=product)
-    messages.success(request, f'{product.PRDname} Added to Cart Successfully')
-    return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list'))
+    messages.success(request, f'{product.name} Added to Cart Successfully')
+    return redirect(request.META.get('HTTP_REFERER', 'cart:cart-list'))
 
 @login_required
 def cart_remove(request, slug ):
     cart = cart_branch(request)
-    product = get_object_or_404(Product, PRDslug = slug)
+    product = get_object_or_404(Product, slug = slug)
     cart.remove(product)
     messages.success(request, 'Product Removed Successfully')
-    return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list'))
+    return redirect(request.META.get('HTTP_REFERER', 'cart:cart-list'))
 
 @login_required
 def cart_update(request, slug):
     cart = cart_branch(request)
-    product = get_object_or_404(Product, PRDslug = slug)
+    product = get_object_or_404(Product, slug = slug)
     cart.update(product, request.POST.get('quantity'))
     messages.success(request, 'Cart Updated Successfully')
-    return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list'))
+    return redirect(request.META.get('HTTP_REFERER', 'cart:cart-list'))
 
 
 def cart_clear(request):

@@ -21,7 +21,7 @@ def create_order(request):
     
     try:
         with transaction.atomic():
-            order = Order.objects.create(ORDuser=request.user, ORDtotal_price=0)
+            order = Order.objects.create(user=request.user, total_price=0)
             
             for item in cart:
                 product = item['product']
@@ -39,7 +39,7 @@ def create_order(request):
             
             OrderItem.objects.bulk_create(order_items)
             
-            order.ORDtotal_price = total_price
+            order.total_price = total_price
             order.save()
             
             cart.clear()
@@ -58,7 +58,7 @@ def create_order(request):
 @transaction.atomic
 def clear_order_history(request):
     try:
-        Order.objects.filter(ORDuser=request.user).delete()
+        Order.objects.filter(user=request.user).delete()
         messages.success(request, 'Order history cleared successfully!')
     except Exception as e:
         messages.error(request, 'An error occurred while clearing the order history. Please try again.')
@@ -71,14 +71,14 @@ class OrderListView(LoginRequiredMixin, ListView):
     context_object_name = 'orders'
 
     def get_queryset(self):
-        return Order.objects.filter(ORDuser=self.request.user).order_by('-ORDcreated_at')
+        return Order.objects.filter(user=self.request.user).order_by('-created_at')
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = 'order/order_detail.html'
     context_object_name = 'order'
-    slug_url_kwarg = 'slug'
-    slug_field = 'ORDslug'
+    slug_url_kwarg = 'id'
+    slug_field = 'id'
 
     def get_queryset(self):
-        return Order.objects.filter(ORDuser=self.request.user)
+        return Order.objects.filter(user=self.request.user)

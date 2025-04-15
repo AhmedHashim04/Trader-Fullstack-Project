@@ -95,7 +95,7 @@
             <div class="user_option_box">
 
               {% if user.is_authenticated %}
-              <a href="{% url 'account:profile' user.profile.PRFslug %}" class="account-link">
+              <a href="{% url 'account:user_profile' user.profile.id %}" class="account-link">
                 <i class="fa fa-user" aria-hidden="true"></i>
 
                 <span>
@@ -105,8 +105,7 @@
               </a>
 
 
-
-              <a href="{% url 'products:love_detail' user.profile.PRFslug %}" class="cart-link">
+              <a href="{% url 'product:wishlist_detail' user.profile.id %}" class="cart-link">
                 <i class="fa fa-shopping-love" style="font-size:150%" aria-hidden="true">♥</i>
                 <span >Wishlist</span>
               </a>
@@ -158,12 +157,12 @@
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     {% for category in contextCategories %}
-                      <a href='{% url "products:category_detail" category.CATslug %}' class="dropdown-item">{{category.CATname}}</a>
+                      <a href='{% url "product:category_detail" category.slug %}' class="dropdown-item">{{category.name}}</a>
                     {% endfor %}
                   </div>
                 </li>
                 <li class="nav-item">
-                  <a href="{% url 'products:products_list' %}" class="nav-link">Products</a>
+                  <a href="{% url 'product:products_list' %}" class="nav-link">Products</a>
                 </li>
                 <li class="nav-item">
                   <a href="{% url 'contact:contact' %}" class="nav-link">Contact</a>

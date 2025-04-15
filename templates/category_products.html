@@ -7,22 +7,22 @@
       </h2>
     </div>
     <div class="row">
-      {% for product in categoryProducts %}
+      {% for product in category_products %}
 
         <div class="col-sm-6 col-lg-4">
           <div class="box">
             <div class="img-box">
-              <img src="{% if product.PRDimage %}{{ product.PRDimage.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.PRDname }}" class="img-fluid" />
+              <img src="{% if product.image %}{{ product.image.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
 
-              {% if product.PRDslug not in Contextcart or not user.is_authenticated %}
-              <a href='{% url "cart:cart_add" product.PRDslug  %}' class="add_cart_btn">
+              {% if product.slug not in contextCart or not user.is_authenticated %}
+              <a href='{% url "cart:cart_add" product.slug  %}' class="add_cart_btn">
                 <span>
                   Add To Cart
                 </span>
               </a>
               
             {% else %}
-            <a href='{% url "cart:cart_remove" product.PRDslug  %}' class="add_cart_btn ">
+            <a href='{% url "cart:cart_remove" product.slug  %}' class="add_cart_btn ">
               <span>
                 Remove from Cart
               </span>
@@ -30,31 +30,31 @@
             {% endif %}
             </div>
 
-            {% if product not in user_love or not user.is_authenticated %}
-            <a href='{% url "products:love" product.PRDslug  %}' class="add_cart_btn btn btn-success">
+            {% if product not in contextWishlist or not user.is_authenticated %}
+            <a href='{% url "product:product_wishlist" product.slug  %}' class="add_cart_btn btn btn-success">
               <span >
                 Add To Wishlist
               </span>
             </a>
             {% else %}
 
-            <a href='{% url "products:love" product.PRDslug  %}' class="add_cart_btn btn btn-danger">
+            <a href='{% url "product:product_wishlist" product.slug  %}' class="add_cart_btn btn btn-danger">
               <span >
                 Remove Wishlist
               </span>
             </a>
             {% endif %}
             <div class="detail-box">
-              <a href='{% url "product:product_detail" product.PRDslug %}' class="d-flex align-items-center">
+              <a href='{% url "product:product_detail" product.slug %}' class="d-flex align-items-center">
 
                 <h5>
-                  {{ product.PRDname }}
+                  {{ product.name }}
                 </h5>
               </a>
 
               <div class="product_info">
                 <h5>
-                  <span>$</span> {{ product.PRDprice }}
+                  <span>$</span> {{ product.price }}
                 </h5>
                 
                 <div class="star_container">
