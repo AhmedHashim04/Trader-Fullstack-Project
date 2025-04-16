@@ -1,9 +1,10 @@
 from product.models import Category
 from cart.cart import Cart as cart_branch
+from account.models import Profile
 
 def contexts(request):
     categories = Category.objects.filter(parent=None)
-    profile = getattr(request.user, 'profile', None)
+    profile = Profile.objects.get(user=request.user)
     cart = cart_branch(request)
     
     if profile:

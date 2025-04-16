@@ -7,9 +7,24 @@ from decimal import Decimal
 
 brands = list(Brand.objects.all())
 if not brands:
-    raise Exception("No brands found. Please create brands first.")
+    # If no brands exist, create 15 default ones
+    Brand.objects.create(name="Apple")
+    Brand.objects.create(name="Samsung")
+    Brand.objects.create(name="Google")
+    Brand.objects.create(name="Microsoft")
+    Brand.objects.create(name="Lenovo")
+    Brand.objects.create(name="Dell")
+    Brand.objects.create(name="HP")
+    Brand.objects.create(name="Asus")
+    Brand.objects.create(name="Acer")
+    Brand.objects.create(name="Toshiba")
+    Brand.objects.create(name="LG")
+    Brand.objects.create(name="Sony")
+    Brand.objects.create(name="Panasonic")
+    Brand.objects.create(name="Nokia")
+    Brand.objects.create(name="Xiaomi")
+    brands = list(Brand.objects.all())
 
-# إنشاء التصنيفات
 category_data = [
     ("Smartphones", "All kinds of smartphones"),
     ("Laptops", "High performance laptops"),
@@ -35,24 +50,26 @@ product_names = {
     "Monitors": ["Dell Ultrasharp", "LG UltraWide", "Samsung Odyssey"],
     "Smartwatches": ["Apple Watch", "Samsung Galaxy Watch", "Fitbit Sense"],
 }
-
-# إنشاء المنتجات
 for category in categories:
     names = product_names.get(category.name, [])
     for name in names:
         brand = random.choice(brands)
         price = Decimal(random.randint(3000, 20000))
         cost = price - Decimal(random.randint(500, 1500))
+        image_url = f"https://picsum.photos/seed/{slugify(name)}/600/400"
 
         Product.objects.create(
             name=name,
             category=category,
             brand=brand,
-            description=f"{name} by {brand.BRDname} in {category.name}",
+            description=f"{name} by {brand.name} in {category.name}",
             price=price,
             cost=cost,
             stock=random.randint(5, 100),
             overall_rating=round(random.uniform(3.5, 5.0), 1),
             created_at=timezone.now(),
             slug=slugify(name),
+            image=image_url,
         )
+
+print("Products seeded successfully.")

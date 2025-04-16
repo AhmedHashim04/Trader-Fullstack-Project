@@ -12,7 +12,7 @@
         <div class="col-sm-6 col-lg-4">
           <div class="box">
             <div class="img-box">
-              <img src="{% if category.image %}{{ category.image.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ category.name }}" class="img-fluid" />
+              <img src="{% if category.image %}{{ category.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ category.name }}" class="img-fluid" />
 
               {% comment %} <a href='{% url "product:cart" product.slug  %}' class="add_cart_btn">
 

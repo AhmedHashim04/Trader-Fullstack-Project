@@ -16,7 +16,7 @@
                   </button>
                   
                       <div class="img-box">
-                          <img src="{% if product.image %}{{ product.image.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
+                          <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
                       
                       {% if product.slug not in contextCart or not user.is_authenticated %}
                       <a href='{% url "cart:cart_add" product.slug  %}' class="add_cart_btn">
