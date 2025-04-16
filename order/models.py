@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from product.models import Product
 from django.utils.translation import gettext_lazy as _
+import uuid
 
 class Order(models.Model):
     ORDER_STATUS = (
@@ -12,7 +13,7 @@ class Order(models.Model):
         ('delivered', 'Delivered'),
         ('cancelled', 'Cancelled'),
     )
-    id = models.UUIDField(_("ID"), primary_key=True, editable=False)
+    id = models.UUIDField(_("ID"), primary_key=True, editable=False, default=uuid.uuid4)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)

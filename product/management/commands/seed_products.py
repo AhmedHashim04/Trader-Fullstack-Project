@@ -38,7 +38,10 @@ categories = []
 for name, desc in category_data:
     category, _ = Category.objects.get_or_create(
         name=name,
-        defaults={"description": desc}
+        defaults={"description": desc},
+        image = f"https://picsum.photos/seed/{slugify(name)}/600/400"
+
+
     )
     categories.append(category)
 
@@ -56,7 +59,7 @@ for category in categories:
         brand = random.choice(brands)
         price = Decimal(random.randint(3000, 20000))
         cost = price - Decimal(random.randint(500, 1500))
-        image_url = f"https://picsum.photos/seed/{slugify(name)}/600/400"
+        image = f"https://picsum.photos/seed/{slugify(name)}/600/400"
 
         Product.objects.create(
             name=name,
@@ -69,7 +72,7 @@ for category in categories:
             overall_rating=round(random.uniform(3.5, 5.0), 1),
             created_at=timezone.now(),
             slug=slugify(name),
-            image=image_url,
+            image=image,
         )
 
 print("Products seeded successfully.")
