@@ -26,15 +26,15 @@ def create_order(request):
             for item in cart:
                 product = item['product']
                 quantity = item['quantity']
-                if quantity > product.PRDstock:
-                    raise ValueError(f'The requested quantity of {product.PRDname} is not available. The available quantity is {product.PRDstock}.')
+                if quantity > product.stock:
+                    raise ValueError(f'The requested quantity of {product.name} is not available. The available quantity is {product.stock}.')
                 
-                price = product.PRDprice * quantity
-                order_item = OrderItem(OITEMorder=order, OITEMproduct=product, OITEMquantity=quantity, OITEMprice=price)
+                price = product.price * quantity
+                order_item = OrderItem(order=order, product=product, quantity=quantity, price=price)
                 order_items.append(order_item)
                 total_price += price
                 
-                product.PRDstock -= quantity
+                product.stock -= quantity
                 product.save()
             
             OrderItem.objects.bulk_create(order_items)
