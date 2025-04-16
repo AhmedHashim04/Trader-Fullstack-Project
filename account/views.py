@@ -32,7 +32,7 @@ class ActivateAccountView(View):
             messages.success(request, 'Account Had Activated Successfuly !')
         else:
             messages.error(request, 'Activation Failed , Invalid key !')
-        return redirect('accounts:login')
+        return redirect('account:login')
 
 
 

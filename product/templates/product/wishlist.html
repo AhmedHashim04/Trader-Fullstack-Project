@@ -20,17 +20,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for item in profile.PRFlove.all %}
+                            {% for item in profile.wishlist.all %}
                                 <tr>
                                     <td>
-                                        <a href='{% url "product:product_detail" item.PRDslug %}' class="d-flex align-items-center">
-                                            <img src="{{ item.PRDimage.url }}" alt="{{ item.PRDname }}" class="img-fluid" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
-                                            {{ item.PRDname }}
+                                        <a href='{% url "product:product_detail" item.slug %}' class="d-flex align-items-center">
+                                            <img src="{{ item.image }}" alt="{{ item.name }}" class="img-fluid" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+                                            {{ item.name }}
                                         </a>
                                     </td>
-                                    <td>${{ item.PRDprice }}</td>
+                                    <td>${{ item.price }}</td>
                                     <td>
-                                        <a href='{% url "product:love" item.PRDslug %}' class="btn btn-danger btn-sm">Delete</a>
+                                        <a href='{% url "product:product_wishlist" item.slug %}' class="btn btn-danger btn-sm">Delete</a>
                                     </td>
                                 </tr>
                             {% empty %}

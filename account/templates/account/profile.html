@@ -19,10 +19,10 @@
             <div class="card shadow mb-4">
                 <div class="card-body">
                     <div class="profile-header text-center mb-4">
-                        <img src="{% if profile.PRFprofile_image %}{{profile.PRFprofile_image.url}}{% else %}{% static 'image/items/item-9.png' %}{% endif %}" 
-                             alt="{{ profile.PRFuser }}" class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
-                        <h2 class="font-weight-bold">{{profile.PRFuser}}</h2>
-                        <p class="text-muted">Member since: {{profile.PRFdate_joined}}</p>
+                        <img src="{% if profile.profile_image %}{{profile.profile_image.url}}{% else %}{% static 'image/items/item-9.png' %}{% endif %}" 
+                             alt="{{ profile.user }}" class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
+                        <h2 class="font-weight-bold">{{profile.user}}</h2>
+                        <p class="text-muted">Member since: {{profile.date_joined}}</p>
                         <p class="text-muted">Manage your personal information and settings</p>
                     </div>
 
@@ -33,10 +33,10 @@
                                     <h5 class="mb-0">Personal Information</h5>
                                 </div>
                                 <div class="card-body">
-                                    <p><strong>Full Name:</strong> {{profile.PRFfirst_name}} {{profile.PRFlast_name}}</p>
-                                    <p><strong>Phone:</strong> {{profile.PRFphone_number}}</p>
-                                    <p><strong>Date of Birth:</strong> {{profile.PRFdate_of_birth}}</p>
-                                    <p><strong>Email:</strong> {{profile.PRFuser.email}}</p>
+                                    <p><strong>Full Name:</strong> {{profile.user.first_name}} {{profile.user.last_name}}</p>
+                                    <p><strong>Phone:</strong> {{profile.phone_number}}</p>
+                                    <p><strong>Date of Birth:</strong> {{profile.date_of_birth}}</p>
+                                    <p><strong>Email:</strong> {{profile.user.email}}</p>
                                 </div>
                             </div>
                             
@@ -45,18 +45,18 @@
                                     <h5 class="mb-0">Shipping Address</h5>
                                 </div>
                                 <div class="card-body">
-                                    <p><strong>Address:</strong> {{profile.PRFaddress}}, {{profile.PRFcity}}, {{profile.PRFcountry}}</p>
-                                    <p><strong>ZIP Code:</strong> {{profile.PRFpostal_code}}</p>
+                                    <p><strong>Address:</strong> {{profile.address}}, {{profile.city}}, {{profile.country}}</p>
+                                    <p><strong>ZIP Code:</strong> {{profile.postal_code}}</p>
                                 </div>
                             </div>
                             
-                            <a href="{% url 'account:update_profile' profile.PRFslug %}" class="btn btn-primary btn-block">Edit Profile</a>
+                            <a href="{% url 'account:user_profile_edit' user.profile.id %}" class="btn btn-primary btn-block">Edit Profile</a>
                         </div>
 
                     </div>
 
                     <div class="text-center mt-4">
-                        <a href="{% url 'accounts:logout' %}" class="btn btn-danger">Logout</a>
+                        <a href="{% url 'account:logout' %}" class="btn btn-danger">Logout</a>
                     </div>
                 </div>
             </div>

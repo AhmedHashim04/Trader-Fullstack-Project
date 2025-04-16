@@ -15,7 +15,8 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Price"))
     cost = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Cost"))
     created_at = models.DateTimeField(auto_now=True, verbose_name=_("Created At"))
-    image = models.ImageField(upload_to='products/', verbose_name=_("Product Image"), blank=True, null=True)
+    # image = models.ImageField(upload_to='products/', verbose_name=_("Product Image"), blank=True, null=True)
+    image = models.URLField(verbose_name=_("Image URL"), blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
     viewed_by = models.ManyToManyField("account.Profile", verbose_name=_("Viewed By"), related_name="viewed_products", blank=True)
     tags = TaggableManager(verbose_name=_("Tags"))
@@ -36,21 +37,25 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('products:product_detail', kwargs={'slug': self.slug})
-
-    def update_overall_rating(self):
-        reviews = self.product_review.all()
-        if reviews.exists():
-            self.overall_rating = round(reviews.aggregate(Avg('rating'))['rating__avg'], 2)
-        else:
-            self.overall_rating = 0
-        self.save()
+        return reverse('product:product_detail', kwargs={'slug': self.slug})
 
     def is_in_stock(self):
         return self.stock > 0
 
-    @staticmethod
-    def calculate_overall_rating(reviews):
+    def update_overall_rating(self) -> None:
+        reviews = self.product_review.all()
+        if reviews.exists():
+            try:
+                average_rating = reviews.aggregate(Avg('rating'))['rating__avg']
+                self.overall_rating = round(average_rating, 2) if average_rating is not None else 0
+            except TypeError:
+                self.overall_rating = 0
+        else:
+            self.overall_rating = 0
+        self.save()
+
+    @classmethod
+    def calculate_overall_rating(cls, reviews: models.QuerySet['Review']) -> float:
         if not reviews.exists():
             return 0
         total_rating = sum(review.rating for review in reviews)
@@ -77,7 +82,7 @@ class Category(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('products:category_detail', kwargs={'slug': self.slug})
+        return reverse('product:category_detail', kwargs={'slug': self.slug})
 
 
 class Review(models.Model):
@@ -85,7 +90,7 @@ class Review(models.Model):
 
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name="product_review", verbose_name=_("Product"))
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_review", verbose_name=_("User"))
-    content = models.TextField(max_length=1000, verbose_name=_("Review"))
+    content = models.TextField(max_length=1000, verbose_name=_("Review"),default="")
     rating = models.IntegerField(choices=RATING_CHOICES, default=3, verbose_name=_("Rating"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created At"))
 

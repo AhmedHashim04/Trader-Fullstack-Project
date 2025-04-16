@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView ,DetailView, TemplateView
+from django.views.generic import ListView ,DetailView, TemplateView ,CreateView
 from .models import Product ,Category , Review
 from account.models import Profile
 from .form import ReviewForm
@@ -54,7 +54,7 @@ class ProductsView(ListView):
         })
         return context
 
-class CompareProductsView(TemplateView):
+class CompareProductsView(LoginRequiredMixin , TemplateView):
     template_name = 'product/compare_products.html'
 
     def get_context_data(self, **kwargs):
@@ -63,67 +63,43 @@ class CompareProductsView(TemplateView):
         product_ids = self.request.GET.getlist('product_id')
         products = Product.objects.filter(id__in=product_ids)
         context['products'] = products
-        
-        
-        for product in products:
-            product.overall_rating = self.calculate_product_rating(product)
-        
         return context
-    
-    def calculate_product_rating(self, product):
-        reviews = Review.objects.filter(product=product)
-        if reviews.exists():
-            total_rating = sum(review.rating for review in reviews)
-            num_reviews = reviews.count()
-            return round(total_rating / num_reviews, 1)
-        return 0
 
-class ProductViewDetail(DetailView):
+
+class ProductViewDetail(LoginRequiredMixin, DetailView ,CreateView):
     model = Product
     template_name = 'product/product_detail.html'
     context_object_name = 'product'
     slug_field = "slug"
     slug_url_kwarg = "slug"
+    form_class = ReviewForm
 
-
-    def calculate_overall_rating(self, reviews):
-        if not reviews.exists():
-            return 0 
-
-        total_rating = sum([review.rating for review in reviews])
-
-        num_reviews = reviews.count()
-
-        return round(total_rating / num_reviews, 1)
 
     def get_context_data(self, **kwargs):
-        user_profile = Profile.objects.get(user=self.request.user)
-
-        wishlist_products = user_profile.wishlist.all()
-
+        product = self.get_object()  
         context = super().get_context_data(**kwargs)
-        context['review_form']      = ReviewForm()
-        context['reviews']          = Review.objects.filter(product=self.get_object())
-        context['overall_rating']   = self.calculate_overall_rating(context['reviews'])
+        reviews = Review.objects.filter(product=product)
 
-        context['is_product_in_wishlist'] = self.get_object() in wishlist_products
-
+        context['review_form'] = ReviewForm()
+        context['reviews'] = reviews
+        context['overall_rating'] = product.calculate_overall_rating(reviews)
         return context
-
     def post(self, request, *args, **kwargs):
-        product = self.get_object()
+        self.object = self.get_object()
         form = ReviewForm(request.POST)
+        print(request.POST)
+
         if form.is_valid():
             review = form.save(commit=False)
             review.user = request.user
-            review.product = product
+            review.product = self.object
             review.save()
-            product.update_overall_rating()
+            self.object.update_overall_rating()
             messages.success(self.request, 'Review and rating submitted successfully!')
-            return redirect(product.get_absolute_url())
-
+            return redirect(self.object.get_absolute_url())
+        
+        messages.error(self.request, 'Review and rating not submitted successfully!')
         return self.render_to_response(self.get_context_data(form=form))
-
 class CategorysView(ListView):
     model = Category
     context_object_name = 'all_categories'
@@ -154,9 +130,6 @@ class WishlistViewDetail(DetailView):
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         return context
-    
-
-
 
 @login_required
 def add_remove_wishlist(request,slug):
@@ -175,9 +148,7 @@ def add_remove_wishlist(request,slug):
 
 def user_see_product(request,slug):
     product = Product.objects.get(slug=slug)
-
     user = get_object_or_404(Profile, user=request.user)
-    
     if user not in product.viewed_by.all() :
         product.viewed_by.add(user)
 

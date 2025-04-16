@@ -15,7 +15,7 @@ def cart_add(request, slug ):
     product = get_object_or_404(Product, slug = slug)
     cart.add(product=product)
     messages.success(request, f'{product.name} Added to Cart Successfully')
-    return redirect(request.META.get('HTTP_REFERER', 'cart:cart-list'))
+    return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list'))
 
 @login_required
 def cart_remove(request, slug ):
@@ -23,7 +23,7 @@ def cart_remove(request, slug ):
     product = get_object_or_404(Product, slug = slug)
     cart.remove(product)
     messages.success(request, 'Product Removed Successfully')
-    return redirect(request.META.get('HTTP_REFERER', 'cart:cart-list'))
+    return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list'))
 
 @login_required
 def cart_update(request, slug):
@@ -31,7 +31,7 @@ def cart_update(request, slug):
     product = get_object_or_404(Product, slug = slug)
     cart.update(product, request.POST.get('quantity'))
     messages.success(request, 'Cart Updated Successfully')
-    return redirect(request.META.get('HTTP_REFERER', 'cart:cart-list'))
+    return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list'))
 
 
 def cart_clear(request):
