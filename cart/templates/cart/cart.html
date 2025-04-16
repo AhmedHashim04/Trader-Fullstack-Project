@@ -33,11 +33,12 @@
                                 <a href='{% url "product:product_detail" item.product.slug %}'>  {{ item.product.name }}</a></td>
                                 <td>{{ item.product.price }} EGP</td>
                                 <td>
+
                                     <form method="post" action="{% url 'cart:cart_update' item.product.slug %}" class="d-flex align-items-center justify-content-between">
                                         {% csrf_token %}
                                         <input type="hidden" name="product_id" value="{{ item.product.id }}">
                                         <div class="input-group" style="width: 250px;">
-                                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="form-control">
+                                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="form-control" required>
                                             <button type="submit" class="btn btn-sm btn-primary">Update</button>
                                         </div>
                                     </form>

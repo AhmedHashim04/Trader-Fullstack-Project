@@ -19,7 +19,7 @@
         <tbody>
             {% for item in order.items.all %}
             <tr>
-                <td>{{ item.product.PRDname }}</td>
+                <td>{{ item.product.name }}</td>
                 <td>{{ item.quantity }}</td>
                 <td>{{ item.price }} EGP</td>
                 <td>{{ item.get_total_price }} EGP</td>

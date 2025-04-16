@@ -18,10 +18,14 @@ class Cart(models.Model):
         self.save()
 
     def update(self, product, quantity):
-        product_id = product.slug
-        if product_id in self.cart:
-            self.cart[product_id]['quantity'] = quantity
-        self.save()
+        try :
+            quantity = int(quantity)
+            product_id = product.slug
+            if product_id in self.cart:
+                self.cart[product_id]['quantity'] = quantity
+            self.save()
+        except:
+            pass
 
     def remove(self, product):
         product_id = str(product.slug)
@@ -31,8 +35,10 @@ class Cart(models.Model):
         
 
     def get_total_price(self):
-        return sum(float(item['price']) * int(item['quantity']) for item in self.cart.values())
-
+        return sum(
+            float(item.get('price') or 0) * int(item.get('quantity') or 0)
+            for item in self.cart.values()
+        )
     def clear(self):
         del self.session[settings.CART_SESSION_ID]
         self.save()
@@ -45,7 +51,7 @@ class Cart(models.Model):
             cart[str(product.slug)]['product'] = product
         for item in cart.values():
             item['price'] = float(item['price'])
-            item['quantity'] = int(item['quantity'])
+            item['quantity'] = int(item.get('quantity') or 0)
             item['total'] = float(item['price']) * int(item['quantity'])
             yield item
 

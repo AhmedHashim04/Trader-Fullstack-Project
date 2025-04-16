@@ -37,7 +37,8 @@
                             <h6 class="mt-3">Products:</h6>
                             <ul class="list-group">
                                 {% for item in order.items.all %}
-                                    <li class="list-group-item">{{ item.product.name }} - Quantity: {{ item.quantity }} - Price: {{ item.price }} EGP</li>
+                                
+                                    <li class="list-group-item" >{{ item.product.name }} - Quantity: {{ item.quantity }} - Price: {{ item.price }} EGP</li>
                                 {% endfor %}
                             </ul>
                         </div>
