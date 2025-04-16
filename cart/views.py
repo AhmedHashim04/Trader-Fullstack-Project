@@ -13,8 +13,13 @@ from django.contrib.auth.decorators import login_required
 def cart_add(request, slug ):
     cart = cart_branch(request)
     product = get_object_or_404(Product, slug = slug)
-    cart.add(product=product)
+    if product.stock < 1:
+        messages.warning(request, f'{product.name} is out of stock , Product Stock is {product.stock}')
+        return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list')) 
+    elif request.POST.get('quantity'):
+        cart.update(product, request.POST.get('quantity'))
     messages.success(request, f'{product.name} Added to Cart Successfully')
+    cart.add(product=product)
     return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list'))
 
 @login_required
@@ -29,9 +34,15 @@ def cart_remove(request, slug ):
 def cart_update(request, slug):
     cart = cart_branch(request)
     product = get_object_or_404(Product, slug = slug)
-    cart.update(product, request.POST.get('quantity'))
-    messages.success(request, 'Cart Updated Successfully')
-    return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list'))
+    if product.stock < 1:
+        messages.warning(request, f'{product.name} is out of stock , Product Stock is {product.stock}')
+        return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list')) 
+    elif request.POST.get('quantity') and request.POST.get('quantity').isdigit() and int(request.POST.get('quantity')) >= 1:
+        cart.update(product, request.POST.get('quantity'))
+        messages.success(request, 'Cart Updated Successfully')
+        return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list'))
+    else:
+        messages.success(request, 'Invalid Quantity')
 
 
 def cart_clear(request):
