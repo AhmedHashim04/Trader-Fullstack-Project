@@ -1,203 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Home - Trader E-Commerce Website</title>
 
+  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
 
-      {% load static %}
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Home - Trader E-Commerce Website</title>
-      
-        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-        <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-        <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
-      
-        <style>
-          #toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-          }
-      
-          .toast-message {
-            background-color: #333;
-            color: #fff;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 10px;
-            opacity: 0;
-            transform: translateY(100%);
-            transition: opacity 0.5s, transform 0.5s;
-          }
-      
-          .toast-message.show {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        </style>
-      </head>
-      
-      <body>
-        <div class="hero_area">
-          <!-- Top Contact Bar -->
-          <div class="header_top py-2 bg-light border-bottom">
-            <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
-              <div class="contact_nav d-flex align-items-center">
-                <a href="#" class="mr-3 text-dark">
-                  <i class="fa fa-phone"></i> <span>Call : +20 155 876 3958</span>
-                </a>
-                <a href="#" class="text-dark">
-                  <i class="fa fa-envelope"></i> <span>Email : ahmedha4im7@gmail.com</span>
-                </a>
-              </div>
-      
-              <div class="user_option_box d-flex align-items-center">
-                {% if user.is_authenticated %}
-                  <a href="{% url 'account:user_profile' user.profile.id %}" class="text-warning mr-3">
-                    <i class="fa fa-user"></i> {{ user.username }}
-                  </a>
-                  <a href="{% url 'product:wishlist_detail' user.profile.id %}" class="text-warning mr-3">
-                    <i class="fa fa-heart"></i> Wishlist
-                  </a>
-                  <a href="{% url 'cart:cart_list' %}" class="text-warning">
-                    <i class="fa fa-shopping-cart"></i>
-                    <span class="font-weight-bold">( {{ total_cart_items }} )</span> Cart
-                    <span class="font-weight-bold text-danger">{{ total_cart_price }} EGP</span>
-                  </a>
-                {% else %}
-                  <a href="{% url 'account:register' %}" class="text-warning">
-                    <i class="fa fa-user"></i> My Account
-                  </a>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-      
-          <!-- Main Navbar -->
-          <header class="header_section bg-blue shadow-sm">
-            <div class="container-fluid">
-              <nav class="navbar navbar-expand-lg custom_nav-container py-2">
-                <a class="navbar-brand" href="/">
-                  <span class="font-weight-bold text-light">TRADER</span>
-                </a>
-      
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMainNav">
-                  <span class="navbar-toggler-icon"></span>
-                </button>
-      
-                <!-- Search Bar -->
-                <form class="search_form flex-grow-1 mx-4" method="GET" action="{% url 'product:products_list' %}">
-                  <div class="input-group">
-                    <input type="text" name="search" class="form-control form-control-lg" placeholder="Search here..." value="{{ request.GET.search }}">
-                    <div class="input-group-append">
-                      <button class="btn btn-dark" type="submit">
-                        <i class="fa fa-search"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-      
-                <div class="collapse navbar-collapse" id="navbarMainNav">
-                  <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a href="{% url 'product:categories_list' %}" class="nav-link">Categories</a></li>
-                    <li class="nav-item"><a href="{% url 'settings:brands_list' %}" class="nav-link">Brands</a></li>
-                    <li class="nav-item"><a href="{% url 'product:products_list' %}" class="nav-link">Products</a></li>
-                    <li class="nav-item"><a href="{% url 'contact:contact' %}" class="nav-link">Contact</a></li>
-                    <li class="nav-item"><a href="#about-us" class="nav-link">About Us</a></li>
-                  </ul>
-                </div>
-              </nav>
-            </div>
-          </header>
-      
-          
-      <!-- second  Header / Navbar -->
-      <div class="header_bottom bg-dark shadow-sm py-1  ">
-        <div class="container-fluid">
-          
-          <nav class="navbar navbar-expand-lg custom_nav-container ">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class=""></span>
-            </button>
-    
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto pl-5">
-                {% for category in contextCategories %}
-                <li class="nav-item">
-                  <a href="{% url 'product:category_detail' category.slug %}" class="nav-link">{{ category.name }}</a>
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </nav>
+  <style>
+    #toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    .toast-message {
+      background-color: #333;
+      color: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 10px;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+
+    .toast-message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="hero_area">
+    <!-- Top Contact Bar -->
+    <div class="header_top py-2 bg-light border-bottom">
+      <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
+        <div class="contact_nav d-flex align-items-center">
+          <a href="#" class="mr-3 text-dark">
+            <i class="fa fa-phone"></i> <span>Call : +20 155 876 3958</span>
+          </a>
+          <a href="#" class="text-dark">
+            <i class="fa fa-envelope"></i> <span>Email : ahmedha4im7@gmail.com</span>
+          </a>
         </div>
-      </div>
-                <!-- Second Header / Navbar -->
-      <div class="header_bottom bg-info shadow-sm py-5">
-        <div class="container-fluid">
-          <nav class="navbar navbar-expand-lg custom_nav-container">
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto pl-5">
-                {% for brand in contextBrands %}
-                <li class="nav-item">
-                  <a href="{% url 'settings:brand_detail' brand.slug %}" class="nav-link">{{ brand.name }}</a>
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </nav>
-        </div>
-      </div>
-
-          <!-- Dynamic Sections -->
-          {% block body %}{% endblock %}
-      
-          <!-- Toast Messages -->
-          <div id="toast-container"></div>
-      
-          <!-- Info Footer -->
-          <div id="about-us">
-            {% include "info.html" %}
-          </div>
-        </div>
-      
-        <!-- Scripts -->
-        <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
-        <script src="{% static 'js/bootstrap.js' %}"></script>
-        <script src="{% static 'js/custom.js' %}"></script>
-        <script>
-          function showToast(message) {
-            const toast = document.createElement('div');
-            toast.classList.add('toast-message');
-            toast.innerText = message;
-      
-            const container = document.getElementById('toast-container');
-            container.appendChild(toast);
-      
-            setTimeout(() => toast.classList.add('show'), 100);
-            setTimeout(() => {
-              toast.classList.remove('show');
-              setTimeout(() => toast.remove(), 500);
-            }, 3000);
-          }
-      
-          {% if messages %}
-            {% for message in messages %}
-              showToast("{{ message }}");
-            {% endfor %}
+        <div class="user_option_box d-flex align-items-center">
+          {% if user.is_authenticated %}
+            <a href="{% url 'account:user_profile' user.profile.id %}" class="text-warning mr-3">
+              <i class="fa fa-user"></i> {{ user.username }}
+            </a>
+            <a href="{% url 'product:wishlist_detail' user.profile.id %}" class="text-warning mr-3">
+              <i class="fa fa-heart"></i> Wishlist
+            </a>
+            <a href="{% url 'cart:cart_list' %}" class="text-warning">
+              <i class="fa fa-shopping-cart"></i>
+              <span class="font-weight-bold">( {{ total_cart_items }} )</span> Cart
+              <span class="font-weight-bold text-danger">{{ total_cart_price }} EGP</span>
+            </a>
+          {% else %}
+            <a href="{% url 'account:register' %}" class="text-warning">
+              <i class="fa fa-user"></i> My Account
+            </a>
           {% endif %}
-        </script>
-      </body>
-      </html>
-      
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Navbar -->
+    <header class="header_section bg-blue shadow-sm">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container py-2">
+          <a class="navbar-brand" href="/">
+            <span class="font-weight-bold text-light">TRADER</span>
+          </a>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMainNav">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- Search Bar -->
+          <form class="search_form flex-grow-1 mx-4" method="GET" action="{% url 'product:products_list' %}">
+            <div class="input-group">
+              <input type="text" name="search" class="form-control form-control-lg" placeholder="Search here..." value="{{ request.GET.search }}">
+              <div class="input-group-append">
+                <button class="btn btn-dark" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <div class="collapse navbar-collapse" id="navbarMainNav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item"><a href="{% url 'product:categories_list' %}" class="nav-link">Categories</a></li>
+              <li class="nav-item"><a href="{% url 'settings:brands_list' %}" class="nav-link">Brands</a></li>
+              <li class="nav-item"><a href="{% url 'product:products_list' %}" class="nav-link">Products</a></li>
+              <li class="nav-item"><a href="{% url 'contact:contact' %}" class="nav-link">Contact</a></li>
+              <li class="nav-item"><a href="#about-us" class="nav-link">About Us</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Second Header / Navbar -->
+    <div class="header_bottom bg-dark shadow-sm py-1">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto pl-5">
+              {% for category in contextCategories %}
+              <li class="nav-item">
+                <a href="{% url 'product:category_detail' category.slug %}" class="nav-link">{{ category.name }}</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Third Header / Navbar -->
+    <div class="header_bottom bg-info shadow-sm py-5">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto pl-5">
+              {% for brand in contextBrands %}
+              <li class="nav-item">
+                <a href="{% url 'settings:brand_detail' brand.slug %}" class="nav-link">{{ brand.name }}</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Dynamic Sections -->
+    {% block body %}{% endblock %}
+
+    <!-- Toast Messages -->
+    <div id="toast-container"></div>
+
+    <!-- Info Footer -->
+    <div id="about-us">
+      {% include "info.html" %}
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
+  <script>
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.classList.add('toast-message');
+      toast.innerText = message;
+
+      const container = document.getElementById('toast-container');
+      container.appendChild(toast);
+
+      setTimeout(() => toast.classList.add('show'), 100);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 500);
+      }, 3000);
+    }
+
+    {% if messages %}
+      {% for message in messages %}
+        showToast("{{ message }}");
+      {% endfor %}
+    {% endif %}
+  </script>
+</body>
+</html>
+
