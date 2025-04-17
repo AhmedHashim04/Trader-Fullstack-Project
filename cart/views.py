@@ -16,10 +16,10 @@ def cart_add(request, slug ):
     if product.stock < 1:
         messages.warning(request, f'{product.name} is out of stock , Product Stock is {product.stock}')
         return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list')) 
-    elif request.POST.get('quantity'):
-        cart.update(product, request.POST.get('quantity'))
-    messages.success(request, f'{product.name} Added to Cart Successfully')
     cart.add(product=product)
+    if request.POST.get('quantity') :
+        cart.add_and_update(product, request.POST.get('quantity'))
+    messages.success(request, f'{product.name} Added to Cart Successfully')
     return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list'))
 
 @login_required

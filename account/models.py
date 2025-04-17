@@ -19,6 +19,7 @@ class Profile(models.Model):
     profile_image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True, verbose_name=_("Profile Image"))
     date_of_birth = models.DateField(blank=True, null=True, verbose_name=_("Date of Birth"))
     wishlist = models.ManyToManyField(Product, verbose_name=_("Favorite Products"), related_name="loved_by_users", blank=True)
+    activation_key = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("Activation Key"))
 
     class Meta:
         verbose_name = _("Profile")

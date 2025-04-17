@@ -48,7 +48,7 @@
                   {% csrf_token %}
                   <input type="hidden" name="product_id" value="{{ product.id }}">
                   <div class="input-group" style="width: 250px;">
-                      <input type="number" name="quantity" value="{{ quantity }}" min="1" max="{{ product.stock }}" class="form-control" required>
+                      <input type="number" name="quantity" value="{{ quantity|default:1 }}" min="1" max="{{ product.stock }}" class="form-control" required>
                       <button type="submit" class="btn btn-outline-info">Add To Cart</button>
                   </div>
                 </form>
