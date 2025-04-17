@@ -121,12 +121,23 @@ class CategoryViewDetail(DetailView):
     context_object_name = 'category'
     slug_field     = "slug"
     slug_url_kwarg = "slug"
+    paginate_by = 12
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs) 
         obj = self.get_object()
-        context['category_products'] = Product.objects.filter(category=obj)  
         
+        # Get the products that belong to the category and add pagination
+        category_products = Product.objects.filter(category=obj)
+        paginator = Paginator(category_products, self.paginate_by)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        
+        context.update({
+            'all_products': page_obj,
+            'is_paginated': page_obj.has_other_pages()
+        })
+                    
         return context
 
 class WishlistViewDetail(DetailView):

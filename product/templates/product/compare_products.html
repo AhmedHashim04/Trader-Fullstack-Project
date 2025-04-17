@@ -11,59 +11,59 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="compare_table">
+                <div class="compare_table table-responsive">
                     <table class="table table-bordered">
                         <thead class="thead-light">
                             <tr>
                                 <th scope="col">Features</th>
                                 {% for product in products %}
-                                    <th scope="col">{{ product.name }}</th>
+                                    <th scope="col" class="text-center">{{ product.name }}</th>
                                 {% endfor %}
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Image</td>
+                                <td class="align-middle">Image</td>
                                 {% for product in products %}
-                                    <td>
-                                        <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid rounded" style="width: 100px; height: 100px; object-fit: cover;">
+                                    <td class="text-center">
+                                        <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid rounded" style="width: 150px; height: 150px; object-fit: cover;">
                                     </td>
                                 {% endfor %}
                             </tr>
                             <tr>
-                                <td>Price</td>
+                                <td class="align-middle">Price</td>
                                 {% for product in products %}
-                                    <td>${{ product.price }}</td>
+                                    <td class="text-center">${{ product.price }}</td>
                                 {% endfor %}
                             </tr>
                             <tr>
-                                <td>Description</td>
+                                <td class="align-middle">Description</td>
                                 {% for product in products %}
-                                    <td>{{ product.description|truncatewords:20 }}</td>
+                                    <td class="text-center">{{ product.description|truncatewords:20 }}</td>
                                 {% endfor %}
                             </tr>
                             <tr>
-                                <td>Category</td>
+                                <td class="align-middle">Category</td>
                                 {% for product in products %}
-                                    <td>{{ product.category.name }}</td>
+                                    <td class="text-center">{{ product.category.name }}</td>
                                 {% endfor %}
                             </tr> 
                             {% comment %} <tr>
-                                <td>Brand</td>
+                                <td class="align-middle">Brand</td>
                                 {% for product in products %}
-                                    <td>{{ product.Brand.name }}</td>
+                                    <td class="text-center">{{ product.Brand.name }}</td>
                                 {% endfor %}
                             </tr> {% endcomment %}
                             <tr>
-                                <td>Rating</td>
+                                <td class="align-middle">Rating</td>
                                 {% for product in products %}
-                                    <td>{{ product.overall_rating|floatformat:1 }} / 5</td>
+                                    <td class="text-center">{{ product.overall_rating|floatformat:1 }} / 5</td>
                                 {% endfor %}
                             </tr>
                             <tr>
-                                <td>Actions</td>
+                                <td class="align-middle">Actions</td>
                                 {% for product in products %}
-                                <td>
+                                <td class="text-center">
                                     <a href="{% url 'product:product_detail' product.slug %}" class="btn btn-primary btn-sm">
                                         <i class="fa fa-eye"></i> View Details
                                     </a>
@@ -113,6 +113,17 @@
         width: 100%;
         margin-bottom: 5px;
     }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    @media (min-width: 768px) {
+        .table-responsive {
+            overflow-x: initial;
+        }
+    }
 </style>
 
 {% endblock body %}
+
