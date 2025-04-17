@@ -150,7 +150,7 @@
                       </span>
                     </a>
                   {% else %}
-                    <a href="{% url 'account:register' %}" class="account-link">
+                    <a href="{% url 'account:register' %}" class="text-warning account-link">
                       <i class="fa fa-user" aria-hidden="true"></i>
                       <span>My Account</span>
                     </a>
@@ -178,6 +178,36 @@
                 {% for category in contextCategories %}
                 <li class="nav-item">
                   <a href="{% url 'product:category_detail' category.slug %}" class="nav-link">{{ category.name }}</a>
+                </li>
+                <li class="nav-item dropdown">
+                {% endfor %}
+
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+
+    </header>          
+      <!-- third  Header / Navbar -->
+      <div class="header_bottom bg-info shadow-sm py-5  ">
+        <div class="container-fluid">
+          
+          <nav class="navbar navbar-expand-lg custom_nav-container ">
+            {% comment %} <a class="navbar-brand" href="/">
+              <span class="font-weight-bold text-light">Tager</span>
+            </a> {% endcomment %}
+    
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class=""></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto pl-5">
+                {% for brand in contextBrands %}
+                <li class="nav-item">
+                  <a href="{% url 'settings:brand_detail' brand.slug %}" class="nav-link">{{ brand.name }}</a>
                 </li>
                 <li class="nav-item dropdown">
                 {% endfor %}
@@ -248,3 +278,4 @@
 </body>
 
 </html>
+

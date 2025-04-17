@@ -168,7 +168,8 @@ a:focus {
   border: none;
   outline: none;
   color: #ffffff;
-  background-color: #f3c93e;
+  background-color: #51586d;
+  /* background-color: #f3c93e; */
   border-radius: 0 5px 5px 0;
 }
 
@@ -208,34 +209,32 @@ a:focus {
   font-weight: bold;
 }
 
-/* تنسيق للمراجعات الجيدة */
 .good-review {
-  background-color: #d4edda; /* لون خلفية أخضر فاتح */
-  border-color: #c3e6cb; /* لون إطار أخضر فاتح */
+  background-color: #d4edda;
+  border-color: #c3e6cb; 
 }
 
 .good-review .review-user {
-  color: #155724; /* لون نص المستخدم */
-  font-weight: bold; /* نص غامق */
+  color: #155724; 
+  font-weight: bold; 
 }
 
 .good-review .review-content {
-  font-style: italic; /* خط مائل */
+  font-style: italic; 
 }
 
-/* تنسيق للمراجعات السيئة */
 .bad-review {
-  background-color: #f8d7da; /* لون خلفية أحمر فاتح */
-  border-color: #f5c6cb; /* لون إطار أحمر فاتح */
+  background-color: #f8d7da; 
+  border-color: #f5c6cb;
 }
 
 .bad-review .review-user {
-  color: #721c24; /* لون نص المستخدم */
-  font-weight: bold; /* نص غامق */
+  color: #721c24; 
+  font-weight: bold; 
 }
 
 .bad-review .review-content {
-  font-style: italic; /* خط مائل */
+  font-style: italic; 
 }
 
 
@@ -815,4 +814,4 @@ a:focus {
 .footer_section p a {
   color: inherit;
 }
-/*# sourceMappingURL=style.css.map */
+/* # sourceMappingURL=style.css.map */

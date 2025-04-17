@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from product.models import *
+from settings.models import Brand
 from django.utils import timezone
 import random
 
@@ -13,6 +14,7 @@ class HomeView(TemplateView):
         context['all_products'] = Product.objects.filter(created_at__lt=timezone.now()).order_by('-created_at')[:3]
         context['random_products'] = Product.objects.all().order_by('?')[:3]
         context['all_categories'] = Category.objects.filter(parent=None) 
+        context['all_brands'] = Brand.objects.all() 
         # context['alternatives'] = Alternative.objects.all()
 
         for product in context['all_products']:
