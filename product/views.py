@@ -3,7 +3,7 @@ from django.db.models.base import Model as Model
 from django.shortcuts import redirect ,get_object_or_404 
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-
+from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView ,DetailView, TemplateView ,CreateView
 from .models import Product ,Category , Review
@@ -18,6 +18,7 @@ class ProductsView(ListView):
     context_object_name = 'all_products'
     template_name = 'product/products.html'
     paginate_by = 12
+    
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -46,14 +47,22 @@ class ProductsView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, self.paginate_by)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
         context.update({
             'categories': Category.objects.all(),
             'search_query': self.request.GET.get('search', ''),
             'selected_category': self.request.GET.get('category', ''),
-            'sort_by': self.request.GET.get('sort_by', '')
+            'sort_by': self.request.GET.get('sort_by', ''),
+            'all_products': page_obj,
+            'is_paginated': page_obj.has_other_pages()
         })
-        return context
 
+        return context
 class CompareProductsView(LoginRequiredMixin , TemplateView):
     template_name = 'product/compare_products.html'
 

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 # from django.db.models.signals import pre_save
 from django.utils.text import slugify
+from django.urls import reverse
 
 
 
@@ -19,6 +20,12 @@ class Brand(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+
+
+    def get_absolute_url(self):
+        return reverse('product:category_detail', kwargs={'slug': self.slug})
+
 
 
 # class Variant(models.Model):

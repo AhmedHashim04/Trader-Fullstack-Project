@@ -5,7 +5,7 @@ from settings.models import Brand
 
 def contexts(request):
     categories = Category.objects.filter(parent=None)
-    brands = Brand.objects.all()
+    brands = Brand.objects.filter()
     if request.user.is_authenticated:
         profile = Profile.objects.get(user=request.user.id)
         cart = cart_branch(request)
@@ -24,8 +24,9 @@ def contexts(request):
                     }
             
         return {'contextCategories' : categories, 
-                    "contextProfile" : profile,
+                "contextProfile" : profile,
                     }
 
-    return {'contextCategories' : categories}
+    return {'contextCategories' : categories,
+            "contextBrands" : brands,}
 

@@ -1,51 +1,32 @@
-
-<section class="product_section layout_padding">
+<section class="categories_section layout_padding">
   <div class="container">
     <div class="heading_container heading_center">
-      <h2>
-        Our Categories
-      </h2>
+      <h2>Explore Our Categories</h2>
+      <p>
+        Discover a variety of categories tailored to meet your needs and preferences.
+      </p>
     </div>
     <div class="row">
       {% for category in all_categories|slice:":4" %}
-
         <div class="col-sm-6 col-lg-3">
-          <div class="box">
-            <div class="img-box">
-              <img src="{% if category.image %}{{ category.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ category.name }}" class="img-fluid" />
-
-              {% comment %} <a href='{% url "product:cart" product.slug  %}' class="add_cart_btn">
-
-              </a> {% endcomment %}
-              
-            </div>            
-
-            <div class="detail-box">
-              <a href='{% url "product:category_detail" category.slug %}' class="d-flex align-items-center">
-
-                <h5>
-                  {{ category.name }}
-                </h5>
-              </a>
-              <div class="product_info">
-     
-                
-                <div class="star_container">
-
-                </div>
-
+          <div class="category_box">
+            <a href="{% url 'product:category_detail' category.slug %}">
+              <div class="category_image">
+                <img src="{% if category.image %}{{ category.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ category.name }}" class="img-fluid">
               </div>
-            </div>
+              <div class="category_info">
+                <h4>{{ category.name }}</h4>
+              </div>
+            </a>
           </div>
         </div>
       {% endfor %}
-
     </div>
-
     <div class="btn_box">
       <a href="{% url 'product:categories_list' %}" class="view_more-link">
-        View More
-      </a> 
+        View All Categories
+      </a>
     </div>
   </div>
 </section>
+

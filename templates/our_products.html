@@ -1,80 +1,99 @@
+<style>
+  .product-section {
+    background-color: #f9f9f9;
+    padding: 60px 0;
+  }
 
-<section class="product_section layout_padding">
+  .heading-container h2 {
+    font-size: 2.5rem;
+    color: #333;
+  }
+
+  .product-box {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .img-box {
+    height: 200px;
+    overflow: hidden;
+  }
+
+  .img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-info {
+    padding: 20px;
+  }
+
+  .price-box {
+    margin-top: 10px;
+    color: rgba(0, 0, 0, 0.59);
+  }
+
+  .star-container {
+    margin-top: 10px;
+    color: #f3c93e;
+  }
+
+  .product-actions {
+    margin-top: 20px;
+  }
+
+  .product-actions a {
+    margin-right: 10px;
+  }
+</style>
+
+<section class="product-section layout-padding">
   <div class="container">
-    <div class="heading_container heading_center">
-      <h2>
-        Our Products
-      </h2>
+    <div class="heading-container heading-center">
+      <h2>Our Products</h2>
     </div>
     <div class="row">
-      {% for product in all_products|slice:":4" %}
-
-        <div class="col-sm-6 col-lg-4">
-          <div class="box">
+      {% for product in all_products|slice:":5" %}
+      <div class="col-sm-6 col-lg-3 col-md-4">
+        <div class="box">
+          <div class="product-box">
             <div class="img-box">
-              <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
-                {% if product.slug not in contextCart or not user.is_authenticated %}
-              <a href='{% url "cart:cart_add" product.slug  %}' class="add_cart_btn">
-                  <span>
-                              Add To Cart
-                            </span>
-                        </a>
-                      </div>
-                      {% else %}
-                      <a href='{% url "cart:cart_remove" product.slug  %}' class="add_cart_btn">
-                          <span>
-                              Remove from Cart
-                            </span>
-                        </a>
-                      </div>
-                      {% endif %}
-            {% if product not in contextWishlist or not user.is_authenticated %}
-            <a href='{% url "product:product_wishlist" product.slug  %}' class="add_cart_btn btn btn-success w-50">
-              <span >
-                Add To Wishlist
-              </span>
-            </a>
-            {% else %}
-            <a href='{% url "product:product_wishlist" product.slug  %}' class="add_cart_btn btn btn-danger w-50">
-              <span >
-                Remove Wishlist
-              </span>
-            </a>
-            {% endif %}
-            
-            
-            <div class="detail-box">
-              <a href='{% url "product:product_detail" product.slug %}' class="d-flex align-items-center">
-
-                <h5>
-                  {{ product.name }}
-                </h5>
+              <a href="{% url 'product:product_detail' product.slug %}">
+                <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
               </a>
-              <div class="product_info">
-                <h5>
-                  <span>$</span> {{ product.price }}
-                </h5>
-                
-                <div class="star_container">
-                  {% if product.overall_rating >= 1 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
-                  {% if product.overall_rating >= 2 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
-                  {% if product.overall_rating >= 3 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
-                  {% if product.overall_rating >= 4 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
-                  {% if product.overall_rating >= 5 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
-                </div>
 
+            </div>
+            <div class="product-info">
+              <h5>{{ product.name }}</h5>
+              <div class="price-box">
+                <h5><span>$</span> {{ product.price }}</h5>
+              </div>
+              <div class="star-container">
+                {% for i in "12345" %}
+                <i class="fa {% if product.overall_rating >= i|add:"0" %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true"></i>
+                {% endfor %}
+              </div>
+              <div class="product-actions">
+                <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-outline-warning">
+                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                </a>
+                <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-outline-danger">
+                  <i class="fa fa-heart" aria-hidden="true"></i>
+                </a>
               </div>
             </div>
           </div>
         </div>
+      </div>
       {% endfor %}
-
     </div>
 
     <div class="btn_box">
       <a href="{% url 'product:products_list' %}" class="view_more-link">
         View More
-      </a>
+      </a> 
     </div>
   </div>
 </section>
+
