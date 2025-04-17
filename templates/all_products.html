@@ -85,10 +85,20 @@
                 {% endfor %}
               </div>
               <div class="product-actions">
-                <a href="{% url 'cart:cart_add' product.slug  %}" class="btn btn-outline-warning">
+
+                {% if product.slug in contextCart %}
+                <a href="{% url 'cart:cart_remove' product.slug %}"class="btn btn-warning">
+                {% else %}
+                <a href="{% url 'cart:cart_add' product.slug %}"class="btn btn-outline-warning">
+                {% endif %}
                   <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                 </a>
-                <a href="{% url 'product:product_wishlist' product.slug  %}" class="btn btn-outline-danger">
+                {% if product in contextWishlist %}
+                <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-danger">
+                {% else %}
+                <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-outline-danger">
+                {% endif %}
+
                   <i class="fa fa-heart" aria-hidden="true"></i>
                 </a>
                 <button class="btn btn-outline-info compare-btn" data-product-id="{{ product.id }}">
