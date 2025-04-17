@@ -27,6 +27,16 @@ class Cart(models.Model):
         except:
             pass
 
+    def add_and_update(self, product, quantity):
+        quantity = int(quantity)
+        if product.stock > quantity:
+            product_id = product.slug
+            self.cart[product_id]['quantity'] = quantity
+            self.save()
+        else:
+            pass
+
+
     def remove(self, product):
         product_id = str(product.slug)
         if product_id in self.cart:

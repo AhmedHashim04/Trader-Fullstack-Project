@@ -87,7 +87,6 @@ class ProductViewDetail(LoginRequiredMixin, DetailView ,CreateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = ReviewForm(request.POST)
-        print(request.POST)
 
         if form.is_valid():
             review = form.save(commit=False)
@@ -100,6 +99,7 @@ class ProductViewDetail(LoginRequiredMixin, DetailView ,CreateView):
         
         messages.error(self.request, 'Review and rating not submitted successfully!')
         return self.render_to_response(self.get_context_data(form=form))
+    
 class CategorysView(ListView):
     model = Category
     context_object_name = 'all_categories'
