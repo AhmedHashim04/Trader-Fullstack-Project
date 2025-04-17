@@ -2,34 +2,38 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block body %}
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
+            <div class="card shadow contact-card">
+                <div class="card-header">
                     <h1 class="text-center mb-0">Contact Us</h1>
                 </div>
                 <div class="card-body">
-                    <form method="post" class="needs-validation" novalidate>
+                    <form method="post" class="contact-form needs-validation" novalidate>
                         {% csrf_token %}
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-4">
                             {{ form.name.label_tag }}
-                            {{ form.name|add_class:"form-control" }}
+                            {{ form.name|add_class:"form-control"|attr:"placeholder:Enter your name" }}
                         </div>
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-4">
                             {{ form.from_email.label_tag }}
-                            {{ form.from_email|add_class:"form-control" }}
+                            {{ form.from_email|add_class:"form-control"|attr:"placeholder:Enter your email" }}
                         </div>
-                        <div class="form-group mb-3">
+                        <div class="form-group mb-4">
                             {{ form.message.label_tag }}
-                            {{ form.message|add_class:"form-control" }}
+                            {{ form.message|add_class:"form-control"|attr:"placeholder:Write your message here..." }}
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">Send Message</button>
+                        </div>
                     </form>
                 </div>
             </div>
-            <div class="text-center mt-3">
-                <a href="{% url 'home:home' %}" class="btn btn-outline-secondary">← Back to Home</a>
+            <div class="text-center mt-4">
+                <a href="{% url 'home:home' %}" class="btn btn-outline-secondary back-button">
+                    <i class="fa fa-arrow-left me-2"></i>Back to Home
+                </a>
             </div>
         </div>
     </div>

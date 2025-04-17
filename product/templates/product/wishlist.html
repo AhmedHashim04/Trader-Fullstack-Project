@@ -32,7 +32,12 @@
                                         <a href='{% url "product:product_wishlist" item.slug %}' class="btn btn-danger btn-sm">Delete</a>
                                     </td>
                                     <td>
-                                        <a href='{% url "cart:cart_add" item.slug %}' class="btn btn-warning btn-sm">Add to Cart</a>
+                                        <!-- if item in cart: -->
+                                        {% if item.slug in contextCart %}
+                                            <a href='{% url "cart:cart_remove" item.slug %}' class="btn btn-danger btn-sm">Remove from Cart</a>
+                                        {% else %}
+                                            <a href='{% url "cart:cart_add" item.slug %}' class="btn btn-info btn-sm">Add to Cart</a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                             {% empty %}

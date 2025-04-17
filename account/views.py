@@ -1,3 +1,4 @@
+from django.db.models import Lookup
 from django.views import View
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -62,29 +63,29 @@ class RegisterView(CreateView):
         send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
         print(subject, message, settings.EMAIL_HOST_USER, [user.email])
 
-class ProfileView(LoginRequiredMixin,DetailView):
+class ProfileView(LoginRequiredMixin, DetailView):
     model = Profile
     template_name = 'account/profile.html'
     context_object_name = "profile"
-    slug_field = "id"
-    slug_url_kwarg = "id"
+    pk_url_kwarg = "id"
 
     def get_absolute_url(self):
-        obj = self.get_object() 
-        return reverse('account:profile', kwargs={self.slug_url_kwarg: getattr(obj, self.slug_field)})
+        obj = self.get_object()
+        return reverse('account:user_profile', kwargs={'id': obj.id})
 
 
 class UpdateProfile(LoginRequiredMixin, UpdateView):
     model = Profile
     template_name = 'account/update_profile.html'
     form_class = UpdateProfileForm
-    slug_field = "id"
-    slug_url_kwarg = "id"
+    context_object_name = "profile"
+    pk_url_kwarg = "id"
 
     def form_valid(self, form):
         form.save()
-        messages.success(self.request, 'Your Profile had updated successfuly  !')
-        return super().form_valid(form)  
+        messages.success(self.request, 'Your Profile had updated successfuly!')
+        return super().form_valid(form)
+
     def get_success_url(self):
-        obj = self.get_object()  
-        return reverse('account:profile', kwargs={self.slug_url_kwarg: obj.slug_field})
+        obj = self.get_object()
+        return reverse('account:user_profile', kwargs={'id': obj.id})

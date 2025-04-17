@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import create_order, OrderListView, OrderDetailView, clear_order_history
+from .views import create_order, OrderListView, OrderDetailView, clear_order_history , confirm_order
 
 app_name = 'order'
 
@@ -8,4 +8,6 @@ urlpatterns = [
     path('order/<str:id>/', OrderDetailView.as_view(), name='order_detail'),
     path('create-order/', create_order, name='create_order'),
     path('clear-order-history/', clear_order_history, name='clear_order_history'),
+    path('confirm/<str:confirmation_key>/', confirm_order, name='confirm_order'),
+
 ]
