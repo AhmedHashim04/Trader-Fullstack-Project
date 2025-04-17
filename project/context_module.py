@@ -1,9 +1,11 @@
 from product.models import Category
 from cart.cart import Cart as cart_branch
 from account.models import Profile
+from settings.models import Brand
 
 def contexts(request):
     categories = Category.objects.filter(parent=None)
+    brands = Brand.objects.all()
     if request.user.is_authenticated:
         profile = Profile.objects.get(user=request.user.id)
         cart = cart_branch(request)
@@ -13,6 +15,7 @@ def contexts(request):
 
             return {
                     "contextCategories" : categories, 
+                    "contextBrands" : brands,
                     "contextProfile" : profile,
                     "contextWishlist" : wishlist,
                     "contextCart" : cart.cart.keys(),

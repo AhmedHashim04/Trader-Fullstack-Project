@@ -1,0 +1,76 @@
+
+<section class="product_section layout_padding">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2>
+        Our Products in {{brand}} Brand
+      </h2>
+    </div>
+    <div class="row">
+      {% for product in brand_products %}
+
+        <div class="col-sm-6 col-lg-4">
+          <div class="box">
+            <div class="img-box">
+              <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
+
+              {% if product.slug not in contextCart or not user.is_authenticated %}
+              <a href='{% url "cart:cart_add" product.slug  %}' class="add_cart_btn">
+                <span>
+                  Add To Cart
+                </span>
+              </a>
+              
+            {% else %}
+            <a href='{% url "cart:cart_remove" product.slug  %}' class="add_cart_btn ">
+              <span>
+                Remove from Cart
+              </span>
+            </a>
+            {% endif %}
+            </div>
+
+            {% if product not in contextWishlist or not user.is_authenticated %}
+            <a href='{% url "product:product_wishlist" product.slug  %}' class="add_cart_btn btn btn-success">
+              <span >
+                Add To Wishlist
+              </span>
+            </a>
+            {% else %}
+
+            <a href='{% url "product:product_wishlist" product.slug  %}' class="add_cart_btn btn btn-danger">
+              <span >
+                Remove Wishlist
+              </span>
+            </a>
+            {% endif %}
+            <div class="detail-box">
+              <a href='{% url "product:product_detail" product.slug %}' class="d-flex align-items-center">
+
+                <h5>
+                  {{ product.name }}
+                </h5>
+              </a>
+
+              <div class="product_info">
+                <h5>
+                  <span>$</span> {{ product.price }}
+                </h5>
+                
+                <div class="star_container">
+                  {% if product.overall_rating >= 1 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                  {% if product.overall_rating >= 2 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                  {% if product.overall_rating >= 3 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                  {% if product.overall_rating >= 4 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                  {% if product.overall_rating >= 5 %}<i class="fa fa-star" aria-hidden="true"></i>{% else %}<i class="fa fa-star-o" aria-hidden="true"></i>{% endif %}
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</section>

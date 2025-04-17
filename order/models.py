@@ -13,13 +13,20 @@ class Order(models.Model):
         ('delivered', 'Delivered'),
         ('cancelled', 'Cancelled'),
     )
+
     id = models.UUIDField(_("ID"), primary_key=True, editable=False, default=uuid.uuid4)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    phone_number = models.CharField(max_length=20, verbose_name=_("Phone Number"), blank=True, null=True)
+    address = models.TextField(max_length=255, verbose_name=_("Address"), blank=True, null=True)
+    city = models.CharField(max_length=100, verbose_name=_("City"), blank=True, null=True)
+    country = models.CharField(max_length=100, verbose_name=_("Country"), blank=True, null=True)
+    postal_code = models.CharField(max_length=10, verbose_name=_("Postal Code"), blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20, choices=ORDER_STATUS, default='pending')
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     status_changed_at = models.DateTimeField(null=True, blank=True)
+    paied = models.BooleanField(_("Paied"),default=False)
 
     def __str__(self):
         return f"Order {self.id} - {self.user.username}"

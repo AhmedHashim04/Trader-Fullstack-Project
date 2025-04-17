@@ -4,38 +4,40 @@
 
 <section class="cart_section layout_padding">
     <div class="container">
-        <div class="heading_container heading_center">
-            <h2>Shopping Cart</h2>
-            <br><br>
+        <div class="heading_container heading_center mb-5">
+            <h2 class="display-4">Wishlist</h2>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="cart_items">
-                    <table class="table table-bordered">
-                        <thead class="thead-dark">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered">
+                        <thead class="table-dark">
                             <tr>
                                 <th scope="col">Product</th>
                                 <th scope="col">Price</th>
-                                <th scope="col">Action</th>
+                                <th scope="col" colspan="2">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for item in profile.wishlist.all %}
                                 <tr>
                                     <td>
-                                        <a href='{% url "product:product_detail" item.slug %}' class="d-flex align-items-center">
-                                            <img src="{{ item.image }}" alt="{{ item.name }}" class="img-fluid" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
-                                            {{ item.name }}
+                                        <a href='{% url "product:product_detail" item.slug %}' class="d-flex align-items-center text-decoration-none">
+                                            <img src="{{ item.image }}" alt="{{ item.name }}" class="img-thumbnail me-3" style="width: 50px; height: 50px;">
+                                            <span class="fw-bold text-dark">{{ item.name }}</span>
                                         </a>
                                     </td>
-                                    <td>${{ item.price }}</td>
+                                    <td class="fw-bold">${{ item.price }}</td>
                                     <td>
                                         <a href='{% url "product:product_wishlist" item.slug %}' class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                    <td>
+                                        <a href='{% url "cart:cart_add" item.slug %}' class="btn btn-warning btn-sm">Add to Cart</a>
                                     </td>
                                 </tr>
                             {% empty %}
                                 <tr>
-                                    <td colspan="3" class="text-center">Your Wishlist is empty.</td>
+                                    <td colspan="4" class="text-center text-muted">Your Wishlist is empty.</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -47,3 +49,4 @@
 </section>
 
 {% endblock body %}
+

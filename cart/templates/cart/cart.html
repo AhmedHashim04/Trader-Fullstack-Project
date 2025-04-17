@@ -3,12 +3,6 @@
 
 <section class="cart_section layout_padding">
     <div class="container">
-        <div class="heading_container heading_center">
-            <h2>
-                Shopping Cart
-            </h2>
-            <br><br>
-        </div>
         <div class="row">
             <div class="col-lg-8">
                 <div class="cart_items">
@@ -27,11 +21,11 @@
                             {% for item in cart %}
                             <tr>
                                 <td>
-                                    <img src="{% if item.product.image %}{{ item.product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ item.product.name }}" class="img-fluid"  style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;"/>
+                                    <img src="{% if item.product.image %}{{ item.product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ item.product.name }}" class="img-fluid rounded"  style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;"/>
                                 </td> 
                                 <td>
                                 <a href='{% url "product:product_detail" item.product.slug %}'>  {{ item.product.name }}</a></td>
-                                <td>{{ item.product.price }} EGP</td>
+                                <td>${{ item.product.price }}</td>
                                 <td>
 
                                     <form method="post" action="{% url 'cart:cart_update' item.product.slug %}" class="d-flex align-items-center justify-content-between">
@@ -39,11 +33,11 @@
                                         <input type="hidden" name="product_id" value="{{ item.product.id }}">
                                         <div class="input-group" style="width: 250px;">
                                             <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="form-control" required>
-                                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                            <button type="submit" class="btn btn-sm btn-outline-info">Update</button>
                                         </div>
                                     </form>
                                 </td>
-                                <td>{{ item.total }} EGP</td>
+                                <td>${{ item.total }}</td>
                                 <td>
                                     <a href="{% url 'cart:cart_remove' item.product.slug %}" class="btn btn-sm btn-danger">Remove</a>
                                 </td>
@@ -56,22 +50,22 @@
             <div class="col-lg-4">
                 <div class="cart_summary bg-light p-4 rounded">
                     <h4 class="mb-4">Cart Summary</h4>
-                    <ul class="list-unstyled">
-                        <li class="d-flex justify-content-between">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between">
                             <span>Subtotal:</span>
                             <span>${{ total_price }}</span>
                         </li>
-                        <li class="d-flex justify-content-between">
+                        <li class="list-group-item d-flex justify-content-between">
                             <span>Tax:</span>
                             <span>$10</span>
                         </li>
-                        <li class="d-flex justify-content-between font-weight-bold">
+                        <li class="list-group-item d-flex justify-content-between font-weight-bold">
                             <span>Total:</span>
                             <span>${{ total_price|add:10 }}</span>
                         </li>
                     </ul>
                             <div class="cart-total">
-                                <a href="{% url 'order:create_order' %}" class="btn btn-primary btn-block mb-3">Complete Order</a>
+                                <a href="{% url 'order:create_order' %}" class="btn btn-success btn-block mb-3">Creat Order</a>
                                 <a href="{% url 'cart:cart_clear' %}" class="btn btn-danger btn-block mb-3">Clear Cart</a>
 
                             </div>
@@ -170,10 +164,6 @@
         border-color: #005c99;
     }
 
-    #paypal-button-container button {
-        width: 100%;
-    }
-
     .table th, .table td {
         vertical-align: middle;
     }
@@ -184,3 +174,4 @@
 </style>
 
 {% endblock body %}
+

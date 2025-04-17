@@ -21,5 +21,8 @@ class UpdateProfileForm(forms.ModelForm):
             'profile_image',
             'date_of_birth',
         ]
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+        }
     
     

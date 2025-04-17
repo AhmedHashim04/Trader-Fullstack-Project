@@ -5,12 +5,30 @@ from django.views.generic import ListView, DetailView
 from django.db import transaction
 from django.contrib import messages
 from .models import Order, OrderItem
+from .form import CompleteOrderForm
 from django.urls import reverse
 from cart.cart import Cart as cart_branch
 
+def create_order(request):
+    cart = cart_branch(request)
+    
+    if request.method == 'POST':
+        if not cart:
+            messages.warning(request, 'Your shopping cart is empty!')
+            return redirect('cart:cart_list')
+        
+        form = CompleteOrderForm(request.POST)
+        if form.is_valid():
+            complete_order(request,form)
+
+    else:
+        form = CompleteOrderForm()
+    return render(request,'order/create_order.html',{"form":form})
+
+
 @login_required
 @transaction.atomic
-def create_order(request):
+def complete_order(request,form):
     cart = cart_branch(request)
     if not cart:
         messages.warning(request, 'Your shopping cart is empty!')
@@ -19,10 +37,17 @@ def create_order(request):
     total_price = 0
     order_items = []
     
-    try:
+    try:              
+
         with transaction.atomic():
-            order = Order.objects.create(user=request.user, total_price=0)
-            
+            order = Order.objects.create(user=request.user, total_price=0,
+                                        phone_number = form.cleaned_data['phone_number'],
+                                        address = form.cleaned_data['address'],
+                                        city = form.cleaned_data['city'],
+                                        postal_code = form.cleaned_data['postal_code'],
+                                        paied = form.cleaned_data['paied'],
+                                        )
+
             for item in cart:
                 product = item['product']
                 quantity = item['quantity']
