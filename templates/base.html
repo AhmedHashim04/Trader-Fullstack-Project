@@ -86,18 +86,54 @@
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMainNav">
             <span class="navbar-toggler-icon"></span>
           </button>
+<!-- Search Bar -->
+<form class="search_form d-flex align-items-center flex-grow-1 mx-3" method="GET" action="{% url 'product:products_list' %}">
+  <!-- Search Input -->
+  <div class="input-group input-group-md flex-grow-1">
+    <input 
+      type="text" 
+      name="search" 
+      class="form-control" 
+      placeholder="Search for products..." 
+      value="{{ request.GET.search }}"
+    >
+    <div class="input-group-append">
+      <button class="btn btn-outline-primary" type="submit">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+  </div>
 
-          <!-- Search Bar -->
-          <form class="search_form flex-grow-1 mx-4" method="GET" action="{% url 'product:products_list' %}">
-            <div class="input-group">
-              <input type="text" name="search" class="form-control form-control-lg" placeholder="Search here..." value="{{ request.GET.search }}">
-              <div class="input-group-append">
-                <button class="btn btn-dark" type="submit">
-                  <i class="fa fa-search"></i>
-                </button>
-              </div>
-            </div>
-          </form>
+  <!-- Filters -->
+  <div class="d-flex align-items-center ml-3">
+    <!-- Category Filter -->
+    <select 
+      name="category" 
+      class="custom-select mr-2" 
+      style="min-width: 160px;"
+    >
+      <option value="">All Categories</option>
+      {% for category in categories %}
+        <option value="{{ category.slug }}" {% if request.GET.category == category.slug %}selected{% endif %}>
+          {{ category.name }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <!-- Sort Filter -->
+    <select 
+      name="sort_by" 
+      class="custom-select" 
+      style="min-width: 140px;"
+    >
+      <option value="">Sort</option>
+      <option value="price_asc" {% if request.GET.sort_by == 'price_asc' %}selected{% endif %}>Price ↑</option>
+      <option value="price_desc" {% if request.GET.sort_by == 'price_desc' %}selected{% endif %}>Price ↓</option>
+      <option value="rating" {% if request.GET.sort_by == 'rating' %}selected{% endif %}>Top Rated</option>
+    </select>
+  </div>
+</form>
+
 
           <div class="collapse navbar-collapse" id="navbarMainNav">
             <ul class="navbar-nav ml-auto">

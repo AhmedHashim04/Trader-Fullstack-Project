@@ -25,11 +25,11 @@ class ProductsView(ListView):
         search_query = self.request.GET.get('search', '')
         category = self.request.GET.get('category', '')
         sort_by = self.request.GET.get('sort_by', '')
-
+        print(self.request.GET) 
         if search_query:
             queryset = queryset.filter(
                 Q(name__icontains=search_query) | 
-                Q(desc__icontains=search_query)
+                Q(description__icontains=search_query)
             )
 
         if category:
