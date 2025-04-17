@@ -1,91 +1,69 @@
-<!-- info section -->
-<section class="info_section ">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="info_contact">
-            <h5>
-              <a href="" class="navbar-brand">
-                <span>
-                  Trader  
-                </span>
-              </a>
-            </h5>
-            <p>
-              <i class="fa fa-map-marker" aria-hidden="true"></i>
-              Address : Cairo , Egypt
-            </p>
-            <p>
-              <i class="fa fa-phone" aria-hidden="true"></i>
-              +20 155 876 3958
-            </p>
-            <p>
-              <i class="fa fa-envelope" aria-hidden="true"></i>
-              ahmedha4im7@gmail.com
-            </p>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="info_info">
-            <h5>
-              Information
-            </h5>
-            <p>
-              We are committed to providing clear and reliable details. Our team ensures transparency and accuracy in all the information you receive, giving you the confidence to make informed decisions."
-            </p>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="info_links">
-            <h5>
-              Useful Link
-            </h5>
-            <ul>
-              <li>
-                <a href="/">
-                  Home
-                </a>
-              </li>
+{% load static %}
 
-              <li>
-                <a href="product.html">
-                  Products
-                </a>
-              </li>
-              
-              
-            </ul>
-          </div>
+<!-- info section -->
+<section class="info_section layout_padding bg-light py-5">
+  <div class="container">
+    <div class="row gy-4">
+      
+      <!-- Logo & Contact -->
+      <div class="col-md-3">
+        <div class="info_contact">
+          <h5 class="mb-3">
+            <a href="/" class="navbar-brand text-dark fw-bold fs-4">
+              Trader <span class="text-primary">E-commerce</span>
+            </a>
+          </h5>
+          <ul class="list-unstyled text-muted fs-6">
+            <li class="mb-2"><i class="fa fa-map-marker me-2 text-primary"></i> Cairo, Egypt</li>
+            <li class="mb-2"><i class="fa fa-phone me-2 text-primary"></i> +20 155 876 3958</li>
+            <li><i class="fa fa-envelope me-2 text-primary"></i> ahmedha4im7@gmail.com</li>
+          </ul>
         </div>
-        <div class="col-md-3">
-          <div class="info_form ">
-            <h5>
-              Newsletter
-            </h5>
-            <form action="">
-              <input type="email" placeholder="Enter your email">
-              <button>
-                Subscribe
-              </button>
-            </form>
-            <div class="social_box">
-              <a href="">
-                <i class="fa fa-facebook" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-twitter" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-instagram" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-youtube" aria-hidden="true"></i>
-              </a>
-            </div>
+      </div>
+
+      <!-- About Info -->
+      <div class="col-md-3">
+        <div class="info_info">
+          <h5 class="fw-bold text-dark mb-3"> :</h5>
+          <p class="text-muted" style="line-height: 1.9;">
+            We ensure clear and reliable details for your shopping experience. Transparency and accuracy are our priorities so you can make smart decisions.
+          </p>
+        </div>
+      </div>
+
+      <!-- Useful Links -->
+      <div class="col-md-3">
+        <div class="info_links">
+          <h5 class="fw-bold text-dark mb-3">Useful Links</h5>
+          <ul class="list-unstyled">
+            <li class="mb-2">
+              <a href="/" class="text-decoration-none text-muted">Home</a>
+            </li>
+            <li class="mb-2">
+              <a href="{% url 'product:products_list' %}" class="text-decoration-none text-muted">Products</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="col-md-3">
+        <div class="info_form">
+          <h5 class="fw-bold text-dark mb-3">Newsletter</h5>
+          <form action="#" class="mb-3">
+            <input type="email" class="form-control mb-2" placeholder="Enter your email">
+            <button class="btn btn-primary w-100">Subscribe</button>
+          </form>
+          <div class="social_box d-flex justify-content-start mt-3">
+            <a href="https://www.facebook.com/ahmed.halim.39/" target="_blank" class="me-3 text-primary fs-5"><i class="fa fa-facebook"></i></a>
+            <a href="https://twitter.com/AhmedHa4im" target="_blank" class="me-3 text-info fs-5"><i class="fa fa-twitter"></i></a>
+            <a href="https://www.instagram.com/ahmed_halim_/" target="_blank" class="me-3 text-danger fs-5"><i class="fa fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCOoFmMnJYrRtMRFwz8zZrjQ" target="_blank" class="text-danger fs-5"><i class="fa fa-youtube"></i></a>
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- end info_section -->
+    </div>
+  </div>
+</section>
+<!-- end info_section -->
