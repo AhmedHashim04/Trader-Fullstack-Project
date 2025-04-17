@@ -147,6 +147,7 @@ def complete_order(request, form):
                 city=form.cleaned_data['city'],
                 postal_code=form.cleaned_data['postal_code'],
                 paied=form.cleaned_data['paied'],
+                confirmed=True
             )
 
             for item in cart:
@@ -196,7 +197,7 @@ class OrderListView(LoginRequiredMixin, ListView):
     context_object_name = 'orders'
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user).order_by('-created_at')
+        return Order.objects.filter(user=self.request.user, confirmed=True).order_by('-created_at')
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order

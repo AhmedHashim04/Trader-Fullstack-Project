@@ -22,15 +22,15 @@ from django.conf.urls import handler404, handler500
 
 
 urlpatterns = [
-    path('admin/'  , admin.site.urls),
-    path('account/',include('account.urls',namespace='account')),
-    path('',         include('home.urls',namespace='home')),
+    path('admin/'   , admin.site.urls),
+    path('account/' ,include('account.urls',namespace='account')),
+    path(''         ,include('home.urls',namespace='home')),
     path('products/',include('product.urls',namespace='product')),
-    path('brands/',include('settings.urls',namespace='settings')),
-    path('cart/',    include('cart.urls',namespace='cart')),
-    path('order/',   include('order.urls',namespace='order')),
-    path('contact/', include('contact.urls',namespace='contact')),
-    path('payment/', include('payment.urls',namespace='payment')),
+    path('brands/'  ,include('settings.urls',namespace='settings')),
+    path('cart/'    ,include('cart.urls',namespace='cart')),
+    path('order/'   ,include('order.urls',namespace='order')),
+    path('contact/' ,include('contact.urls',namespace='contact')),
+    path('payment/' ,include('payment.urls',namespace='payment')),
 ]
 
 if settings.DEBUG:
