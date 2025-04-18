@@ -11,8 +11,22 @@ from cart.cart import Cart as cart_branch
 from django.core.mail import send_mail
 from django.conf import settings
 import uuid
+from django.core.cache import cache
 
 
+# def confirm_order(request, confirmation_key,form):
+    
+#         order = get_object_or_404(Order, confirmation_key=confirmation_key)
+#         if order:
+#             order.confirmed = True
+#             order.confirmation_key = ''
+#             complete_order = complete_order(request, form)
+
+#             order.save()
+#             messages.success(request, 'Order Had Confirmed Successfuly !')
+#         else:
+#             messages.error(request, 'Confirmed Failed , Invalid key !')
+#         reverse('order:order_detail', args=[order.id])
 
 def create_order(request):
     cart = cart_branch(request)
@@ -35,6 +49,7 @@ def create_order(request):
             'postal_code': profile.postal_code,
             'paied': False,
         })
+        
 
     return render(request, 'order/create_order.html', {"form": form})
 
@@ -81,31 +96,17 @@ def send_order_email(request, user, form):
         messages.error(request, 'Failed to send confirmation email. Please try again.')
         return redirect('cart:cart_list')
 
-# def confirm_order(request, confirmation_key,form):
-    
-#         order = get_object_or_404(Order, confirmation_key=confirmation_key)
-#         if order:
-#             order.confirmed = True
-#             order.confirmation_key = ''
-#             complete_order = complete_order(request, form)
-
-#             order.save()
-#             messages.success(request, 'Order Had Confirmed Successfuly !')
-#         else:
-#             messages.error(request, 'Confirmed Failed , Invalid key !')
-#         reverse('order:order_detail', args=[order.id])
-
 
 
 def confirm_order(request, confirmation_key):
-    # Get pending order data from session
-    pending_order = request.session.get('pending_order')
-    print(pending_order)
-    
-    if not pending_order or pending_order['confirmation_key'] != confirmation_key:
+    # Check cache for pending order
+    cache_key = f"pending_order_{confirmation_key}"
+    pending_order = cache.get(cache_key)
+
+    if not pending_order:
         messages.error(request, 'Invalid or expired confirmation link.')
         return redirect('cart:cart_list')
-    
+
     try:
         # Create form instance with stored data
         form = CompleteOrderForm(pending_order['form_data'])
@@ -113,18 +114,17 @@ def confirm_order(request, confirmation_key):
             # Create the order
             order = complete_order(request, form)
             if order:
-                # Clear pending order from session
-                del request.session['pending_order']
+                # Clear pending order from cache
+                cache.delete(cache_key)
                 messages.success(request, 'Order confirmed successfully!')
                 return redirect('order:order_detail', order.id)
-            
+
         messages.error(request, 'Failed to create order. Please try again.')
         return redirect('cart:cart_list')
-        
+
     except Exception as e:
         messages.error(request, str(e))
         return redirect('cart:cart_list')
-
 
 @login_required
 @transaction.atomic
@@ -191,13 +191,28 @@ def clear_order_history(request):
     
     return redirect('order:order_list')
 
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user, confirmed=True).order_by('-created_at')
+
+
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'order/order_list.html'
     context_object_name = 'orders'
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user, confirmed=True).order_by('-created_at')
+        cache_key = f"order_list_{self.request.user.id}"
+        print(cache_key)
+        orders = cache.get(cache_key)
+
+
+        if not orders:
+            orders = Order.objects.filter(user=self.request.user, confirmed=True).order_by('-created_at')
+            cache.set(cache_key, orders, timeout=60 * 15)  # Cache for 15 minutes
+
+        return orders
+
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
@@ -207,4 +222,11 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
     slug_field = 'id'
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user)
+        cache_key = f"order_detail_{self.request.user.id}_{self.kwargs['id']}"
+        order = cache.get(cache_key)
+
+        if not order:
+            order = Order.objects.filter(user=self.request.user, id=self.kwargs['id']).first()
+            cache.set(cache_key, order, timeout=60 * 15)  # Cache for 15 minutes
+
+        return Order.objects.filter(id=order.id) if order else Order.objects.none()
