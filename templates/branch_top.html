@@ -18,7 +18,9 @@
                 </div>
                 <div class="col-md-6">
                   <div class="img-box">
-                    <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
+                    <a href="{% url 'product:product_detail' product.slug %}">
+                      <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
+                    </a>
                   </div>
                 </div>
               </div>

@@ -71,7 +71,9 @@
                 <div class="box">
                   <div class="product-box">
                     <div class="img-box">
-                      <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
+                      <a href="{% url 'product:product_detail' product.slug %}">
+                        <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
+                      </a>                    
                     </div>
                     <div class="product-info">
                       <h5>{{ product.name }}</h5>
@@ -99,9 +101,11 @@
                         {% else %}
                         <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-outline-danger">
                         {% endif %}
-        
                           <i class="fa fa-heart" aria-hidden="true"></i>
                         </a>
+                        <button class="btn btn-outline-info compare-btn" data-product-id="{{ product.id }}">
+                          <i class="fa fa-plus" aria-hidden="true"></i> 
+                        </button>
                       </div>
                     </div>
                   </div>

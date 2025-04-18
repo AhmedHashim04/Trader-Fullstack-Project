@@ -10,44 +10,57 @@ from .models import Product ,Category , Review
 from account.models import Profile
 from .form import ReviewForm
 from django.contrib.auth.decorators import login_required
-
 from django.db.models import Q
+from django.core.cache import cache
 
 class ProductsView(ListView):
     model = Product
     context_object_name = 'all_products'
     template_name = 'product/products.html'
     paginate_by = 12
-    
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        search_query = self.request.GET.get('search', '')
-        category = self.request.GET.get('category', '')
-        sort_by = self.request.GET.get('sort_by', '')
-        print(self.request.GET) 
-        if search_query:
-            queryset = queryset.filter(
-                Q(name__icontains=search_query) | 
-                Q(description__icontains=search_query)
-            )
-
-        if category:
-            queryset = queryset.filter(category__slug=category)
+        """
+        Override the get_queryset method to filter the products based on the search query, category, and sort_by parameters in the URL.
+        The method first checks if the queryset is in the cache. If not, it retrieves the queryset from the database based on the parameters and caches it for 5 minutes.
+        If the search parameter is provided, it filters the queryset to include only the products with names or descriptions containing the search query.
+        If the category parameter is provided, it filters the queryset to include only the products in the specified category.
+        If the sort_by parameter is provided, it orders the queryset by the specified field in ascending or descending order. The available sort_by options are 'price_asc', 'price_desc', and 'rating'.
+        :return: The filtered and ordered queryset of products.
+        """
         
-        order_by_mapping = {
-            'price_asc': 'price',
-            'price_desc': '-price',
-            'rating': '-overall_rating'
-        }
-        if sort_by in order_by_mapping:
-            queryset = queryset.order_by(order_by_mapping[sort_by])
+        cache_key = f"products_{self.request.GET.urlencode()}"
+        queryset = cache.get(cache_key)
+        
+        if not queryset:
+            queryset = super().get_queryset()
+            search_query = self.request.GET.get('search', '')
+            category = self.request.GET.get('category', '')
+            sort_by = self.request.GET.get('sort_by', '')
+
+            if search_query:
+                queryset = queryset.filter(
+                    Q(name__icontains=search_query) | 
+                    Q(description__icontains=search_query)
+                )
+
+            if category:
+                queryset = queryset.filter(category__slug=category)
+
+            order_by_mapping = {
+                'price_asc': 'price',
+                'price_desc': '-price',
+                'rating': '-overall_rating'
+            }
+            if sort_by in order_by_mapping:
+                queryset = queryset.order_by(order_by_mapping[sort_by])
+
+            cache.set(cache_key, queryset, timeout=300)  # Cache for 5 minutes
 
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         queryset = self.get_queryset()
         paginator = Paginator(queryset, self.paginate_by)
         page_number = self.request.GET.get("page")
@@ -63,6 +76,8 @@ class ProductsView(ListView):
         })
 
         return context
+
+
 class CompareProductsView(LoginRequiredMixin , TemplateView):
     template_name = 'product/compare_products.html'
 

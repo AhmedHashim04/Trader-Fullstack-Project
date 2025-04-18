@@ -70,8 +70,9 @@
           <div class="box">
           <div class="product-box">
             <div class="img-box">
-              <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
-            </div>
+              <a href="{% url 'product:product_detail' product.slug %}">
+                <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
+              </a>            </div>
             <div class="product-info">
               <h5>{{ product.name }}</h5>
               <div class="price-box">
