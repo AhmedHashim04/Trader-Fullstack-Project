@@ -10,6 +10,7 @@ from django.urls import reverse
 class Brand(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True)
     name  = models.CharField(max_length=40)
+    image = models.ImageField(upload_to='brand_pictures/', verbose_name=_("Image"), blank=True, null=True)
     desc  = models.TextField(_("Brand description"),max_length=1000,blank=True, null=True)
     
     def __str__(self) -> str:

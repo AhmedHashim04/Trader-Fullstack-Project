@@ -10,5 +10,4 @@ class CompleteOrderForm(forms.ModelForm):
             'city',
             'country',
             'postal_code',
-            'paied',
         ]
