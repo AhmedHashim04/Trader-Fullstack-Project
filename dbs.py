@@ -1,13 +1,3 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.utils.translation import gettext_lazy as _
-from django.utils.text import slugify
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.urls import reverse
-from product.models import Product
-import uuid
-
 class Profile(models.Model):
     id = models.UUIDField(_("ID"), primary_key=True, editable=False , default=uuid.uuid4)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
@@ -22,12 +12,6 @@ class Profile(models.Model):
     date_of_birth = models.DateField(blank=True, null=True, verbose_name=_("Date of Birth"))
     wishlist = models.ManyToManyField(Product, verbose_name=_("Favorite Products"), related_name="loved_by_users", blank=True)
 
-    class Meta:
-        verbose_name = _("Profile")
-        verbose_name_plural = _("Profiles")
-
-    def __str__(self):
-        return f"{self.user.username}'s Profile"
 
     @property
     def wishlist_count(self):
@@ -39,9 +23,7 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
     else:
         instance.profile.save()
-from django.db import models
-from product.models import Product
-from django.contrib.auth.models import User
+
 
 class CartModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -50,20 +32,6 @@ class CartModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
-    
-    def __str__(self):
-        return f"{self.user.username} - {self.product.name}"
-    
-    def get_total_price(self):
-        return self.quantity * self.product.price
-    
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
-from django.contrib.auth.models import User
-from django.utils.text import slugify
-from taggit.managers import TaggableManager
-from django.db.models import Avg
 
 class Product(models.Model):
     name = models.CharField(max_length=40, verbose_name=_("Name"))
@@ -81,11 +49,6 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=0, verbose_name=_("Stock"))
     overall_rating = models.FloatField(default=0.0, verbose_name=_("Overall Rating"))
 
-    class Meta:
-        verbose_name = _("Product")
-        verbose_name_plural = _("Products")
-        ordering = ['-created_at']
-
     def __str__(self):
         return self.name
 
@@ -93,9 +56,6 @@ class Product(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-
-    def get_absolute_url(self):
-        return reverse('product:product_detail', kwargs={'slug': self.slug})
 
     def is_in_stock(self):
         return self.stock > 0
@@ -126,19 +86,9 @@ class Category(models.Model):
     description = models.TextField(max_length=1000, verbose_name=_("Description"))
     image = models.ImageField(upload_to='category_pictures/', verbose_name=_("Image"), blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
-
-    class Meta:
-        verbose_name = _("Category")
-        verbose_name_plural = _("Categories")
-
-    def __str__(self):
-        return self.name
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
-
-    def get_absolute_url(self):
-        return reverse('product:category_detail', kwargs={'slug': self.slug})
-
+    
+class Brand(models.Model):
+    slug = models.SlugField(unique=True, blank=True, null=True)
+    name  = models.CharField(max_length=40)
+    image = models.ImageField(upload_to='brand_pictures/', verbose_name=_("Image"), blank=True, null=True)
+    desc  = models.TextField(_("Brand description"),max_length=1000,blank=True, null=True)

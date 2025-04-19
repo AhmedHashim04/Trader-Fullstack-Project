@@ -36,6 +36,17 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* Brand Header Styling */
+    .brand-header {
+      background: linear-gradient(135deg, #f06, #ffba00);
+      color: #fff;
+      padding: 10px 0;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
   </style>
 </head>
 
@@ -86,54 +97,54 @@
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMainNav">
             <span class="navbar-toggler-icon"></span>
           </button>
-<!-- Search Bar -->
-<form class="search_form d-flex align-items-center flex-grow-1 mx-3" method="GET" action="{% url 'product:products_list' %}">
-  <!-- Search Input -->
-  <div class="input-group input-group-md flex-grow-1">
-    <input 
-      type="text" 
-      name="search" 
-      class="form-control" 
-      placeholder="Search for products..." 
-      value="{{ request.GET.search }}"
-    >
-    <div class="input-group-append">
-      <button class="btn btn-outline-primary" type="submit">
-        <i class="fa fa-search"></i>
-      </button>
-    </div>
-  </div>
 
-  <!-- Filters -->
-  <div class="d-flex align-items-center ml-3">
-    <!-- Category Filter -->
-    <select 
-      name="category" 
-      class="custom-select mr-2" 
-      style="min-width: 160px;"
-    >
-      <option value="">All Categories</option>
-      {% for category in categories %}
-        <option value="{{ category.slug }}" {% if request.GET.category == category.slug %}selected{% endif %}>
-          {{ category.name }}
-        </option>
-      {% endfor %}
-    </select>
+          <!-- Search Bar -->
+          <form class="search_form d-flex align-items-center flex-grow-1 mx-3" method="GET" action="{% url 'product:products_list' %}">
+            <!-- Search Input -->
+            <div class="input-group input-group-md flex-grow-1">
+              <input 
+                type="text" 
+                name="search" 
+                class="form-control" 
+                placeholder="Search for products..." 
+                value="{{ request.GET.search }}"
+              >
+              <div class="input-group-append">
+                <button class="btn btn-outline-primary" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
 
-    <!-- Sort Filter -->
-    <select 
-      name="sort_by" 
-      class="custom-select" 
-      style="min-width: 140px;"
-    >
-      <option value="">Sort</option>
-      <option value="price_asc" {% if request.GET.sort_by == 'price_asc' %}selected{% endif %}>Price ↑</option>
-      <option value="price_desc" {% if request.GET.sort_by == 'price_desc' %}selected{% endif %}>Price ↓</option>
-      <option value="rating" {% if request.GET.sort_by == 'rating' %}selected{% endif %}>Top Rated</option>
-    </select>
-  </div>
-</form>
+            <!-- Filters -->
+            <div class="d-flex align-items-center ml-3">
+              <!-- Category Filter -->
+              <select 
+                name="category" 
+                class="custom-select mr-2" 
+                style="min-width: 160px;"
+              >
+                <option value="">All Categories</option>
+                {% for category in categories %}
+                  <option value="{{ category.slug }}" {% if request.GET.category == category.slug %}selected{% endif %}>
+                    {{ category.name }}
+                  </option>
+                {% endfor %}
+              </select>
 
+              <!-- Sort Filter -->
+              <select 
+                name="sort_by" 
+                class="custom-select" 
+                style="min-width: 140px;"
+              >
+                <option value="">Sort</option>
+                <option value="price_asc" {% if request.GET.sort_by == 'price_asc' %}selected{% endif %}>Price ↑</option>
+                <option value="price_desc" {% if request.GET.sort_by == 'price_desc' %}selected{% endif %}>Price ↓</option>
+                <option value="rating" {% if request.GET.sort_by == 'rating' %}selected{% endif %}>Top Rated</option>
+              </select>
+            </div>
+          </form>
 
           <div class="collapse navbar-collapse" id="navbarMainNav">
             <ul class="navbar-nav ml-auto">
@@ -147,6 +158,13 @@
         </nav>
       </div>
     </header>
+
+    <!-- Brand Header -->
+    <div class="brand-header">
+      <div class="container">
+        <span>Discover Our Exclusive Brands</span>
+      </div>
+    </div>
 
     <!-- Second Header / Navbar -->
     <div class="header_bottom bg-dark shadow-sm py-1">
@@ -171,16 +189,15 @@
     </div>
 
     <!-- Third Header / Navbar -->
-    <div class="header_bottom bg-info shadow-sm py-5">
+    <div class="header_bottom bg-info shadow-sm">
       <div class="container-fluid">
         <nav class="navbar navbar-expand-lg custom_nav-container">
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span></span>
           </button>
-
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto pl-5">
+            <ul class="card-header navbar-nav mr-auto pl-5">
               {% for brand in contextBrands %}
               <li class="nav-item">
                 <a href="{% url 'settings:brand_detail' brand.slug %}" class="nav-link">{{ brand.name }}</a>
