@@ -10,32 +10,25 @@ class RegisterForm(UserCreationForm):
         fields = ["username", "email", "password1", "password2"]
 
 class UpdateProfileForm(forms.ModelForm):
-    first_name = forms.CharField(max_length=150)
-    last_name = forms.CharField(max_length=150)
-    
-    class Meta:
-        model = Profile
-        fields = [ 
-            'first_name',
-            'last_name',
-            'phone_number',
-            'address',
-            'city',
-            'country',
-            'postal_code',
-            'profile_image',
-            'date_of_birth',
-        ]
-        widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
-        }
+    first_name = forms.CharField(max_length=150,required=False)
+    last_name = forms.CharField(max_length=150,required=False)
+    address = forms.CharField(help_text="Address in Detail",required=False)
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance and self.instance.user:
             self.fields['first_name'].initial = self.instance.user.first_name
             self.fields['last_name'].initial = self.instance.user.last_name
-    
+
+    class Meta:
+        model = Profile
+        fields = [ 
+        'first_name', 'last_name', 'phone_number', 'address', 'city', 'country', 'postal_code', 'profile_image', 'date_of_birth',
+        ]
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+        }
     def save(self, commit=True):
         profile = super().save(commit=False)
         if commit:
