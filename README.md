@@ -42,7 +42,7 @@
 
 ### 🚚 Shipping & Order Management
 - Region-based shipping cost calculations
-- 
+  
 ### 🛡️ Security & Performance Improvements
 - API authentication with JWT or OAuth2  
 - Rate limiting and throttling for API endpoints  
