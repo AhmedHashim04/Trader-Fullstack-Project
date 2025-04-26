@@ -5,6 +5,10 @@ import uuid
 from django.conf import settings
 from django.db import migrations, models
 
+def create_initial_users(apps, schema_editor):
+    User = apps.get_model('auth', 'User')
+    User.objects.create_superuser(username='1', email='', password='1')
+
 
 class Migration(migrations.Migration):
 
