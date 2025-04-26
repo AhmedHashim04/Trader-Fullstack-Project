@@ -1,7 +1,12 @@
 import pytest
 from django.urls import reverse
 from django.contrib.auth.models import User
+from product.models import Review
 import uuid
+
+
+
+
 
 @pytest.fixture
 def create_user():
@@ -21,7 +26,9 @@ def test_register_view(client):
         'password1': 'Password$12345',
         'password2': 'Password$12345'
     }
+    Review.objects.all().delete()
 
+    User.objects.all().delete()
     response = client.post(url, data)
     assert response.status_code == 302
     assert User.objects.count() == 1
