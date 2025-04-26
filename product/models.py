@@ -13,7 +13,7 @@ class Product(models.Model):
     brand = models.ForeignKey('settings.Brand', on_delete=models.PROTECT, verbose_name=_("Brand"), blank=True, null=True)
     description = models.TextField(max_length=1000, verbose_name=_("Description"))
     price = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Price"))
-    cost = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Cost"))
+    cost = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Cost") , blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True, verbose_name=_("Created At"))
     # image = models.ImageField(upload_to='products/', verbose_name=_("Product Image"), blank=True, null=True)
     image = models.URLField(verbose_name=_("Image URL"), blank=True, null=True)
