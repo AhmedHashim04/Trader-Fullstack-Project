@@ -1,9 +1,10 @@
-from django.db.models import Lookup
+from django.contrib.auth import logout
+from django.http import HttpResponseRedirect
 from django.views import View
 from django.contrib import messages
 from django.shortcuts import redirect , get_object_or_404 ,render
-from django.views.generic import  DetailView  , UpdateView ,CreateView
-from django.contrib.auth.views import LoginView , LogoutView 
+from django.views.generic import  DetailView, UpdateView, CreateView, TemplateView,FormView
+from django.contrib.auth.views import LoginView , LogoutView, PasswordResetView
 from django.urls import reverse  , reverse_lazy
 from .models import Profile
 from django.contrib.auth.models import User
@@ -16,7 +17,7 @@ import uuid
 class RegisterView(CreateView):
     form_class    = RegisterForm
     template_name = 'registration/register.html'
-    success_url   = reverse_lazy('account:login')
+    success_url   = reverse_lazy('account:waiting_activation')
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -43,7 +44,9 @@ class RegisterView(CreateView):
         print(subject, message, settings.EMAIL_HOST_USER, [user.email])
 
 
-
+class WaitingActivation(TemplateView):
+    template_name = "account/waiting_activation.html"
+    
 
 class ActivateAccountView(View):
     def get(self, request, activation_key):
@@ -53,9 +56,7 @@ class ActivateAccountView(View):
             user.activation_key = ''
             user.save()
             messages.success(request, 'Account Had Activated Successfuly !')
-        else:
-            messages.error(request, 'Activation Failed , Invalid key !')
-        return render(request,'account/activation_success.html')
+            return render(request,'account/account_activation_complete.html')
 
 
 class ProfileView(LoginRequiredMixin, DetailView):
@@ -88,9 +89,22 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
 
 
 class MyLoginView(LoginView):
-
     redirect_authenticated_user = True
 
-class MyLogoutView(LogoutView):
-    next_page = 'home'
 
+class MyLogoutView(LogoutView):
+    next_page = 'home:home'
+    http_method_names = ["get", "options"]
+
+    def get(self, request, *args, **kwargs):
+        """Logout may be done via GET."""
+        logout(request)
+        redirect_to = self.get_success_url()
+        if redirect_to != request.get_full_path():
+            # Redirect to target page once the session has been cleared.
+            return HttpResponseRedirect(redirect_to)
+        return super().get(request, *args, **kwargs)
+
+
+class MyPasswordResetPassword(PasswordResetView):
+    success_url = reverse_lazy("account:password_reset_done")

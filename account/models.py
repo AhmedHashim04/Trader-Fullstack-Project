@@ -32,7 +32,7 @@ class Profile(models.Model):
         verbose_name_plural = _("Profiles")
 
     def __str__(self):
-        return f"{self.user.username}'s Profile"
+        return f"{self.user.get_full_name()}'s Profile"
 
     @property
     def wishlist_count(self):
