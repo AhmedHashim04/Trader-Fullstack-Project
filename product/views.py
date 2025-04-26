@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView ,DetailView, TemplateView ,CreateView
 from .models import Product ,Category , Review
 from account.models import Profile
-from .form import ReviewForm
+from .forms import ReviewForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.cache import cache

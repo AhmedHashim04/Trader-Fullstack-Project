@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView
 from django.db import transaction
 from django.contrib import messages
 from .models import Order, OrderItem
-from .form import CompleteOrderForm
+from .forms import CompleteOrderForm
 from django.urls import reverse
 from cart.cart import Cart as cart_branch
 from django.core.mail import send_mail

@@ -1,7 +1,7 @@
 from django.views.generic import FormView, TemplateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .form import PaymentForm
+from .forms import PaymentForm
 from .models import Payment
 from django.shortcuts import redirect, get_object_or_404 , render
 from order.models import Order

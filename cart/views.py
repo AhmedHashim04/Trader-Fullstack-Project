@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from .models import CartModel as cartmodel
 from .cart import Cart as cart_branch
 from product.models import Product
-from .form import CartAddProductForm
+from .forms import CartAddProductForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
