@@ -5,8 +5,13 @@
 <div class="container mt-5">
     <div class="card shadow">
         <div class="card-body text-center">
-            <h1 class="card-title mb-4">Activation is Sucess now you can login</h1>
+            <h1 class="card-title mb-4">You should now confirm Activation from your email</h1>
             <p class="card-text">We've emailed you instructions for Activation your account. If they haven't arrived in a few minutes, check your spam folder.</p>
+            <p class="card-text">If you Confirm Activation Login now.</p>
+            <a href="{% url 'account:login' %}" class="btn btn-primary btn-lg w-100 shadow-sm">
+                <i class="fas fa-edit me-2"></i>Login
+            </a>
+
         </div>
     </div>
 </div>

@@ -13,6 +13,7 @@
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         {% for field in form %}
+                        
                             <div class="mb-3">
                                 <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
                                 {{ field|add_class:"form-control" }}
