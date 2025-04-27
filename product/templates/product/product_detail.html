@@ -44,6 +44,7 @@
                 {% endwith %}
                 <div class="col-md-12">
                 {% if product.slug not in contextCart or not user.is_authenticated %}
+                
                 <form method="POST" action="{% url 'cart:cart_add' product.slug %}" class="d-flex align-items-center justify-content-between">
                   {% csrf_token %}
                   <input type="hidden" name="product_id" value="{{ product.id }}">

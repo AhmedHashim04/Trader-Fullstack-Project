@@ -1,7 +1,6 @@
 from django.shortcuts import  redirect
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView
-from .models import CartModel as cartmodel
 from .cart import Cart as cart_branch
 from product.models import Product
 from .forms import CartAddProductForm
@@ -18,7 +17,7 @@ def cart_add(request, slug ):
         return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list')) 
     cart.add(product=product)
     if request.POST.get('quantity') :
-        cart.add_and_update(product, request.POST.get('quantity'))
+        cart.update(product, request.POST.get('quantity'))
     messages.success(request, f'{product.name} Added to Cart Successfully')
     return redirect(request.META.get('HTTP_REFERER', 'cart:cart_list'))
 
@@ -52,7 +51,7 @@ def cart_clear(request):
     return redirect('cart:cart_list')
 
 class CartView(LoginRequiredMixin, ListView):
-    model = cartmodel
+    model = cart_branch
     template_name = 'cart/cart.html'
     context_object_name = 'cart'
     
