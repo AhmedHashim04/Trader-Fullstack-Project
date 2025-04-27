@@ -1,222 +1,117 @@
 {% load static %}
 
-  <!-- about section -->
-
-  <section class="about_section">
-    <div class="container-fluid  ">
-      <div class="row">
-        <div class="col-md-5 ml-auto">
-          <div class="detail-box pr-md-3">
-            <div class="heading_container">
-              <h2>
-                We Provide Best For You
-              </h2>
-            </div>
-            <p>
-"We offer you the finest products to meet your needs. Our commitment to quality ensures that every item is crafted with care, delivering excellence and satisfaction. With a focus on innovation and customer satisfaction, we strive to provide solutions that enhance your lifestyle. Whether you're looking for functionality or luxury, our collection is designed to offer you the best choices. Trust us to bring you the finest products with exceptional service, because your satisfaction is our priority."
-            </p>
-            <a href="">
-              Read More
-            </a>
+<!-- About Section -->
+<section class="about_section">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-md-5 ml-auto">
+        <div class="detail-box pr-md-3">
+          <div class="heading_container">
+            <h2 class="fw-bold">We Provide Best For You</h2>
           </div>
+          <p class="text-muted" style="line-height: 1.8;">
+            "We offer you the finest products to meet your needs. Our commitment to quality ensures that every item is crafted with care, delivering excellence and satisfaction. Whether you're looking for functionality or luxury, our collection is designed to offer you the best choices."
+          </p>
+          <a href="#" class="btn btn-primary mt-3">Read More</a>
         </div>
-        <div class="col-md-6 px-0">
+      </div>
+      <div class="col-md-6 px-0">
+        <div class="img-box">
+          <img src="{% static 'images/about-img.jpg' %}" alt="About Us Image" class="img-fluid rounded">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Why Us Section -->
+<section class="why_us_section layout_padding">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2 class="fw-bold">Why Choose Us</h2>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="box text-center">
           <div class="img-box">
-            <img src="{% static 'images/about-img.jpg' %}" alt="About Us Image">
+            <img src="{% static 'images/w1.png' %}" alt="Fast Delivery" class="img-fluid">
+          </div>
+          <div class="detail-box">
+            <h5 class="fw-bold">Fast Delivery</h5>
+            <p class="text-muted">Enjoy swift and reliable delivery service with Trader E-commerce. We guarantee timely arrival of your purchases, wherever you may be.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="box text-center">
+          <div class="img-box">
+            <img src="{% static 'images/w2.png' %}" alt="Free Shipping" class="img-fluid">
+          </div>
+          <div class="detail-box">
+            <h5 class="fw-bold">Free Shipping</h5>
+            <p class="text-muted">We offer free shipping on all orders, ensuring that you receive your products quickly and conveniently without any extra cost.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="box text-center">
+          <div class="img-box">
+            <img src="{% static 'images/w3.png' %}" alt="Best Quality" class="img-fluid">
+          </div>
+          <div class="detail-box">
+            <h5 class="fw-bold">Best Quality</h5>
+            <p class="text-muted">We ensure that all products are of the highest quality, carefully curated to meet your expectations and provide long-lasting satisfaction.</p>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- end about section -->
-
-  <!-- why us section -->
-
-  <section class="why_us_section layout_padding">
-    <div class="container">
-      <div class="heading_container heading_center">
-        <h2>
-          Why Choose Us
-        </h2>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="box ">
-            <div class="img-box">
-              <img src="{% static 'images/w1.png' %}" alt="">
-            </div>
-            <div class="detail-box">
-              <h5>
-                Fast Delivery
-              </h5>
-              <p>
-                Enjoy swift and reliable delivery service with Trader E-commerce. We guarantee timely arrival of your purchases, wherever you may be.
-
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="box ">
-            <div class="img-box">
-              <img src="{% static 'images/w2.png' %}" alt="">
-            </div>
-            <div class="detail-box">
-              <h5>
-                Free Shiping
-              </h5>
-              <p>
-                At Trader E-commerce, we offer free shipping on all orders, ensuring that you receive your products quickly and conveniently without any extra cost."
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="box ">
-            <div class="img-box">
-              <img src="{% static 'images/w3.png' %}" alt="">
-            </div>
-            <div class="detail-box">
-              <h5>
-                Best Quality
-              </h5>
-              <p>
-                At Trader E-commerce, we ensure that all products are of the highest quality, carefully curated to meet your expectations and provide long-lasting satisfaction."
-            </div>
-          </div>
-        </div>
-      </div>
+<!-- Client Section -->
+<section class="client_section layout_padding-bottom">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2 class="fw-bold">What Our Customers Say</h2>
     </div>
-  </section>
-
-  <!-- end why us section -->
-
-
-  <!-- client section -->
-
-  <section class="client_section layout_padding-bottom">
-    <div class="container">
-      <div class="heading_container heading_center">
-        <h2>
-          What Says Our Customers
-        </h2>
-      </div>
-    </div>
-    <div class="client_container ">
-      <div id="carouselExample2Controls" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
+  </div>
+  <div class="client_container">
+    <div id="carouselExample2Controls" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        {% for testimonial in testimonials %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
             <div class="container">
               <div class="box">
                 <div class="detail-box">
-                  <p>
-                    <i class="fa fa-quote-left" aria-hidden="true"></i>
-                  </p>
-                  <p>
-                    The online shopping experience with Trader E-commerce is a breeze, with a user-friendly interface and
-                    seamless navigation. Our platform is designed to make online shopping easy and enjoyable, with a wide
-                    range of products to choose from and a secure checkout process. Whether you're looking for the latest
-                    gadgets or the best deals on fashion items, Trader E-commerce has you covered. Our platform is built
-                    with the customer in mind, with a focus on providing a secure and convenient online shopping
-                    experience.
-                  </p>
+                  <p><i class="fa fa-quote-left" aria-hidden="true"></i></p>
+                  <p class="text-muted">{{ testimonial.text }}</p>
                 </div>
                 <div class="client-id">
                   <div class="img-box">
-                    <img src="{% static 'images/client.jpg' %}" alt="">
+                    <img src="{{ testimonial.image.url }}" alt="{{ testimonial.name }}" class="img-fluid rounded-circle">
                   </div>
                   <div class="name">
-                    <h5>
-                      James Dew
-                    </h5>
-                    <h6>
-                      Photographer
-                    </h6>
+                    <h5 class="fw-bold">{{ testimonial.name }}</h5>
+                    <h6 class="text-muted">{{ testimonial.profession }}</h6>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="carousel-item">
-            <div class="container">
-              <div class="box">
-                <div class="detail-box">
-                  <p>
-                    <i class="fa fa-quote-left" aria-hidden="true"></i>
-                  </p>
-                  <p>
-                    The products we offer are of the highest quality and have been carefully selected to meet the
-                    needs of our customers. We take great pride in our products and are confident that they will meet
-                    your expectations. We are committed to providing excellent customer service and are always happy to
-                    help with any questions or concerns you may have.
-                  </p>
-                </div>
-                <div class="client-id">
-                  <div class="img-box">
-                    <img src="{% static 'images/client.jpg' %}" alt="">
-                  </div>
-                  <div class="name">
-                    <h5>
-                      James Dew
-                    </h5>
-                    <h6>
-                      Photographer
-                    </h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <div class="container">
-              <div class="box">
-                <div class="detail-box">
-                  <p>
-                    <i class="fa fa-quote-left" aria-hidden="true"></i>
-                  </p>
-                  <p>
-                    It is a long established fact that a reader will be distracted by the readable content of a page
-                    when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
-                    distribution of letters, as opposed to using 'Content here, content here', making it lookIt is a
-                    long established fact that a reader will be distracted by the readable content of a page when
-                    looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
-                    distribution of letters, as opposed to using 'Content here, content here', making it look
-                  </p>
-                </div>
-                <div class="client-id">
-                  <div class="img-box">
-                    <img src="{% static 'images/client.jpg' %}" alt="">
-                  </div>
-                  <div class="name">
-                    <h5>
-                      James Dew
-                    </h5>
-                    <h6>
-                      Photographer
-                    </h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="carousel_btn-box">
-          <a class="carousel-control-prev" href="#carouselExample2Controls" role="button" data-slide="prev">
-            <span>
-              <i class="fa fa-angle-left" aria-hidden="true"></i>
-            </span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#carouselExample2Controls" role="button" data-slide="next">
-            <span>
-              <i class="fa fa-angle-right" aria-hidden="true"></i>
-            </span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
+        {% endfor %}
+      </div>
+      <div class="carousel_btn-box">
+        <a class="carousel-control-prev" href="#carouselExample2Controls" role="button" data-slide="prev">
+          <span><i class="fa fa-angle-left" aria-hidden="true"></i></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExample2Controls" role="button" data-slide="next">
+          <span><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+          <span class="sr-only">Next</span>
+        </a>
       </div>
     </div>
-  </section>
-  <!-- end client section -->
+  </div>
+</section>
 
-  
+

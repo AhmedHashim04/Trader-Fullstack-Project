@@ -4,15 +4,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <title>Home - Trader E-Commerce Website</title>
+  <title>{% block title %}Trader E-Commerce{% endblock %}</title>
 
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
-
 </head>
 
 <body>
@@ -22,10 +21,10 @@
       <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
         <div class="contact_nav d-flex align-items-center">
           <a href="#" class="mr-3 text-dark">
-            <i class="fa fa-phone"></i> <span>Call : +20 155 876 3958</span>
+            <i class="fa fa-phone"></i> <span>Call: +20 155 876 3958</span>
           </a>
           <a href="#" class="text-dark">
-            <i class="fa fa-envelope"></i> <span>Email : ahmedha4im7@gmail.com</span>
+            <i class="fa fa-envelope"></i> <span>Email: ahmedha4im7@gmail.com</span>
           </a>
         </div>
 
@@ -65,7 +64,6 @@
 
           <!-- Search Bar -->
           <form class="search_form d-flex align-items-center flex-grow-1 mx-3" method="GET" action="{% url 'product:products_list' %}">
-            <!-- Search Input -->
             <div class="input-group input-group-md flex-grow-1">
               <input 
                 type="text" 
@@ -81,13 +79,8 @@
               </div>
             </div>
 
-            <!-- Filters -->
             <div class="d-flex align-items-center ml-3">
-              <!-- Category Filter -->
-              <select 
-                name="category" 
-                class="custom-select mr-2 custom-select-category"
-              >
+              <select name="category" class="custom-select mr-2 custom-select-category">
                 <option value="">All Categories</option>
                 {% for category in categories %}
                   <option value="{{ category.slug }}" {% if request.GET.category == category.slug %}selected{% endif %}>
@@ -96,12 +89,7 @@
                 {% endfor %}
               </select>
 
-              <!-- Sort Filter -->
-              <select 
-                name="sort_by" 
-                class="custom-select" 
-                style="min-width: 140px;"
-              >
+              <select name="sort_by" class="custom-select" style="min-width: 140px;">
                 <option value="">Sort</option>
                 <option value="price_asc" {% if request.GET.sort_by == 'price_asc' %}selected{% endif %}>Price ↑</option>
                 <option value="price_desc" {% if request.GET.sort_by == 'price_desc' %}selected{% endif %}>Price ↓</option>
@@ -123,66 +111,16 @@
       </div>
     </header>
 
-    <!-- Brand Header -->
-    <div class="brand-header">
-      <div class="container">
-        <span>Discover Our Exclusive Brands</span>
-      </div>
-    </div>
-
-    <!-- Second Header / Navbar -->
-    <div class="header_bottom bg-dark shadow-sm py-1">
-      <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg custom_nav-container">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span></span>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto pl-5">
-              {% for category in contextCategories %}
-              <li class="nav-item">
-                <a href="{% url 'product:category_detail' category.slug %}" class="nav-link">{{ category.name }}</a>
-              </li>
-              {% endfor %}
-            </ul>
-          </div>
-        </nav>
-      </div>
-    </div>
-
-    <!-- Third Header / Navbar -->
-    <div class="header_bottom bg-info shadow-sm">
-      <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg custom_nav-container">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="card-header navbar-nav mr-auto pl-5">
-              {% for brand in contextBrands %}
-              <li class="nav-item">
-                <a href="{% url 'settings:brand_detail' brand.slug %}" class="nav-link">{{ brand.name }}</a>
-              </li>
-              {% endfor %}
-            </ul>
-          </div>
-        </nav>
-      </div>
-    </div>
-
     <!-- Dynamic Sections -->
     {% block body %}{% endblock %}
 
     <!-- Toast Messages -->
     <div id="toast-container"></div>
 
-    <!-- Info Footer -->
-    <div id="about-us">
+    <!-- Footer -->
+    <footer class="footer_section">
       {% include "info.html" %}
-    </div>
+    </footer>
   </div>
 
   <!-- Scripts -->

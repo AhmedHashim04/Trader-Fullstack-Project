@@ -2,30 +2,28 @@
   <div class="container">
     <div class="heading_container heading_center">
       <h2>Explore Our Categories</h2>
-      <p>
-        Discover a variety of categories tailored to meet your needs and preferences.
-      </p>
+      <p>Discover a variety of categories tailored to meet your needs and preferences.</p>
     </div>
     <div class="row">
       {% for category in all_categories|slice:":4" %}
-        <div class="col-sm-6 col-lg-3">
-          <div class="category_box">
-            <a href="{% url 'product:category_detail' category.slug %}">
-              <div class="category_image">
-                <img src="{% if category.image %}{{ category.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ category.name }}" class="img-fluid">
-              </div>
-              <div class="category_info">
-                <h4>{{ category.name }}</h4>
-              </div>
-            </a>
+        <div class="col-sm-6 col-lg-3 mb-4">
+          <div class="box shadow-sm">
+            <div class="img-box">
+              <a href="{% url 'product:category_detail' category.slug %}">
+                <img src="{% if category.image %}{{ category.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ category.name }}" class="img-fluid rounded">
+              </a>
+            </div>
+            <div class="detail-box text-center mt-3">
+              <a href="{% url 'product:category_detail' category.slug %}" class="text-decoration-none text-dark">
+                <h5 class="fw-bold">{{ category.name }}</h5>
+              </a>
+            </div>
           </div>
         </div>
       {% endfor %}
     </div>
-    <div class="btn_box">
-      <a href="{% url 'product:categories_list' %}" class="view_more-link">
-        View All Categories
-      </a>
+    <div class="btn_box text-center mt-4">
+      <a href="{% url 'product:categories_list' %}" class="btn btn-primary">View All Categories</a>
     </div>
   </div>
 </section>

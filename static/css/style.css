@@ -1,19 +1,58 @@
 :root {
-  --primary-color: #f3c93e;
-  --secondary-color: #434f78;
-  --background-color: #ffffff;
-  --text-color: #0c0c0c;
+  --primary-color: #1a73e8; /* Vibrant blue for primary actions */
+  --secondary-color: #ff9800; /* Bright orange for highlights */
+  --background-color: #f4f4f9; /* Soft light gray for background */
+  --text-color: #212121; /* Dark gray for primary text */
+  --text-light-color: rgba(33, 33, 33, 0.7); /* Semi-transparent dark gray for secondary text */
+  --border-color: #e0e0e0; /* Light gray for borders */
+
+  --toast-bg-color: #323232; /* Dark gray for toast background */
+  --toast-text-color: #ffffff; /* White for toast text */
+
+  --slider-bg-color: #ffffff; /* Pure white for slider background */
+  --detail-text-color: #1a73e8; /* Blue for detail text */
+  --highlight-color: #ff9800; /* Orange for highlights */
+  --muted-text-color: #757575; /* Medium gray for muted text */
+
+  --button-bg-color: #1a73e8; /* Blue for buttons */
+  --button-hover-bg-color: #ff9800; /* Orange for button hover */
+  --button-text-color: #ffffff; /* White for button text */
+
+  --good-review-bg-color: #e8f5e9; /* Light green for good reviews */
+  --good-review-border-color: #c8e6c9; /* Soft green for borders */
+  --good-review-user-color: #2e7d32; /* Dark green for user text */
+  --good-review-content-font-style: italic; /* Italic for good review content */
+
+  --bad-review-bg-color: #ffebee; /* Light red for bad reviews */
+  --bad-review-border-color: #ffcdd2; /* Soft red for borders */
+  --bad-review-user-color: #c62828; /* Dark red for user text */
+  --bad-review-content-font-style: italic; /* Italic for bad review content */
+
+  --info-bg-color: #1a73e8; /* Blue for info section */
+  --info-text-color: #ffffff; /* White for info text */
+  --footer-bg-color: #1a73e8; /* Blue for footer */
+  --footer-border-color: #ffffff; /* White for footer borders */
+
+  --card-bg-color: #ffffff; /* White for cards */
+  --card-text-color: #212121; /* Dark gray for card text */
+  --card-shadow-color: rgba(0, 0, 0, 0.1); /* Subtle shadow for cards */
+
+  --form-border-color: #e0e0e0; /* Light gray for form borders */
+  --focus-border-color: #1a73e8; /* Blue for focus borders */
+  --focus-shadow-color: rgba(26, 115, 232, 0.25); /* Subtle blue shadow for focus */
+
+  --btn-bg-color: #1a73e8; /* Blue for buttons */
+  --btn-hover-bg-color: #ff9800; /* Orange for button hover */
 }
-:root {
-  --toast-bg-color: #333;
-  --toast-text-color: #fff;
-}
+
+
 body {
   font-family: 'Poppins', sans-serif;
   color: var(--text-color);
   background-color: var(--background-color);
   overflow-x: hidden;
 }
+
 /* --------message--------- */
 
 
@@ -40,14 +79,6 @@ body {
   transform: translateY(0);
 }
 /* --------header--------- */
-:root {
-  --primary-color: #f3c93e;
-  --secondary-color: #434f78;
-  --background-color: #f7f7f7;
-  --text-color: #3a4468;
-  --highlight-color: #f3c93e;
-  --muted-text-color: #6d6d6d;
-}
 
 .custom-select-category {
   min-width: 160px;
@@ -120,17 +151,7 @@ a:focus {
 }
 
 /* ------- reviews ------- */
-:root {
-  --good-review-bg-color: #d4edda;
-  --good-review-border-color: #c3e6cb;
-  --good-review-user-color: #155724;
-  --good-review-content-font-style: italic;
 
-  --bad-review-bg-color: #f8d7da;
-  --bad-review-border-color: #f5c6cb;
-  --bad-review-user-color: #721c24;
-  --bad-review-content-font-style: italic;
-}
 
 .good-review {
   background-color: var(--good-review-bg-color);
@@ -161,14 +182,6 @@ a:focus {
 }
 
 /* -------header ---------- */
-:root {
-  --primary-color: #f3c93e;
-  --secondary-color: #434f78;
-  --background-color: #f7f7f7;
-  --text-color: #3a4468;
-  --highlight-color: #f3c93e;
-  --muted-text-color: #6d6d6d;
-}
 
 .hero_area {
   position: relative;
@@ -337,15 +350,7 @@ a:focus {
 
 
 /*------------- slider section----------- */
-:root {
-  --slider-bg-color: #f7f7f7;
-  --detail-text-color: #3a4468;
-  --highlight-color: #f3c93e;
-  --muted-text-color: #6d6d6d;
-  --button-bg-color: #3a4468;
-  --button-hover-bg-color: #f3c93e;
-  --button-text-color: #ffffff;
-}
+
 
 .slider_section {
   flex: 1;
@@ -437,14 +442,7 @@ a:focus {
 /* -------about ------ */
 
 .about_section {
-:root {
-  --primary-color: #3a4468;
-  --secondary-color: #f3c93e;
-  --background-color: #ffffff;
-  --text-color: #333;
-  --text-light-color: rgba(0, 0, 0, 0.59);
-  --border-color: #f3c93e;
-}
+
   background-color: var(--primary-color);
   color: var(--text-color);
 }
@@ -482,22 +480,10 @@ a:focus {
 
 .about_section .detail-box a:hover {
   background-color: transparent;
-}
   color: var(--secondary-color);
+}
 
 /* -------why us ------- */
-:root {
-  --primary-color: #3a4468;
-  --secondary-color: #f3c93e;
-  --background-color: #ffffff;
-  --text-color: #333;
-  --text-light-color: rgba(0, 0, 0, 0.59);
-  --border-color: #f3c93e;
-  --info-bg-color: #3a4468;
-  --info-text-color: #ffffff;
-  --footer-bg-color: #3a4468;
-  --footer-border-color: #ffffff;
-}
 
 .why_us_section {
   position: relative;
@@ -548,12 +534,6 @@ a:focus {
 }
 
 /* -------- info section ------- */
-:root {
-  --info-bg-color: #3a4468;
-  --info-text-color: #ffffff;
-  --footer-bg-color: #3a4468;
-  --footer-border-color: #ffffff;
-}
 
 .info_section {
   background-color: var(--info-bg-color);
@@ -617,17 +597,6 @@ a:focus {
 
 /*----------- Contact--------- */
 
-:root {
-  --card-bg-color: #3a4468;
-  --card-text-color: #ffffff;
-  --card-shadow-color: rgba(0, 0, 0, 0.1);
-  --form-border-color: #e1e1e1;
-  --focus-border-color: #3a4468;
-  --focus-shadow-color: rgba(58, 68, 104, 0.25);
-  --btn-bg-color: #3a4468;
-  --btn-hover-bg-color: #f3c93e;
-}
-
 .contact-card {
   border: none;
   border-radius: 15px;
@@ -690,10 +659,6 @@ a:focus {
 }
 
 /* --------Button-------- */
-:root {
-  --primary-color: #3a4468;
-  --secondary-color: #f3c93e;
-}
 
 .search_form button {
   width: 45px;
@@ -727,14 +692,7 @@ a:focus {
   background-color: var(--primary-color);
   color: #ffffff;
 }
-:root {
-  --primary-color: #3a4468;
-  --secondary-color: #f3c93e;
-  --background-color: #f9f9f9;
-  --text-color: #333;
-  --text-light-color: rgba(0, 0, 0, 0.59);
-  --border-color: #f3c93e;
-}
+
 
 /* -------PRODUCT----------- */
 .product_section {

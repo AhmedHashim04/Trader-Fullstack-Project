@@ -1,5 +1,3 @@
-
-
 <section class="product-section layout-padding">
   <div class="container">
     <div class="heading-container heading-center">
@@ -7,54 +5,52 @@
     </div>
     <div class="row">
       {% for product in all_products|slice:":5" %}
-      <div class="col-sm-6 col-lg-3 col-md-4">
-        <div class="box">
-          <div class="product-box">
-            <div class="img-box">
-              <a href="{% url 'product:product_detail' product.slug %}">
-                <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
-              </a>
-
-            </div>
-            <div class="product-info">
-              <h5>{{ product.name }}</h5>
-              <div class="price-box">
-                <h5><span>$</span> {{ product.price }}</h5>
-              </div>
-              <div class="star-container">
-                {% for i in "12345" %}
-                <i class="fa {% if product.overall_rating >= i|add:"0" %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true"></i>
-                {% endfor %}
-              </div>
-              <div class="product-actions">
-
-                {% if product.slug in contextCart %}
-                <a href="{% url 'cart:cart_remove' product.slug %}"class="btn btn-warning">
-                {% else %}
-                <a href="{% url 'cart:cart_add' product.slug %}"class="btn btn-outline-warning">
-                {% endif %}
-                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        <div class="col-sm-6 col-lg-3 col-md-4 mb-4">
+          <div class="box shadow-sm">
+            <div class="product-box">
+              <div class="img-box">
+                <a href="{% url 'product:product_detail' product.slug %}">
+                  <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid rounded">
                 </a>
-                {% if product in contextWishlist %}
-                <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-danger">
-                {% else %}
-                <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-outline-danger">
-                {% endif %}
-
-                  <i class="fa fa-heart" aria-hidden="true"></i>
-                </a>
+              </div>
+              <div class="product-info text-center mt-3">
+                <h5 class="fw-bold">{{ product.name }}</h5>
+                <div class="price-box">
+                  <h5><span>$</span> {{ product.price }}</h5>
+                </div>
+                <div class="star-container">
+                  {% for i in "12345" %}
+                    <i class="fa {% if product.overall_rating >= i|add:"0" %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true"></i>
+                  {% endfor %}
+                </div>
+                <div class="product-actions mt-3">
+                  {% if product.slug in contextCart %}
+                    <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-warning">
+                      <i class="fa fa-shopping-cart" aria-hidden="true"></i> Remove from Cart
+                    </a>
+                  {% else %}
+                    <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-outline-warning">
+                      <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to Cart
+                    </a>
+                  {% endif %}
+                  {% if product in contextWishlist %}
+                    <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-danger">
+                      <i class="fa fa-heart" aria-hidden="true"></i> Remove from Wishlist
+                    </a>
+                  {% else %}
+                    <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-outline-danger">
+                      <i class="fa fa-heart" aria-hidden="true"></i> Add to Wishlist
+                    </a>
+                  {% endif %}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       {% endfor %}
     </div>
-
-    <div class="btn_box">
-      <a href="{% url 'product:products_list' %}" class="view_more-link">
-        View More
-      </a> 
+    <div class="btn_box text-center mt-4">
+      <a href="{% url 'product:products_list' %}" class="btn btn-primary">View More</a>
     </div>
   </div>
 </section>
