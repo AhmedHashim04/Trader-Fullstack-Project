@@ -13,41 +13,6 @@
   <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
 
-  <style>
-    #toast-container {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9999;
-    }
-
-    .toast-message {
-      background-color: #333;
-      color: #fff;
-      padding: 15px;
-      border-radius: 5px;
-      margin-top: 10px;
-      opacity: 0;
-      transform: translateY(100%);
-      transition: opacity 0.5s, transform 0.5s;
-    }
-
-    .toast-message.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Brand Header Styling */
-    .brand-header {
-      background: linear-gradient(135deg, #f06, #ffba00);
-      color: #fff;
-      padding: 10px 0;
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-  </style>
 </head>
 
 <body>
@@ -121,8 +86,7 @@
               <!-- Category Filter -->
               <select 
                 name="category" 
-                class="custom-select mr-2" 
-                style="min-width: 160px;"
+                class="custom-select mr-2 custom-select-category"
               >
                 <option value="">All Categories</option>
                 {% for category in categories %}
