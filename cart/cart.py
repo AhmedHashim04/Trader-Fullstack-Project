@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from product.models import Product
 from decimal import Decimal
+from django.contrib import messages
 
 class Cart(models.Model):
     def  __init__(self, request):
@@ -12,35 +13,24 @@ class Cart(models.Model):
         self.cart = cart
 
     def add(self, product):
-        product_id = product.slug
-        if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 1, 'price': float(product.price)}
+        product_slug = product.slug
+        if product_slug not in self.cart:
+            self.cart[product_slug] = {'quantity': 1, 'price': float(product.price)}
         self.save()
 
     def update(self, product, quantity):
-        try :
-            quantity = int(quantity)
-            product_id = product.slug
-            if product_id in self.cart:
-                self.cart[product_id]['quantity'] = quantity
-            self.save()
-        except:
-            pass
-
-    def add_and_update(self, product, quantity):
         quantity = int(quantity)
-        if product.stock > quantity:
-            product_id = product.slug
-            self.cart[product_id]['quantity'] = quantity
-            self.save()
-        else:
-            pass
+        product_slug = product.slug
+        if product_slug in self.cart:
+            self.cart[product_slug]['quantity'] = quantity
+        self.save()
+
 
 
     def remove(self, product):
-        product_id = str(product.slug)
-        if product_id in self.cart:
-            del self.cart[product_id]
+        product_slug = str(product.slug)
+        if product_slug in self.cart:
+            del self.cart[product_slug]
         self.save()
         
 
@@ -54,8 +44,8 @@ class Cart(models.Model):
         self.save()
         
     def __iter__(self):
-        product_ids = self.cart.keys()
-        products = Product.objects.filter(slug__in=product_ids)
+        product_slugs = self.cart.keys()
+        products = Product.objects.filter(slug__in=product_slugs)
         cart = self.cart.copy()
         for product in products:
             cart[str(product.slug)]['product'] = product
@@ -64,9 +54,6 @@ class Cart(models.Model):
             item['quantity'] = int(item.get('quantity') or 0)
             item['total'] = float(item['price']) * int(item['quantity'])
             yield item
-
-    # def __len__(self):
-    #     return sum((item['quantity']) for item in self.cart.values())
     
     def save(self):
         self.session.modified = True
