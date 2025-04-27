@@ -6,85 +6,78 @@
 
 <section class="product_details_section layout_padding">
   <div class="container">
+    <!-- Product Heading -->
     <div class="heading_container heading_center">
-      <h2>
-        {{ product.name }}
-      </h2>
+      <h2>{{ product.name }}</h2>
       <hr>
     </div>
+
+    <!-- Product Details -->
     <div class="row">
+      <!-- Product Image -->
       <div class="col-md-6">
         <div class="img-box">
-          <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
+          <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid rounded" />
         </div>
       </div>
+
+      <!-- Product Info -->
       <div class="col-md-6">
         <div class="detail-box">
+          <h5><span>$</span> {{ product.price }}</h5>
+          <p>{{ product.description }}</p>
 
-          <h5>
-            <span>$</span> {{ product.price }}
-          </h5>
-          <p>
-            {{ product.description }}
-          </p>
-          <div class="overall-rating-stars">
-            <div class="product_info">
-
-                <div style='color:#f2b01e;font-size: 1.5rem' class="star_container">
-                  
-                  {% with 5|add:"0" as total_stars %}
-                  {% for i in total_stars|make_list %}
-                    {% if overall_rating >= forloop.counter %}
-                      <i class="fa fa-star" aria-hidden="true"></i>
-                    {% else %}
-                      <i class="fa fa-star-o" aria-hidden="true"></i>
-                    {% endif %}
-                  {% endfor %}
-                  <span style="font-size: 1.2rem;">({{ overall_rating }}/5)</span>
-                {% endwith %}
-                <div class="col-md-12">
-                {% if product.slug not in contextCart or not user.is_authenticated %}
-                
-                <form method="POST" action="{% url 'cart:cart_add' product.slug %}" class="d-flex align-items-center justify-content-between">
-                  {% csrf_token %}
-                  <input type="hidden" name="product_id" value="{{ product.id }}">
-                  <div class="input-group" style="width: 250px;">
-                      <input type="number" name="quantity" value="{{ quantity|default:1 }}" min="1" max="{{ product.stock }}" class="form-control" required>
-                      <button type="submit" class="btn btn-outline-info">Add To Cart</button>
-                  </div>
-                </form>
-                {% else %}
-                <a href='{% url "cart:cart_remove" product.slug %}' class="add_cart_btn btn btn-danger">
-                  <span>
-                    Remove from Cart
-                  </span>
-                </a>
-                {% endif %}
-              </div>
-                <br>
-                </div>
-              </div>
+          <!-- Product Rating -->
+          <div class="overall-rating-stars mb-3">
+            <div class="star_container" style="color: #f2b01e; font-size: 1.5rem;">
+              {% with 5|add:"0" as total_stars %}
+                {% for i in total_stars|make_list %}
+                  {% if overall_rating >= forloop.counter %}
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                  {% else %}
+                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                  {% endif %}
+                {% endfor %}
+              {% endwith %}
+              <span style="font-size: 1.2rem;">({{ overall_rating }}/5)</span>
             </div>
-            <div class="col-md-12">
-            {% if product  in contextWishlist %}
-          <a href='{% url "product:product_wishlist" product.slug %}' class="add_cart_btn btn btn-danger">
-            <span>
-              Remove from Wishlist
-            </span>
-          </a>
-          {% else %}
-          <a href='{% url "product:product_wishlist" product.slug %}' class="add_cart_btn btn btn-success">
-            <span>
-              Add To Wishlist
-            </span>
-          </a>
-          {% endif %}
-          
+          </div>
 
-        </div>
+          <!-- Add to Cart -->
+          <div class="col-md-12 mb-3">
+            {% if product.slug not in contextCart or not user.is_authenticated %}
+              <form method="POST" action="{% url 'cart:cart_add' product.slug %}" class="d-flex align-items-center">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <div class="input-group" style="width: 250px;">
+                  <input type="number" name="quantity" value="{{ quantity|default:1 }}" min="1" max="{{ product.stock }}" class="form-control" required>
+                  <button type="submit" class="btn btn-outline-info">Add To Cart</button>
+                </div>
+              </form>
+            {% else %}
+              <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-danger">
+                Remove from Cart
+              </a>
+            {% endif %}
+          </div>
+
+          <!-- Add to Wishlist -->
+          <div class="col-md-12">
+            {% if product in contextWishlist %}
+              <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-danger">
+                Remove from Wishlist
+              </a>
+            {% else %}
+              <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-success">
+                Add To Wishlist
+              </a>
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Additional Information -->
     <div class="row mt-5">
       <div class="col-md-12">
         <h4>Additional Information</h4>
@@ -96,6 +89,7 @@
         </ul>
       </div>
     </div>
+
     <!-- Feedback Section -->
     <div class="row mt-5">
       <h3 class="text-center mb-4">Rate and Review This Product</h3>
@@ -104,7 +98,6 @@
           {% csrf_token %}
           <div class="mb-3">
             <label for="{{ form.rating.id_for_label }}" class="form-label">Rating</label>
-            <div class="form-rating">
             <div class="form-rating">
               {% for choice in form.rating.field.choices %}
                 <div class="form-check form-check-inline">
@@ -115,13 +108,15 @@
             </div>
           </div>
           <div class="mb-3">
-            <label for="{{ form.content.id_for_label }}" class="form-label">Your review</label>
+            <label for="{{ form.content.id_for_label }}" class="form-label">Your Review</label>
             <textarea name="{{ form.content.name }}" id="{{ form.content.id_for_label }}" class="form-control" rows="3">{{ form.content.value }}</textarea>
           </div>
           <div class="text-center">
             <button type="submit" class="btn btn-primary btn-lg px-5">Submit Review</button>
           </div>
         </form>
+
+        <!-- Reviews -->
         <h4 class="mt-5">Feedback Section</h4>
         <div id="reviews-container" class="mt-3">
           <div class="btn-group mb-3" role="group" aria-label="Review Filter">
@@ -150,11 +145,8 @@
         </div>
       </div>
     </div>
-    <!-- end Feedback Section -->
-
   </div>
 </section>
-<!-- end product details section -->
 
 <script>
   const filterAllButton = document.getElementById('filter-all');
@@ -164,19 +156,18 @@
   const reviewItems = reviewsContainer.getElementsByClassName('review-item');
 
   function filterReviews(filter) {
-      for (let i = 0; i < reviewItems.length; i++) {
-          const reviewItem = reviewItems[i];
-          if (filter === 'all') {
-              reviewItem.style.display = 'block';
-          } else if (filter === 'good') {
-              reviewItem.style.display = reviewItem.classList.contains('good-review') ? 'block' : 'none';
-          } else if (filter === 'bad') {
-              reviewItem.style.display = reviewItem.classList.contains('bad-review') ? 'block' : 'none';
-          }
+    for (let i = 0; i < reviewItems.length; i++) {
+      const reviewItem = reviewItems[i];
+      if (filter === 'all') {
+        reviewItem.style.display = 'block';
+      } else if (filter === 'good') {
+        reviewItem.style.display = reviewItem.classList.contains('good-review') ? 'block' : 'none';
+      } else if (filter === 'bad') {
+        reviewItem.style.display = reviewItem.classList.contains('bad-review') ? 'block' : 'none';
       }
+    }
   }
 
-  // إضافة أحداث النقر للأزرار
   filterAllButton.addEventListener('click', () => filterReviews('all'));
   filterGoodButton.addEventListener('click', () => filterReviews('good'));
   filterBadButton.addEventListener('click', () => filterReviews('bad'));

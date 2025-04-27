@@ -45,88 +45,81 @@
 
 <section class="compare-section layout-padding">
     <div class="container">
-        <div class="heading-container heading-center">
+        <header class="heading-container heading-center">
             <h2>Product Comparison</h2>
-        </div>
+        </header>
         <div class="row">
             <div class="col-12">
-                <div class="compare-table table-responsive">
-                    <table class="table table-bordered">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">Features</th>
-                                {% for product in products %}
-                                    <th scope="col" class="text-center">{{ product.name }}</th>
-                                {% endfor %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="align-middle">Image</td>
-                                {% for product in products %}
-                                    <td class="text-center">
-                                        <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid rounded" style="width: 150px; height: 150px; object-fit: cover;">
-                                    </td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="align-middle">Price</td>
-                                {% for product in products %}
-                                    <td class="text-center">${{ product.price }}</td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="align-middle">Description</td>
-                                {% for product in products %}
-                                    <td class="text-center">{{ product.description|truncatewords:20 }}</td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="align-middle">Category</td>
-                                {% for product in products %}
-                                    <td class="text-center">{{ product.category.name }}</td>
-                                {% endfor %}
-                            </tr> 
-                            <tr>
-                                <td class="align-middle">Brand</td>
-                                {% for product in products %}
-                                    <td class="text-center">{{ product.Brand.name }}</td>
-                                {% endfor %}
-                            </tr> 
-                            <tr>
-                                <td class="align-middle">Rating</td>
-                                {% for product in products %}
-                                    <td class="text-center">{{ product.overall_rating|floatformat:1 }} / 5</td>
-                                {% endfor %}
-                            </tr>
-                            <tr>
-                                <td class="align-middle">Actions</td>
-                                {% for product in products %}
-                                <td class="text-center">
-                                    <div class="btn-group-vertical" style="width: 100%;">
-                                        <a href="{% url 'product:product_detail' product.slug %}" class="btn btn-outline-primary btn-sm">
-                                            <i class="fa fa-eye"></i> View Details
-                                        </a>
-                                        {% if product.slug not in contextCart or not user.is_authenticated %}
-                                        <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-outline-success btn-sm">
-                                            <i class="fa fa-cart-plus"></i> Add to Cart
-                                        </a>
-                                        {% else %}
-                                        <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-outline-danger btn-sm">
-                                            <i class="fa fa-cart-arrow-down"></i> Remove from Cart
-                                        </a>
-                                        
-                                        {% endif %}
-                                        <button class="btn btn-outline-warning btn-sm remove-compare-btn" data-product-id="{{ product.id }}">
-                                            <i class="fa fa-minus"></i> Remove
-                                        </button>
+            <div class="compare-table table-responsive">
+                <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                    <th scope="col">Features</th>
+                    {% for product in products %}
+                        <th scope="col">{{ product.name }}</th>
+                    {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for field in fields %}
+                    <tr>
+                        {% if field.name not in 'id,name,slug,cost,created_at' %}
+                            <td class="align-middle">{{ field.verbose_name }}</td>
+                            {% for product in products %}
+                            <td class="align-middle">
+                                {% if field.name == 'image' %}
+                                    <img src="{{ product.image|default:'https://via.placeholder.com/400' }}" alt="{{ product.name }}" class="img-fluid rounded" style="width: 150px; height: 150px; object-fit: cover;">
+                                {% elif field.name == 'price' %}
+                                    <h5><span>$</span> {{ product.price|default:"N/A" }}</h5>
+
+                                {% elif field.name == 'overall_rating' %}
+                                    <div class="star-container">
+                                        {% for i in "12345"|make_list %}
+                                            <i style="font-size: 1.2rem;color:rgba(228, 198, 32, 0.78);" class="fa {% if product.overall_rating >= forloop.counter %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true"></i>
+                                        {% endfor %}
+                                        <span style="font-size: 1.2rem;">({{ product.overall_rating|default:"N/A" }}/5)</span>
                                     </div>
-                                </td>
-                                {% endfor %}
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                                {% elif field.name == 'brand' %}
+                                    {{ product.brand.name|default:"N/A" }}
+                                {% elif field.name == 'category' %}
+                                    {{ product.category.name|default:"N/A" }}
+                                {% elif field.name == 'stock' %}
+                                    {{ product.stock|default:"N/A" }}
+                                {% elif field.name == 'description' %}
+                                    {{ product.description|default:"N/A" }}
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td class="align-middle">Actions</td>
+                        {% for product in products %}
+                        <td class="text-center">
+                            <div class="btn-group-vertical" style="width: 100%;">
+                                <a href="{% url 'product:product_detail' product.slug %}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fa fa-eye"></i> View Details
+                                </a>
+                                {% if product.slug not in contextCart or not user.is_authenticated %}
+                                <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-outline-success btn-sm">
+                                    <i class="fa fa-cart-plus"></i> Add to Cart
+                                </a>
+                                {% else %}
+                                <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa fa-cart-arrow-down"></i> Remove from Cart
+                                </a>
+                                {% endif %}
+                                <button class="btn btn-outline-warning btn-sm remove-compare-btn" data-product-id="{{ product.id }}">
+                                    <i class="fa fa-minus"></i> Remove
+                                </button>
+                            </div>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+                </table>
+            </div>
             </div>
         </div>
     </div>
@@ -150,4 +143,5 @@
 </script>
 
 {% endblock body %}
+
 

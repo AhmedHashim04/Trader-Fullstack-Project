@@ -78,7 +78,7 @@ class ProductsView(ListView):
         return context
 
 
-class CompareProductsView(LoginRequiredMixin , TemplateView):
+class CompareProductsView(LoginRequiredMixin, TemplateView):
     template_name = 'product/compare_products.html'
 
     def get_context_data(self, **kwargs):
@@ -86,9 +86,11 @@ class CompareProductsView(LoginRequiredMixin , TemplateView):
 
         product_ids = self.request.GET.getlist('product_id')
         products = Product.objects.filter(id__in=product_ids)
-        context['products'] = products
-        return context
+        fields = [field for field in Product._meta.get_fields() if not field.many_to_many and not field.one_to_many]
 
+        context['products'] = products
+        context['fields'] = fields
+        return context
 
 class ProductViewDetail(LoginRequiredMixin, DetailView ,CreateView):
     model = Product
