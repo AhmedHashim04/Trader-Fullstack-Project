@@ -1,5 +1,3 @@
-
-
 <section class="product-section layout-padding">
   <div class="container">
     <div class="heading-container heading-center">
@@ -7,56 +5,57 @@
     </div>
     <div class="row">
       {% for product in all_products %}
-        <div class="col-sm-6 col-lg-3 col-md-4">
-          <div class="box">
-          <div class="product-box">
-            <div class="img-box">
-              <a href="{% url 'product:product_detail' product.slug %}">
-                <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid" />
-              </a>            </div>
-            <div class="product-info">
-              <h5>{{ product.name }}</h5>
-              <div class="price-box">
-                <h5><span>$</span> {{ product.price }}</h5>
+        <div class="col-sm-6 col-lg-3 col-md-4 mb-4">
+          <div class="box shadow-sm">
+            <div class="product-box">
+              <div class="img-box">
+                <a href="{% url 'product:product_detail' product.slug %}">
+                  <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid rounded">
+                </a>
               </div>
-              <div class="star-container">
-                {% for i in "12345" %}
-                  {% if product.overall_rating >= i|add:"0" %}
-                    <i class="fa fa-star" aria-hidden="true"></i>
+              <div class="product-info text-center mt-3">
+                <h5 class="fw-bold">{{ product.name }}</h5>
+                <div class="price-box">
+                  <h5><span>$</span> {{ product.price }}</h5>
+                </div>
+                <div class="star-container">
+                  {% for i in "12345" %}
+                    <i class="fa {% if product.overall_rating >= i|add:"0" %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true"></i>
+                  {% endfor %}
+                </div>
+                <div class="product-actions mt-3">
+                  {% if product.slug in contextCart %}
+                    <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-warning">
+                      <i class="fa fa-shopping-cart" aria-hidden="true"></i> Remove from Cart
+                    </a>
+                  {% else %}
+                    <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-outline-warning">
+                      <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to Cart
+                    </a>
                   {% endif %}
-                {% endfor %}
-              </div>
-              <div class="product-actions">
-
-                {% if product.slug in contextCart %}
-                <a href="{% url 'cart:cart_remove' product.slug %}"class="btn btn-warning">
-                {% else %}
-                <a href="{% url 'cart:cart_add' product.slug %}"class="btn btn-outline-warning">
-                {% endif %}
-                  <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                </a>
-                {% if product in contextWishlist %}
-                <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-danger">
-                {% else %}
-                <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-outline-danger">
-                {% endif %}
-
-                  <i class="fa fa-heart" aria-hidden="true"></i>
-                </a>
-                <button class="btn btn-outline-info compare-btn" data-product-id="{{ product.id }}">
-                  <i class="fa fa-plus" aria-hidden="true"></i> 
-                </button>
+                  {% if product in contextWishlist %}
+                    <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-danger">
+                      <i class="fa fa-heart" aria-hidden="true"></i> Remove from Wishlist
+                    </a>
+                  {% else %}
+                    <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-outline-danger">
+                      <i class="fa fa-heart" aria-hidden="true"></i> Add to Wishlist
+                    </a>
+                  {% endif %}
+                  <button class="btn btn-outline-info compare-btn mt-2" data-product-id="{{ product.id }}">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Compare
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        </div>
       {% endfor %}
     </div>
-    <div class="compare-btn-container">
+    <div class="compare-btn-container text-center mt-4">
       <button id="compareButton" class="btn btn-info">Compare Selected Products</button>
     </div>
-    <nav aria-label="Product pages">
+    <nav aria-label="Product pages" class="mt-4">
       <ul class="pagination justify-content-center">
         {% if all_products.has_previous %}
           <li class="page-item">
@@ -111,44 +110,29 @@
       let selectedProducts = JSON.parse(localStorage.getItem('compareProducts')) || [];
 
       function updateCompareButton() {
-          if (selectedProducts.length > 1) {
-              compareButton.style.display = 'block';
-          } else {
-              compareButton.style.display = 'none';
-          }
+          compareButton.style.display = selectedProducts.length > 1 ? 'block' : 'none';
       }
 
-      // Function to update the button icon and text
       function updateButton(btn, isSelected) {
           const icon = btn.querySelector('i');
-          if (isSelected) {
-              icon.classList.remove('fa-plus');
-              icon.classList.add('fa-minus');
-              btn.innerHTML = '<i class="fa fa-minus"></i> ';
-          } else {
-              icon.classList.remove('fa-minus');
-              icon.classList.add('fa-plus');
-              btn.innerHTML = '<i class="fa fa-plus"></i> Match';
-          }
+          btn.innerHTML = isSelected
+              ? '<i class="fa fa-minus"></i> Remove'
+              : '<i class="fa fa-plus"></i> Compare';
       }
 
       compareBtns.forEach(btn => {
           const productId = btn.getAttribute('data-product-id');
-          
-          // Set initial state of button based on whether the product is already selected
           updateButton(btn, selectedProducts.includes(productId));
 
           btn.addEventListener('click', function() {
               if (selectedProducts.includes(productId)) {
                   selectedProducts = selectedProducts.filter(id => id !== productId);
                   updateButton(btn, false);
+              } else if (selectedProducts.length < 4) {
+                  selectedProducts.push(productId);
+                  updateButton(btn, true);
               } else {
-                  if (selectedProducts.length < 4) {
-                      selectedProducts.push(productId);
-                      updateButton(btn, true);
-                  } else {
-                      alert('You can compare up to 4 products only');
-                  }
+                  alert('You can compare up to 4 products only');
               }
               localStorage.setItem('compareProducts', JSON.stringify(selectedProducts));
               updateCompareButton();
