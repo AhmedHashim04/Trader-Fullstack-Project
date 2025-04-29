@@ -1,177 +1,105 @@
-{% extends "base.html" %}
-{% block body %}
+    {% extends "base.html" %}
+    {% block body %}
 
-<section class="cart_section layout_padding">
+    <section class="cart_section layout_padding">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
-                <div class="cart_items">
-                    <table class="table table-bordered">
-                        <thead class="thead-light ">
-                            <tr>
-                                <th scope="col">Product</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Total</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in cart %}
-                            <tr>
-                                <td>
-                                    <img src="{% if item.product.image %}{{ item.product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ item.product.name }}" class="img-fluid rounded"  style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;"/>
-                                </td> 
-                                <td>
-                                <a href='{% url "product:product_detail" item.product.slug %}'>  {{ item.product.name }}</a></td>
-                                <td>${{ item.product.price }}</td>
-                                <td>
+        <!-- Cart Items -->
+        <div class="col-lg-8">
+            <div class="cart_items">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr>
+                    <td>
+                        <img src="{{ item.product.image|default:'https://via.placeholder.com/400' }}" alt="{{ item.product.name }}" class="img-fluid rounded" style="width: 50px; height: 50px; object-fit: cover;" />
+                    </td>
+                    <td>
+                        <a href="{% url 'product:product_detail' item.product.slug %}">{{ item.product.name }}</a>
+                    </td>
+                    <td>${{ item.price }}</td>
+                    <td>
+                        <form method="post" action="{% url 'cart:cart_update' item.product.slug %}" class="d-flex align-items-center">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="form-control form-control-sm" style="width: 70px;" required>
+                            <button type="submit" class="btn btn-sm btn-outline-info ml-2">Update</button>
+                        </form>
+                    </td>
+                    <td>${{ item.get_total_price }}</td>
+                    <td>
+                        <a href="{% url 'cart:cart_remove' item.product.slug %}" class="btn btn-sm btn-danger">Remove</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>    </div>
+        </div>
 
-                                    <form method="post" action="{% url 'cart:cart_update' item.product.slug %}" class="d-flex align-items-center justify-content-between">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="product_id" value="{{ item.product.id }}">
-                                        <div class="input-group" style="width: 250px;">
-                                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="form-control" required>
-                                            <button type="submit" class="btn btn-sm btn-outline-info">Update</button>
-                                        </div>
-                                    </form>
-                                </td>
-                                <td>${{ item.total }}</td>
-                                <td>
-                                    <a href="{% url 'cart:cart_remove' item.product.slug %}" class="btn btn-sm btn-danger">Remove</a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Cart Summary -->
+        <div class="col-lg-4">
+            <div class="cart_summary bg-light p-4 rounded">
+            <h4 class="mb-4">Cart Summary</h4>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between">
+                <span>Subtotal:</span>
+                <span>${{ total_price }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                <span>Tax:</span>
+                <span>$10</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between font-weight-bold">
+                <span>Total:</span>
+                <span>${{ total_price|add:10 }}</span>
+                </li>
+            </ul>
+            <div class="cart-total mt-4">
+                <a href="{% url 'order:create_order' %}" class="btn btn-success btn-block mb-3">Create Order</a>
+                <a href="{% url 'cart:cart_clear' %}" class="btn btn-danger btn-block mb-3">Clear Cart</a>
             </div>
-            <div class="col-lg-4">
-                <div class="cart_summary bg-light p-4 rounded">
-                    <h4 class="mb-4">Cart Summary</h4>
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Subtotal:</span>
-                            <span>${{ total_price }}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Tax:</span>
-                            <span>$10</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between font-weight-bold">
-                            <span>Total:</span>
-                            <span>${{ total_price|add:10 }}</span>
-                        </li>
-                    </ul>
-                            <div class="cart-total">
-                                <a href="{% url 'order:create_order' %}" class="btn btn-success btn-block mb-3">Creat Order</a>
-                                <a href="{% url 'cart:cart_clear' %}" class="btn btn-danger btn-block mb-3">Clear Cart</a>
-
-                            </div>
-                    {% comment %} <form class="coupon_form mt-4">
-                        <label for="coupon_code">Coupon Code</label>
-                        <div class="input-group">
-                            <input type="text" id="coupon_code" class="form-control" placeholder="Enter your code">
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-primary">Apply</button>
-                            </div>
-                        </div>
-                    </form> {% endcomment %}
-
-                    <div id="paypal-button-container" class="mt-4"></div>
-
-                    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
-
-                    <script>
-                         paypal.Buttons({
-
-                            style: {
-                                color:  'silver', // You can change the color to match your site
-                                shape:  'rect',    // Shape can be 'rect' or 'pill'
-                                label:  'checkout', // Possible labels: 'checkout', 'pay', 'buynow', 'paypal', 'paylater'
-                                height: 40
-                            },
-                            
-                            // Set up the transaction on the server
-                            createOrder: function(data, actions) {
-                                return fetch('/demo/checkout/api/paypal/order/create/', {
-                                    method: 'post'
-                                }).then(function(res) {
-                                    return res.json();
-                                }).then(function(orderData) {
-                                    return orderData.id;
-                                });
-                            },
-
-                            // Finalize the transaction on the server
-                            onApprove: function(data, actions) {
-                                return fetch('/demo/checkout/api/paypal/order/' + data.orderID + '/capture/', {
-                                    method: 'post'
-                                }).then(function(res) {
-                                    return res.json();
-                                }).then(function(orderData) {
-                                    var errorDetail = Array.isArray(orderData.details) && orderData.details[0];
-
-                                    if (errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED') {
-                                        return actions.restart();
-                                    }
-
-                                    if (errorDetail) {
-                                        var msg = 'Sorry, your transaction could not be processed.';
-                                        if (errorDetail.description) msg += '\n\n' + errorDetail.description;
-                                        if (orderData.debug_id) msg += ' (' + orderData.debug_id + ')';
-                                        return alert(msg);
-                                    }
-
-                                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
-                                    var transaction = orderData.purchase_units[0].payments.captures[0];
-                                    alert('Transaction '+ transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
-
-                                });
-                            }
-
-                        }).render('#paypal-button-container');
-                    </script>                    
-                </div>
+            <div id="paypal-button-container" class="mt-4"></div>
             </div>
         </div>
+        </div>
     </div>
-</section>
+    </section>
 
-<style>
-    .cart_section {
-        background-color: #f9f9f9;
-        padding: 60px 0;
-    }
+    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+    <script>
+    paypal.Buttons({
+        style: {
+        color: 'silver',
+        shape: 'rect',
+        label: 'checkout',
+        height: 40
+        },
+        createOrder: function(data, actions) {
+        return fetch('/demo/checkout/api/paypal/order/create/', {
+            method: 'post'
+        }).then(res => res.json()).then(orderData => orderData.id);
+        },
+        onApprove: function(data, actions) {
+        return fetch('/demo/checkout/api/paypal/order/' + data.orderID + '/capture/', {
+            method: 'post'
+        }).then(res => res.json()).then(orderData => {
+            if (orderData.details && orderData.details[0].issue === 'INSTRUMENT_DECLINED') {
+            return actions.restart();
+            }
+            alert('Transaction completed successfully!');
+        });
+        }
+    }).render('#paypal-button-container');
+    </script>
 
-    .heading_container h2 {
-        font-size: 2.5rem;
-        color: #333;
-    }
-
-    .cart_summary {
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn-primary {
-        background-color: #0070ba; 
-        border-color: #0070ba;
-    }
-
-    .btn-primary:hover {
-        background-color: #005c99;
-        border-color: #005c99;
-    }
-
-    .table th, .table td {
-        vertical-align: middle;
-    }
-
-    .quantity-input {
-        width: 80px;
-    }
-</style>
-
-{% endblock body %}
+    {% endblock body %}
 

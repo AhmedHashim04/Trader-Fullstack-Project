@@ -266,17 +266,6 @@ body {
   color: var(--primary-color);
 }
 
-.toast-message {
-  background-color: var(--highlight-color);
-  color: #ffffff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  margin-top: 10px;
-  opacity: 0;
-  transform: translateY(100%);
-  transition: opacity 0.5s, transform 0.5s;
-}
-
 
 .heart-icon {
   color: var(--highlight-color);
@@ -681,3 +670,89 @@ a:focus {
   resize: vertical;
 }
 
+.cart_section {
+  background-color: #f9f9f9;
+  padding: 60px 0;
+}
+
+.heading_container h2 {
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.cart_summary {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+  background-color: #0070ba; 
+  border-color: #0070ba;
+}
+
+.btn-primary:hover {
+  background-color: #005c99;
+  border-color: #005c99;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.quantity-input {
+  width: 80px;
+}
+
+#toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast-message {
+  background-color: #333;
+  color: #fff;
+  padding: 16px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.toast-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast-message.success {
+  background-color: var(--primary-color);
+}
+
+.toast-message.error {
+  background-color: #f44336;
+}
+
+.toast-message.info {
+  background-color: #2196f3;
+}
+
+.toast-message.warning {
+  background-color: #ff9800;
+}
+
+.toast-message button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
