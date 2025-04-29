@@ -1,79 +1,107 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 {% block body %}
-<div class="container mt-5">
-    <ul class="nav nav-tabs justify-content-center" id="profileTabs" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active bg-warning" id="personal-info-tab" data-bs-toggle="tab" href="#personal-info" role="tab">
-                <i class="fas fa-user me-2 "></i>Personal Information
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link " id="orders-tab" data-bs-toggle="tab" href="{% url 'order:order_list' %}" role="tab">
-                <i class="fas fa-shopping-cart me-2"></i>Orders
-            </a>
-        </li>
-    </ul>
-
-    <div class="tab-content mt-4">
-        <div class="tab-pane fade show active" id="personal-info" role="tabpanel">
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-gradient-primary text-white text-center py-4 bg-info">
-                    <h4 class="mb-0 d-flex align-items-center justify-content-center ">
-                        <i class="fas fa-user-circle me-3"></i> Personal Information
-                    </h4>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-gradient-primary text-primary text-center py-4 rounded-top">
+                    <h2 class="mb-0">User Profile</h2>
                 </div>
-                <div class="card-body">
-                    <div class="profile-header text-center mb-5">
-                        <img src="{% if profile.profile_image %}{{profile.profile_image.url}}{% else %}{% static 'image/items/item-9.png' %}{% endif %}" 
-                            alt="{{ profile.user }}" class="img-fluid rounded-circle shadow mb-3" style="max-width: 150px;">
-                        <h2 class="fw-bold">{{profile.user}}</h2>
-                        <p class="text-muted">Member since: {{profile.date_joined|date:"Y-m-d"}}</p>
-                        <p class="text-muted">Manage your personal information and settings</p>
-                    </div>
-
-                    <div class="row">
+                <div class="card-body p-4">
+                    <div class="row g-4">
+                        <!-- Personal Information -->
                         <div class="col-md-6">
-                            <div class="card border-0 shadow-sm mb-4">
+                            <div class="card border-0 shadow-sm h-100">
                                 <div class="card-body">
-                                    <h5 class="card-title text-primary mb-3"><i class="fas fa-id-card me-2"></i>Personal Information</h5>
-                                    <p class="card-text">
-                                        <strong>Full Name:</strong> {{profile.user.first_name}} {{profile.user.last_name}}
-                                    </p>
-                                    <p class="card-text">
-                                        <strong>Phone:</strong> {{profile.phone_number}}
-                                    </p>
-                                    <p class="card-text">
-                                        <strong>Date of Birth:</strong> {{profile.date_of_birth}}
-                                    </p>
-                                    <p class="card-text">
-                                        <strong>Email:</strong> {{profile.user.email}}
-                                    </p>
+                                    <h5 class="card-title text-primary mb-3">
+                                        <i class="fas fa-user-circle me-2"></i>Personal Information
+                                    </h5>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <strong>Full Name:</strong> {{ profile.user.first_name }} {{ profile.user.last_name }}
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Phone:</strong> {{ profile.phone_number }}
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Date of Birth:</strong> {{ profile.date_of_birth }}
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Email:</strong> {{ profile.user.email }}
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                            
-                            <div class="card border-0 shadow-sm mb-4">
+                        </div>
+
+                        <!-- Shipping Address -->
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm h-100">
                                 <div class="card-body">
-                                    <h5 class="card-title text-primary mb-3"><i class="fas fa-map-marker-alt me-2"></i>Shipping Address</h5>
-                                    <p class="card-text">
-                                        <strong>Address:</strong> {{profile.address}}, {{profile.city}}, {{profile.country}}
-                                    </p>
-                                    <p class="card-text">
-                                        <strong>ZIP Code:</strong> {{profile.postal_code}}
-                                    </p>
+                                    <h5 class="card-title text-primary mb-3">
+                                        <i class="fas fa-map-marker-alt me-2"></i>Shipping Address
+                                    </h5>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <strong>Address:</strong> {{ profile.address }}, {{ profile.city }}, {{ profile.country }}
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>ZIP Code:</strong> {{ profile.postal_code }}
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                            
-                            <a href="{% url 'account:user_profile_edit' user.profile.id %}" class="btn btn-primary btn-lg w-100 shadow-sm">
-                                <i class="fas fa-edit me-2"></i>Edit Profile
-                            </a>
                         </div>
                     </div>
-                    <div class="text-center mt-5">
-                        <a href="{% url 'account:logout' %}" class="btn btn-danger btn-lg shadow-sm">
-                            <i class="fas fa-sign-out-alt me-2"></i>Logout
-                        </a>
+
+                    <div class="row g-4 mt-4">
+                        <!-- View Orders -->
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-primary mb-3">
+                                        <i class="fas fa-list me-2"></i>View Orders
+                                    </h5>
+                                    <a href="{% url 'order:order_list' %}" class="btn btn-outline-secondary w-100 shadow-sm">
+                                        <i class="fa fa-list me-2"></i>View Orders
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Edit Profile -->
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-primary mb-3">
+                                        <i class="fas fa-edit me-2"></i>Edit Profile
+                                    </h5>
+                                    <a href="{% url 'account:user_profile_edit' user.profile.id %}" class="btn btn-primary w-100 shadow-sm">
+                                        <i class="fas fa-edit me-2"></i>Edit Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Logout -->
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-primary mb-3">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    </h5>
+                                    <a href="{% url 'account:logout' %}" class="btn btn-danger w-100 shadow-sm">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="card-footer text-center bg-light rounded-bottom py-3">
+                    <small class="text-muted">© {% now "DATE_FORMAT" %} Trader E-commerce Platform</small>
                 </div>
             </div>
         </div>

@@ -39,6 +39,7 @@ def create_order(request):
         if form.is_valid():
             # Send confirmation email first
             return send_order_email(request, request.user, form)
+        
     else:
         profile = request.user.profile
         form = CompleteOrderForm(initial={
@@ -57,17 +58,17 @@ def send_order_email(request, user, form):
     try:
         # Generate unique confirmation key
         confirmation_key = uuid.uuid4().hex
-        
-        # Store form data in session
-        request.session['pending_order'] = {
+        # Store form data in cache
+        cache_key = f"pending_order_{confirmation_key}"
+        cache.set(cache_key, {
             'confirmation_key': confirmation_key,
             'form_data': form.cleaned_data
-        }
+        }, timeout=86400)  # expire after 24 hours
 
         # Build confirmation URL
         confirm_url = request.build_absolute_uri(
-            reverse('order:confirm_order', args=[confirmation_key])
-        )
+            reverse('order:confirm_order', args=[confirmation_key]))
+        # End of print statement
         
         # Prepare email content
         subject = 'Order Confirmation Required'
@@ -76,7 +77,7 @@ def send_order_email(request, user, form):
         
         Please click the following link to confirm your order:
         {confirm_url}
-        
+    
         This link will expire in 24 hours.
         '''
         
@@ -87,7 +88,9 @@ def send_order_email(request, user, form):
             settings.EMAIL_HOST_USER,
             [user.email],
         )
-
+            
+        
+        # Send email
         messages.success(request, 'Please check your email to confirm your order.')
         return redirect('order:order_list')
 
@@ -103,7 +106,9 @@ def confirm_order(request, confirmation_key):
     cache_key = f"pending_order_{confirmation_key}"
     pending_order = cache.get(cache_key)
 
+
     if not pending_order:
+        print(f"Cache miss for key: {cache_key}")
         messages.error(request, 'Invalid or expired confirmation link.')
         return redirect('cart:cart_list')
 
