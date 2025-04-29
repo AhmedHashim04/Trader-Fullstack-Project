@@ -14,20 +14,6 @@ import uuid
 from django.core.cache import cache
 
 
-# def confirm_order(request, confirmation_key,form):
-    
-#         order = get_object_or_404(Order, confirmation_key=confirmation_key)
-#         if order:
-#             order.confirmed = True
-#             order.confirmation_key = ''
-#             complete_order = complete_order(request, form)
-
-#             order.save()
-#             messages.success(request, 'Order Had Confirmed Successfuly !')
-#         else:
-#             messages.error(request, 'Confirmed Failed , Invalid key !')
-#         reverse('order:order_detail', args=[order.id])
-
 def create_order(request):
     cart = cart_branch(request)
     if not cart.cart:
@@ -37,9 +23,7 @@ def create_order(request):
     if request.method == 'POST':
         form = CompleteOrderForm(request.POST)
         if form.is_valid():
-            # Send confirmation email first
             return send_order_email(request, request.user, form)
-        
     else:
         profile = request.user.profile
         form = CompleteOrderForm(initial={
@@ -50,47 +34,38 @@ def create_order(request):
             'postal_code': profile.postal_code,
             'paied': False,
         })
-        
 
     return render(request, 'order/create_order.html', {"form": form})
 
+
 def send_order_email(request, user, form):
     try:
-        # Generate unique confirmation key
         confirmation_key = uuid.uuid4().hex
-        # Store form data in cache
         cache_key = f"pending_order_{confirmation_key}"
         cache.set(cache_key, {
             'confirmation_key': confirmation_key,
             'form_data': form.cleaned_data
-        }, timeout=86400)  # expire after 24 hours
+        }, timeout=86400)  # 24 hours
 
-        # Build confirmation URL
         confirm_url = request.build_absolute_uri(
-            reverse('order:confirm_order', args=[confirmation_key]))
-        # End of print statement
-        
-        # Prepare email content
+            reverse('order:confirm_order', args=[confirmation_key])
+        )
+
         subject = 'Order Confirmation Required'
         message = f'''
-        Thank you for your order!
-        
-        Please click the following link to confirm your order:
-        {confirm_url}
-    
-        This link will expire in 24 hours.
+Thank you for your order!
+
+Please click the following link to confirm your order:
+{confirm_url}
+
+This link will expire in 24 hours.
         '''
-        
-        # For development, just print the email
-        print(
-            subject,
-            message,
-            settings.EMAIL_HOST_USER,
-            [user.email],
-        )
-            
-        
-        # Send email
+
+        # لتجربة الإرسال الحقيقي فعّل السطر التالي:
+        # send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
+
+        print(subject, message, settings.EMAIL_HOST_USER, [user.email])  # للتجريب
+
         messages.success(request, 'Please check your email to confirm your order.')
         return redirect('order:order_list')
 
@@ -100,26 +75,19 @@ def send_order_email(request, user, form):
         return redirect('cart:cart_list')
 
 
-
 def confirm_order(request, confirmation_key):
-    # Check cache for pending order
     cache_key = f"pending_order_{confirmation_key}"
     pending_order = cache.get(cache_key)
 
-
     if not pending_order:
-        print(f"Cache miss for key: {cache_key}")
         messages.error(request, 'Invalid or expired confirmation link.')
         return redirect('cart:cart_list')
 
     try:
-        # Create form instance with stored data
         form = CompleteOrderForm(pending_order['form_data'])
         if form.is_valid():
-            # Create the order
             order = complete_order(request, form)
             if order:
-                # Clear pending order from cache
                 cache.delete(cache_key)
                 messages.success(request, 'Order confirmed successfully!')
                 return redirect('order:order_detail', order.id)
@@ -131,18 +99,19 @@ def confirm_order(request, confirmation_key):
         messages.error(request, str(e))
         return redirect('cart:cart_list')
 
+
 @login_required
 @transaction.atomic
 def complete_order(request, form):
     cart = cart_branch(request)
-    if not cart:
+    if not cart.cart:
         messages.warning(request, 'Your shopping cart is empty!')
-        return redirect('cart:cart_list')
-    
+        return None
+
     total_price = 0
     order_items = []
-    
-    try:              
+
+    try:
         with transaction.atomic():
             order = Order.objects.create(
                 user=request.user,
@@ -151,40 +120,44 @@ def complete_order(request, form):
                 address=form.cleaned_data['address'],
                 city=form.cleaned_data['city'],
                 postal_code=form.cleaned_data['postal_code'],
-                paied=form.cleaned_data['paied'],
+                #paied=form.cleaned_data['paied'],
                 confirmed=True
             )
 
             for item in cart:
                 product = item['product']
                 quantity = item['quantity']
-                if quantity > product.stock and quantity >= 1:
-                    raise ValueError(f'The requested quantity of {product.name} is not available. The available quantity is {product.stock}.')
-                
+                if quantity > product.stock or quantity < 1:
+                    raise ValueError(f'The requested quantity of {product.name} is not available. Available: {product.stock}')
+
                 price = product.price * quantity
                 order_item = OrderItem(order=order, product=product, quantity=quantity, price=price)
                 order_items.append(order_item)
                 total_price += price
-                
+
                 product.stock -= quantity
                 product.save()
-                
+
             if total_price >= 1:
                 OrderItem.objects.bulk_create(order_items)
-            
+
             order.total_price = total_price
             order.save()
             cart.clear()
-            
+
             return order
-    
+
     except ValueError as e:
         messages.error(request, str(e))
         return None
     except Exception as e:
+        import traceback
+        print("Unexpected error during order creation:", str(e))
+        traceback.print_exc()  # يطبع التراك باك بالكامل في الكونسول
         messages.error(request, 'An error occurred while creating the order. Please try again.')
         return None
 
+ 
 @login_required
 @transaction.atomic
 def clear_order_history(request):
@@ -193,12 +166,8 @@ def clear_order_history(request):
         messages.success(request, 'Order history cleared successfully!')
     except Exception as e:
         messages.error(request, 'An error occurred while clearing the order history. Please try again.')
-    
+
     return redirect('order:order_list')
-
-
-    def get_queryset(self):
-        return Order.objects.filter(user=self.request.user, confirmed=True).order_by('-created_at')
 
 
 class OrderListView(LoginRequiredMixin, ListView):
@@ -208,13 +177,11 @@ class OrderListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         cache_key = f"order_list_{self.request.user.id}"
-        print(cache_key)
         orders = cache.get(cache_key)
-
 
         if not orders:
             orders = Order.objects.filter(user=self.request.user, confirmed=True).order_by('-created_at')
-            cache.set(cache_key, orders, timeout=60 * 15)  # Cache for 15 minutes
+            cache.set(cache_key, orders, timeout=60 * 15)
 
         return orders
 
@@ -223,8 +190,7 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = 'order/order_detail.html'
     context_object_name = 'order'
-    slug_url_kwarg = 'id'
-    slug_field = 'id'
+    pk_url_kwarg = 'id'
 
     def get_queryset(self):
         cache_key = f"order_detail_{self.request.user.id}_{self.kwargs['id']}"
@@ -232,6 +198,9 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
 
         if not order:
             order = Order.objects.filter(user=self.request.user, id=self.kwargs['id']).first()
-            cache.set(cache_key, order, timeout=60 * 15)  # Cache for 15 minutes
+            if order:
+                cache.set(cache_key, order, timeout=60 * 15)
 
-        return Order.objects.filter(id=order.id) if order else Order.objects.none()
+        if not order:
+            return Order.objects.none()
+        return Order.objects.filter(id=order.id)
