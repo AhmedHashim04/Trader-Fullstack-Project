@@ -2,7 +2,6 @@ from django.conf import settings
 from django.db import models
 from product.models import Product
 from decimal import Decimal
-from django.contrib import messages
 
 class Cart(models.Model):
     def  __init__(self, request):
@@ -46,14 +45,13 @@ class Cart(models.Model):
     def __iter__(self):
         product_slugs = self.cart.keys()
         products = Product.objects.filter(slug__in=product_slugs)
-        cart = self.cart.copy()
         for product in products:
-            cart[str(product.slug)]['product'] = product
-        for item in cart.values():
-            item['price'] = float(item['price'])
-            item['quantity'] = int(item.get('quantity') or 0)
-            item['total'] = float(item['price']) * int(item['quantity'])
-            yield item
-    
+            cart_item = self.cart[str(product.slug)]
+            yield {
+                'product': product,
+                'quantity': cart_item['quantity'],
+                'price': cart_item['price'],
+                'get_total_price': cart_item['price'] * cart_item['quantity']
+            }
     def save(self):
-        self.session.modified = True
+        self.session.modified = True 

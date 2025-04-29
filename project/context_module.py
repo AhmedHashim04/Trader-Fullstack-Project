@@ -9,7 +9,6 @@ def contexts(request):
     if request.user.is_authenticated:
         profile = Profile.objects.get(user=request.user.id)
         cart = cart_branch(request)
-        
         if profile:
             wishlist = profile.wishlist.all()
 
