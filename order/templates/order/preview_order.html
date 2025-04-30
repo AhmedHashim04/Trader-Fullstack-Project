@@ -32,7 +32,10 @@
                         </div>
                     </div>
                     <div class="text-center mt-4">
-                        <a href="{% url 'order:confirm_order' confirmation_key %}" class="btn btn-success btn-lg px-5">Confirm Order</a>
+                        <form method="get" action="{% url 'order:confirm_order' confirmation_key %}" class="d-inline">
+                            <input type="text" name="confirmation_key" class="form-control d-inline w-auto" placeholder="Enter Confirmation Key" required>
+                            <button type="submit" class="btn btn-success btn-lg px-5">Confirm Order</button>
+                        </form>
                         <a href="{% url 'order:create_order' %}" class="btn btn-secondary btn-lg px-5">Edit Order</a>
                     </div>
                 </div>
