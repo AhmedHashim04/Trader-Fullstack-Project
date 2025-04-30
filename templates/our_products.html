@@ -1,20 +1,20 @@
-<section class="product-section layout-padding">
+<section class="product_section layout_padding trendy">
   <div class="container">
-    <div class="heading-container heading-center">
+    <div class="heading_container heading_center trendy-heading">
       <h2>Our Products</h2>
     </div>
     <div class="row">
       {% for product in all_products|slice:":5" %}
-        <div class="col-sm-6 col-lg-3 col-md-4 mb-4">
-          <div class="box shadow-sm">
+        <div class="col-sm-6 col-lg-3 mb-4">
+          <div class="box shadow-sm trendy-box">
             <div class="product-box">
               <div class="img-box">
                 <a href="{% url 'product:product_detail' product.slug %}">
-                  <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid rounded">
+                  <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid rounded trendy-img">
                 </a>
               </div>
               <div class="product-info text-center mt-3">
-                <h5 class="fw-bold">{{ product.name }}</h5>
+                <h5 class="fw-bold trendy-font">{{ product.name }}</h5>
                 <div class="price-box">
                   <h5><span>$</span> {{ product.price }}</h5>
                 </div>
@@ -25,20 +25,20 @@
                 </div>
                 <div class="product-actions mt-3">
                   {% if product.slug in contextCart %}
-                    <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-warning">
+                    <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-warning trendy-btn">
                       <i class="fa fa-shopping-cart" aria-hidden="true"></i> Remove from Cart
                     </a>
                   {% else %}
-                    <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-outline-warning">
+                    <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-outline-warning trendy-btn">
                       <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to Cart
                     </a>
                   {% endif %}
                   {% if product in contextWishlist %}
-                    <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-danger">
+                    <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-danger trendy-btn">
                       <i class="fa fa-heart" aria-hidden="true"></i> Remove from Wishlist
                     </a>
                   {% else %}
-                    <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-outline-danger">
+                    <a href="{% url 'product:product_wishlist' product.slug %}" class="btn btn-outline-danger trendy-btn">
                       <i class="fa fa-heart" aria-hidden="true"></i> Add to Wishlist
                     </a>
                   {% endif %}
@@ -50,8 +50,7 @@
       {% endfor %}
     </div>
     <div class="btn_box text-center mt-4">
-    <div class="btn_box text-center mt-4">
-      <a href="{% url 'product:products_list' %}" class="btn btn-outline-primary mt-3 px-4 py-2 shadow-sm rounded-pill border-2" >Explore More Products</a>
+      <a href="{% url 'product:products_list' %}" class="btn btn-outline-primary mt-3 px-4 py-2 shadow-sm rounded-pill border-2 trendy-btn">Explore More Products</a>
     </div>
   </div>
 </section>

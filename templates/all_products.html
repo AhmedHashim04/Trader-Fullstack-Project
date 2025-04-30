@@ -1,49 +1,49 @@
-<section class="product-section layout-padding">
+<section class="product-section py-5 bg-light">
   <div class="container">
-    <div class="heading-container heading-center">
-      <h2>Our Products</h2>
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-primary">Explore Our Products</h2>
+      <p class="text-muted">Discover the best products curated just for you</p>
     </div>
-    <div class="row">
+    <div class="row g-4">
       {% for product in all_products %}
-        <div class="col-sm-6 col-lg-3 col-md-4 mb-4">
-          <div class="box shadow-sm">
-            <div class="product-box">
-              <div class="img-box">
-                <a href="{% url 'product:product_detail' product.slug %}">
-                  <img src="{{ product.image|default:'https://via.placeholder.com/400' }}" alt="{{ product.name }}" class="img-fluid rounded">
-                </a>
-              </div>
-              <div class="product-info text-center mt-3">
-                <h5 class="fw-bold">{{ product.name }}</h5>
-                <div class="price-box">
-                  <h5><span>$</span> {{ product.price }}</h5>
-                </div>
+        <div class="col-sm-6 col-md-4 col-lg-3">
+          <div class="card shadow-sm border-0 h-100">
+            <div class="card-img-top position-relative">
+              <a href="{% url 'product:product_detail' product.slug %}">
+                <img src="{{ product.image|default:'https://via.placeholder.com/400' }}" alt="{{ product.name }}" class="img-fluid rounded-top">
+              </a>
+              <span class="badge bg-success position-absolute top-0 start-0 m-2">New</span>
+            </div>
+            <div class="card-body text-center">
+              <h5 class="card-title fw-bold text-dark">{{ product.name }}</h5>
+              <p class="text-muted mb-2"><span class="text-primary fw-bold">$</span> {{ product.price }}</p>
                 <div class="star-container">
                   {% for i in "12345" %}
-                    <i class="fa {% if product.overall_rating >= i|add:"0" %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true"></i>
+                    <i style="color:rgb(176, 153, 26);"  class="fa star {% if product.overall_rating >= i|add:"0" %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true"></i>
                   {% endfor %}
                 </div>
-                <div class="product-actions mt-3">
-                  <a href="{% url 'cart:cart_add' product.slug %}" class="btn {% if product.slug in contextCart %}btn-warning{% else %}btn-outline-warning{% endif %}">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i> {% if product.slug in contextCart %}Remove from Cart{% else %}Add to Cart{% endif %}
-                  </a>
-                  <a href="{% url 'product:product_wishlist' product.slug %}" class="btn {% if product in contextWishlist %}btn-danger{% else %}btn-outline-danger{% endif %}">
-                    <i class="fa fa-heart" aria-hidden="true"></i> {% if product in contextWishlist %}Remove from Wishlist{% else %}Add to Wishlist{% endif %}
-                  </a>
-                  <button class="btn btn-outline-info compare-btn mt-2" data-product-id="{{ product.id }}">
-                    <i class="fa {% if product.id in selectedProducts %}fa-minus{% else %}fa-plus{% endif %}" aria-hidden="true"></i> Compare
-                  </button>
-                </div>
+              <div class="product-info text-center mt-3">
+              <div class="d-flex justify-content-center gap-2">
+                <a href="{% if product.slug in contextCart %}{% url 'cart:cart_remove' product.slug %}{% else %}{% url 'cart:cart_add' product.slug %}{% endif %}" class="btn btn-sm {% if product.slug in contextCart %}btn-warning{% else %}btn-outline-warning{% endif %}">
+                  <i class="fa fa-shopping-cart"></i> 
+                </a>
+                <a href="{% url 'product:product_wishlist' product.slug %}" class="btn {% if product in contextWishlist %}btn-danger{% else %}btn-outline-danger{% endif %} btn-sm">
+                  <i class="fa fa-heart"></i> {% if product in contextWishlist %}{% endif %}
+                </a>
+                <button class="btn btn-outline-info btn-sm compare-btn" data-product-slug="{{ product.slug }}">
+                  <i class="fa {% if product.slug in selectedProducts %}fa-minus{% else %}fa-plus{% endif %}"></i> Compare
+                </button>
               </div>
+            </div>
             </div>
           </div>
         </div>
       {% endfor %}
     </div>
-    <div class="compare-btn-container text-center mt-4">
-      <button id="compareButton" class="btn btn-info" style="display: none;">Compare Selected Products</button>
+    <div class="text-center mt-4">
+      <button id="compareButton" class="btn btn-info px-4 py-2" style="display: none;">Compare Selected Products</button>
     </div>
-    <nav aria-label="Product pages" class="mt-4">
+    <nav aria-label="Product pages" class="mt-5">
       <ul class="pagination justify-content-center">
         {% if all_products.has_previous %}
           <li class="page-item">
@@ -90,7 +90,6 @@
     </nav>
   </div>
 </section>
-
 <script>
   document.addEventListener('DOMContentLoaded', function() {
       const compareButton = document.getElementById('compareButton');
@@ -108,16 +107,16 @@
       }
 
       compareBtns.forEach(btn => {
-          const productId = btn.getAttribute('data-product-id');
-          const isSelected = selectedProducts.includes(productId);
+          const productSlug = btn.getAttribute('data-product-slug');
+          const isSelected = selectedProducts.includes(productSlug);
           toggleButtonState(btn, isSelected);
 
           btn.addEventListener('click', function() {
               const currentlySelected = btn.getAttribute('data-selected') === 'true';
               if (currentlySelected) {
-                  selectedProducts = selectedProducts.filter(id => id !== productId);
+                  selectedProducts = selectedProducts.filter(slug => slug !== productSlug);
               } else if (selectedProducts.length < 4) {
-                  selectedProducts.push(productId);
+                  selectedProducts.push(productSlug);
               } else {
                   alert('You can compare up to 4 products only');
               }
@@ -129,7 +128,7 @@
 
       compareButton.addEventListener('click', function() {
           if (selectedProducts.length > 1) {
-              const queryString = selectedProducts.map(id => `product_id=${id}`).join('&');
+              const queryString = selectedProducts.map(slug => `product_slug=${slug}`).join('&');
               window.location.href = `{% url 'product:compare_products' %}?${queryString}`;
           }
       });
@@ -137,4 +136,3 @@
       updateCompareButton();
   });
 </script>
-

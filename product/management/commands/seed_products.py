@@ -16,6 +16,7 @@ class Command(BaseCommand):
         Product.objects.all().delete()
         Category.objects.all().delete()
         Brand.objects.all().delete()
+        self.stdout.write("Done!")
 
         # Step 2: Create dummy categories
         self.stdout.write("Creating categories...")
@@ -40,16 +41,6 @@ class Command(BaseCommand):
             )
             brands.append(brand)
 
-        # Step 3: Create dummy categories and link them to the brands
-        self.stdout.write("Creating categories...")
-        categories = []
-        for name in ['Electronics', 'Clothing', 'Home', 'Books', 'Sports', 'Toys', 'Health', 'Beauty', 'Grocery', 'Jewelry']:
-            category = Category.objects.create(
-                name=name,
-                description=f"This is the {name} category.",
-                slug=slugify(name)
-            )
-            categories.append(category)
 
         # Step 4: Create dummy products and link them to the brands and categories
         self.stdout.write("Creating products...")
