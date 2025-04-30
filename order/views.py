@@ -12,17 +12,17 @@ from django.core.mail import send_mail
 from django.conf import settings
 import uuid
 from django.core.cache import cache
-
 def create_order(request):
-    cart_session = cart_branch(request)
-    if not cart_session.cart:
+    cart = cart_branch(request)
+    if not cart.cart:
         messages.warning(request, 'Your shopping cart is empty!')
         return redirect('cart:cart_list')
 
     if request.method == 'POST':
         form = CompleteOrderForm(request.POST)
         if form.is_valid():
-            return send_order_email(request, request.user, form)
+            request.session['form_data'] = form.cleaned_data
+            return redirect('order:preview_order')
     else:
         profile = request.user.profile
         form = CompleteOrderForm(initial={
@@ -36,17 +36,48 @@ def create_order(request):
 
     return render(request, 'order/create_order.html', {"form": form})
 
+class PreviewView(TemplateView):
+    template_name = "order/preview_order.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form_data"] = self.request.session.get('form_data', {})
+        context["cart"] = cart_branch(self.request)
+        return context
 
+    def post(self, request, *args, **kwargs):
+        form_data = request.session.get('form_data')
+        if not form_data:
+            messages.error(request, "Form data not found.")
+            return redirect('order:create_order')
+
+        form = CompleteOrderForm(form_data)
+        if form.is_valid():
+            return send_order_email(request, request.user, form)
+
+        messages.error(request, "Invalid form data.")
+        return redirect('order:create_order')
+
+class CheckoutView(TemplateView):
+    """Displays the checkout confirmation page."""
+    template_name = "order/checkout.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["order"] = Order.objects.filter(user=self.request.user, id=self.kwargs['id']).first()
+        return context
 def send_order_email(request, user, form):
     try:
         confirmation_key = uuid.uuid4().hex
         cache_key = f"pending_order_{confirmation_key}"
+
+        # حفظ بيانات الطلب مؤقتًا
         cache.set(cache_key, {
             'confirmation_key': confirmation_key,
             'form_data': form.cleaned_data
-        }, timeout=86400)  # 24 hours
+        }, timeout=86400)  # 24 ساعة
 
+        # رابط التأكيد
         confirm_url = request.build_absolute_uri(
             reverse('order:confirm_order', args=[confirmation_key])
         )
@@ -62,8 +93,7 @@ This link will expire in 24 hours.
         '''
 
         # send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
-
-        print(subject, message, settings.EMAIL_HOST_USER, [user.email])  
+        print(subject, message, settings.EMAIL_HOST_USER, [user.email])  # للتجريب
 
         messages.success(request, 'Please check your email to confirm your order.')
         return redirect('order:order_list')
@@ -72,6 +102,7 @@ This link will expire in 24 hours.
         print(f"Failed to send order confirmation email: {str(e)}")
         messages.error(request, 'Failed to send confirmation email. Please try again.')
         return redirect('cart:cart_list')
+
 
 def confirm_order(request, confirmation_key):
     cache_key = f"pending_order_{confirmation_key}"
@@ -100,8 +131,8 @@ def confirm_order(request, confirmation_key):
 @login_required
 @transaction.atomic
 def complete_order(request, form):
-    cart_session = cart_branch(request)
-    if not cart_session.cart:
+    cart = cart_branch(request)
+    if not cart.cart:
         messages.warning(request, 'Your shopping cart is empty!')
         return None
 
@@ -121,7 +152,7 @@ def complete_order(request, form):
                 confirmed=True
             )
 
-            for item in cart_session:
+            for item in cart:
                 product = item['product']
                 quantity = item['quantity']
                 if quantity > product.stock or quantity < 1:
@@ -137,9 +168,10 @@ def complete_order(request, form):
 
             if total_price >= 1:
                 OrderItem.objects.bulk_create(order_items)
+
             order.total_price = total_price
             order.save()
-            cart_session.clear()
+            cart.clear()
 
             return order
 
@@ -149,22 +181,9 @@ def complete_order(request, form):
     except Exception as e:
         import traceback
         print("Unexpected error during order creation:", str(e))
-        traceback.print_exc()
+        traceback.print_exc()  # يطبع التراك باك بالكامل في الكونسول
         messages.error(request, 'An error occurred while creating the order. Please try again.')
         return None
-
-@login_required
-@transaction.atomic
-def clear_order_history(request):
-    try:
-        Order.objects.filter(user=request.user).delete()
-        cart_session = cart_branch(request)
-        
-        messages.success(request, 'Order history cleared successfully!')
-    except Exception as e:
-        messages.error(request, 'An error occurred while clearing the order history. Please try again.')
-
-    return redirect('order:order_list')
 
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
@@ -172,12 +191,12 @@ class OrderListView(LoginRequiredMixin, ListView):
     context_object_name = 'orders'
 
     def get_queryset(self):
-        #cache_key = f"order_list_{self.request.user.id}"
-        #orders = cache.get(cache_key)
+        # cache_key = f"order_list_{self.request.user.id}"
+        # orders = cache.get(cache_key)
 
-        #if not orders:
+        # if not orders:
         orders = Order.objects.filter(user=self.request.user, confirmed=True).order_by('-created_at')
-            #cache.set(cache_key, orders, timeout=60 * 15)
+            # cache.set(cache_key, orders, timeout=60 * 15)
 
         return orders
 
@@ -200,9 +219,13 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
             return Order.objects.none()
         return Order.objects.filter(id=order.id)
 
-class CheckoutView(TemplateView):
-    template_name = "order/checkout.html"
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["order"] = Order.objects.filter(user=self.request.user, id=self.kwargs['id']).first()
-        return context
+@login_required
+@transaction.atomic
+def clear_order_history(request):
+    try:
+        Order.objects.filter(user=request.user).delete()
+        messages.success(request, 'Order history cleared successfully!')
+    except Exception as e:
+        messages.error(request, 'An error occurred while clearing the order history. Please try again.')
+
+    return redirect('order:order_list')

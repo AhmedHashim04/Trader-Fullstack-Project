@@ -732,7 +732,11 @@ a:focus {
   opacity: 1;
   transform: translateY(0);
 }
-
+.text-muted{
+  color: var(--primary-color);
+  background-color: var(--primary-color);
+  
+}
 .toast-message.success {
   background-color: var(--primary-color);
 }
