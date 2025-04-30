@@ -1,74 +1,75 @@
 from django.core.management.base import BaseCommand
-from product.models import Product, Category , Review
+from product.models import Product, Category, Review
 from settings.models import Brand
+from django.utils.text import slugify
+from django.utils import timezone
 import random
 from decimal import Decimal
-# timezone
-from django.utils import timezone
-from django.utils.text import slugify
+
 class Command(BaseCommand):
     help = 'Seed products into the database'
 
     def handle(self, *args, **options):
+        # Step 1: Delete existing data
+        self.stdout.write("Deleting existing data...")
         Review.objects.all().delete()
         Product.objects.all().delete()
         Category.objects.all().delete()
         Brand.objects.all().delete()
 
-        brands = list(Brand.objects.all())
-        if not brands:
-            for brand_name in ["Apple", "Samsung", "Google", "Microsoft", "Lenovo", "Dell", "HP", "Asus", "Acer", "Toshiba", "LG", "Sony", "Panasonic", "Nokia", "Xiaomi"]:
-                Brand.objects.create(name=brand_name, image=f"https://via.placeholder.com/150?text={brand_name}")
-            brands = list(Brand.objects.all())
-
-        category_data = [
-            ("Smartphones", "All kinds of smartphones"),
-            ("Laptops", "High performance laptops"),
-            ("TVs", "Smart and 4K TVs"),
-            ("Headphones", "Wired and wireless headphones"),
-            ("Monitors", "HD and curved monitors"),
-            ("Smartwatches", "Latest wearable tech"),
-        ]
-
+        # Step 2: Create dummy categories
+        self.stdout.write("Creating categories...")
         categories = []
-        for name, desc in category_data:
-            category, _ = Category.objects.get_or_create(
+        for name in ['Electronics', 'Fashion', 'Home Appliances', 'Books', 'Toys']:
+            category = Category.objects.create(
                 name=name,
-                defaults={"description": desc},
-                image=f"https://picsum.photos/seed/{slugify(name)}/600/400"
+                description=f"This is the {name} category.",
+                slug=slugify(name)
             )
             categories.append(category)
 
-        product_names = {
-            "Smartphones": ["Galaxy S23", "iPhone 14", "Xperia 5"],
-            "Laptops": ["MacBook Air", "Dell XPS 13", "Lenovo ThinkPad"],
-            "TVs": ["Sony Bravia", "LG OLED CX", "Samsung QLED"],
-            "Headphones": ["Sony WH-1000XM5", "AirPods Pro", "Galaxy Buds"],
-            "Monitors": ["Dell Ultrasharp", "LG UltraWide", "Samsung Odyssey"],
-            "Smartwatches": ["Apple Watch", "Samsung Galaxy Watch", "Fitbit Sense"],
-        }
+        # Step 3: Create dummy brands
+        self.stdout.write("Creating brands...")
+        brands = []
+        for name in ['Samsung', 'Apple', 'Sony', 'LG', 'Adidas']:
+            brand = Brand.objects.create(
+                name=name,
+                desc=f"{name} is a well-known brand.",
+                slug=slugify(name)
+            )
+            brands.append(brand)
 
-        for category in categories:
-            names = product_names.get(category.name, [])
-            for name in names:
-                brand = random.choice(brands)
-                price = Decimal(random.randint(3000, 20000))
-                cost = price - Decimal(random.randint(500, 1500))
-                image = f"https://picsum.photos/seed/{slugify(name)}/600/400"
+        # Step 4: Create dummy products
+        self.stdout.write("Creating products...")
+        for i in range(50):  # Create 50 products
+            name = f"Product {i+1}"
+            category = random.choice(categories)
+            brand = random.choice(brands)
+            price = Decimal(random.randint(100, 1000))
+            stock = random.randint(0, 100)
+            description = f"This is a description for {name}. It belongs to the {category.name} category and is manufactured by {brand.name}."
+            image_url = f"https://via.placeholder.com/400?text={slugify(name)}"
 
-                Product.objects.create(
-                    name=name,
-                    category=category,
-                    brand=brand,
-                    description=f"{name} by {brand.name} in {category.name}",
-                    price=price,
-                    cost=cost,
-                    stock=random.randint(5, 100),
-                    overall_rating=round(random.uniform(3.5, 5.0), 1),
-                    created_at=timezone.now(),
-                    slug=slugify(name),
-                    image=image,
+            product = Product.objects.create(
+                name=name,
+                category=category,
+                brand=brand,
+                description=description,
+                price=price,
+                stock=stock,
+                image=image_url,
+                slug=slugify(name),
+                created_at=timezone.now()
+            )
+
+            # Step 5: Create dummy reviews for each product
+            for _ in range(random.randint(1, 5)):  # Each product gets 1-5 reviews
+                Review.objects.create(
+                    product=product,
+                    user_id=1,  # Assuming user IDs exist from 1 to 10
+                    content=f"This is a review for {product.name}.",
+                    rating=random.randint(1, 5),
+                    created_at=timezone.now()
                 )
 
-        print("Products seeded successfully.")
-
+        self.stdout.write(self.style.SUCCESS("Products seeded successfully!"))
