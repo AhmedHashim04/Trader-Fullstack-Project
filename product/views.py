@@ -84,8 +84,8 @@ class CompareProductsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        product_ids = self.request.GET.getlist('product_id')
-        products = Product.objects.filter(id__in=product_ids)
+        product_slugs = self.request.GET.getlist('product_id')
+        products = Product.objects.filter(slug__in=product_slugs)
         fields = [field for field in Product._meta.get_fields() if not field.many_to_many and not field.one_to_many]
 
         context['products'] = products

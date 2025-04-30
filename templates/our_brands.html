@@ -1,20 +1,20 @@
-<section class="product_section layout_padding">
+<section class="product_section layout_padding trendy">
   <div class="container">
-    <div class="heading_container heading_center">
+    <div class="heading_container heading_center trendy-heading">
       <h2>Our Brands</h2>
     </div>
     <div class="row">
       {% for brand in all_brands|slice:":8" %}
         <div class="col-sm-6 col-lg-3 mb-4">
-          <div class="box shadow-sm">
+          <div class="box shadow-sm trendy-box">
             <div class="img-box">
               <a href="{% url 'settings:brand_detail' brand.slug %}">
-                <img src="{% if brand.image %}{{ brand.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ brand.name }}" class="img-fluid rounded">
+                <img src="{% if brand.image %}{{ brand.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ brand.name }}" class="img-fluid rounded trendy-img">
               </a>
             </div>
             <div class="detail-box text-center mt-3">
               <a href="{% url 'settings:brand_detail' brand.slug %}" class="text-decoration-none text-dark">
-                <h5 class="fw-bold">{{ brand.name }}</h5>
+                <h5 class="fw-bold trendy-font">{{ brand.name }}</h5>
               </a>
             </div>
           </div>
@@ -22,8 +22,8 @@
       {% endfor %}
     </div>
     <div class="btn_box text-center mt-4">
-
-      <a href="{% url 'settings:brands_list' %}" class="btn btn-outline-primary mt-3 px-4 py-2 shadow-sm rounded-pill border-2">Explore More Brands</a>
+      <a href="{% url 'settings:brands_list' %}" class="btn btn-outline-primary mt-3 px-4 py-2 shadow-sm rounded-pill border-2 trendy-btn">Explore More Brands</a>
     </div>
   </div>
 </section>
+
