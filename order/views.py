@@ -15,8 +15,8 @@ from django.core.cache import cache
 
 
 def create_order(request):
-    cart = cart_branch(request)
-    if not cart.cart:
+    cart_session = cart_branch(request)
+    if not cart_session.cart:
         messages.warning(request, 'Your shopping cart is empty!')
         return redirect('cart:cart_list')
 
@@ -61,10 +61,9 @@ Please click the following link to confirm your order:
 This link will expire in 24 hours.
         '''
 
-        # لتجربة الإرسال الحقيقي فعّل السطر التالي:
         # send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
 
-        print(subject, message, settings.EMAIL_HOST_USER, [user.email])  # للتجريب
+        print(subject, message, settings.EMAIL_HOST_USER, [user.email])  
 
         messages.success(request, 'Please check your email to confirm your order.')
         return redirect('order:order_list')
@@ -103,8 +102,8 @@ def confirm_order(request, confirmation_key):
 @login_required
 @transaction.atomic
 def complete_order(request, form):
-    cart = cart_branch(request)
-    if not cart.cart:
+    cart_session = cart_branch(request)
+    if not cart_session.cart:
         messages.warning(request, 'Your shopping cart is empty!')
         return None
 
@@ -124,7 +123,7 @@ def complete_order(request, form):
                 confirmed=True
             )
 
-            for item in cart:
+            for item in cart_session:
                 product = item['product']
                 quantity = item['quantity']
                 if quantity > product.stock or quantity < 1:
@@ -143,7 +142,7 @@ def complete_order(request, form):
 
             order.total_price = total_price
             order.save()
-            cart.clear()
+            cart_session.clear()
 
             return order
 
@@ -153,11 +152,11 @@ def complete_order(request, form):
     except Exception as e:
         import traceback
         print("Unexpected error during order creation:", str(e))
-        traceback.print_exc()  # يطبع التراك باك بالكامل في الكونسول
+        traceback.print_exc()
         messages.error(request, 'An error occurred while creating the order. Please try again.')
         return None
 
- 
+
 @login_required
 @transaction.atomic
 def clear_order_history(request):
