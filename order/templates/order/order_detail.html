@@ -48,6 +48,16 @@
                 <h4 class="text-success">{{ order.total_price }} EGP</h4>
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+
+                    <a href="{% url 'order:order_list' %}" class="btn btn-outline-secondary w-100 shadow-sm">
+                        <i class="fa fa-list me-2"></i> Return to Orders
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirm Order{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-gradient-primary text-primary text-center py-4 rounded-top">
+                    <h2 class="mb-0">Confirm Order</h2>
+                </div>
+                <div class="card-body">
+                    <h3 class="mb-4 text-primary">Order Details</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Order Number:</strong> #{{ order.id }}</p>
+                            <p class="mb-1"><strong>Total Price:</strong> {{ order.total_price }} EGP</p>
+                            <p class="mb-1"><strong>Delivery Address:</strong> {{ order.address }}</p>
+                            <p class="mb-1"><strong>City:</strong> {{ order.city }}</p>
+                            <p class="mb-1"><strong>Postal Code:</strong> {{ order.postal_code }}</p>
+                            <p class="mb-1"><strong>Phone Number:</strong> {{ order.phone_number }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Status:</strong>  
+                                <span class="badge bg-{{ order.status|lower }}">{{ order.get_status_display }}</span>
+                            </p>
+                            <p class="mb-1"><strong>Products:</strong></p>
+                            <ul class="list-group list-group-flush">
+                                {% for item in order.items.all %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ item.product.name }} ({{ item.quantity }})
+                                        <span class="badge bg-primary rounded-pill">{{ item.price }} EGP</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="{% url 'order:complete_order' %}" class="btn btn-success btn-lg px-5">Confirm Order</a>
+                        <a href="{% url 'cart:cart_detail' %}" class="btn btn-primary btn-lg px-5">Return to Cart</a>
+                        <a href="{% url 'order:create_order' %}" class="btn btn-secondary btn-lg px-5">Change Delivery Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
