@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from django.db import transaction
 from django.contrib import messages
 from .models import Order, OrderItem
@@ -12,7 +12,6 @@ from django.core.mail import send_mail
 from django.conf import settings
 import uuid
 from django.core.cache import cache
-
 
 def create_order(request):
     cart_session = cart_branch(request)
@@ -36,6 +35,7 @@ def create_order(request):
         })
 
     return render(request, 'order/create_order.html', {"form": form})
+
 
 
 def send_order_email(request, user, form):
@@ -73,7 +73,6 @@ This link will expire in 24 hours.
         messages.error(request, 'Failed to send confirmation email. Please try again.')
         return redirect('cart:cart_list')
 
-
 def confirm_order(request, confirmation_key):
     cache_key = f"pending_order_{confirmation_key}"
     pending_order = cache.get(cache_key)
@@ -89,7 +88,7 @@ def confirm_order(request, confirmation_key):
             if order:
                 cache.delete(cache_key)
                 messages.success(request, 'Order confirmed successfully!')
-                return redirect('order:order_detail', order.id)
+                return redirect('order:checkout', order.id)
 
         messages.error(request, 'Failed to create order. Please try again.')
         return redirect('cart:cart_list')
@@ -97,7 +96,6 @@ def confirm_order(request, confirmation_key):
     except Exception as e:
         messages.error(request, str(e))
         return redirect('cart:cart_list')
-
 
 @login_required
 @transaction.atomic
@@ -139,7 +137,6 @@ def complete_order(request, form):
 
             if total_price >= 1:
                 OrderItem.objects.bulk_create(order_items)
-
             order.total_price = total_price
             order.save()
             cart_session.clear()
@@ -156,18 +153,18 @@ def complete_order(request, form):
         messages.error(request, 'An error occurred while creating the order. Please try again.')
         return None
 
-
 @login_required
 @transaction.atomic
 def clear_order_history(request):
     try:
         Order.objects.filter(user=request.user).delete()
+        cart_session = cart_branch(request)
+        
         messages.success(request, 'Order history cleared successfully!')
     except Exception as e:
         messages.error(request, 'An error occurred while clearing the order history. Please try again.')
 
     return redirect('order:order_list')
-
 
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
@@ -175,15 +172,14 @@ class OrderListView(LoginRequiredMixin, ListView):
     context_object_name = 'orders'
 
     def get_queryset(self):
-        cache_key = f"order_list_{self.request.user.id}"
-        orders = cache.get(cache_key)
+        #cache_key = f"order_list_{self.request.user.id}"
+        #orders = cache.get(cache_key)
 
-        if not orders:
-            orders = Order.objects.filter(user=self.request.user, confirmed=True).order_by('-created_at')
-            cache.set(cache_key, orders, timeout=60 * 15)
+        #if not orders:
+        orders = Order.objects.filter(user=self.request.user, confirmed=True).order_by('-created_at')
+            #cache.set(cache_key, orders, timeout=60 * 15)
 
         return orders
-
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
@@ -203,3 +199,10 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
         if not order:
             return Order.objects.none()
         return Order.objects.filter(id=order.id)
+
+class CheckoutView(TemplateView):
+    template_name = "order/checkout.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["order"] = Order.objects.filter(user=self.request.user, id=self.kwargs['id']).first()
+        return context

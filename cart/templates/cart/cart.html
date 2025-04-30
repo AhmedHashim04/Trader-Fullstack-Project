@@ -29,7 +29,7 @@
                     </td>
                     <td>${{ item.price }}</td>
                     <td>
-                        <form method="post" action="{% url 'cart:cart_update' item.product.slug %}" class="d-flex align-items-center">
+                        <form method="post" action="{% url 'cart:cart_add' item.product.slug %}" class="d-flex align-items-center">
                             {% csrf_token %}
                             <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="form-control form-control-sm" style="width: 70px;" required>
                             <button type="submit" class="btn btn-sm btn-outline-info ml-2">Update</button>
