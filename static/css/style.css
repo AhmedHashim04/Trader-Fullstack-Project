@@ -17,7 +17,7 @@
   --highlight-color: #ff9800; /* Orange for highlights */
   --muted-text-color: #757575; /* Medium gray for muted text */
 
-   --button-bg-color: #4e54c8;
+  --button-bg-color: #4e54c8;
   --button-hover-bg-color: #8f94fb;
   --button-text-color: #ffffff;
   
@@ -734,8 +734,10 @@ a:focus {
 }
 .text-muted{
   color: var(--primary-color);
-  background-color: var(--primary-color);
   
+}
+.text-down-section{
+  color: var(--btn-hover-bg-color);
 }
 .toast-message.success {
   background-color: var(--primary-color);

@@ -6,7 +6,7 @@ from django.utils import timezone
 from product.models import Product
 from django.utils.translation import gettext_lazy as _
 import uuid
-
+from coupons.models import Coupon
 class Order(models.Model):
     ORDER_STATUS = (
         ('pending', 'Pending'),
@@ -31,7 +31,11 @@ class Order(models.Model):
     paied = models.BooleanField(_("Paied"),default=False)
     confirmed = models.BooleanField(_("Confirmed"),default=False)
     confirmation_key = models.CharField(max_length=32, blank=True, null=True)
+    coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, null=True, blank=True)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
+
+    
     def __str__(self):
         return f"Order {self.id} - {self.user.username}"
 

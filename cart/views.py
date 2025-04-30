@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
+from django.shortcuts import get_object_or_404
+from coupons.models import Coupon  # تأكد إن ده هو المسار الصح للموديل بتاع الكوبون
 
 @login_required
 def cart_add(request, slug):
@@ -57,5 +59,39 @@ class CartView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['total_price'] = context['cart'].get_total_price()
+        cart = context['cart']
+
+        subtotal = cart.get_total_price()
+        tax = 10
+        discount_amount = 0
+        coupon_obj = None
+        discount_type = None
+
+        coupon_code = self.request.session.get('coupon_code')
+        if coupon_code:
+            try:
+                coupon_obj = Coupon.objects.get(code__iexact=coupon_code)
+                if coupon_obj.is_valid():
+                    discount_type = coupon_obj.discount_type
+                    if discount_type == 'percent':
+                        discount_amount = subtotal * (coupon_obj.amount / 100)
+                    elif discount_type == 'fixed':
+                        discount_amount = coupon_obj.amount
+            except Coupon.DoesNotExist:
+                pass  # أو احذف الكود من السيشن لو حبيت
+
+        total_after_discount = subtotal - discount_amount
+        total_with_tax = total_after_discount + tax
+
+        context.update({
+            'total_price': subtotal,
+            'tax': tax,
+            'discount_amount': round(discount_amount, 2),
+            'total_price_after_discount': round(total_after_discount, 2),
+            'total_with_tax': round(total_with_tax, 2),
+            'discount': coupon_obj.amount if coupon_obj else None,
+            'discount_type': discount_type,
+            'coupon': coupon_obj,
+        })
+
         return context
