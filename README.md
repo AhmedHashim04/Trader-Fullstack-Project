@@ -55,7 +55,7 @@
 
 - **Backend:** Python, Django
 - **Database:** PostgreSQL
-- **Frontend:** HTML, CSS, Bootstrap
+- **Frontend:** HTML, CSS, JS, Bootstrap
 - **Asynchronous Tasks:** Celery with Redis
 - **Testing:** Pytest
 
