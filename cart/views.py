@@ -78,7 +78,8 @@ class CartView(LoginRequiredMixin, ListView):
                     elif discount_type == 'fixed':
                         discount_amount = coupon_obj.amount
             except Coupon.DoesNotExist:
-                pass  # أو احذف الكود من السيشن لو حبيت
+                messages.warning(self.request, 'Invalid coupon code.')
+                del self.request.session['coupon_code']
 
         total_after_discount = subtotal - discount_amount
         total_with_tax = total_after_discount + tax

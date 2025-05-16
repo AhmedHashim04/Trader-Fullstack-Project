@@ -11,6 +11,7 @@ class Cart:
         self.cart = self.session.get(settings.CART_SESSION_ID, {})
         if settings.CART_SESSION_ID not in self.session:
             self.session[settings.CART_SESSION_ID] = self.cart
+        self.coupon_id = self.session.get('coupon_code')
     def add(self, product, quantity=1, override_quantity=False):
         product_slug = product.slug
         if product_slug not in self.cart:
@@ -42,21 +43,16 @@ class Cart:
         """Return the coupon model if a coupon is applied."""
         if self.coupon_id:
             try:
-                return Coupon.objects.get(code=self.coupon_id, active=True)
+                return Coupon.objects.get(code=self.coupon_id, active=True, valid_from__lte=timezone.now(), valid_to__gte=timezone.now())
             except Coupon.DoesNotExist:
                 pass
         return None
 
-    def get_discount(self, coupon_code):
+    def get_discount(self):
         """Get the discount for the given coupon code."""
-        if coupon_code:
-            try:
-                coupon = Coupon.objects.get(code__iexact=coupon_code, active=True)
-                return coupon.discount
-            except Coupon.DoesNotExist:
-                return 0
-        elif self.coupon:
-            return self.coupon.discount
+
+        if self.coupon:
+            return (self.coupon.discount / Decimal(100) * self.get_total_price())
         return 0
 
     def get_total_price_after_discount(self) -> Decimal:
