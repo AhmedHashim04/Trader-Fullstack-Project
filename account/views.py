@@ -88,10 +88,6 @@ class MyLoginView(LoginView):
     redirect_authenticated_user = True
 
 
-# class MyLogoutView(LogoutView):
-#     next_page = 'home:home'
-
-
 class MyLogoutView(LogoutView):
     next_page = 'home:home'
     http_method_names = ["get", "options"]
@@ -108,24 +104,4 @@ class MyLogoutView(LogoutView):
 
 class MyPasswordResetPassword(PasswordResetView):
     success_url = reverse_lazy("account:password_reset_done")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

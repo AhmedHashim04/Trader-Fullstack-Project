@@ -2,6 +2,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from .models import Profile
+from django.core.validators import RegexValidator
+
+
+
+
 
 
 class RegisterForm(UserCreationForm):
@@ -13,9 +18,17 @@ class RegisterForm(UserCreationForm):
 class UpdateProfileForm(forms.ModelForm):
     first_name = forms.CharField(max_length=150,required=False)
     last_name = forms.CharField(max_length=150,required=False)
-    address = forms.CharField(help_text="Address in Detail",required=False)
-
-
+    phone_number = forms.CharField(
+        max_length=11,
+        min_length=11,
+        validators=[
+            RegexValidator(
+                regex=r'^(010|011|012|015)\d{8}$',
+                message="Enter a valid Egyptian phone number starting with 010, 011, 012, or 015."
+            )
+        ],
+        required=False
+    )
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance and self.instance.user:
