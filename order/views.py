@@ -170,7 +170,7 @@ def complete_order(request, form):
                 OrderItem.objects.bulk_create(order_items)
 
             order.total_price = total_price
-            order.save()
+            order.save(session_key=request.session.session_key)
             cart.clear()
 
             return order

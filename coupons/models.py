@@ -7,6 +7,7 @@ from datetime import timedelta
 
 from django.db import models
 from django.utils import timezone
+
 def get_expiry_date():
     return timezone.now() + timedelta(days=30)
 

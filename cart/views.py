@@ -5,9 +5,8 @@ from product.models import Product
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-
 from django.shortcuts import get_object_or_404
-from coupons.models import Coupon  # تأكد إن ده هو المسار الصح للموديل بتاع الكوبون
+from coupons.models import Coupon  
 
 @login_required
 def cart_add(request, slug):
