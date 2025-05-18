@@ -19,7 +19,7 @@ build/
 *.egg
 
 bfg.jar
-
+Trader-Fullstack-Project
 # Django stuff:
 *.log
 *.pot
