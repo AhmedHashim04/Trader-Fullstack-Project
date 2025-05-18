@@ -1,48 +1,53 @@
-<section class="product-section py-5 bg-light">
+<section class="product-section py-5" style="background: linear-gradient(135deg, #f5f7fa, #c3cfe2);">
   <div class="container">
     <div class="text-center mb-5">
-      <h2 class="fw-bold text-primary">Explore Our Products</h2>
-      <p class="text-muted">Discover the best products curated just for you</p>
+      <h2 class="fw-bold trendy-font" style="color: #333; font-size: 2.5rem;">Explore Our Products</h2>
+      <p class="text-muted" style="font-size: 1.1rem;">Discover the best products curated just for you</p>
     </div>
-    <div class="row g-4">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
       {% for product in all_products %}
-        <div class="col-sm-6 col-md-4 col-lg-3">
-          <div class="card shadow-sm border-0 h-100">
-            <div class="card-img-top position-relative">
+        <div class="col">
+          <div class="card shadow-sm border-0 h-100" style="transition: transform 0.3s, box-shadow 0.3s;">
+            <div class="card-img-top position-relative" style="margin-bottom: 1rem;">
               <a href="{% url 'product:product_detail' product.slug %}">
-                <img src="{{ product.image|default:'https://via.placeholder.com/400' }}" alt="{{ product.name }}" class="img-fluid rounded-top">
+                <img src="{% if product.image %}{{ product.image.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid rounded trendy-img">
+
               </a>
-              <span class="badge bg-success position-absolute top-0 start-0 m-2">New</span>
+              {% if product.is_new %}
+                <span class="badge bg-success position-absolute top-0 start-0 m-2" style="font-size: 0.9rem;">New</span>
+              {% endif %}
             </div>
             <div class="card-body text-center">
-              <h5 class="card-title fw-bold text-dark">{{ product.name }}</h5>
-              <p class="text-muted mb-2"><span class="text-primary fw-bold">$</span> {{ product.price }}</p>
-                <div class="star-container">
-                  {% for i in "12345" %}
-                    <i style="color:rgb(176, 153, 26);"  class="fa star {% if product.overall_rating >= i|add:"0" %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true"></i>
-                  {% endfor %}
-                </div>
-              <div class="product-info text-center mt-3">
-              <div class="d-flex justify-content-center gap-2">
-                <a href="{% if product.slug in contextCart %}{% url 'cart:cart_remove' product.slug %}{% else %}{% url 'cart:cart_add' product.slug %}{% endif %}" class="btn btn-sm {% if product.slug in contextCart %}btn-warning{% else %}btn-outline-warning{% endif %}">
-                  <i class="fa fa-shopping-cart"></i> 
-                </a>
-                <a href="{% url 'product:product_wishlist' product.slug %}" class="btn {% if product in contextWishlist %}btn-danger{% else %}btn-outline-danger{% endif %} btn-sm">
-                  <i class="fa fa-heart"></i> {% if product in contextWishlist %}{% endif %}
-                </a>
-                <button class="btn btn-outline-info btn-sm compare-btn" data-product-slug="{{ product.slug }}">
-                  <i class="fa {% if product.slug in selectedProducts %}fa-minus{% else %}fa-plus{% endif %}"></i> Compare
-                </button>
+              <h5 class="card-title fw-bold trendy-font" style="color: #555;">{{ product.name }}</h5>
+              <p class="text-muted mb-2" style="font-size: 1.2rem;"><span class="text-primary fw-bold">$</span> {{ product.price }}</p>
+              <div class="star-container">
+                {% for i in "12345" %}
+                  <i class="fa {% if product.overall_rating >= i|add:"0" %}fa-star{% else %}fa-star-o{% endif %}" style="color:rgb(176, 153, 26); font-size: 1.2rem;" aria-hidden="true"></i>
+                {% endfor %}
               </div>
             </div>
+
+            <div class="card-footer bg-transparent border-0">
+              <div class="d-flex justify-content-center gap-2">
+                <a href="{% if product.slug in contextCart %}{% url 'cart:cart_remove' product.slug %}{% else %}{% url 'cart:cart_add' product.slug %}{% endif %}" class="btn btn-sm {% if product.slug in contextCart %}btn-warning{% else %}btn-outline-warning{% endif %}" style="border-radius: 20px;">
+                  <i class="fa fa-shopping-cart"></i>
+                </a>
+                <a href="{% url 'product:product_wishlist' product.slug %}" class="btn {% if product in contextWishlist %}btn-danger{% else %}btn-outline-danger{% endif %} btn-sm" style="border-radius: 20px;">
+                  <i class="fa fa-heart"></i>
+                </a>
+                <button class="btn btn-outline-info btn-sm compare-btn" data-product-slug="{{ product.slug }}" style="border-radius: 20px;">
+                  <i class="fa fa-plus"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       {% endfor %}
     </div>
-    <div class="text-center mt-4">
-      <button id="compareButton" class="btn btn-info px-4 py-2" style="display: none;">Compare Selected Products</button>
-    </div>
+    <div class="text-center mt-4" style="margin-top: 1rem;">
+      <button id="compareButton" class="btn btn-info px-4 py-2" style="display: none; border-radius: 30px; font-size: 1.1rem;">Compare Selected Products</button>
+      <button id="clearCompareButton" class="btn btn-danger px-4 py-2" style="border-radius: 30px; font-size: 1.1rem;">Clear Comparison</button>
+    </div>    
     <nav aria-label="Product pages" class="mt-5">
       <ul class="pagination justify-content-center">
         {% if all_products.has_previous %}
@@ -90,49 +95,65 @@
     </nav>
   </div>
 </section>
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-      const compareButton = document.getElementById('compareButton');
-      const compareBtns = document.querySelectorAll('.compare-btn');
-      let selectedProducts = JSON.parse(localStorage.getItem('compareProducts')) || [];
+    const compareButton = document.getElementById('compareButton');
+    const clearCompareButton = document.getElementById('clearCompareButton');
+    const compareBtns = document.querySelectorAll('.compare-btn');
+    let selectedProducts = JSON.parse(localStorage.getItem('compareProducts')) || [];
 
-      function updateCompareButton() {
-          compareButton.style.display = selectedProducts.length > 1 ? 'block' : 'none';
-      }
+    function updateCompareButton() {
+        // إظهار أو إخفاء زر "Compare Selected Products"
+        compareButton.style.display = selectedProducts.length > 1 ? 'block' : 'none';
 
-      function toggleButtonState(btn, isSelected) {
-          const iconClass = isSelected ? 'fa-minus' : 'fa-plus';
-          btn.innerHTML = `<i class="fa ${iconClass}" aria-hidden="true"></i> Compare`;
-          btn.setAttribute('data-selected', isSelected);
-      }
+        // إظهار أو إخفاء زر "Clear Comparison"
+        clearCompareButton.style.display = selectedProducts.length > 0 ? 'block' : 'none';
+    }
 
-      compareBtns.forEach(btn => {
-          const productSlug = btn.getAttribute('data-product-slug');
-          const isSelected = selectedProducts.includes(productSlug);
-          toggleButtonState(btn, isSelected);
+    function toggleButtonState(btn, isSelected) {
+        const iconClass = isSelected ? 'fa-minus' : 'fa-plus';
+        btn.innerHTML = `<i class="fa ${iconClass}" aria-hidden="true"></i>`;
+        btn.setAttribute('data-selected', isSelected.toString());
+    }
 
-          btn.addEventListener('click', function() {
-              const currentlySelected = btn.getAttribute('data-selected') === 'true';
-              if (currentlySelected) {
-                  selectedProducts = selectedProducts.filter(slug => slug !== productSlug);
-              } else if (selectedProducts.length < 4) {
-                  selectedProducts.push(productSlug);
-              } else {
-                  alert('You can compare up to 4 products only');
-              }
-              localStorage.setItem('compareProducts', JSON.stringify(selectedProducts));
-              toggleButtonState(btn, !currentlySelected);
-              updateCompareButton();
-          });
-      });
+    compareBtns.forEach(btn => {
+        const productSlug = btn.getAttribute('data-product-slug');
+        const isSelected = selectedProducts.includes(productSlug);
+        toggleButtonState(btn, isSelected);
 
-      compareButton.addEventListener('click', function() {
-          if (selectedProducts.length > 1) {
-              const queryString = selectedProducts.map(slug => `product_slug=${slug}`).join('&');
-              window.location.href = `{% url 'product:compare_products' %}?${queryString}`;
-          }
-      });
+        btn.addEventListener('click', function() {
+            const currentlySelected = btn.getAttribute('data-selected') === 'true';
+            if (currentlySelected) {
+                selectedProducts = selectedProducts.filter(slug => slug !== productSlug);
+            } else if (selectedProducts.length < 4) {
+                selectedProducts.push(productSlug);
+            } else {
+                alert('You can compare up to 4 products only.');
+                return;
+            }
+            localStorage.setItem('compareProducts', JSON.stringify(selectedProducts));
+            toggleButtonState(btn, !currentlySelected);
+            updateCompareButton();
+        });
+    });
 
-      updateCompareButton();
-  });
-</script>
+    compareButton.addEventListener('click', function() {
+        if (selectedProducts.length > 1) {
+            const queryString = selectedProducts.map(slug => `product_slug=${encodeURIComponent(slug)}`).join('&');
+            window.location.href = `{% url 'product:compare_products' %}?${queryString}`;
+        }
+    });
+
+    clearCompareButton.addEventListener('click', function() {
+        // Clear the selected products
+        selectedProducts = [];
+        localStorage.removeItem('compareProducts');
+        updateCompareButton();
+
+        // Reset all buttons to their default state
+        compareBtns.forEach(btn => toggleButtonState(btn, false));
+    });
+
+    updateCompareButton();
+});</script>

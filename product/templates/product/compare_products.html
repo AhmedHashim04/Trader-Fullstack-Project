@@ -1,125 +1,83 @@
 {% extends "base.html" %}
 
-<style>
-    .compare-section {
-        background-color: #f9f9f9;
-        padding: 60px 0;
-    }
-
-    .heading-container h2 {
-        font-size: 2.5rem;
-        color: #333;
-        margin-bottom: 20px;
-    }
-
-    .compare-table {
-        overflow-x: auto;
-    }
-
-    .table th, .table td {
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    .btn-primary, .btn-success {
-        width: 100%;
-        margin-bottom: 5px;
-    }
-
-    .table-responsive {
-        overflow-x: auto;
-    }
-
-    @media (min-width: 768px) {
-        .table-responsive {
-            overflow-x: initial;
-        }
-    }
-
-    .remove-compare-btn {
-        padding: 10px 20px;
-        width: 100%;
-    }
-</style>
 {% block body %}
 
-<section class="compare-section layout-padding">
-    <div class="container">
-        <header class="heading-container heading-center">
-            <h2>Product Comparison</h2>
+<section class="compare-section layout-padding trendy-layout" >
+    <div class="container py-5">
+        <header class="heading-container heading-center text-white" style="animation: fadeInDown 1s ease-in-out;">
+            <h2 class="fw-bold trendy-font" style="font-size: 3.5rem; color: #34495e; margin-bottom: 40px; font-weight: 800; text-transform: uppercase; letter-spacing: 3px;">Compare Products</h2>
         </header>
         <div class="row">
             <div class="col-12">
-            <div class="compare-table table-responsive">
-                <table class="table table-bordered">
-                <thead class="thead-light">
-                    <tr>
-                    <th scope="col">Features</th>
-                    {% for product in products %}
-                        <th scope="col">{{ product.name }}</th>
-                    {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for field in fields %}
-                    <tr>
-                        {% if field.name not in 'id,name,slug,cost,created_at' %}
-                            <td class="align-middle">{{ field.verbose_name }}</td>
-                            {% for product in products %}
-                            <td class="align-middle">
-                                {% if field.name == 'image' %}
-                                    <img src="{{ product.image|default:'https://via.placeholder.com/400' }}" alt="{{ product.name }}" class="img-fluid rounded" style="width: 150px; height: 150px; object-fit: cover;">
-                                {% elif field.name == 'price' %}
-                                    <h5><span>$</span> {{ product.price|default:"N/A" }}</h5>
-
-                                {% elif field.name == 'overall_rating' %}
-                                    <div class="star-container">
-                                        {% for i in "12345"|make_list %}
-                                            <i style="font-size: 1.2rem;color:rgba(228, 198, 32, 0.78);" class="fa {% if product.overall_rating >= forloop.counter %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true"></i>
+                <div class="compare-table table-responsive" style="overflow-x: auto; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); border-radius: 15px; background: linear-gradient(135deg, #ffffff, #f8f9fa); margin-top: 40px; animation: fadeInUp 1s ease-in-out;">
+                    <table class="table table-bordered bg-white rounded shadow-sm">
+                        <thead class="bg-info text-white">
+                            <tr>
+                                <th scope="col" class="align-middle" style="background: linear-gradient(135deg, #5dade2, #2e86c1); color: #ffffff; font-size: 1.3rem; text-transform: uppercase; padding: 20px; letter-spacing: 1.5px;">Features</th>
+                                {% for product in products %}
+                                    <th scope="col" class="align-middle" style="background: linear-gradient(135deg, #5dade2, #2e86c1); color: #ffffff; font-size: 1.3rem; text-transform: uppercase; padding: 20px; letter-spacing: 1.5px;">{{ product.name }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for field in fields %}
+                                {% if field.name not in 'id,name,slug,cost,created_at' %}
+                                    <tr>
+                                        <td class="align-middle" style="text-align: center; vertical-align: middle; padding: 20px; font-size: 1.1rem; color: #555; transition: background-color 0.3s ease;">{{ field.verbose_name }}</td>
+                                        {% for product in products %}
+                                            <td class="align-middle" style="text-align: center; vertical-align: middle; padding: 20px; font-size: 1.1rem; color: #555; transition: background-color 0.3s ease;">
+                                                {% if field.name == 'image' %}
+                                                    <img src="{{ product.image.url|default:'https://via.placeholder.com/400' }}" alt="{{ product.name }}" class="img-fluid rounded" style="width: 150px; height: 150px; object-fit: cover; border-radius: 15px; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                                                {% elif field.name == 'price' %}
+                                                    <h5 class="fw-bold trendy-font" style="color: #555; font-size: 1.3rem;"><span>$</span> {{ product.price|default:"N/A" }}</h5>
+                                                {% elif field.name == 'overall_rating' %}
+                                                    <div class="star-container" style="display: flex; align-items: center; justify-content: center;">
+                                                        {% for i in "12345"|make_list %}
+                                                            <i class="fa {% if product.overall_rating >= forloop.counter %}fa-star{% else %}fa-star-o{% endif %}" aria-hidden="true" style="font-size: 1.6rem; color: #f1c40f; margin: 0 3px; transition: transform 0.3s ease;"></i>
+                                                        {% endfor %}
+                                                        <span style="font-size: 1.1rem; color: #555; margin-left: 10px;">({{ product.overall_rating|default:"none" }}/5)</span>
+                                                    </div>
+                                                {% elif field.name == 'brand' %}
+                                                    {{ product.brand.name|default:"N/A" }}
+                                                {% elif field.name == 'category' %}
+                                                    {{ product.category.name|default:"N/A" }}
+                                                {% elif field.name == 'stock' %}
+                                                    {{ product.stock|default:"N/A" }}
+                                                {% elif field.name == 'description' %}
+                                                    {{ product.description|default:"N/A" }}
+                                                {% endif %}
+                                            </td>
                                         {% endfor %}
-                                        <span style="font-size: 1.2rem;">({{ product.overall_rating|default:"N/A" }}/5)</span>
-                                    </div>
-                                {% elif field.name == 'brand' %}
-                                    {{ product.brand.name|default:"N/A" }}
-                                {% elif field.name == 'category' %}
-                                    {{ product.category.name|default:"N/A" }}
-                                {% elif field.name == 'stock' %}
-                                    {{ product.stock|default:"N/A" }}
-                                {% elif field.name == 'description' %}
-                                    {{ product.description|default:"N/A" }}
+                                    </tr>
                                 {% endif %}
-                            </td>
                             {% endfor %}
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-                    <tr>
-                        <td class="align-middle">Actions</td>
-                        {% for product in products %}
-                        <td class="text-center">
-                            <div class="btn-group-vertical" style="width: 100%;">
-                                <a href="{% url 'product:product_detail' product.slug %}" class="btn btn-outline-primary btn-sm">
-                                    <i class="fa fa-eye"></i> View Details
-                                </a>
-                                {% if product.slug not in contextCart or not user.is_authenticated %}
-                                <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-outline-success btn-sm">
-                                    <i class="fa fa-cart-plus"></i> Add to Cart
-                                </a>
-                                {% else %}
-                                <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-outline-danger btn-sm">
-                                    <i class="fa fa-cart-arrow-down"></i> Remove from Cart
-                                </a>
-                                {% endif %}
-                                <button class="btn btn-outline-warning btn-sm remove-compare-btn" data-product-id="{{ product.id }}">
-                                    <i class="fa fa-minus"></i> Remove
-                                </button>
-                            </div>
-                        </td>
-                        {% endfor %}
-                    </tr>
-                </tbody>
-                </table>
-            </div>
+                            <tr>
+                                <td class="align-middle" style="text-align: center; vertical-align: middle; padding: 20px; font-size: 1.1rem; color: #555; transition: background-color 0.3s ease;">Actions</td>
+                                {% for product in products %}
+                                    <td class="text-center" style="text-align: center; vertical-align: middle; padding: 20px; font-size: 1.1rem; color: #555; transition: background-color 0.3s ease;">
+                                        <div class="btn-group-vertical">
+                                            <a href="{% url 'product:product_detail' product.slug %}" class="btn btn-primary btn-sm rounded-pill" style="width: 100%; margin-bottom: 10px; font-size: 1rem; font-weight: 600; border-radius: 10px; transition: all 0.3s ease, transform 0.2s ease; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);">
+                                                <i class="fa fa-eye me-2"></i> View Details
+                                            </a>
+                                            {% if product.slug not in contextCart or not user.is_authenticated %}
+                                                <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-success btn-sm rounded-pill" style="width: 100%; margin-bottom: 10px; font-size: 1rem; font-weight: 600; border-radius: 10px; transition: all 0.3s ease, transform 0.2s ease; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);">
+                                                    <i class="fa fa-cart-plus me-2"></i> Add to Cart
+                                                </a>
+                                            {% else %}
+                                                <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-danger btn-sm rounded-pill" style="width: 100%; margin-bottom: 10px; font-size: 1rem; font-weight: 600; border-radius: 10px; transition: all 0.3s ease, transform 0.2s ease; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);">
+                                                    <i class="fa fa-cart-arrow-down me-2"></i> Remove from Cart
+                                                </a>
+                                            {% endif %}
+                                            <button class="remove-compare-btn btn btn-outline-danger btn-sm" data-product-slug="{{ product.slug }}" style="width: 100%; margin-top: 10px; font-size: 1rem; font-weight: 600; border-radius: 10px; transition: all 0.3s ease, transform 0.2s ease; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);">
+                                                <i class="fa fa-minus-circle" aria-hidden="true"></i> Remove from Comparison
+                                            </button>
+                                        </div>
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -130,18 +88,22 @@
         const removeCompareBtns = document.querySelectorAll('.remove-compare-btn');
 
         removeCompareBtns.forEach(btn => {
-            const productId = btn.getAttribute('data-product-id');
+            const productId = btn.getAttribute('data-product-slug');
 
             btn.addEventListener('click', function() {
-                let selectedProducts = JSON.parse(localStorage.getItem('compareProducts')) || [];
-                selectedProducts = selectedProducts.filter(id => id !== productId);
-                localStorage.setItem('compareProducts', JSON.stringify(selectedProducts));
-                window.location.href = `{% url 'product:compare_products' %}?${selectedProducts.map(id => `product_id=${id}`).join('&')}`;
+                btn.classList.add('btn-danger');
+                btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Removing...';
+
+                setTimeout(() => {
+                    let selectedProducts = JSON.parse(localStorage.getItem('compareProducts')) || [];
+                    selectedProducts = selectedProducts.filter(id => id !== productId);
+                    localStorage.setItem('compareProducts', JSON.stringify(selectedProducts));
+                    window.location.href = `{% url 'product:compare_products' %}?${selectedProducts.map(slug => `product_slug=${slug}`).join('&')}`;
+                }, 1000);
             });
         });
     });
 </script>
 
 {% endblock body %}
-
 

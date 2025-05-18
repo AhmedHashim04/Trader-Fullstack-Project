@@ -1,4 +1,4 @@
-<section class="product-section layout-padding trendy">
+<section class="product-section layout-padding trendy"style="background: linear-gradient(135deg, #f5f7fa, #c3cfe2);">
   <div class="container">
     <div class="heading-container heading-center">
       <h2>Our Products in {{ brand }} Brand</h2>
@@ -10,7 +10,7 @@
             <div class="product-box">
               <div class="img-box">
                 <a href="{% url 'product:product_detail' product.slug %}">
-                  <img src="{% if product.image %}{{ product.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid rounded trendy-img">
+                  <img src="{% if product.image %}{{ product.image.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ product.name }}" class="img-fluid rounded trendy-img">
                 </a>
               </div>
               <div class="product-info text-center mt-3">

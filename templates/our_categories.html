@@ -1,16 +1,16 @@
 <section class="categories_section trendy-layout">
   <div class="container">
     <div class="heading_container heading_center trendy-heading">
-      <h2>Explore Our Categories</h2>
-      <p class="text-muted">Discover a variety of categories tailored to meet your needs and preferences.</p>
+      <h2>Discover Your Interest</h2>
+      <p class="text-muted">Explore our categories and find what you're looking for.</p>
     </div>
     <div class="row">
-      {% for category in all_categories|slice:":4" %}
-        <div class="col-sm-6 col-lg-3 mb-4">
-          <div class="box trendy-box shadow-sm">
-            <div class="img-box">
+      {% for category in all_categories|slice:":6" %}
+        <div class="col-sm-12 col-lg-2 mb-4">
+          <div class="box trendy-box shadow-sm" aria-label="{{ category.name }} category">
+            <div class="img-box overflow-hidden">
               <a href="{% url 'product:category_detail' category.slug %}">
-                <img src="{% if category.image %}{{ category.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ category.name }}" class="img-fluid rounded trendy-img">
+                <img src="{% if category.image %}{{ category.image.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ category.name }}" class="img-fluid rounded trendy-img">
               </a>
             </div>
             <div class="detail-box text-center mt-3">
@@ -23,7 +23,7 @@
       {% endfor %}
     </div>
     <div class="btn_box text-center mt-4">
-      <a href="{% url 'product:categories_list' %}" class="btn btn-outline-primary mt-3 px-4 py-2 shadow-sm rounded-pill border-2 trendy-btn">Explore More Categories</a>
+      <a href="{% url 'product:categories_list' %}" class="btn btn-outline-warning mt-3 px-4 py-2 shadow-sm rounded-pill border-2 trendy-btn">Explore More Categories</a>
     </div>
   </div>
 </section>

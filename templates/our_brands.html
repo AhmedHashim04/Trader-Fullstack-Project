@@ -9,7 +9,7 @@
           <div class="box shadow-sm trendy-box">
             <div class="img-box">
               <a href="{% url 'settings:brand_detail' brand.slug %}">
-                <img src="{% if brand.image %}{{ brand.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ brand.name }}" class="img-fluid rounded trendy-img">
+                <img src="{% if brand.image %}{{ brand.image.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ brand.name }}" class="img-fluid rounded trendy-img">
               </a>
             </div>
             <div class="detail-box text-center mt-3">

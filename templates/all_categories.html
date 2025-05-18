@@ -9,7 +9,7 @@
           <div class="box shadow-sm">
             <div class="img-box">
               <a href="{% url 'product:category_detail' category.slug %}">
-                <img src="{% if category.image %}{{ category.image }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ category.name }}" class="img-fluid rounded">
+                <img src="{% if category.image %}{{ category.image.url }}{% else %}'https://via.placeholder.com/400'{% endif %}" alt="{{ category.name }}" class="img-fluid rounded">
               </a>
             </div>
             <div class="detail-box text-center mt-3">

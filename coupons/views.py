@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib import messages
-from .forms import CouponApplyForm
 from .models import Coupon
 from order.models import Order
 
