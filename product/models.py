@@ -20,8 +20,6 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/', verbose_name=_("Product Image"), blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
     viewed_by = models.ManyToManyField("account.Profile", verbose_name=_("Viewed By"), related_name="viewed_products", blank=True)
-    # tags = TaggableManager(verbose_name=_("Tags"))
-
     stock = models.PositiveIntegerField(default=0, verbose_name=_("Stock"))
     overall_rating = models.FloatField(default=0.0, verbose_name=_("Overall Rating"))
 

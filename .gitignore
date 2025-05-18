@@ -18,6 +18,8 @@ dist/
 build/
 *.egg
 
+bfg.jar
+
 # Django stuff:
 *.log
 *.pot

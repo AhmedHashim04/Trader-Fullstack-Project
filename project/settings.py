@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'contact',
     'product',
     'home',
-    # 'settings',
+    'settings',
     'cart',
     'order',
     'coupons',
