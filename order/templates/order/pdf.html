@@ -1,0 +1,121 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f9fafb;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+    }
+
+    h1 {
+        text-align: center;
+        font-weight: 600;
+        font-size: 28px;
+        margin-bottom: 30px;
+        color: #1f2937;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .col-md-6 {
+        flex: 0 0 48%;
+        margin-bottom: 20px;
+    }
+
+    p {
+        margin-bottom: 12px;
+        font-size: 14px;
+        color: #4b5563;
+    }
+
+    strong {
+        font-weight: 500;
+        color: #111827;
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px solid #e5e7eb;
+        margin: 30px 0;
+    }
+
+    .list-group {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .list-group-item {
+        padding: 15px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        background-color: #f9fafb;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .list-group-item:hover {
+        background-color: #f3f4f6;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .list-group-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .badge {
+        background-color: #3b82f6;
+        color: #ffffff;
+        padding: 5px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+</style>
+
+<div class="container">
+    <h1 class="text-center">Order Receipt</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Order Number:</strong> #{{ order.id }}</p>
+            <p><strong>Order Date:</strong> {{ order.created }}</p>
+            <p><strong>Total Price:</strong> {{ order.total_price }} EGP</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Client Name:</strong> {{ order.client_name }}</p>
+            <p><strong>Client Phone:</strong> {{ order.client_phone }}</p>
+            <p><strong>Client Address:</strong> {{ order.client_address }}</p>
+        </div>
+    </div>
+    <hr>
+    <p><strong>Items:</strong></p>
+    <ul class="list-group">
+        {% for item in order.items.all %}
+            <li class="list-group-item">
+                <span>{{ item.product.name }}</span>
+                <span class="badge">{{ item.quantity }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

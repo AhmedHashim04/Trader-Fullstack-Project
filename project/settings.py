@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'contact',
     'product',
     'home',
-    'settings',
+    # 'settings',
     'cart',
     'order',
     'coupons',
@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'taggit',
     'payment',
     'widget_tweaks',
     'crispy_forms',

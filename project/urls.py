@@ -22,6 +22,7 @@ from django.conf.urls import handler404, handler500
 
 
 urlpatterns = [
+    
     path('admin/'   , admin.site.urls),
     path('account/' ,include('account.urls',namespace='account')),
     path(''         ,include('home.urls',namespace='home')),
@@ -32,6 +33,7 @@ urlpatterns = [
     path('contact/' ,include('contact.urls',namespace='contact')),
     path('payment/' ,include('payment.urls',namespace='payment')),
     path('coupons/' ,include('coupons.urls',namespace='coupon')),
+
 ]
 
 if settings.DEBUG:

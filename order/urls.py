@@ -7,6 +7,7 @@ from .views import (
     CheckoutView,
     PreviewView,
     clear_order_history,
+    admin_order_pdf,
 )
 
 app_name = 'order'
@@ -19,4 +20,5 @@ urlpatterns = [
     path('create-order/', create_order, name='create_order'), 
     path('confirm/<str:confirmation_key>/', confirm_order, name='confirm_order'),  
     path('clear-order-history/', clear_order_history, name='clear_order_history'),  
+    path('admin/order/<str:id>/pdf/', admin_order_pdf, name='admin_order_pdf'),
 ]

@@ -12,6 +12,22 @@ from django.core.mail import send_mail
 from django.conf import settings
 import uuid
 from django.core.cache import cache
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+from django.template.loader import get_template
+import weasyprint
+from django.contrib.admin.views.decorators import staff_member_required
+
+
+@staff_member_required
+def admin_order_pdf(request, id):
+    order = get_object_or_404(Order, id=id)
+    html = get_template('order/pdf.html').render({'order': order})
+    pdf = weasyprint.HTML(string=html).write_pdf()
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = f'filename="order_{order.id}.pdf"'
+    return response
+
 def create_order(request):
     cart = cart_branch(request)
     if not cart.cart:
@@ -102,7 +118,6 @@ This link will expire in 24 hours.
         print(f"Failed to send order confirmation email: {str(e)}")
         messages.error(request, 'Failed to send confirmation email. Please try again.')
         return redirect('cart:cart_list')
-
 
 def confirm_order(request, confirmation_key):
     cache_key = f"pending_order_{confirmation_key}"

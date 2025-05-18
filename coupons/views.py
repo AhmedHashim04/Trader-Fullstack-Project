@@ -26,6 +26,8 @@ def apply_coupon(request):
         messages.error('Order value too low for this coupon')
         return redirect('cart:cart_list')
 
+
+
     if coupon.discount_type == 'fixed':
         discount = coupon.amount
     elif coupon.discount_type == 'percent':

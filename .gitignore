@@ -26,9 +26,6 @@ build/
 *.sqlite3
 db.sqlite3
 
-# Media files
-media/
-
 # Static files
 staticfiles/
 
@@ -46,3 +43,29 @@ staticfiles/
 
 # Windows
 Thumbs.db
+
+# Django
+*.pyc
+__pycache__/
+db.sqlite3
+media/
+staticfiles/
+.env
+
+# VSCode
+.vscode/
+
+# OS
+.DS_Store
+
+# Python
+*.log
+*.pot
+*.py[cod]
+*.so
+
+# Test
+.coverage
+htmlcov/
+*.pytest_cache/
+

@@ -3,8 +3,9 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.utils.text import slugify
-from taggit.managers import TaggableManager
+# from taggit.managers import TaggableManager
 from django.db.models import Avg
+
 
 
 class Product(models.Model):
@@ -12,13 +13,15 @@ class Product(models.Model):
     category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name=_("Category"), blank=True, null=True)
     brand = models.ForeignKey('settings.Brand', on_delete=models.PROTECT, verbose_name=_("Brand"), blank=True, null=True)
     description = models.TextField(max_length=1000, verbose_name=_("Description"))
+    tag = models.CharField(choices=[("new", "New"), ("hot", "Hot"), ("sale", "Sale")],max_length=40, verbose_name=_("Tag"))
     price = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Price"))
     cost = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Cost") , blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True, verbose_name=_("Created At"))
     image = models.ImageField(upload_to='products/', verbose_name=_("Product Image"), blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
     viewed_by = models.ManyToManyField("account.Profile", verbose_name=_("Viewed By"), related_name="viewed_products", blank=True)
-    tags = TaggableManager(verbose_name=_("Tags"))
+    # tags = TaggableManager(verbose_name=_("Tags"))
+
     stock = models.PositiveIntegerField(default=0, verbose_name=_("Stock"))
     overall_rating = models.FloatField(default=0.0, verbose_name=_("Overall Rating"))
 
