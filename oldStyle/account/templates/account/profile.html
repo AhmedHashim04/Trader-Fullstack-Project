@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-gradient-primary text-primary text-center py-4 rounded-top">
+                    <h2 class="mb-0">User Profile</h2>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-4">
+                        <!-- Personal Information -->
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary mb-3">
+                                        <i class="fas fa-user-circle me-2"></i>Personal Information
+                                    </h5>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <strong>Full Name:</strong> {{ profile.user.first_name }} {{ profile.user.last_name }}
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Phone:</strong> {{ profile.phone_number }}
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Date of Birth:</strong> {{ profile.date_of_birth }}
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Email:</strong> {{ profile.user.email }}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shipping Address -->
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary mb-3">
+                                        <i class="fas fa-map-marker-alt me-2"></i>Shipping Address
+                                    </h5>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <strong>Address:</strong> {{ profile.address }}, {{ profile.city }}, {{ profile.country }}
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>ZIP Code:</strong> {{ profile.postal_code }}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-4 mt-4">
+                        <!-- View Orders -->
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-primary mb-3">
+                                        <i class="fas fa-list me-2"></i>View Orders
+                                    </h5>
+                                    <a href="{% url 'order:order_list' %}" class="btn btn-outline-secondary w-100 shadow-sm">
+                                        <i class="fa fa-list me-2"></i>View Orders
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Edit Profile -->
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-primary mb-3">
+                                        <i class="fas fa-edit me-2"></i>Edit Profile
+                                    </h5>
+                                    <a href="{% url 'account:user_profile_edit' user.profile.id %}" class="btn btn-primary w-100 shadow-sm">
+                                        <i class="fas fa-edit me-2"></i>Edit Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Logout -->
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-primary mb-3">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    </h5>
+                                    <a href="{% url 'account:logout' %}" class="btn btn-danger w-100 shadow-sm">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center bg-light rounded-bottom py-3">
+                    <small class="text-muted">© {% now "DATE_FORMAT" %} Trader E-commerce Platform</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-body text-center">
+            <h1 class="card-title mb-4">Account Activation</h1>
+            <p class="card-text">We've sent an activation link to your email. If you don't receive it within a few minutes, check your spam folder.</p>
+            <p class="card-text">Once you activate, you'll be able to login to your account.</p>
+            <a href="{% url 'account:login' %}" class="btn btn-primary btn-lg w-100 shadow-sm">
+                <i class="fas fa-lock-open me-2"></i>Login Now
+            </a>
+            <p class="card-text mt-3">
+                <small>
+                    If you have any questions or need further assistance, please don't hesitate to <a href="{% url 'contact:contact' %}">contact us</a>.
+                </small>
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
