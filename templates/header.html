@@ -1,0 +1,80 @@
+<nav class="navbar navbar-expand-lg trendy-navbar sticky-top">
+    <div class="container">
+        <a class="navbar-brand trendy-brand" href="index.html">
+            <div class="brand-wrapper">
+                <i class="fas fa-shopping-bag brand-icon"></i>
+                <span class="brand-text">Trader</span>
+                <div class="brand-glow"></div>
+            </div>
+        </a>
+        
+        <button class="navbar-toggler trendy-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <div class="hamburger-lines">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto trendy-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.html">
+                        <i class="fas fa-home me-1"></i>Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="products.html">
+                        <i class="fas fa-shopping-bag me-1"></i>Shop
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-tags me-1"></i>Categories
+                    </a>
+                    <ul class="dropdown-menu trendy-dropdown" id="categoriesMenu">
+                        <!-- Categories will be loaded dynamically -->
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">
+                        <i class="fas fa-info-circle me-1"></i>About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">
+                        <i class="fas fa-envelope me-1"></i>Contact
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="wishlist.html">
+                        <i class="fas fa-heart me-1"></i>Wishlist
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="d-flex align-items-center">
+                <div class="trendy-search-container me-3">
+                    <div class="search-wrapper">
+                        <input type="text" class="form-control trendy-search" id="searchInput" placeholder="What are you looking for?">
+                        <button class="btn trendy-search-btn" type="button" id="searchBtn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <div class="search-glow"></div>
+                    </div>
+                </div>
+                
+                <div class="user-actions d-flex align-items-center">
+                    <a href="login.html" class="btn trendy-btn-ghost me-2" title="Login">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <a href="cart.html" class="btn trendy-btn-primary position-relative" title="Shopping Cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge" id="cartCount">0</span>
+                        <div class="btn-glow"></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

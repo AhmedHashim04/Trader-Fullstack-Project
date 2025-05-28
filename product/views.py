@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.cache import cache
 
-class ProductsView(ListView):
+class ProductListView(ListView):
     model = Product
     context_object_name = 'all_products'
     template_name = 'product/products.html'
@@ -71,7 +71,7 @@ class ProductsView(ListView):
             'search_query': self.request.GET.get('search', ''),
             'selected_category': self.request.GET.get('category', ''),
             'sort_by': self.request.GET.get('sort_by', ''),
-            'all_products': page_obj,
+            # 'all_products': page_obj,
             'is_paginated': page_obj.has_other_pages()
         })
 

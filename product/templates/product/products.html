@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block body %}
+
+    <!-- Page Header -->
+    <section class="page-header bg-light py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0" id="breadcrumb">
+                    <li class="breadcrumb-item"><a href={% url 'home:home' %}>Home</a></li>
+                    <li class="breadcrumb-item"><a href={% url 'product:products_list' %}>Products</a></li>
+                    <li class="breadcrumb-item active" id="currentProduct">Loading...</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <div class="row">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Filters</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Categories Filter -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Categories</h6>
+                            <div id="categoryFilters">
+                                <!-- Category filters will be loaded dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Price Range Filter -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Price Range</h6>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="number" class="form-control form-control-sm" id="minPrice" placeholder="Min">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" class="form-control form-control-sm" id="maxPrice" placeholder="Max">
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-primary btn-sm mt-2 w-100" id="applyPriceFilter">Apply</button>
+                        </div>
+
+                        <!-- Sort Options -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Sort By</h6>
+                            <select class="form-select form-select-sm" id="sortSelect">
+                                <option value="name-asc">Name (A-Z)</option>
+                                <option value="name-desc">Name (Z-A)</option>
+                                <option value="price-asc">Price (Low to High)</option>
+                                <option value="price-desc">Price (High to Low)</option>
+                            </select>
+                        </div>
+
+                        <!-- Clear Filters -->
+                        <button class="btn btn-outline-secondary btn-sm w-100" id="clearFilters">Clear All Filters</button>
+                    </div>
+                </div>
+
+                <!-- Advertisement Sidebar -->
+
+                <!-- Popular Brands -->
+
+            </div>
+
+            <!-- Products Grid -->
+            <div class="col-lg-9">
+                <!-- View Toggle -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-secondary active" id="gridView">
+                                <i class="fas fa-th"></i> Grid
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" id="listView">
+                                <i class="fas fa-list"></i> List
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <select class="form-select form-select-sm d-inline-block w-auto" id="itemsPerPage">
+                            <option value="12">12 per page</option>
+                            <option value="24">24 per page</option>
+                            <option value="48">48 per page</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Products Container -->
+                <div id="productsContainer">
+                    <div class="row g-4" id="productsGrid">
+                        <!-- Products will be loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- No Products Message -->
+                <div class="text-center py-5 d-none" id="noProductsMessage">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No products found</h4>
+                    <p class="text-muted">Try adjusting your search criteria or filters.</p>
+                    <button class="btn btn-primary" id="resetSearch">Reset Search</button>
+                </div>
+
+                <!-- Error Message -->
+                <div class="alert alert-danger d-none" id="errorMessage">
+                    <h5 class="alert-heading">Unable to load products</h5>
+                    <p class="mb-0">There was an error loading the product catalog. Please check your connection and try again.</p>
+                    <hr>
+                    <button class="btn btn-outline-danger btn-sm" id="retryLoad">Retry</button>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Products pagination" class="mt-4">
+                    <ul class="pagination justify-content-center" id="pagination">
+                        <!-- Pagination will be generated dynamically -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% include 'footer.html' %}
+    <!-- Loading Spinner -->
+    {% include 'loading_spinner.html' %}
+
+{% endblock body %}

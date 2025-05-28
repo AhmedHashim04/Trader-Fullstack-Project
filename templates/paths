@@ -1,0 +1,35 @@
+{{ profile.user.first_name }} {{ profile.user.last_name }}
+{{ profile.phone_number }}
+{{ profile.date_of_birth }}
+{{ profile.user.email }}
+{{ profile.address }}, {{ profile.city }}, {{ profile.country }}
+{{ profile.postal_code }}
+
+{% url 'account:login' %}
+{% url 'login' %}
+{% url 'order:order_list' %}
+{% url 'account:user_profile_edit' user.profile.id %}
+© {% now 'DATE_FORMAT' %} Trader E-commerce Platform
+{% url 'account:logout' %}
+{% url 'account:password_change' %}
+{% url 'home:home' %}
+{% url 'password_reset' %}
+{% url 'product:products_list' %}
+
+action="{% url 'coupon:coupon_apply' %}"
+{% url 'cart:cart_clear' %}
+{% url 'order:create_order' %}
+{% url 'order:confirm_order' confirmation_key %}
+{% url 'order:order_detail' order.id %}
+{% url 'order:order_list' %}
+{% url 'cart:cart_add' product.slug %}
+{% url 'cart:cart_remove' product.slug %}
+{% url 'product:product_wishlist' product.slug %}
+{% url 'product:wishlist_detail' user.profile.id %}
+action="{% url 'cart:cart_add' product.slug %}"
+{% url 'product:product_detail' item.slug %}
+{% url 'settings:brand_detail' brand.slug %}
+{% url 'product:category_detail' category.slug %}
+{% url 'product:categories_list' %}
+{% url 'settings:brands_list' %}
+{% url 'contact:contact' %}
