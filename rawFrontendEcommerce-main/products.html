@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - ShopEase</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fas fa-shopping-bag me-2"></i>ShopEase
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="products.html">Products</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu" id="categoriesMenu">
+                            <!-- Categories will be loaded dynamically -->
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <div class="search-box me-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search products...">
+                            <button class="btn btn-outline-light" type="button" id="searchBtn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <a href="cart.html" class="btn btn-outline-light position-relative me-2">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">
+                            0
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header bg-light py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="h2 mb-0">Products</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item active">Products</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <span class="text-muted" id="productCount">Loading products...</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        <div class="row">
+            <!-- Sidebar Filters -->
+            <div class="col-lg-3 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Filters</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Categories Filter -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Categories</h6>
+                            <div id="categoryFilters">
+                                <!-- Category filters will be loaded dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Price Range Filter -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Price Range</h6>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="number" class="form-control form-control-sm" id="minPrice" placeholder="Min">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" class="form-control form-control-sm" id="maxPrice" placeholder="Max">
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-primary btn-sm mt-2 w-100" id="applyPriceFilter">Apply</button>
+                        </div>
+
+                        <!-- Sort Options -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Sort By</h6>
+                            <select class="form-select form-select-sm" id="sortSelect">
+                                <option value="name-asc">Name (A-Z)</option>
+                                <option value="name-desc">Name (Z-A)</option>
+                                <option value="price-asc">Price (Low to High)</option>
+                                <option value="price-desc">Price (High to Low)</option>
+                            </select>
+                        </div>
+
+                        <!-- Clear Filters -->
+                        <button class="btn btn-outline-secondary btn-sm w-100" id="clearFilters">Clear All Filters</button>
+                    </div>
+                </div>
+
+                <!-- Advertisement Sidebar -->
+                <div class="ad-sidebar">
+                    <h6 class="fw-bold mb-3">🎯 Special Offers</h6>
+                    <div class="text-center">
+                        <div class="bg-primary bg-opacity-10 rounded p-3 mb-3">
+                            <i class="fas fa-gift fa-2x text-primary mb-2"></i>
+                            <h6 class="text-primary">Free Shipping</h6>
+                            <small class="text-muted">On orders over $50</small>
+                        </div>
+                        <div class="bg-success bg-opacity-10 rounded p-3 mb-3">
+                            <i class="fas fa-percentage fa-2x text-success mb-2"></i>
+                            <h6 class="text-success">15% Off</h6>
+                            <small class="text-muted">First-time buyers</small>
+                        </div>
+                        <a href="#" class="btn btn-outline-primary btn-sm w-100">View All Deals</a>
+                    </div>
+                </div>
+
+                <!-- Popular Brands -->
+                <div class="ad-sidebar">
+                    <h6 class="fw-bold mb-3">🏆 Popular Brands</h6>
+                    <div class="row g-2">
+                        <div class="col-6 text-center">
+                            <i class="fab fa-apple fa-2x text-muted mb-1"></i>
+                            <small class="d-block">Apple</small>
+                        </div>
+                        <div class="col-6 text-center">
+                            <i class="fas fa-mobile-alt fa-2x text-muted mb-1"></i>
+                            <small class="d-block">Samsung</small>
+                        </div>
+                        <div class="col-6 text-center">
+                            <i class="fas fa-running fa-2x text-muted mb-1"></i>
+                            <small class="d-block">Nike</small>
+                        </div>
+                        <div class="col-6 text-center">
+                            <i class="fas fa-headphones fa-2x text-muted mb-1"></i>
+                            <small class="d-block">Sony</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="col-lg-9">
+                <!-- View Toggle -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-secondary active" id="gridView">
+                                <i class="fas fa-th"></i> Grid
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" id="listView">
+                                <i class="fas fa-list"></i> List
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <select class="form-select form-select-sm d-inline-block w-auto" id="itemsPerPage">
+                            <option value="12">12 per page</option>
+                            <option value="24">24 per page</option>
+                            <option value="48">48 per page</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Products Container -->
+                <div id="productsContainer">
+                    <div class="row g-4" id="productsGrid">
+                        <!-- Products will be loaded dynamically -->
+                    </div>
+                </div>
+
+                <!-- No Products Message -->
+                <div class="text-center py-5 d-none" id="noProductsMessage">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No products found</h4>
+                    <p class="text-muted">Try adjusting your search criteria or filters.</p>
+                    <button class="btn btn-primary" id="resetSearch">Reset Search</button>
+                </div>
+
+                <!-- Error Message -->
+                <div class="alert alert-danger d-none" id="errorMessage">
+                    <h5 class="alert-heading">Unable to load products</h5>
+                    <p class="mb-0">There was an error loading the product catalog. Please check your connection and try again.</p>
+                    <hr>
+                    <button class="btn btn-outline-danger btn-sm" id="retryLoad">Retry</button>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Products pagination" class="mt-4">
+                    <ul class="pagination justify-content-center" id="pagination">
+                        <!-- Pagination will be generated dynamically -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-5 mt-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">ShopEase</h5>
+                    <p class="text-muted">Your trusted e-commerce partner for quality products and exceptional service.</p>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="fw-bold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-muted text-decoration-none">Home</a></li>
+                        <li><a href="products.html" class="text-muted text-decoration-none">Products</a></li>
+                        <li><a href="about.html" class="text-muted text-decoration-none">About</a></li>
+                        <li><a href="contact.html" class="text-muted text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center text-muted">
+                <p>&copy; 2023 ShopEase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Spinner -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - ShopEase</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fas fa-shopping-bag me-2"></i>ShopEase
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">Products</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu" id="categoriesMenu">
+                            <!-- Categories will be loaded dynamically -->
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <div class="search-box me-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search products...">
+                            <button class="btn btn-outline-light" type="button" id="searchBtn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <a href="cart.html" class="btn btn-outline-light position-relative me-2 active">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">
+                            0
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header bg-light py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1 class="h2 mb-0">Shopping Cart</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item active">Cart</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <button class="btn btn-outline-danger btn-sm" id="clearCartBtn">
+                        <i class="fas fa-trash me-1"></i>Clear Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Content -->
+    <div class="container py-4">
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Cart Items</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="cartItemsContainer">
+                            <!-- Cart items will be loaded dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card sticky-top" style="top: 100px;">
+                    <div class="card-header">
+                        <h5 class="mb-0">Order Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">$0.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Shipping:</span>
+                            <span id="shipping">$0.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tax:</span>
+                            <span id="tax">$0.00</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between fw-bold h5">
+                            <span>Total:</span>
+                            <span id="total">$0.00</span>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mt-4">
+                            <button class="btn btn-primary btn-lg" id="checkoutBtn" disabled>
+                                <i class="fas fa-credit-card me-2"></i>Proceed to Checkout
+                            </button>
+                            <a href="products.html" class="btn btn-outline-secondary">
+                                <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
+                            </a>
+                        </div>
+                        
+                        <!-- Promo Code -->
+                        <div class="mt-4">
+                            <h6 class="fw-bold">Promo Code</h6>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="promoCode" placeholder="Enter code">
+                                <button class="btn btn-outline-primary" type="button" id="applyPromoBtn">Apply</button>
+                            </div>
+                            <div class="invalid-feedback" id="promoError"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty Cart -->
+    <div class="container py-5 text-center d-none" id="emptyCart">
+        <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+        <h3>Your cart is empty</h3>
+        <p class="text-muted">Add some products to your cart to continue shopping.</p>
+        <a href="products.html" class="btn btn-primary">Start Shopping</a>
+    </div>
+
+    <!-- Recommended Products -->
+    <section class="py-5 bg-light" id="recommendedSection" style="display: none;">
+        <div class="container">
+            <h3 class="mb-4">Recommended for You</h3>
+            <div class="row g-4" id="recommendedProducts">
+                <!-- Recommended products will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">ShopEase</h5>
+                    <p class="text-muted">Your trusted e-commerce partner for quality products and exceptional service.</p>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="fw-bold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-muted text-decoration-none">Home</a></li>
+                        <li><a href="products.html" class="text-muted text-decoration-none">Products</a></li>
+                        <li><a href="about.html" class="text-muted text-decoration-none">About</a></li>
+                        <li><a href="contact.html" class="text-muted text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center text-muted">
+                <p>&copy; 2023 ShopEase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/products.js"></script>
+    <script>
+        // Cart page specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartPage();
+            
+            // Event listeners
+            document.getElementById('clearCartBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to clear your cart?')) {
+                    cart.clear();
+                    loadCartPage();
+                }
+            });
+            
+            document.getElementById('checkoutBtn').addEventListener('click', function() {
+                alert('Checkout functionality would be implemented here with payment processing.');
+            });
+            
+            document.getElementById('applyPromoBtn').addEventListener('click', applyPromoCode);
+        });
+
+        function loadCartPage() {
+            const cartItems = cart.getItems();
+            
+            if (cartItems.length === 0) {
+                showEmptyCart();
+                return;
+            }
+            
+            showCartItems(cartItems);
+            updateOrderSummary();
+            loadRecommendedProducts();
+        }
+
+        function showEmptyCart() {
+            document.querySelector('.container .row').style.display = 'none';
+            document.getElementById('emptyCart').classList.remove('d-none');
+            document.getElementById('recommendedSection').style.display = 'none';
+        }
+
+        function showCartItems(items) {
+            document.querySelector('.container .row').style.display = 'block';
+            document.getElementById('emptyCart').classList.add('d-none');
+            
+            const container = document.getElementById('cartItemsContainer');
+            container.innerHTML = items.map(item => createCartItemHTML(item)).join('');
+            
+            // Add event listeners for quantity changes and removals
+            items.forEach(item => {
+                const decreaseBtn = document.getElementById(`decrease-${item.id}`);
+                const increaseBtn = document.getElementById(`increase-${item.id}`);
+                const removeBtn = document.getElementById(`remove-${item.id}`);
+                const quantityInput = document.getElementById(`quantity-${item.id}`);
+                
+                decreaseBtn.addEventListener('click', () => {
+                    if (item.quantity > 1) {
+                        cart.updateQuantity(item.id, item.quantity - 1);
+                        loadCartPage();
+                    }
+                });
+                
+                increaseBtn.addEventListener('click', () => {
+                    cart.updateQuantity(item.id, item.quantity + 1);
+                    loadCartPage();
+                });
+                
+                removeBtn.addEventListener('click', () => {
+                    if (confirm('Remove this item from cart?')) {
+                        cart.removeItem(item.id);
+                        loadCartPage();
+                    }
+                });
+                
+                quantityInput.addEventListener('change', (e) => {
+                    const newQuantity = parseInt(e.target.value);
+                    if (newQuantity > 0 && newQuantity <= 10) {
+                        cart.updateQuantity(item.id, newQuantity);
+                        updateOrderSummary();
+                    } else {
+                        e.target.value = item.quantity;
+                    }
+                });
+            });
+        }
+
+        function createCartItemHTML(item) {
+            return `
+                <div class="cart-item p-3 border-bottom">
+                    <div class="row align-items-center">
+                        <div class="col-md-2">
+                            <div class="product-image-placeholder-sm">
+                                <i class="fas fa-image text-muted"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="mb-1">${escapeHtml(item.name)}</h6>
+                            <small class="text-muted">Category: ${escapeHtml(item.category)}</small>
+                        </div>
+                        <div class="col-md-2">
+                            <span class="fw-bold">$${item.price.toFixed(2)}</span>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group input-group-sm">
+                                <button class="btn btn-outline-secondary" type="button" id="decrease-${item.id}">-</button>
+                                <input type="number" class="form-control text-center" id="quantity-${item.id}" 
+                                       value="${item.quantity}" min="1" max="10">
+                                <button class="btn btn-outline-secondary" type="button" id="increase-${item.id}">+</button>
+                            </div>
+                        </div>
+                        <div class="col-md-1 text-end">
+                            <button class="btn btn-outline-danger btn-sm" id="remove-${item.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-8 offset-md-2">
+                            <small class="text-muted">Subtotal: $${(item.price * item.quantity).toFixed(2)}</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateOrderSummary() {
+            const cartItems = cart.getItems();
+            const subtotal = cart.getTotal();
+            const shipping = subtotal > 50 ? 0 : 9.99;
+            const tax = subtotal * 0.08; // 8% tax
+            const total = subtotal + shipping + tax;
+            
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('shipping').textContent = shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+            
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            checkoutBtn.disabled = cartItems.length === 0;
+        }
+
+        async function loadRecommendedProducts() {
+            try {
+                const products = await loadProducts();
+                const randomProducts = products
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 4);
+                
+                if (randomProducts.length > 0) {
+                    displayRecommendedProducts(randomProducts);
+                    document.getElementById('recommendedSection').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading recommended products:', error);
+            }
+        }
+
+        function displayRecommendedProducts(products) {
+            const container = document.getElementById('recommendedProducts');
+            container.innerHTML = products.map(product => createProductCard(product)).join('');
+        }
+
+        function applyPromoCode() {
+            const promoCode = document.getElementById('promoCode').value.trim();
+            const errorElement = document.getElementById('promoError');
+            
+            if (!promoCode) {
+                showPromoError('Please enter a promo code');
+                return;
+            }
+            
+            // Simple promo code validation
+            const validCodes = {
+                'SAVE10': 0.1,
+                'WELCOME20': 0.2,
+                'FREESHIP': 'free_shipping'
+            };
+            
+            if (validCodes[promoCode.toUpperCase()]) {
+                alert('Promo code applied successfully!');
+                document.getElementById('promoCode').value = '';
+                errorElement.style.display = 'none';
+                // Here you would apply the discount logic
+            } else {
+                showPromoError('Invalid promo code');
+            }
+        }
+
+        function showPromoError(message) {
+            const errorElement = document.getElementById('promoError');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

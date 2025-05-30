@@ -19,12 +19,12 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto trendy-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" href="index.html">
+                    <a class="nav-link active" href="{% url 'home:home' %}">
                         <i class="fas fa-home me-1"></i>Home
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="products.html">
+                    <a class="nav-link" href="{% url 'product:products_list' %}">
                         <i class="fas fa-shopping-bag me-1"></i>Shop
                     </a>
                 </li>
@@ -33,7 +33,17 @@
                         <i class="fas fa-tags me-1"></i>Categories
                     </a>
                     <ul class="dropdown-menu trendy-dropdown" id="categoriesMenu">
-                        <!-- Categories will be loaded dynamically -->
+                        {% if contextCategories %}
+                            {% for category in contextCategories %}
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'product:products_list' %}?category={{ category.slug }}">
+                                        {{ category.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li><a class="dropdown-item text-muted" href="#">No categories available</a></li>
+                        {% endif %}
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -42,15 +52,23 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="contact.html">
+                    <a class="nav-link" href="{% url 'contact:contact' %}">
                         <i class="fas fa-envelope me-1"></i>Contact
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="wishlist.html">
-                        <i class="fas fa-heart me-1"></i>Wishlist
-                    </a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'product:wishlist_detail' user.profile.id %}">
+                            <i class="fas fa-heart me-1"></i>Wishlist
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account:login' %}">
+                            <i class="fas fa-heart me-1"></i>Wishlist
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
             
             <div class="d-flex align-items-center">
@@ -65,14 +83,25 @@
                 </div>
                 
                 <div class="user-actions d-flex align-items-center">
-                    <a href="login.html" class="btn trendy-btn-ghost me-2" title="Login">
-                        <i class="fas fa-user"></i>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'account:user_profile' user.profile.id %}" class="btn trendy-btn-ghost me-2" title="{{ user.username }}">
+                        <i class="fas fa-user"></i> {{ user.username }}
                     </a>
-                    <a href="cart.html" class="btn trendy-btn-primary position-relative" title="Shopping Cart">
+                    <a href="{% url 'cart:cart_list' %}" class="btn trendy-btn-primary position-relative" title="Shopping Cart">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-badge" id="cartCount">0</span>
+                        <span class="cart-badge" id="cartCount">{{ total_cart_items }}</span>
                         <div class="btn-glow"></div>
                     </a>
+                    {% else %}
+                    <a href="{% url 'account:login' %}" class="btn trendy-btn-ghost me-2" title="Login">
+                            <i class="fas fa-user"></i>
+                    </a>
+                    <a href="{% url 'cart:cart_list' %}" class="btn trendy-btn-primary position-relative" title="Shopping Cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge" id="cartCount">{{ total_cart_items }}</span>
+                        <div class="btn-glow"></div>
+                    </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

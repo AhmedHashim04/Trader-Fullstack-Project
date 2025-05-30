@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - ShopEase</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg trendy-navbar sticky-top">
+        <div class="container">
+            <a class="navbar-brand trendy-brand" href="index.html">
+                <div class="brand-wrapper">
+                    <i class="fas fa-shopping-bag brand-icon"></i>
+                    <span class="brand-text">ShopEase</span>
+                    <div class="brand-glow"></div>
+                </div>
+            </a>
+            
+            <div class="auth-nav-links">
+                <a href="index.html" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-home me-1"></i>Back to Shop
+                </a>
+                <a href="login.html" class="btn btn-ghost">
+                    <i class="fas fa-sign-in-alt me-1"></i>Sign In
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth Section -->
+    <section class="auth-section">
+        <div class="auth-background">
+            <div class="auth-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-lg-6 col-md-8">
+                    <div class="auth-card">
+                        <div class="auth-header text-center mb-4">
+                            <div class="auth-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <h2 class="auth-title">Join ShopEase!</h2>
+                            <p class="auth-subtitle">Create your account and start shopping amazing products</p>
+                        </div>
+                        
+                        <form class="auth-form" id="registerForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control trendy-input" id="firstName" placeholder="First Name" required>
+                                        <label for="firstName">
+                                            <i class="fas fa-user me-2"></i>First Name
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control trendy-input" id="lastName" placeholder="Last Name" required>
+                                        <label for="lastName">
+                                            <i class="fas fa-user me-2"></i>Last Name
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control trendy-input" id="email" placeholder="name@example.com" required>
+                                <label for="email">
+                                    <i class="fas fa-envelope me-2"></i>Email Address
+                                </label>
+                            </div>
+                            
+                            <div class="form-floating mb-3">
+                                <input type="tel" class="form-control trendy-input" id="phone" placeholder="Phone Number">
+                                <label for="phone">
+                                    <i class="fas fa-phone me-2"></i>Phone Number (Optional)
+                                </label>
+                            </div>
+                            
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control trendy-input" id="password" placeholder="Password" required>
+                                <label for="password">
+                                    <i class="fas fa-lock me-2"></i>Password
+                                </label>
+                                <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control trendy-input" id="confirmPassword" placeholder="Confirm Password" required>
+                                <label for="confirmPassword">
+                                    <i class="fas fa-lock me-2"></i>Confirm Password
+                                </label>
+                                <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="password-strength mb-3">
+                                <div class="strength-indicator">
+                                    <div class="strength-bar" id="strengthBar"></div>
+                                </div>
+                                <small class="strength-text" id="strengthText">Password strength</small>
+                            </div>
+                            
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                                <label class="form-check-label" for="agreeTerms">
+                                    I agree to the <a href="#" class="auth-link">Terms of Service</a> and <a href="#" class="auth-link">Privacy Policy</a>
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="newsletter">
+                                <label class="form-check-label" for="newsletter">
+                                    Subscribe to our newsletter for exclusive deals and updates
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="btn trendy-btn-primary w-100 auth-submit">
+                                <i class="fas fa-user-plus me-2"></i>Create Account
+                                <div class="btn-glow"></div>
+                            </button>
+                        </form>
+                        
+                        <div class="auth-divider">
+                            <span>Or sign up with</span>
+                        </div>
+                        
+                        <div class="social-auth">
+                            <button class="btn social-btn google-btn">
+                                <i class="fab fa-google"></i>
+                                Google
+                            </button>
+                            <button class="btn social-btn facebook-btn">
+                                <i class="fab fa-facebook-f"></i>
+                                Facebook
+                            </button>
+                        </div>
+                        
+                        <div class="auth-footer text-center mt-4">
+                            <p>Already have an account? <a href="login.html" class="auth-link">Sign in here</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    <script>
+        // Initialize auth page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeRegisterPage();
+        });
+
+        function initializeRegisterPage() {
+            const registerForm = document.getElementById('registerForm');
+            const passwordInput = document.getElementById('password');
+            
+            if (registerForm) {
+                registerForm.addEventListener('submit', handleRegister);
+            }
+            
+            if (passwordInput) {
+                passwordInput.addEventListener('input', checkPasswordStrength);
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const submitBtn = e.target.querySelector('.auth-submit');
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Simulate registration process
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Creating Account...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                // Simulate successful registration
+                submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Account Created!';
+                submitBtn.classList.add('success');
+                
+                // Store user session (mock)
+                localStorage.setItem('userLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userName', firstName + ' ' + lastName);
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            }, 2000);
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthText = document.getElementById('strengthText');
+            
+            let strength = 0;
+            let text = 'Weak';
+            let color = '#ff4757';
+            
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            switch (strength) {
+                case 0:
+                case 1:
+                    text = 'Very Weak';
+                    color = '#ff4757';
+                    break;
+                case 2:
+                    text = 'Weak';
+                    color = '#ff6b6b';
+                    break;
+                case 3:
+                    text = 'Fair';
+                    color = '#ffa726';
+                    break;
+                case 4:
+                    text = 'Good';
+                    color = '#42a5f5';
+                    break;
+                case 5:
+                    text = 'Strong';
+                    color = '#66bb6a';
+                    break;
+            }
+            
+            strengthBar.style.width = (strength * 20) + '%';
+            strengthBar.style.backgroundColor = color;
+            strengthText.textContent = text;
+            strengthText.style.color = color;
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const toggle = input.nextElementSibling.nextElementSibling;
+            const icon = toggle.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('far', 'fa-eye');
+                icon.classList.add('fas', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fas', 'fa-eye-slash');
+                icon.classList.add('far', 'fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>

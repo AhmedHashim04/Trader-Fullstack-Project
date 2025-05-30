@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - ShopEase</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fas fa-shopping-bag me-2"></i>ShopEase
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">Products</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu" id="categoriesMenu">
+                            <!-- Categories will be loaded dynamically -->
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <div class="search-box me-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search products...">
+                            <button class="btn btn-outline-light" type="button" id="searchBtn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <a href="cart.html" class="btn btn-outline-light position-relative me-2">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">
+                            0
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header bg-light py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0" id="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="products.html">Products</a></li>
+                    <li class="breadcrumb-item active" id="currentProduct">Loading...</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Product Details -->
+    <div class="container py-4" id="productDetailContainer">
+        <!-- Product details will be loaded dynamically -->
+    </div>
+
+    <!-- Product Not Found -->
+    <div class="container py-5 text-center d-none" id="productNotFound">
+        <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+        <h3>Product Not Found</h3>
+        <p class="text-muted">The requested product could not be found or does not exist.</p>
+        <a href="products.html" class="btn btn-primary">Browse All Products</a>
+    </div>
+
+    <!-- Error Message -->
+    <div class="container py-5 d-none" id="errorContainer">
+        <div class="alert alert-danger">
+            <h5 class="alert-heading">Unable to load product details</h5>
+            <p class="mb-0">There was an error loading the product information. Please check your connection and try again.</p>
+            <hr>
+            <button class="btn btn-outline-danger btn-sm" id="retryLoad">Retry</button>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <section class="py-5 bg-light" id="relatedProductsSection" style="display: none;">
+        <div class="container">
+            <h3 class="mb-4">Related Products</h3>
+            <div class="row g-4" id="relatedProducts">
+                <!-- Related products will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">ShopEase</h5>
+                    <p class="text-muted">Your trusted e-commerce partner for quality products and exceptional service.</p>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="fw-bold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-muted text-decoration-none">Home</a></li>
+                        <li><a href="products.html" class="text-muted text-decoration-none">Products</a></li>
+                        <li><a href="about.html" class="text-muted text-decoration-none">About</a></li>
+                        <li><a href="contact.html" class="text-muted text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center text-muted">
+                <p>&copy; 2023 ShopEase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Spinner -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/products.js"></script>
+    <script>
+        // Product detail specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProductDetail();
+            
+            // Retry button
+            document.getElementById('retryLoad').addEventListener('click', loadProductDetail);
+        });
+
+        async function loadProductDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            
+            if (!productId) {
+                showProductNotFound();
+                return;
+            }
+
+            showLoading(true);
+            
+            try {
+                const products = await loadProducts();
+                const product = products.find(p => p.id.toString() === productId);
+                
+                if (!product) {
+                    showProductNotFound();
+                    return;
+                }
+
+                displayProductDetail(product);
+                loadRelatedProducts(product.category, productId);
+                
+            } catch (error) {
+                console.error('Error loading product:', error);
+                showError();
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function displayProductDetail(product) {
+            document.getElementById('currentProduct').textContent = product.name;
+            document.title = `${product.name} - ShopEase`;
+            
+            const container = document.getElementById('productDetailContainer');
+            container.innerHTML = `
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="product-image-gallery">
+                            <div class="main-image mb-3">
+                                <div class="product-image-placeholder">
+                                    <i class="fas fa-image fa-3x text-muted"></i>
+                                    <p class="text-muted mt-2">Product Image</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="product-info">
+                            <h1 class="h2 mb-3">${escapeHtml(product.name)}</h1>
+                            <div class="price-section mb-3">
+                                <span class="price-current h3 text-primary fw-bold">$${product.price.toFixed(2)}</span>
+                            </div>
+                            
+                            <div class="product-description mb-4">
+                                <h5>Description</h5>
+                                <p class="text-muted">${escapeHtml(product.description || 'No description available for this product.')}</p>
+                            </div>
+                            
+                            <div class="product-details mb-4">
+                                <h5>Product Details</h5>
+                                <ul class="list-unstyled">
+                                    <li><strong>Category:</strong> ${escapeHtml(product.category)}</li>
+                                    <li><strong>SKU:</strong> ${product.id}</li>
+                                    <li><strong>Availability:</strong> <span class="text-success">In Stock</span></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="add-to-cart-section">
+                                <div class="row g-3 align-items-end">
+                                    <div class="col-md-4">
+                                        <label for="quantity" class="form-label">Quantity</label>
+                                        <div class="input-group">
+                                            <button class="btn btn-outline-secondary" type="button" id="decreaseQty">-</button>
+                                            <input type="number" class="form-control text-center" id="quantity" value="1" min="1" max="10">
+                                            <button class="btn btn-outline-secondary" type="button" id="increaseQty">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <button class="btn btn-primary btn-lg w-100" id="addToCartBtn" data-product-id="${product.id}">
+                                            <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="product-actions mt-3">
+                                <button class="btn btn-outline-secondary me-2">
+                                    <i class="fas fa-heart me-1"></i>Add to Wishlist
+                                </button>
+                                <button class="btn btn-outline-secondary">
+                                    <i class="fas fa-share-alt me-1"></i>Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners for quantity controls
+            document.getElementById('decreaseQty').addEventListener('click', function() {
+                const qtyInput = document.getElementById('quantity');
+                const currentQty = parseInt(qtyInput.value);
+                if (currentQty > 1) {
+                    qtyInput.value = currentQty - 1;
+                }
+            });
+            
+            document.getElementById('increaseQty').addEventListener('click', function() {
+                const qtyInput = document.getElementById('quantity');
+                const currentQty = parseInt(qtyInput.value);
+                if (currentQty < 10) {
+                    qtyInput.value = currentQty + 1;
+                }
+            });
+            
+            // Add to cart functionality
+            document.getElementById('addToCartBtn').addEventListener('click', function() {
+                const quantity = parseInt(document.getElementById('quantity').value);
+                cart.addItem(product, quantity);
+                
+                // Show success message
+                const btn = this;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check me-2"></i>Added!';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-primary');
+                }, 2000);
+            });
+        }
+
+        async function loadRelatedProducts(category, excludeId) {
+            try {
+                const products = await loadProducts();
+                const relatedProducts = products
+                    .filter(p => p.category === category && p.id.toString() !== excludeId)
+                    .slice(0, 4);
+                
+                if (relatedProducts.length > 0) {
+                    displayRelatedProducts(relatedProducts);
+                    document.getElementById('relatedProductsSection').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading related products:', error);
+            }
+        }
+
+        function displayRelatedProducts(products) {
+            const container = document.getElementById('relatedProducts');
+            container.innerHTML = products.map(product => createProductCard(product)).join('');
+        }
+
+        function showProductNotFound() {
+            document.getElementById('productDetailContainer').classList.add('d-none');
+            document.getElementById('productNotFound').classList.remove('d-none');
+            document.getElementById('errorContainer').classList.add('d-none');
+        }
+
+        function showError() {
+            document.getElementById('productDetailContainer').classList.add('d-none');
+            document.getElementById('productNotFound').classList.add('d-none');
+            document.getElementById('errorContainer').classList.remove('d-none');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

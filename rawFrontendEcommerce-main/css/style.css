@@ -1061,18 +1061,19 @@ html {
 .trendy-search:focus + .trendy-search-btn + .search-glow {
     opacity: 0.3;
 }
+
 .user-actions .trendy-btn-ghost {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: hsl(var(--text-primary));
     border-radius: 50%;
-    display: inline-flex;
+    width: 45px;
+    height: 45px;
+    display: flex;
     align-items: center;
     justify-content: center;
     transition: var(--transition);
     text-decoration: none;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
 }
 
 .user-actions .trendy-btn-ghost:hover {
@@ -1086,13 +1087,13 @@ html {
     border: none;
     color: white;
     border-radius: 50%;
-    display: inline-flex;
+    width: 45px;
+    height: 45px;
+    display: flex;
     align-items: center;
     justify-content: center;
     transition: var(--transition);
     text-decoration: none;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
     position: relative;
     overflow: hidden;
 }
@@ -1101,14 +1102,6 @@ html {
     transform: translateY(-2px);
     box-shadow: var(--shadow-colored);
     color: white;
-}
-
-.user-actions .trendy-btn-primary,
-.user-actions .trendy-btn-ghost {
-    width: auto;
-    height: auto;
-    min-width: 45px;
-    min-height: 45px;
 }
 
 .cart-badge {

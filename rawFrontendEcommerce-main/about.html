@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - ShopEase</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="fas fa-shopping-bag me-2"></i>ShopEase
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">Products</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu" id="categoriesMenu">
+                            <!-- Categories will be loaded dynamically -->
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <div class="search-box me-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Search products...">
+                            <button class="btn btn-outline-light" type="button" id="searchBtn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <a href="cart.html" class="btn btn-outline-light position-relative me-2">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">
+                            0
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header bg-light py-4">
+        <div class="container">
+            <h1 class="h2 mb-0">About ShopEase</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active">About</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="about-content">
+                    <h2 class="mb-4">Our Story</h2>
+                    <p class="lead">ShopEase was founded with a simple mission: to make online shopping easy, enjoyable, and accessible to everyone.</p>
+                    
+                    <p>Since our inception, we've been committed to providing our customers with the highest quality products at competitive prices. We believe that shopping should be a pleasure, not a chore, which is why we've built our platform with user experience at the forefront.</p>
+                    
+                    <p>Our team consists of passionate professionals who are dedicated to innovation, customer service, and creating lasting relationships with our community. We continuously strive to improve our services and expand our product offerings to meet the evolving needs of our customers.</p>
+                    
+                    <h3 class="mt-5 mb-4">Our Values</h3>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="value-card p-4 border rounded">
+                                <i class="fas fa-heart fa-2x text-primary mb-3"></i>
+                                <h5>Customer First</h5>
+                                <p class="text-muted">We put our customers at the center of everything we do, ensuring their satisfaction and building long-term relationships.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="value-card p-4 border rounded">
+                                <i class="fas fa-gem fa-2x text-primary mb-3"></i>
+                                <h5>Quality Products</h5>
+                                <p class="text-muted">We carefully curate our product selection to ensure only the best items reach our customers.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="value-card p-4 border rounded">
+                                <i class="fas fa-handshake fa-2x text-primary mb-3"></i>
+                                <h5>Trust & Integrity</h5>
+                                <p class="text-muted">We operate with transparency and honesty, building trust through reliable service and fair practices.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="value-card p-4 border rounded">
+                                <i class="fas fa-rocket fa-2x text-primary mb-3"></i>
+                                <h5>Innovation</h5>
+                                <p class="text-muted">We continuously evolve and improve our platform to provide the best shopping experience possible.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="mt-5 mb-4">Why Choose ShopEase?</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Wide selection of high-quality products</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Competitive pricing and regular promotions</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Fast and reliable shipping</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Secure payment processing</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Excellent customer support</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Easy returns and exchanges</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>User-friendly shopping experience</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row text-center g-4">
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                        <h3 class="h2 fw-bold">50,000+</h3>
+                        <p class="text-muted">Happy Customers</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <i class="fas fa-box fa-3x text-primary mb-3"></i>
+                        <h3 class="h2 fw-bold">10,000+</h3>
+                        <p class="text-muted">Products Available</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <i class="fas fa-shipping-fast fa-3x text-primary mb-3"></i>
+                        <h3 class="h2 fw-bold">100,000+</h3>
+                        <p class="text-muted">Orders Delivered</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-card">
+                        <i class="fas fa-globe fa-3x text-primary mb-3"></i>
+                        <h3 class="h2 fw-bold">25+</h3>
+                        <p class="text-muted">Countries Served</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Meet Our Team</h2>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="team-card text-center">
+                        <div class="team-avatar mx-auto mb-3">
+                            <i class="fas fa-user fa-3x text-muted"></i>
+                        </div>
+                        <h5>Sarah Johnson</h5>
+                        <p class="text-muted">CEO & Founder</p>
+                        <p class="small">Leading the vision and strategy for ShopEase's growth and customer satisfaction.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="team-card text-center">
+                        <div class="team-avatar mx-auto mb-3">
+                            <i class="fas fa-user fa-3x text-muted"></i>
+                        </div>
+                        <h5>Michael Chen</h5>
+                        <p class="text-muted">CTO</p>
+                        <p class="small">Overseeing technology development and ensuring our platform stays cutting-edge.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="team-card text-center">
+                        <div class="team-avatar mx-auto mb-3">
+                            <i class="fas fa-user fa-3x text-muted"></i>
+                        </div>
+                        <h5>Emily Rodriguez</h5>
+                        <p class="text-muted">Head of Customer Experience</p>
+                        <p class="small">Dedicated to ensuring every customer has an exceptional shopping experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container text-center">
+            <h2 class="mb-3">Ready to Start Shopping?</h2>
+            <p class="lead mb-4">Join thousands of satisfied customers and discover amazing products today.</p>
+            <a href="products.html" class="btn btn-light btn-lg">Browse Products</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3">ShopEase</h5>
+                    <p class="text-muted">Your trusted e-commerce partner for quality products and exceptional service.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-light me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <h6 class="fw-bold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-muted text-decoration-none">Home</a></li>
+                        <li><a href="products.html" class="text-muted text-decoration-none">Products</a></li>
+                        <li><a href="about.html" class="text-muted text-decoration-none">About</a></li>
+                        <li><a href="contact.html" class="text-muted text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center text-muted">
+                <p>&copy; 2023 ShopEase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>

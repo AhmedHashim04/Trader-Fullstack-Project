@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trader - Your Ultimate Shopping Destination</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg trendy-navbar sticky-top">
+        <div class="container">
+            <a class="navbar-brand trendy-brand" href="index.html">
+                <div class="brand-wrapper">
+                    <i class="fas fa-shopping-bag brand-icon"></i>
+                    <span class="brand-text">Trader</span>
+                    <div class="brand-glow"></div>
+                </div>
+            </a>
+            
+            <button class="navbar-toggler trendy-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <div class="hamburger-lines">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto trendy-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">
+                            <i class="fas fa-shopping-bag me-1"></i>Shop
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-tags me-1"></i>Categories
+                        </a>
+                        <ul class="dropdown-menu trendy-dropdown" id="categoriesMenu">
+                            <!-- Categories will be loaded dynamically -->
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">
+                            <i class="fas fa-info-circle me-1"></i>About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">
+                            <i class="fas fa-envelope me-1"></i>Contact
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="wishlist.html">
+                            <i class="fas fa-heart me-1"></i>Wishlist
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <div class="trendy-search-container me-3">
+                        <div class="search-wrapper">
+                            <input type="text" class="form-control trendy-search" id="searchInput" placeholder="What are you looking for?">
+                            <button class="btn trendy-search-btn" type="button" id="searchBtn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <div class="search-glow"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-actions d-flex align-items-center">
+                        <a href="login.html" class="btn trendy-btn-ghost me-2" title="Login">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <a href="cart.html" class="btn trendy-btn-primary position-relative" title="Shopping Cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge" id="cartCount">0</span>
+                            <div class="btn-glow"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content">
+                    <h1 class="display-4 fw-bold mb-3">Welcome to Trader</h1>
+                    <p class="lead mb-4">Your ultimate trading hub for premium products, exclusive deals, and authentic marketplace experiences. Trade smart, shop smarter.</p>
+                    <div class="hero-buttons">
+                        <a href="products.html" class="btn btn-primary btn-lg me-3">Shop Now</a>
+                        <a href="#featured-products" class="btn btn-outline-light btn-lg">View Deals</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image text-center">
+                        <i class="fas fa-shopping-cart hero-icon float"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Categories -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Featured Categories</h2>
+            <div class="row g-4" id="featuredCategories">
+                <!-- Categories will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Advertisement Banner -->
+    <div class="container">
+        <div class="ad-banner">
+            <div class="ad-banner-content">
+                <h3 class="h2 mb-3">🎉 Summer Sale - Up to 50% Off!</h3>
+                <p class="lead mb-4">Limited time offer on electronics, fashion, and more. Don't miss out!</p>
+                <a href="products.html?sale=true" class="btn btn-light btn-lg">Shop Sale Items</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Brands -->
+    <section class="brands-section">
+        <div class="container">
+            <h2 class="text-center mb-5">Shop by Brand</h2>
+            <div class="brands-slider">
+                <div class="brands-track" id="brandsTrack">
+                    <!-- Brands will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-5 bg-light" id="featured-products">
+        <div class="container">
+            <div class="row align-items-center mb-5">
+                <div class="col-md-6">
+                    <h2 class="mb-0">Trending Products</h2>
+                    <p class="text-muted">Discover what's popular right now</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-outline-primary active" data-filter="all">All</button>
+                        <button class="btn btn-outline-primary" data-filter="trending">Trending</button>
+                        <button class="btn btn-outline-primary" data-filter="sale">On Sale</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4" id="featuredProducts">
+                <!-- Products will be loaded dynamically -->
+            </div>
+            <div class="text-center mt-4">
+                <a href="products.html" class="btn btn-primary btn-lg">View All Products</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4 text-center">
+                    <div class="feature-card p-4">
+                        <i class="fas fa-shipping-fast fa-3x text-primary mb-3"></i>
+                        <h4>Fast Shipping</h4>
+                        <p class="text-muted">Free shipping on orders over $50. Express delivery available.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="feature-card p-4">
+                        <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                        <h4>Secure Payment</h4>
+                        <p class="text-muted">Your payment information is safe and secure with us.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="feature-card p-4">
+                        <i class="fas fa-undo-alt fa-3x text-primary mb-3"></i>
+                        <h4>Easy Returns</h4>
+                        <p class="text-muted">30-day return policy. No questions asked.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="newsletter-content">
+            <div class="container">
+                <div class="row justify-content-center text-center">
+                    <div class="col-lg-6">
+                        <h2 class="h1 mb-3">Stay in the Loop!</h2>
+                        <p class="lead mb-4">Get exclusive deals, new arrivals, and insider news delivered straight to your inbox.</p>
+                        <form class="newsletter-form" id="newsletterForm">
+                            <div class="input-group input-group-lg">
+                                <input type="email" class="form-control newsletter-input" placeholder="Enter your email address" required>
+                                <button class="btn btn-light btn-lg" type="submit">
+                                    <i class="fas fa-paper-plane me-2"></i>Subscribe
+                                </button>
+                            </div>
+                            <small class="text-white-50 mt-2 d-block">No spam, unsubscribe anytime</small>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="trendy-footer">
+        <div class="footer-wave">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+            </svg>
+        </div>
+        <div class="footer-content">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="footer-brand">
+                            <h3 class="brand-title">
+                                <i class="fas fa-shopping-bag brand-icon"></i>
+                                Trader
+                            </h3>
+                            <p class="brand-description">Your trusted marketplace for authentic trading experiences. Connect, discover, and trade with confidence in our global community.</p>
+                            <div class="social-links">
+                                <a href="#" class="social-link facebook" title="Facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="social-link twitter" title="Twitter">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="social-link instagram" title="Instagram">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="social-link youtube" title="YouTube">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                                <a href="#" class="social-link tiktok" title="TikTok">
+                                    <i class="fab fa-tiktok"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <div class="footer-section">
+                            <h5 class="section-title">Explore</h5>
+                            <ul class="footer-links">
+                                <li><a href="index.html">🏠 Home</a></li>
+                                <li><a href="products.html">🛍️ Shop All</a></li>
+                                <li><a href="about.html">ℹ️ About Us</a></li>
+                                <li><a href="contact.html">📧 Contact</a></li>
+                                <li><a href="wishlist.html">❤️ Wishlist</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <div class="footer-section">
+                            <h5 class="section-title">Categories</h5>
+                            <ul class="footer-links">
+                                <li><a href="#">📱 Electronics</a></li>
+                                <li><a href="#">👕 Fashion</a></li>
+                                <li><a href="#">⚽ Sports</a></li>
+                                <li><a href="#">📚 Books</a></li>
+                                <li><a href="#">🏠 Home & Garden</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <div class="footer-section">
+                            <h5 class="section-title">Support</h5>
+                            <ul class="footer-links">
+                                <li><a href="#">💬 Help Center</a></li>
+                                <li><a href="#">📦 Shipping Info</a></li>
+                                <li><a href="#">↩️ Returns</a></li>
+                                <li><a href="#">📏 Size Guide</a></li>
+                                <li><a href="#">🔧 Track Order</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <div class="footer-section">
+                            <h5 class="section-title">Account</h5>
+                            <ul class="footer-links">
+                                <li><a href="login.html">🔐 Login</a></li>
+                                <li><a href="register.html">📝 Sign Up</a></li>
+                                <li><a href="#">👤 My Profile</a></li>
+                                <li><a href="#">📋 Order History</a></li>
+                                <li><a href="#">⚙️ Settings</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Footer Bottom -->
+                <div class="footer-bottom">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="payment-methods">
+                                <span class="payment-text">We Accept:</span>
+                                <div class="payment-icons">
+                                    <i class="fab fa-cc-visa"></i>
+                                    <i class="fab fa-cc-mastercard"></i>
+                                    <i class="fab fa-cc-paypal"></i>
+                                    <i class="fab fa-cc-apple-pay"></i>
+                                    <i class="fab fa-google-pay"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <div class="footer-copy">
+                                <p>&copy; 2024 Trader. Made with 💜 for smart traders</p>
+                                <div class="footer-legal">
+                                    <a href="#">Privacy</a> | 
+                                    <a href="#">Terms</a> | 
+                                    <a href="#">Cookies</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Spinner -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/search.js"></script>
+</body>
+</html>

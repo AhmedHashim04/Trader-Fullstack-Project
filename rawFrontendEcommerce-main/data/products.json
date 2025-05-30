@@ -1,0 +1,155 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "iPhone 15 Pro Max",
+      "price": 1199.99,
+      "category": "Electronics",
+      "description": "Latest flagship iPhone with advanced camera system and titanium design",
+      "featured": true,
+      "inStock": true,
+      "tags": ["smartphone", "apple", "premium"],
+      "brand": "Apple",
+      "trending": true,
+      "sale": false
+    },
+    {
+      "id": 2,
+      "name": "MacBook Air M3",
+      "price": 1099.99,
+      "category": "Electronics",
+      "description": "Ultra-thin laptop with M3 chip for incredible performance and battery life",
+      "featured": true,
+      "inStock": true,
+      "tags": ["laptop", "apple", "productivity"],
+      "brand": "Apple",
+      "trending": false,
+      "sale": true,
+      "originalPrice": 1299.99
+    },
+    {
+      "id": 3,
+      "name": "Nike Air Jordan 1",
+      "price": 170.00,
+      "category": "Fashion",
+      "description": "Classic basketball shoes with timeless style and premium comfort",
+      "featured": true,
+      "inStock": true,
+      "tags": ["shoes", "basketball", "style"],
+      "brand": "Nike",
+      "trending": true,
+      "sale": false
+    },
+    {
+      "id": 4,
+      "name": "Samsung 65\" QLED TV",
+      "price": 899.99,
+      "category": "Electronics",
+      "description": "4K QLED TV with Quantum HDR and smart TV features",
+      "featured": false,
+      "inStock": true,
+      "tags": ["tv", "4k", "smart"],
+      "brand": "Samsung",
+      "trending": false,
+      "sale": true,
+      "originalPrice": 1199.99
+    },
+    {
+      "id": 5,
+      "name": "Adidas Ultraboost 23",
+      "price": 190.00,
+      "category": "Fashion",
+      "description": "Premium running shoes with boost technology for maximum energy return",
+      "featured": false,
+      "inStock": true,
+      "tags": ["shoes", "running", "comfort"],
+      "brand": "Adidas",
+      "trending": false,
+      "sale": false
+    },
+    {
+      "id": 6,
+      "name": "Sony WH-1000XM5",
+      "price": 399.99,
+      "category": "Electronics",
+      "description": "Industry-leading noise canceling wireless headphones",
+      "featured": true,
+      "inStock": true,
+      "tags": ["headphones", "wireless", "noise-canceling"],
+      "brand": "Sony",
+      "trending": true,
+      "sale": false
+    },
+    {
+      "id": 7,
+      "name": "Levi's 511 Slim Jeans",
+      "price": 69.99,
+      "category": "Fashion",
+      "description": "Classic slim-fit jeans with modern stretch comfort",
+      "featured": false,
+      "inStock": true,
+      "tags": ["jeans", "denim", "casual"],
+      "brand": "Levi's",
+      "trending": false,
+      "sale": true,
+      "originalPrice": 89.99
+    },
+    {
+      "id": 8,
+      "name": "Nintendo Switch OLED",
+      "price": 349.99,
+      "category": "Electronics",
+      "description": "Hybrid gaming console with vibrant OLED screen",
+      "featured": true,
+      "inStock": true,
+      "tags": ["gaming", "console", "portable"],
+      "brand": "Nintendo",
+      "trending": true,
+      "sale": false
+    }
+  ],
+  "categories": ["Electronics", "Fashion", "Sports", "Home & Garden", "Books"],
+  "brands": [
+    {
+      "name": "Apple",
+      "logo": "fa-apple",
+      "featured": true
+    },
+    {
+      "name": "Samsung",
+      "logo": "fa-mobile-alt",
+      "featured": true
+    },
+    {
+      "name": "Nike",
+      "logo": "fa-running",
+      "featured": true
+    },
+    {
+      "name": "Adidas",
+      "logo": "fa-shoe-prints",
+      "featured": true
+    },
+    {
+      "name": "Sony",
+      "logo": "fa-headphones",
+      "featured": true
+    },
+    {
+      "name": "Levi's",
+      "logo": "fa-tshirt",
+      "featured": false
+    },
+    {
+      "name": "Nintendo",
+      "logo": "fa-gamepad",
+      "featured": true
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-05-25T00:00:00Z",
+    "totalProducts": 8,
+    "status": "active"
+  }
+}
