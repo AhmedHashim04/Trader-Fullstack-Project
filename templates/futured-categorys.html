@@ -3,7 +3,7 @@
     <div class="container">
         <h2 class="text-center mb-5">Featured Categories</h2>
         <div class="row g-4" id="featuredCategories">
-            {% for category in contextCategories|slice:":6" %}
+            {% for category in featuredCategories|slice:":6" %}
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <a href="products.html?category={{ category.slug|escape }}" class="category-card">
                         <div class="category-icon">

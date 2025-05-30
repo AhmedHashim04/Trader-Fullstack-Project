@@ -58,7 +58,7 @@
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'product:wishlist_detail' user.profile.id %}">
+                        <a class="nav-link" href="{% url 'product:wishlist' user.profile.id %}">
                             <i class="fas fa-heart me-1"></i>Wishlist
                         </a>
                     </li>

@@ -309,19 +309,19 @@ function updateCartCounter() {
 /**
  * Load product data from JSON file
  */
-async function loadProductData() {
-    try {
-        const response = await fetch('data/products.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        return Array.isArray(data) ? data : data.products || [];
-    } catch (error) {
-        console.error('Error loading product data:', error);
-        throw new Error('Failed to load product catalog');
-    }
-}
+// async function loadProductData() {
+//     try {
+//         const response = await fetch('data/products.json');
+//         if (!response.ok) {
+//             throw new Error(`HTTP error! status: ${response.status}`);
+//         }
+//         const data = await response.json();
+//         return Array.isArray(data) ? data : data.products || [];
+//     } catch (error) {
+//         console.error('Error loading product data:', error);
+//         throw new Error('Failed to load product catalog');
+//     }
+// }
 
 /**
  * Page-specific initialization functions
@@ -382,25 +382,63 @@ function initializeCartPage() {
 /**
  * Load featured products for home page
  */
-async function loadFeaturedProducts() {
-    const container = document.getElementById('featuredProducts');
-    if (!container) return;
+// async function loadFeaturedProducts() {
+//     const container = document.getElementById('featuredProducts');
+//     if (!container) return;
     
-    try {
-        const products = await loadProductData();
-        const featuredProducts = products.slice(0, 8); // Show first 8 products
+//     try {
+//         const products = await loadProductData();
+//         const featuredProducts = products.slice(0, 8); // Show first 8 products
         
-        if (featuredProducts.length === 0) {
-            container.innerHTML = '<div class="col-12 text-center"><p class="text-muted">No products available at the moment.</p></div>';
-            return;
-        }
+//         if (featuredProducts.length === 0) {
+//             container.innerHTML = '<div class="col-12 text-center"><p class="text-muted">No products available at the moment.</p></div>';
+//             return;
+//         }
         
-        container.innerHTML = featuredProducts.map(product => createProductCard(product)).join('');
-    } catch (error) {
-        console.error('Error loading featured products:', error);
-        container.innerHTML = '<div class="col-12 text-center"><p class="text-muted">Unable to load products. Please try again later.</p></div>';
-    }
-}
+//         container.innerHTML = featuredProducts.map(product => `
+//             <div class="col-lg-3 col-md-4 col-sm-6">
+//                 <div class="card product-card h-100" data-product-id="${product.slug}" data-trending="${product.trending}" data-sale="${product.tag}">
+//                     ${product.trending ? '<div class="trending-badge">🔥 Trending</div>' : ''}
+//                     ${product.tag === 'sale' ? '<div class="sale-badge">Sale</div>' : ''}
+//                     <div class="product-image">
+//                         ${product.image ? `<img src="${product.image.url}" alt="${product.name}" class="img-fluid">` : `
+//                             <div class="product-image-placeholder">
+//                                 <i class="fas fa-image fa-2x text-muted"></i>
+//                                 <p class="text-muted mt-2 mb-0">Product Image</p>
+//                             </div>
+//                         `}
+//                     </div>
+//                     <div class="card-body d-flex flex-column">
+//                         <div class="mb-2">
+//                             <span class="badge bg-light text-dark small">${product.brand}</span>
+//                         </div>
+//                         <h6 class="card-title">
+//                             <a href="product-detail.html?id=${product.slug}" class="text-decoration-none text-dark">
+//                                 ${product.name}
+//                             </a>
+//                         </h6>
+//                         <p class="card-text text-muted small">${product.category}</p>
+//                         <p class="text-muted small">
+//                             ${product.is_in_stock ? '<span class="text-success">In Stock</span>' : '<span class="text-danger">Out of Stock</span>'}
+//                         </p>
+//                         <div class="mt-auto">
+//                             ${product.tag === 'sale' ? `<span class="text-decoration-line-through text-muted me-2">$${product.price.toFixed(2)}</span>` : ''}
+//                             <span class="h6 text-primary mb-0">$${product.price.toFixed(2)}</span>
+//                         </div>
+//                         <button class="btn btn-primary btn-sm w-100 btn-add-to-cart" 
+//                                 data-product-id="${product.slug}" 
+//                                 onclick="addToCartFromCard('${product.slug}')">
+//                             <i class="fas fa-shopping-cart me-1"></i>Add to Cart
+//                         </button>
+//                     </div>
+//                 </div>
+//             </div>
+//         `).join('');
+//     } catch (error) {
+//         console.error('Error loading featured products:', error);
+//         container.innerHTML = '<div class="col-12 text-center"><p class="text-muted">Unable to load products. Please try again later.</p></div>';
+//     }
+// }
 
 /**
  * Get icon for category
@@ -433,53 +471,53 @@ function getCategoryIcon(category) {
 /**
  * Create product card HTML
  */
-function createProductCard(product) {
-    const salePrice = product.sale && product.originalPrice ? 
-        `<span class="text-decoration-line-through text-muted me-2">$${product.originalPrice.toFixed(2)}</span>` : '';
+// function createProductCard(product) {
+//     const salePrice = product.sale && product.originalPrice ? 
+//         `<span class="text-decoration-line-through text-muted me-2">$${product.originalPrice.toFixed(2)}</span>` : '';
     
-    const badges = [];
-    if (product.trending) badges.push('<div class="trending-badge">🔥 Trending</div>');
-    if (product.sale) badges.push('<div class="sale-badge">Sale</div>');
+//     const badges = [];
+//     if (product.trending) badges.push('<div class="trending-badge">🔥 Trending</div>');
+//     if (product.sale) badges.push('<div class="sale-badge">Sale</div>');
     
-    return `
-        <div class="col-lg-3 col-md-4 col-sm-6">
-            <div class="card product-card h-100" data-product-id="${product.id}" data-trending="${product.trending}" data-sale="${product.sale}">
-                ${badges.join('')}
-                <button class="wishlist-btn" title="Add to Wishlist">
-                    <i class="far fa-heart"></i>
-                </button>
-                <div class="product-image-placeholder">
-                    <i class="fas fa-image fa-2x text-muted"></i>
-                    <p class="text-muted mt-2 mb-0">Product Image</p>
-                </div>
-                <div class="card-body d-flex flex-column">
-                    <div class="mb-2">
-                        <span class="badge bg-light text-dark small">${escapeHtml(product.brand)}</span>
-                    </div>
-                    <h6 class="card-title">
-                        <a href="product-detail.html?id=${product.id}" class="text-decoration-none text-dark">
-                            ${escapeHtml(product.name)}
-                        </a>
-                    </h6>
-                    <p class="card-text text-muted small">${escapeHtml(product.category)}</p>
-                    <div class="mt-auto">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div>
-                                ${salePrice}
-                                <span class="h6 text-primary mb-0">$${product.price.toFixed(2)}</span>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary btn-sm w-100 btn-add-to-cart" 
-                                data-product-id="${product.id}"
-                                onclick="addToCartFromCard(${product.id})">
-                            <i class="fas fa-shopping-cart me-1"></i>Add to Cart
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-}
+//     return `
+//         <div class="col-lg-3 col-md-4 col-sm-6">
+//             <div class="card product-card h-100" data-product-id="${product.id}" data-trending="${product.trending}" data-sale="${product.sale}">
+//                 ${badges.join('')}
+//                 <button class="wishlist-btn" title="Add to Wishlist">
+//                     <i class="far fa-heart"></i>
+//                 </button>
+//                 <div class="product-image-placeholder">
+//                     <i class="fas fa-image fa-2x text-muted"></i>
+//                     <p class="text-muted mt-2 mb-0">Product Image</p>
+//                 </div>
+//                 <div class="card-body d-flex flex-column">
+//                     <div class="mb-2">
+//                         <span class="badge bg-light text-dark small">${escapeHtml(product.brand)}</span>
+//                     </div>
+//                     <h6 class="card-title">
+//                         <a href="product-detail.html?id=${product.id}" class="text-decoration-none text-dark">
+//                             ${escapeHtml(product.name)}
+//                         </a>
+//                     </h6>
+//                     <p class="card-text text-muted small">${escapeHtml(product.category)}</p>
+//                     <div class="mt-auto">
+//                         <div class="d-flex justify-content-between align-items-center mb-2">
+//                             <div>
+//                                 ${salePrice}
+//                                 <span class="h6 text-primary mb-0">$${product.price.toFixed(2)}</span>
+//                             </div>
+//                         </div>
+//                         <button class="btn btn-primary btn-sm w-100 btn-add-to-cart" 
+//                                 data-product-id="${product.id}"
+//                                 onclick="addToCartFromCard(${product.id})">
+//                             <i class="fas fa-shopping-cart me-1"></i>Add to Cart
+//                         </button>
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+//     `;
+// }
 
 /**
  * Load brands and display them

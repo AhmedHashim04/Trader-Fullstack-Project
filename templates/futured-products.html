@@ -9,54 +9,67 @@
             <div class="col-md-6 text-md-end">
                 <div class="btn-group" role="group">
                     <button class="btn btn-outline-primary active" data-filter="all">All</button>
-                    <button class="btn btn-outline-primary" data-filter="trending">Trending</button>
+                    <button class="btn btn-outline-primary" data-filter="new">New</button>
+                    <button class="btn btn-outline-primary" data-filter="hot">Hot</button>
                     <button class="btn btn-outline-primary" data-filter="sale">On Sale</button>
                 </div>
             </div>
         </div>
         <div class="row g-4" id="featuredProducts">
-            {% for product in products %}
+            {% for product in featuredProducts %}
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="card product-card h-100" data-product-id="{{ product.id }}" data-trending="{{ product.trending }}" data-sale="{{ product.sale }}">
-                        {% if product.trending %}<div class="trending-badge">🔥 Trending</div>{% endif %}
-                        {% if product.sale %}<div class="sale-badge">Sale</div>{% endif %}
-                        <button class="wishlist-btn" title="Add to Wishlist">
-                            <i class="far fa-heart"></i>
-                        </button>
-                        <div class="product-image-placeholder">
-                            <i class="fas fa-image fa-2x text-muted"></i>
-                            <p class="text-muted mt-2 mb-0">Product Image</p>
+                    <div class="card product-card h-100" data-product-id="{{ product.slug }}" data-trending="{{ product.trending }}" data-sale="{{ product.tag }}">
+                        {% if product.trending %}
+                            <div class="trending-badge">🔥 Trending</div>
+                        {% endif %}
+                        {% if product.tag == "sale" %}
+                            <div class="sale-badge">Sale</div>
+                        {% endif %}
+                        <div class="product-image">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+                            {% else %}
+                                <div class="product-image-placeholder">
+                                    <i class="fas fa-image fa-2x text-muted"></i>
+                                    <p class="text-muted mt-2 mb-0">Product Image</p>
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="card-body d-flex flex-column">
                             <div class="mb-2">
                                 <span class="badge bg-light text-dark small">{{ product.brand }}</span>
                             </div>
                             <h6 class="card-title">
-                                <a href="{% url 'product:detail' product.id %}" class="text-decoration-none text-dark">
+                                <a href="{% url 'product:product_detail' product.slug %}" class="text-decoration-none text-dark">
                                     {{ product.name }}
                                 </a>
                             </h6>
                             <p class="card-text text-muted small">{{ product.category }}</p>
+                            <p class="text-muted small">
+                                {% if product.is_in_stock %}
+                                    <span class="text-success">In Stock</span>
+                                {% else %}
+                                    <span class="text-danger">Out of Stock</span>
+                                {% endif %}
+                            </p>
                             <div class="mt-auto">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <div>
-                                        {% if product.sale %}<span class="text-decoration-line-through text-muted me-2">${{ product.original_price|floatformat:2 }}</span>{% endif %}
-                                        <span class="h6 text-primary mb-0">${{ product.price|floatformat:2 }}</span>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary btn-sm w-100 btn-add-to-cart" 
-                                        data-product-id="{{ product.id }}"
-                                        onclick="addToCartFromCard({{ product.id }})">
-                                    <i class="fas fa-shopping-cart me-1"></i>Add to Cart
-                                </button>
+                                {% if product.tag == "sale" %}
+                                    <span class="text-decoration-line-through text-muted me-2">${{ product.price|floatformat:2 }}</span>
+                                {% endif %}
+                                <span class="h6 text-primary mb-0">${{ product.price|floatformat:2 }}</span>
                             </div>
+                            <button class="btn btn-primary btn-sm w-100 btn-add-to-cart" 
+                                    data-product-id="{{ product.slug }}"
+                                    onclick="addToCartFromCard('{{ product.slug }}')">
+                                <i class="fas fa-shopping-cart me-1"></i>Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
         <div class="text-center mt-4">
-            <a href="{% url 'product:list' %}" class="btn btn-primary btn-lg">View All Products</a>
+            <a href="{% url 'product:products_list' %}" class="btn btn-primary btn-lg">View All Products</a>
         </div>
     </div>
 </section>

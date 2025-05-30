@@ -9,11 +9,18 @@ from django.db.models import Avg
 
 
 class Product(models.Model):
+    TAG_CHOICES = [
+    ("new", _("New")),
+    ("hot", _("Hot")),
+    ("sale", _("Sale")),
+]
+    
     name = models.CharField(max_length=40, verbose_name=_("Name"))
     category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name=_("Category"), blank=True, null=True)
     brand = models.ForeignKey('settings.Brand', on_delete=models.PROTECT, verbose_name=_("Brand"), blank=True, null=True)
     description = models.TextField(max_length=1000, verbose_name=_("Description"))
-    tag = models.CharField(choices=[("new", "New"), ("hot", "Hot"), ("sale", "Sale")],max_length=40, verbose_name=_("Tag"))
+    tag = models.CharField(max_length=40,verbose_name=_("Tag"),choices=TAG_CHOICES,default=TAG_CHOICES[0][0],)
+    trending = models.BooleanField(default=False,verbose_name=_("Trending"),help_text=_("Is this product trending?"),)
     price = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Price"))
     cost = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Cost") , blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True, verbose_name=_("Created At"))
