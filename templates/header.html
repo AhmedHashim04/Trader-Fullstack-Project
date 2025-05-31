@@ -90,6 +90,7 @@
                     <a href="{% url 'cart:cart_list' %}" class="btn trendy-btn-primary position-relative" title="Shopping Cart">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="cart-badge" id="cartCount">{{ total_cart_items }}</span>
+                        <span class="cart-price">{% if total_cart_price %}{{ total_cart_price }}{% else %}0{% endif %} EGP</span>
                         <div class="btn-glow"></div>
                     </a>
                     {% else %}
@@ -99,6 +100,7 @@
                     <a href="{% url 'cart:cart_list' %}" class="btn trendy-btn-primary position-relative" title="Shopping Cart">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="cart-badge" id="cartCount">{{ total_cart_items }}</span>
+                        <span class="cart-price">{% if total_cart_price %}{{ total_cart_price }}{% else %}0{% endif %} EGP</span>
                         <div class="btn-glow"></div>
                     </a>
                     {% endif %}

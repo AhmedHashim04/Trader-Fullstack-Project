@@ -7,20 +7,53 @@ from django.utils.text import slugify
 from django.db.models import Avg
 
 
+    # ("new", _("New")),
+    # ("best", _("Best")),
+    # ("sale", _("Sale")),
+    # ("summer", _("Summer")),
+    # ("winter", _("Winter")),
+    # ("spring", _("Spring")),
+    # ("autumn", _("Autumn")),
+    # ("limited", _("Limited")),
+    # ("recommended", _("Recommended")),
+    # ("gift", _("Gift")),
+    # ("popular", _("Popular")),
+    # ("top", _("Top")),
+    # ("exclusive", _("Exclusive")),
+    # ("special", _("Special")),
+    # ("new_arrivals", _("New Arrivals")),
+    # ("best_sellers", _("Best Sellers")),
+    # ("on_sale", _("On Sale")),
+    # ("summer_collection", _("Summer Collection")),
+    # ("winter_collection", _("Winter Collection")),
+    # ("spring_collection", _("Spring Collection")),
+    # ("autumn_collection", _("Autumn Collection")),
+    # ("limited_collection", _("Limited Collection")),
+    # ("recommended_collection", _("Recommended Collection")),
+    # ("gift_collection", _("Gift Collection")),
+    # ("popular_collection", _("Popular Collection")),
+    # ("top_collection", _("Top Collection")),
+    # ("exclusive_collection", _("Exclusive Collection")),
+    # ("special_collection", _("Special Collection")),
+    # ("new_arrivals_collection", _("New Arrivals Collection")),
+    # ("best_sellers_collection", _("Best Sellers Collection")),
+    # ("on_sale_collection", _("On Sale Collection")),
+class Tag(models.Model):
+    key = models.CharField(max_length=40, unique=True)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 
 class Product(models.Model):
-    TAG_CHOICES = [
-    ("new", _("New")),
-    ("hot", _("Hot")),
-    ("sale", _("Sale")),
-]
-    
+    tags = models.ManyToManyField(Tag, verbose_name=_("Tags"), blank=True)
+    trending = models.BooleanField(default=False, verbose_name=_("Trending"), help_text=_("Is this product trending?"))
     name = models.CharField(max_length=40, verbose_name=_("Name"))
     category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name=_("Category"), blank=True, null=True)
     brand = models.ForeignKey('settings.Brand', on_delete=models.PROTECT, verbose_name=_("Brand"), blank=True, null=True)
     description = models.TextField(max_length=1000, verbose_name=_("Description"))
-    tag = models.CharField(max_length=40,verbose_name=_("Tag"),choices=TAG_CHOICES,default=TAG_CHOICES[0][0],)
-    trending = models.BooleanField(default=False,verbose_name=_("Trending"),help_text=_("Is this product trending?"),)
     price = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Price"))
     cost = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Cost") , blank=True, null=True)
     created_at = models.DateTimeField(auto_now=True, verbose_name=_("Created At"))
@@ -107,3 +140,4 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s review of {self.product.name}"
+

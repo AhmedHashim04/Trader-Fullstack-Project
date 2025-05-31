@@ -292,6 +292,36 @@ html {
     animation: pulse 2s ease-in-out infinite;
 }
 
+/* New badge */
+.new-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--gradient-primary);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 3;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* best badge */
+.best {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--gradient-primary);
+    color: hsl(var(--text-primary));
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 3;
+    animation: pulse 2s ease-in-out infinite;
+}
+
 /* Wishlist button */
 .wishlist-btn {
     position: absolute;
@@ -1128,6 +1158,16 @@ html {
     animation: bounce 2s ease-in-out infinite;
 }
 
+.cart-price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: hsl(var(--primary-color));
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    text-align: center;
+}
+
 .btn-glow {
     position: absolute;
     top: 0;
@@ -1814,17 +1854,4 @@ html {
     font-weight: 600;
     z-index: 2;
     animation: pulse 2s ease-in-out infinite;
-}
-
-.sale-badge {
-    position: absolute;
-    top: 50px;
-    left: 15px;
-    background: linear-gradient(45deg, #10ac84, #00d2d3);
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    z-index: 2;
 }
