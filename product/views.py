@@ -15,7 +15,7 @@ from django.core.cache import cache
 
 class ProductListView(ListView):
     model = Product
-    context_object_name = 'all_products'
+    context_object_name = 'products'
     template_name = 'product/products.html'
     paginate_by = 12
 
@@ -50,7 +50,8 @@ class ProductListView(ListView):
             order_by_mapping = {
                 'price_asc': 'price',
                 'price_desc': '-price',
-                'rating': '-overall_rating'
+                'rating_asc': 'overall_rating',
+                'rating_desc': '-overall_rating'
             }
             if sort_by in order_by_mapping:
                 queryset = queryset.order_by(order_by_mapping[sort_by])
@@ -71,12 +72,21 @@ class ProductListView(ListView):
             'search_query': self.request.GET.get('search', ''),
             'selected_category': self.request.GET.get('category', ''),
             'sort_by': self.request.GET.get('sort_by', ''),
-            # 'all_products': page_obj,
+            'items_per_page': self.request.GET.get('items_per_page', self.paginate_by),
             'is_paginated': page_obj.has_other_pages()
         })
 
         return context
 
+    def get_paginate_by(self, queryset):
+        """
+        Override the paginate_by method to allow dynamic pagination based on the 'items_per_page' parameter in the URL.
+        """
+        items_per_page = self.request.GET.get('items_per_page', self.paginate_by)
+        try:
+            return int(items_per_page)
+        except ValueError:
+            return self.paginate_by
 
 class CompareProductsView(LoginRequiredMixin, TemplateView):
     template_name = 'product/compare_products.html'

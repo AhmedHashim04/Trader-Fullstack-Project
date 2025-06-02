@@ -1,0 +1,43 @@
+<!-- Error Toast -->
+<div id="errorToast" class="toast position-fixed top-0 end-0 m-3" style="z-index: 10000;" aria-live="polite" aria-atomic="true">
+    <div class="toast-header bg-danger text-white">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong class="me-auto">Error</strong>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body"></div>
+</div>
+
+<!-- Success Toast -->
+<div id="successToast" class="toast position-fixed top-0 end-0 m-3" style="z-index: 10000;" aria-live="polite" aria-atomic="true">
+    <div class="toast-header bg-success text-white">
+        <i class="fas fa-check-circle me-2"></i>
+        <strong class="me-auto">Success</strong>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body"></div>
+</div>
+
+<script>
+    /**
+     * Show error message
+     */
+    function showErrorMessage(message, duration = 5000) {
+        const errorToast = document.getElementById('errorToast');
+        errorToast.querySelector('.toast-body').textContent = message;
+
+        const toast = new bootstrap.Toast(errorToast, { delay: duration });
+        toast.show();
+    }
+
+    /**
+     * Show success message
+     */
+    function showSuccessMessage(message, duration = 3000) {
+        const successToast = document.getElementById('successToast');
+        successToast.querySelector('.toast-body').textContent = message;
+
+        const toast = new bootstrap.Toast(successToast, { delay: duration });
+        toast.show();
+    }
+</script>

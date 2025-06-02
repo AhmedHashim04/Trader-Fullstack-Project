@@ -6,9 +6,15 @@
         <div class="container">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0" id="breadcrumb">
-                    <li class="breadcrumb-item"><a href={% url 'home:home' %}>Home</a></li>
-                    <li class="breadcrumb-item"><a href={% url 'product:products_list' %}>Products</a></li>
-                    <li class="breadcrumb-item active" id="currentProduct">Loading...</li>
+                    <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'product:products_list' %}">Products</a></li>
+                    <li class="breadcrumb-item active" id="currentProduct">
+                        {% if search_query %}
+                            Search: "{{ search_query }}"
+                        {% else %}
+                            All Products
+                        {% endif %}
+                    </li>
                 </ol>
             </nav>
         </div>
@@ -28,7 +34,15 @@
                         <div class="mb-4">
                             <h6 class="fw-bold">Categories</h6>
                             <div id="categoryFilters">
-                                <!-- Category filters will be loaded dynamically -->
+                                {% for category in categories %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="category" id="category_{{ category.slug }}" value="{{ category.slug }}" 
+                                            {% if selected_category == category.slug %}checked{% endif %}>
+                                        <label class="form-check-label" for="category_{{ category.slug }}">
+                                            {{ category.name }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
 
@@ -50,12 +64,10 @@
                         <div class="mb-4">
                             <h6 class="fw-bold">Sort By</h6>
                             <select class="form-select form-select-sm" id="sortSelect">
-                                <option value="name-asc">Name (A-Z)</option>
-                                <option value="name-desc">Name (Z-A)</option>
-                                <option value="price-asc">Price (Low to High)</option>
-                                <option value="price-desc">Price (High to Low)</option>
-                                <option value="rate-asc">Rate (Low to High)</option>
-                                <option value="rate-desc">Rate (High to Low)</option>
+                                <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price (Low to High)</option>
+                                <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price (High to Low)</option>
+                                <option value="rating_asc" {% if sort_by == 'rating_asc' %}selected{% endif %}>Rating (Low to High)</option>
+                                <option value="rating_desc" {% if sort_by == 'rating_desc' %}selected{% endif %}>Rating (High to Low)</option>
                             </select>
                         </div>
 
@@ -63,11 +75,6 @@
                         <button class="btn btn-outline-secondary btn-sm w-100" id="clearFilters">Clear All Filters</button>
                     </div>
                 </div>
-
-                <!-- Advertisement Sidebar -->
-
-                <!-- Popular Brands -->
-
             </div>
 
             <!-- Products Grid -->
@@ -86,9 +93,9 @@
                     </div>
                     <div class="col-md-6 text-md-end">
                         <select class="form-select form-select-sm d-inline-block w-auto" id="itemsPerPage">
-                            <option value="12">12 per page</option>
-                            <option value="24">24 per page</option>
-                            <option value="48">48 per page</option>
+                            <option value="12" {% if items_per_page == '12' %}selected{% endif %}>12 per page</option>
+                            <option value="24" {% if items_per_page == '24' %}selected{% endif %}>24 per page</option>
+                            <option value="48" {% if items_per_page == '48' %}selected{% endif %}>48 per page</option>
                         </select>
                     </div>
                 </div>
@@ -96,39 +103,44 @@
                 <!-- Products Container -->
                 <div id="productsContainer">
                     <div class="row g-4" id="productsGrid">
-                        <!-- Products will be loaded dynamically -->
+                        {% for product in products %}
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ product.name }}</h5>
+                                        <p class="card-text">{{ product.description|truncatewords:20 }}</p>
+                                        <p class="fw-bold">${{ product.price }}</p>
+                                        <a href="{% url 'product:product_detail' product.slug %}" class="btn btn-primary btn-sm">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
 
                 <!-- No Products Message -->
-                <div class="text-center py-5 d-none" id="noProductsMessage">
-                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                    <h4 class="text-muted">No products found</h4>
-                    <p class="text-muted">Try adjusting your search criteria or filters.</p>
-                    <button class="btn btn-primary" id="resetSearch">Reset Search</button>
-                </div>
-
-                <!-- Error Message -->
-                <div class="alert alert-danger d-none" id="errorMessage">
-                    <h5 class="alert-heading">Unable to load products</h5>
-                    <p class="mb-0">There was an error loading the product catalog. Please check your connection and try again.</p>
-                    <hr>
-                    <button class="btn btn-outline-danger btn-sm" id="retryLoad">Retry</button>
-                </div>
+                {% if not products %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">No products found</h4>
+                        <p class="text-muted">Try adjusting your search criteria or filters.</p>
+                        <button class="btn btn-primary" id="resetSearch">Reset Search</button>
+                    </div>
+                {% endif %}
 
                 <!-- Pagination -->
                 <nav aria-label="Products pagination" class="mt-4">
-                    <ul class="pagination justify-content-center" id="pagination">
-                        <!-- Pagination will be generated dynamically -->
+                    <ul class="pagination justify-content-center">
+                        {% for page_num in products.paginator.page_range %}
+                            <li class="page-item {% if products.number == page_num %}active{% endif %}">
+                                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </nav>
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    {% include 'footer.html' %}
-    <!-- Loading Spinner -->
-    {% include 'loading_spinner.html' %}
 
 {% endblock body %}

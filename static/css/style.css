@@ -13,8 +13,15 @@
     --text-primary: 222 84% 5%; /* #0F172A */
     --text-secondary: 215 25% 27%; /* #374151 */
     --text-light: 215 16% 47%; /* #6B7280 */
+    --text-warning: 31 81% 56%; /* #F59E0B - Amber */
+    --text-success: 142 76% 36%; /* #10B981 - Emerald */
+    --text-info: 217 91% 60%; /* #3B82F6 - Blue */
+    --text-danger: 0 84% 60%; /* #EF4444 - Red */
     --border-color: 220 13% 91%; /* #E5E7EB */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary-color)) 0%, hsl(var(--tertiary-color)) 100%);
+    --gradient-warning: linear-gradient(135deg, hsl(var(--accent-color)) 0%, hsl(var(--danger-color)) 100%);
+    --gradient-info: linear-gradient(135deg, hsl(var(--tertiary-color)) 0%, hsl(var(--secondary-color)) 100%);
+    --gradient-success: linear-gradient(135deg, hsl(var(--secondary-color)) 0%, hsl(var(--accent-color)) 100%);
     --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary-color)) 0%, hsl(var(--accent-color)) 100%);
     --gradient-dark: linear-gradient(135deg, hsl(var(--dark-surface)) 0%, hsl(222 47% 11%) 100%);
     --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -923,8 +930,8 @@ html {
 }
 
 .brand-icon {
-    font-size: 1.8rem;
-    background: var(--gradient-primary);
+    font-size: 2.8rem;
+    background: var(--gradient-warning);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -935,7 +942,7 @@ html {
 .brand-text {
     font-size: 1.5rem;
     font-weight: 800;
-    background: var(--gradient-primary);
+    background: var(--gradient-warning);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -982,8 +989,8 @@ html {
 }
 
 .trendy-nav .nav-link {
-    font-weight: 500;
-    color: hsl(var(--text-primary));
+    font-weight: 1000;
+    color: hsl(var(--text-warning));
     padding: 0.75rem 1rem;
     border-radius: var(--border-radius);
     margin: 0 0.25rem;
@@ -999,7 +1006,7 @@ html {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: var(--gradient-primary);
+    background: var(--gradient-warning);
     transition: var(--transition);
     z-index: -1;
     opacity: 0.1;
@@ -1012,7 +1019,7 @@ html {
 
 .trendy-nav .nav-link:hover,
 .trendy-nav .nav-link.active {
-    color: hsl(var(--primary-color));
+    color: hsl(var(--text-info));
     transform: translateY(-2px);
 }
 
@@ -1161,7 +1168,7 @@ html {
 .cart-price {
     font-size: 1rem;
     font-weight: 700;
-    color: hsl(var(--primary-color));
+    color: hsl(var(--text-warning));
     margin-top: 0.5rem;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
