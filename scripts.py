@@ -2,6 +2,7 @@ import os
 import random
 import django
 from django.utils.translation import gettext as _
+import requests
 
 # Ensure Django is set up
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
@@ -10,7 +11,6 @@ django.setup()
 from settings.models import Brand
 from product.models import Product, Category, Tag, Review
 from account.models import User
-
 
 def generate_brands(num_brands):
     """Generate random brands."""
@@ -25,7 +25,6 @@ def generate_brands(num_brands):
     Brand.objects.bulk_create(brands)
     print(f"{num_brands} brands created successfully.")
 
-
 def generate_categories(num_categories):
     """Generate random categories."""
     if num_categories <= 0:
@@ -38,7 +37,6 @@ def generate_categories(num_categories):
     ]
     Category.objects.bulk_create(categories)
     print(f"{num_categories} categories created successfully.")
-
 
 def generate_users(num_users):
     """Generate random users."""
@@ -56,7 +54,6 @@ def generate_users(num_users):
                 password="password123"
             )
     print(f"{num_users} users created successfully.")
-
 
 def add_reviews(num_reviews):
     """Add random reviews to products."""
@@ -76,59 +73,63 @@ def add_reviews(num_reviews):
             product=random.choice(products),
             user=random.choice(users),
             rating=random.randint(1, 5),
-            comment=f"This is a review for {random.choice(products).name} by {random.choice(users).username}."
+            content=f"This is a review for {random.choice(products).name} by {random.choice(users).username}."
         )
         for _ in range(num_reviews)
     ]
     Review.objects.bulk_create(reviews)
     print(f"{num_reviews} reviews added successfully.")
 
-
 def generate_products(num_products):
     """Generate random products."""
     if num_products <= 0:
         print("Number of products must be greater than 0.")
         return
-
     brands = list(Brand.objects.all())
     categories = list(Category.objects.all())
     tags = list(Tag.objects.all())
-
     if not brands or not categories:
         print("Please create brands and categories first.")
         return
-
     products = []
     for i in range(num_products):
         product_name = f"Product {i + 1}"
         product = Product(
             name=product_name,
             description=f"Description for {product_name}",
-            price=round(random.uniform(10, 100), 2),
+            price=round(random.uniform(10, 1000), 2),
             stock=random.randint(1, 50),
             brand=random.choice(brands),
             category=random.choice(categories),
             trending=random.choice([True, False]),
-            image=f"https://picsum.photos/500/500?random={i}"
+            image=f"products/{product_name}.jpg"
         )
+        # Download the image
+        image_path = f"media/products/{product_name}.jpg"
+        if not os.path.exists(image_path):
+            os.makedirs(os.path.dirname(image_path), exist_ok=True)
+            try:
+                with requests.get(f"https://picsum.photos/500/500?random={i}", stream=True, timeout=5) as response:
+                    if response.status_code == 200:
+                        with open(image_path, 'wb') as f:
+                            for chunk in response.iter_content(chunk_size=8192):
+                                f.write(chunk)
+            except requests.RequestException as e:
+                print(f"Failed to download image for {product_name}: {e}")
         products.append(product)
-
     created_products = Product.objects.bulk_create(products)
-
     # Assign random tags to products
     for product in created_products:
         product.tags.set(random.sample(tags, min(len(tags), random.randint(1, 3))))
-
     print(f"{num_products} products created successfully.")
-
 
 def clean_data():
     """Remove all data from the database, except superusers."""
-    for model in [Product, Category, Brand, Tag, Review]:
+    for model in [Review, Product, Category, Brand, Tag]:
         model.objects.all().delete()
 
-    User.objects.exclude(is_superuser=True).delete()
-    print("All data has been removed successfully, except superusers.")
+    # User.objects.exclude(is_superuser=True).delete()
+    # print("All data has been removed successfully, except superusers.")
 
 
 def add_tags():
@@ -167,7 +168,8 @@ def add_tags():
         ("on_sale_collection", _("On Sale Collection")),
     ]
     for key, name in tags:
-        Tag.objects.get_or_create(key=key, name=name)
+        if not Tag.objects.filter(key=key).exists():
+            Tag.objects.create(key=key, name=name)
     print("Tags have been added successfully.")
 
 
