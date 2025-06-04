@@ -10,83 +10,100 @@ from .models import Product ,Category , Review
 from account.models import Profile
 from .forms import ReviewForm
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from settings.models import Brand
 from django.core.cache import cache
+from django.db.models import Q
 
 class ProductListView(ListView):
     model = Product
     context_object_name = 'products'
     template_name = 'product/products.html'
-    paginate_by = 12
+    paginate_by = 12  # default
 
     def get_queryset(self):
-        """
-        Override the get_queryset method to filter the products based on the search query, category, and sort_by parameters in the URL.
-        The method first checks if the queryset is in the cache. If not, it retrieves the queryset from the database based on the parameters and caches it for 5 minutes.
-        If the search parameter is provided, it filters the queryset to include only the products with names or descriptions containing the search query.
-        If the category parameter is provided, it filters the queryset to include only the products in the specified category.
-        If the sort_by parameter is provided, it orders the queryset by the specified field in ascending or descending order. The available sort_by options are 'price_asc', 'price_desc', and 'rating'.
-        :return: The filtered and ordered queryset of products.
-        """
-        
-        cache_key = f"products_{self.request.GET.urlencode()}"
-        queryset = cache.get(cache_key)
-        
-        if not queryset:
-            queryset = super().get_queryset()
-            search_query = self.request.GET.get('search', '')
-            category = self.request.GET.get('category', '')
-            sort_by = self.request.GET.get('sort_by', '')
+        if hasattr(self, '_queryset'):
+            return self._queryset
 
+        query_params = self.request.GET.copy()
+        cache_key = f"products_{query_params.urlencode()}"
+        queryset = cache.get(cache_key)
+
+        if queryset is None:
+            queryset = super().get_queryset()
+
+            # Get filters
+            search_query = query_params.get('search', '').strip()
+            category_slug = query_params.get('category', '').strip()
+            brand_slug = query_params.get('brand', '').strip()
+            sort_by = query_params.get('sort_by', '').strip()
+            min_price = query_params.get('min_price', '').strip()
+            max_price = query_params.get('max_price', '').strip()
+
+            # Apply filters
             if search_query:
                 queryset = queryset.filter(
-                    Q(name__icontains=search_query) | 
+                    Q(name__icontains=search_query) |
                     Q(description__icontains=search_query)
                 )
 
-            if category:
-                queryset = queryset.filter(category__slug=category)
+            if category_slug and category_slug.lower() != "none":
+                queryset = queryset.filter(category__slug=category_slug)
 
-            order_by_mapping = {
-                'price_asc': 'price',
-                'price_desc': '-price',
-                'rating_asc': 'overall_rating',
-                'rating_desc': '-overall_rating'
-            }
-            if sort_by in order_by_mapping:
-                queryset = queryset.order_by(order_by_mapping[sort_by])
+            if brand_slug and brand_slug.lower() != "none":
+                queryset = queryset.filter(brand__slug=brand_slug)
 
-            cache.set(cache_key, queryset, timeout=300)  # Cache for 5 minutes
+            if min_price:
+                try:
+                    queryset = queryset.filter(price__gte=float(min_price))
+                except ValueError:
+                    pass
 
+            if max_price:
+                try:
+                    queryset = queryset.filter(price__lte=float(max_price))
+                except ValueError:
+                    pass
+
+            if sort_by == 'price_asc':
+                queryset = queryset.order_by('price')
+            elif sort_by == 'price_desc':
+                queryset = queryset.order_by('-price')
+            elif sort_by == 'name_asc':
+                queryset = queryset.order_by('name')
+            elif sort_by == 'name_desc':
+                queryset = queryset.order_by('-name')
+
+            queryset = list(queryset)
+            cache.set(cache_key, queryset, timeout=300)  # Cache for 5 mins
+
+        self._queryset = queryset
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         queryset = self.get_queryset()
-        paginator = Paginator(queryset, self.paginate_by)
+
+        paginate_by = self.get_paginate_by(queryset)
+        paginator = Paginator(queryset, paginate_by)
         page_number = self.request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
+        products = paginator.get_page(page_number)
 
         context.update({
             'categories': Category.objects.all(),
+            'brands': Brand.objects.all(),
             'search_query': self.request.GET.get('search', ''),
             'selected_category': self.request.GET.get('category', ''),
+            'selected_brand': self.request.GET.get('brand', ''),
             'sort_by': self.request.GET.get('sort_by', ''),
-            'items_per_page': self.request.GET.get('items_per_page', self.paginate_by),
-            'is_paginated': page_obj.has_other_pages()
+            'min_price': self.request.GET.get('min_price', ''),
+            'max_price': self.request.GET.get('max_price', ''),
+            'items_per_page': self.request.GET.get('items_per_page', paginate_by),
+            'view_mode': self.request.GET.get('view_mode', 'grid'),
+            'products': products,
+            'is_paginated': products.has_other_pages(),
         })
-
         return context
 
-    def get_paginate_by(self, queryset):
-        """
-        Override the paginate_by method to allow dynamic pagination based on the 'items_per_page' parameter in the URL.
-        """
-        items_per_page = self.request.GET.get('items_per_page', self.paginate_by)
-        try:
-            return int(items_per_page)
-        except ValueError:
-            return self.paginate_by
 
 class CompareProductsView(LoginRequiredMixin, TemplateView):
     template_name = 'product/compare_products.html'
@@ -102,7 +119,11 @@ class CompareProductsView(LoginRequiredMixin, TemplateView):
         context['fields'] = fields
         return context
 
-class ProductViewDetail(LoginRequiredMixin, DetailView ,CreateView):
+
+
+from django.views.generic.edit import FormMixin
+
+class ProductViewDetail(LoginRequiredMixin, FormMixin, DetailView):
     model = Product
     template_name = 'product/product_detail.html'
     context_object_name = 'product'
@@ -110,19 +131,38 @@ class ProductViewDetail(LoginRequiredMixin, DetailView ,CreateView):
     slug_url_kwarg = "slug"
     form_class = ReviewForm
 
+    def get_success_url(self):
+        return self.object.get_absolute_url()
 
     def get_context_data(self, **kwargs):
-        product = self.get_object()  
         context = super().get_context_data(**kwargs)
-        reviews = Review.objects.filter(product=product)
+        product = self.object
+        reviews_qs = Review.objects.filter(product=product).select_related('user')
+        related_products = Product.objects.filter(category=product.category).exclude(id=product.id)[:4]
 
-        context['review_form'] = ReviewForm()
-        context['reviews'] = reviews
-        context['overall_rating'] = product.calculate_overall_rating(reviews)
+    # Filter by rating if specified
+        rating_filter = self.request.GET.get('rating')
+        if rating_filter and rating_filter.isdigit():
+            reviews_qs = reviews_qs.filter(rating=int(rating_filter))
+
+        paginator = Paginator(reviews_qs, 4)  # 4 reviews per page
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+ 
+        context.update({
+            'review_form': kwargs.get('form', ReviewForm()),
+            'reviews': reviews_qs,
+            'reviews_count': reviews_qs.count(),
+            'overall_rating': product.calculate_overall_rating(reviews_qs),
+            'related_products': Product.objects.filter(category=product.category).exclude(id=product.id)[:4],
+            'page_obj': page_obj,
+        })
         return context
+
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = ReviewForm(request.POST)
+        self.object = self.get_object()  # required for get_success_url()
+        form = self.get_form()
 
         if form.is_valid():
             review = form.save(commit=False)
@@ -130,12 +170,12 @@ class ProductViewDetail(LoginRequiredMixin, DetailView ,CreateView):
             review.product = self.object
             review.save()
             self.object.update_overall_rating()
-            messages.success(self.request, 'Review and rating submitted successfully!')
-            return redirect(self.object.get_absolute_url())
-        
-        messages.error(self.request, 'Review and rating not submitted successfully!')
-        return self.render_to_response(self.get_context_data(form=form))
-    
+            messages.success(request, 'Your review was submitted successfully.')
+            return redirect(self.get_success_url())
+
+        messages.error(request, 'Failed to submit your review. Please correct the errors below.')
+        return self.form_invalid(form)
+
 class CategorysView(ListView):
     model = Category
     context_object_name = 'all_categories'

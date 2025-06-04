@@ -47,12 +47,12 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="about.html">
+                    <a class="nav-link {% if request.path == '/about/' %}active{% endif %}" href="/about/">
                         <i class="fas fa-info-circle me-1"></i>About
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'contact:contact' %}">
+                    <a class="nav-link {% if request.path == '/contact/' %}active{% endif %}" href="{% url 'contact:contact' %}">
                         <i class="fas fa-envelope me-1"></i>Contact
                     </a>
                 </li>

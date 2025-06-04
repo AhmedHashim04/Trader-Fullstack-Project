@@ -13,11 +13,30 @@ window.ShopEase = {
     }
 };
 
-// DOM Content Loaded Event
-document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
-});
+document.addEventListener('DOMContentLoaded', function () {
+    const gridViewBtn = document.getElementById('gridView');
+    const listViewBtn = document.getElementById('listView');
+    const productsContainer = document.getElementById('productsContainer'); // Define productsContainer
 
+    if (gridViewBtn && listViewBtn && productsContainer) {
+        gridViewBtn.addEventListener('click', function () {
+            window.location.href = '?view_mode=grid';
+            productsContainer.classList.remove('list-view');
+            productsContainer.classList.add('grid-view');
+            gridViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
+
+        });
+
+        listViewBtn.addEventListener('click', function () {
+            window.location.href = '?view_mode=list';
+            productsContainer.classList.remove('grid-view');
+            productsContainer.classList.add('list-view');
+            listViewBtn.classList.add('active');
+            gridViewBtn.classList.remove('active');
+        });
+    }
+});
 /**
  * Initialize the application
  */
@@ -213,47 +232,7 @@ function isMobile() {
     return window.innerWidth <= 768;
 }
 
-/**
- * Initialize newsletter form
- */
-function initializeNewsletterForm() {
-    const newsletterForm = document.getElementById('newsletterForm');
-    if (!newsletterForm) return;
-    
-    newsletterForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const emailInput = this.querySelector('input[type="email"]');
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const email = emailInput.value.trim();
-        
-        if (!email || !isValidEmail(email)) {
-            showErrorMessage('Please enter a valid email address');
-            return;
-        }
-        
-        // Simulate newsletter signup
-        const originalBtnContent = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Subscribing...';
-        submitBtn.disabled = true;
-        
-        setTimeout(() => {
-            submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Subscribed!';
-            submitBtn.classList.remove('btn-light');
-            submitBtn.classList.add('btn-success');
-            emailInput.value = '';
-            
-            showSuccessMessage('Welcome! You\'ve been subscribed to our newsletter.');
-            
-            setTimeout(() => {
-                submitBtn.innerHTML = originalBtnContent;
-                submitBtn.classList.remove('btn-success');
-                submitBtn.classList.add('btn-light');
-                submitBtn.disabled = false;
-            }, 3000);
-        }, 1500);
-    });
-}
+
 
 // Export functions for global use
 window.ShopEase.utils = {

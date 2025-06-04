@@ -364,66 +364,10 @@ class ProductManager {
     }
 
     /**
-     * Render grid view
-     */
-    renderGridView(products) {
-        const container = document.getElementById('productsGrid');
-        if (!container) return;
-
-        container.className = 'row g-4';
-        container.innerHTML = products.map(product => 
-            this.createProductCard(product)
-        ).join('');
-
-        this.addProductEventListeners();
-    }
-
-    /**
-     * Render list view
-     */
-    renderListView(products) {
-        const container = document.getElementById('productsGrid');
-        if (!container) return;
-
-        container.className = 'product-list';
-        container.innerHTML = products.map(product => 
-            this.createProductListItem(product)
-        ).join('');
-
-        this.addProductEventListeners();
-    }
-
-    /**
      * Create product card for grid view
      */
     createProductCard(product) {
         return `
-            <div class="col-lg-4 col-md-6">
-                <div class="card product-card h-100">
-                    <div class="product-image-placeholder">
-                        <i class="fas fa-image fa-2x text-muted"></i>
-                        <p class="text-muted mt-2 mb-0">Product Image</p>
-                    </div>
-                    <div class="card-body d-flex flex-column">
-                        <h6 class="card-title">
-                            <a href="product-detail.html?id=${product.id}" class="text-decoration-none text-dark">
-                                ${this.escapeHtml(product.name)}
-                            </a>
-                        </h6>
-                        <p class="card-text text-muted small mb-2">${this.escapeHtml(product.category)}</p>
-                        ${product.description ? `<p class="card-text text-muted small">${this.escapeHtml(product.description.substring(0, 100))}${product.description.length > 100 ? '...' : ''}</p>` : ''}
-                        <div class="mt-auto">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span class="h6 text-primary mb-0">$${product.price.toFixed(2)}</span>
-                            </div>
-                            <button class="btn btn-primary btn-sm w-100 add-to-cart-btn" 
-                                    data-product-id="${product.id}">
-                                <i class="fas fa-shopping-cart me-1"></i>Add to Cart
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         `;
     }
 

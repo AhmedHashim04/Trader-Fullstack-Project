@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'payment',
+    'widget_tweaks',
+
 ]
 
 LOGIN_URL = '/account/login/'

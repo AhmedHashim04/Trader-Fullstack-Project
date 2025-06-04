@@ -19,3 +19,5 @@ class HomeView(TemplateView):
 
         return context
 
+class AboutView(TemplateView):
+    template_name = "home/about.html"

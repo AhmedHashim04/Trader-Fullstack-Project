@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load widget_tweaks %}
+<!-- Breadcrumb -->
+<section class="page-header bg-light py-3">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'product:products_list' %}">Products</a></li>
+                <li class="breadcrumb-item active">{{ product.name }}</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<!-- Product Detail -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="product-image-gallery">
+                    <div class="main-image mb-3">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded shadow">
+                        {% else %}
+                            <div class="product-image-placeholder">
+                                <i class="fas fa-image fa-3x text-muted"></i>
+                                <p class="text-muted mt-2">Product Image</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="product-info">
+                    <h1 class="h2 mb-3">{{ product.name }}</h1>
+                    <div class="price-section mb-3">
+                        <span class="price-current h3 text-primary fw-bold">{{ product.price }} EGP</span>
+                    </div>
+                    
+                    <div class="product-description mb-4">
+                        <h5>Description</h5>
+                        <p class="text-muted">{{ product.description|default:"No description available for this product." }}</p>
+                    </div>
+                    
+                    <div class="product-details mb-4">
+                        <h5>Product Details</h5>
+                        <ul class="list-unstyled">
+                            <li><strong>Category:</strong> {{ product.category.name }}</li>
+                            <li><strong>SKU:</strong> {{ product.id }}</li>
+                            <li><strong>Availability:</strong> <span class="text-success">In Stock</span></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="add-to-cart-section">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-12 mb-3">
+                                {% if product.slug not in contextCart or not user.is_authenticated %}
+                                    <form method="POST" action="{% url 'cart:cart_add' product.slug %}" class="d-flex align-items-center">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                                        <div class="input-group" style="width: 250px;">
+                                            <input type="number" name="quantity" value="{{ quantity|default:1 }}" min="1" max="{{ product.stock }}" class="form-control" required>
+                                            <button type="submit" class="btn btn-outline-primary">Add To Cart</button>
+                                        </div>
+                                    </form>
+                                {% else %}
+                                    <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-outline-danger">
+                                        Remove from Cart
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-actions mt-3">
+                        {% if product in contextWishlist %}
+                            <button href="{% url 'product:wishlist' product.slug %}" class="btn btn-outline-secondary me-2">
+                                <i class="fas fa-heart me-1"></i>Remove from Wishlist
+                            </button>
+                        {% else %}
+                            <button href="{% url 'product:wishlist' product.slug %}" class="btn btn-outline-danger me-2">
+                                <i class="fas fa-heart me-1"></i>Add to Wishlist
+                            </button>
+                        {% endif %}
+                        <button class="btn btn-outline-secondary">
+                            <i class="fas fa-share-alt me-1"></i>Share
+                        </button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Review Form -->
+<section class="py-5 bg-light border-top">
+    <div class="container">
+        <h4 class="mb-4 text-center text-primary">Share Your Experience</h4>
+        <form method="post" class="needs-validation trendy-form p-5 rounded shadow bg-white" novalidate>
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="{{ review_form.rating.id_for_label }}" class="form-label fw-bold text-secondary">{{ review_form.rating.label }}</label>
+                <div class="rating-input d-flex justify-content-center gap-3">
+                    {{ review_form.rating }}
+                </div>
+                <div class="invalid-feedback text-center mt-2">Please provide a rating.</div>
+            </div>
+            <div class="mb-4">
+                <label class="form-label fw-bold text-secondary">{{ review_form.content.label }}</label>
+                {{ review_form.content|add_class:"form-control trendy-textarea border-0 shadow-sm" }}
+                <div class="invalid-feedback mt-2">Please provide your review content.</div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn trendy-btn px-5 py-3 shadow-sm">Submit Review</button>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- Product Reviews -->
+<!-- Average Rating Display -->
+<section class="py-5 border-top bg-white">
+    <div class="container text-center">
+      <h3 class="mb-3">Overall Rating</h3>
+      <div class="mb-2">
+        <span class="fs-4 fw-bold text-primary">{{ overall_rating|floatformat:1 }}/5</span>
+      </div>
+      <div class="mb-3">
+        <span class="text-warning fs-5">
+          {% for i in "12345"|slice:":overall_rating"|make_list %}
+            <i class="fas fa-star"></i>
+          {% endfor %}
+          {% for i in "12345"|slice:"overall_rating:"|make_list %}
+            <i class="far fa-star"></i>
+          {% endfor %}
+        </span>
+      </div>
+      <div class="progress mx-auto" style="height: 12px; max-width: 300px;">
+        <div class="progress-bar bg-success" role="progressbar"
+             style="width: {{ overall_rating|floatformat:1|floatformat:0|floatformat:0|add:"0"|divisibleby:5|floatformat:0 }}%;" 
+             aria-valuenow="{{ overall_rating|floatformat:1 }}" aria-valuemin="0" aria-valuemax="5">
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Filters -->
+  <section class="py-4 bg-light border-top">
+    <div class="container text-center">
+      <div class="btn-group" role="group" aria-label="Filter reviews by stars">
+        <a href="?rating=all" class="btn btn-outline-secondary {% if not request.GET.rating %}active{% endif %}">All</a>
+        {% for i in "54321" %}
+          <a href="?rating={{ i }}" class="btn btn-outline-primary {% if request.GET.rating == i %}active{% endif %}">
+            {{ i }} <i class="fas fa-star text-warning"></i>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Paginated Reviews -->
+  <section class="py-5">
+    <div class="container">
+      <h3 class="mb-4 text-center">Customer Reviews</h3>
+  
+      {% if page_obj %}
+        <div class="list-group">
+          {% for review in page_obj %}
+            <div class="list-group-item trendy-review">
+              <div class="d-flex justify-content-between align-items-center">
+                <h6 class="mb-1">{{ review.user.username }}</h6>
+                <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+              </div>
+              <p class="mb-1">{{ review.content }}</p>
+              <small class="text-muted">Rating:
+                <span class="text-warning">
+                  {% for i in "12345"|slice:":review.rating"|make_list %}
+                    <i class="fas fa-star"></i>
+                  {% endfor %}
+                  {% for i in "12345"|slice:"review.rating:"|make_list %}
+                    <i class="far fa-star"></i>
+                  {% endfor %}
+                </span>
+              </small>
+            </div>
+          {% endfor %}
+        </div>
+  
+        <!-- Pagination -->
+        <nav class="mt-4 d-flex justify-content-center">
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.rating %}&rating={{ request.GET.rating }}{% endif %}">Previous</a></li>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+              <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}{% if request.GET.rating %}&rating={{ request.GET.rating }}{% endif %}">{{ num }}</a>
+              </li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.rating %}&rating={{ request.GET.rating }}{% endif %}">Next</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% else %}
+        <p class="text-center text-muted">No reviews available.</p>
+      {% endif %}
+    </div>
+  </section>
+  
+
+<!-- Related Products -->
+{% if related_products %}
+<section class="py-5 bg-light border-top">
+    <div class="container">
+        <h3 class="mb-4">Related Products</h3>
+        <div class="row g-4">
+            {% for rp in related_products %}
+                <div class="col-md-3">
+                    <div class="card h-100 shadow-sm">
+                        <img src="{{ rp.image.url }}" class="card-img-top" alt="{{ rp.name }}">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ rp.name }}</h5>
+                            <p class="card-text text-muted">{{ rp.price }} EGP</p>
+                            <a href="{{ rp.get_absolute_url }}" class="btn btn-outline-primary mt-auto">View</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+<!-- Style and JS -->
+<style>
+    .trendy-form .rating-input {
+        display: flex;
+        gap: 5px;
+    }
+    .trendy-textarea {
+        border-radius: 10px;
+        padding: 10px;
+    }
+    .trendy-btn {
+        background: linear-gradient(45deg, #6a11cb, #2575fc);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+    }
+    .trendy-btn:hover {
+        background: linear-gradient(45deg, #2575fc, #6a11cb);
+        transform: scale(1.05);
+    }
+    .trendy-review {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
+        padding: 15px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ratingInputs = document.querySelectorAll('.rating-input input');
+        ratingInputs.forEach(input => {
+            input.addEventListener('change', function () {
+                ratingInputs.forEach(i => i.parentElement.classList.remove('selected'));
+                this.parentElement.classList.add('selected');
+            });
+        });
+    });
+</script>
+
+{% endblock %}

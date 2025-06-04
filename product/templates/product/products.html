@@ -1,146 +1,162 @@
 {% extends 'base.html' %}
 {% block body %}
 
-    <!-- Page Header -->
-    <section class="page-header bg-light py-3">
-        <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0" id="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'product:products_list' %}">Products</a></li>
-                    <li class="breadcrumb-item active" id="currentProduct">
-                        {% if search_query %}
-                            Search: "{{ search_query }}"
-                        {% else %}
-                            All Products
-                        {% endif %}
-                    </li>
-                </ol>
-            </nav>
-        </div>
-    </section>
+<!-- Page Header -->
+<section class="page-header bg-light py-4 shadow-sm border-bottom">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0" id="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'product:products_list' %}">Products</a></li>
+                <li class="breadcrumb-item active" id="currentProduct">
+                    {% if search_query %}
+                        Search: "{{ search_query }}"
+                    {% else %}
+                        All Products
+                    {% endif %}
+                </li>
+            </ol>
+        </nav>
+    </div>
+</section>
 
-    <!-- Main Content -->
-    <div class="container py-4">
-        <div class="row">
-            <!-- Sidebar Filters -->
-            <div class="col-lg-3 mb-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Filters</h5>
-                    </div>
-                    <div class="card-body">
-                        <!-- Categories Filter -->
-                        <div class="mb-4">
-                            <h6 class="fw-bold">Categories</h6>
-                            <div id="categoryFilters">
-                                {% for category in categories %}
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="category" id="category_{{ category.slug }}" value="{{ category.slug }}" 
-                                            {% if selected_category == category.slug %}checked{% endif %}>
-                                        <label class="form-check-label" for="category_{{ category.slug }}">
-                                            {{ category.name }}
-                                        </label>
-                                    </div>
+<!-- Main Content -->
+<div class="container py-5">
+    <div class="row">
+        <!-- Sidebar Filters -->
+        <aside class="col-lg-3 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Filters</h5>
+                </div>
+                <div class="card-body">
+                    <form method="get" id="filtersForm" class="vstack gap-3">
+                        <div>
+                            <label for="search" class="form-label">Search</label>
+                            <input type="text" name="search" id="search" value="{{ search_query }}" class="form-control" placeholder="Search products...">
+                        </div>
+                        <div>
+                            <label for="category" class="form-label">Category</label>
+                            <select name="category" id="category" class="form-select">
+                                <option value="">All Categories</option>
+                                {% for cat in categories %}
+                                    {% if cat.slug %}
+                                        <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>
+                                            {{ cat.name }}
+                                        </option>
+                                    {% endif %}
                                 {% endfor %}
-                            </div>
-                        </div>
-
-                        <!-- Price Range Filter -->
-                        <div class="mb-4">
-                            <h6 class="fw-bold">Price Range</h6>
-                            <div class="row g-2">
-                                <div class="col-6">
-                                    <input type="number" class="form-control form-control-sm" id="minPrice" placeholder="Min">
-                                </div>
-                                <div class="col-6">
-                                    <input type="number" class="form-control form-control-sm" id="maxPrice" placeholder="Max">
-                                </div>
-                            </div>
-                            <button class="btn btn-outline-primary btn-sm mt-2 w-100" id="applyPriceFilter">Apply</button>
-                        </div>
-
-                        <!-- Sort Options -->
-                        <div class="mb-4">
-                            <h6 class="fw-bold">Sort By</h6>
-                            <select class="form-select form-select-sm" id="sortSelect">
-                                <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price (Low to High)</option>
-                                <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price (High to Low)</option>
-                                <option value="rating_asc" {% if sort_by == 'rating_asc' %}selected{% endif %}>Rating (Low to High)</option>
-                                <option value="rating_desc" {% if sort_by == 'rating_desc' %}selected{% endif %}>Rating (High to Low)</option>
                             </select>
                         </div>
-
-                        <!-- Clear Filters -->
-                        <button class="btn btn-outline-secondary btn-sm w-100" id="clearFilters">Clear All Filters</button>
-                    </div>
+                        <div>
+                            <label for="brand" class="form-label">Brand</label>
+                            <select name="brand" id="brand" class="form-select">
+                                <option value="">All Brands</option>
+                                {% for brand in brands %}
+                                    {% if brand.slug %}
+                                        <option value="{{ brand.slug }}" {% if selected_category == brand.slug %}selected{% endif %}>
+                                            {{ brand.name }}
+                                        </option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="min_price" class="form-label">Min</label>
+                                <input type="number" name="min_price" id="min_price" value="{{ min_price }}" step="0.01" class="form-control" placeholder="0.00">
+                            </div>
+                            <div class="col">
+                                <label for="max_price" class="form-label">Max</label>
+                                <input type="number" name="max_price" id="max_price" value="{{ max_price }}" step="0.01" class="form-control" placeholder="1000.00">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="sort_by" class="form-label">Sort by</label>
+                            <select name="sort_by" id="sort_by" class="form-select">
+                                <option value="">Default</option>
+                                <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                                <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                                <option value="name_asc" {% if sort_by == 'name_asc' %}selected{% endif %}>Name: A to Z</option>
+                                <option value="name_desc" {% if sort_by == 'name_desc' %}selected{% endif %}>Name: Z to A</option>
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div class="btn-group">
+                                <input type="hidden" name="view_mode" id="viewModeInput" value="{{ view_mode }}">
+                                <button type="button" class="btn btn-outline-secondary {% if view_mode == 'grid' %}active{% endif %}" onclick="setViewMode('grid')">
+                                    <i class="fas fa-th"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary {% if view_mode == 'list' %}active{% endif %}" onclick="setViewMode('list')">
+                                    <i class="fas fa-list"></i>
+                                </button>
+                            </div>
+                            <select class="form-select w-auto ms-2" name="items_per_page" onchange="document.getElementById('filtersForm').submit();">
+                                <option value="12" {% if items_per_page == '12' or items_per_page == 12 %}selected{% endif %}>12/page</option>
+                                <option value="24" {% if items_per_page == '24' or items_per_page == 24 %}selected{% endif %}>24/page</option>
+                                <option value="48" {% if items_per_page == '48' or items_per_page == 48 %}selected{% endif %}>48/page</option>
+                            </select>
+                        </div>
+                        <div class="d-grid mt-3">
+                            <button type="submit" class="btn btn-primary">Apply</button>
+                            <a href="{% url 'product:products_list' %}" class="btn btn-outline-danger mt-2">Reset</a>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </aside>
 
-            <!-- Products Grid -->
-            <div class="col-lg-9">
-                <!-- View Toggle -->
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-outline-secondary active" id="gridView">
-                                <i class="fas fa-th"></i> Grid
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary" id="listView">
-                                <i class="fas fa-list"></i> List
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-md-6 text-md-end">
-                        <select class="form-select form-select-sm d-inline-block w-auto" id="itemsPerPage">
-                            <option value="12" {% if items_per_page == '12' %}selected{% endif %}>12 per page</option>
-                            <option value="24" {% if items_per_page == '24' %}selected{% endif %}>24 per page</option>
-                            <option value="48" {% if items_per_page == '48' %}selected{% endif %}>48 per page</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Products Container -->
-                <div id="productsContainer">
-                    <div class="row g-4" id="productsGrid">
-                        {% for product in products %}
-                            <div class="col-md-4">
-                                <div class="card">
-                                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ product.name }}</h5>
-                                        <p class="card-text">{{ product.description|truncatewords:20 }}</p>
-                                        <p class="fw-bold">${{ product.price }}</p>
-                                        <a href="{% url 'product:product_detail' product.slug %}" class="btn btn-primary btn-sm">View Details</a>
-                                    </div>
+        <!-- Products Grid -->
+        <section class="col-lg-9">
+            <div id="productsContainer" class="row {% if view_mode == 'grid' %}row-cols-1 row-cols-sm-2 row-cols-md-3 g-4{% else %}gy-4{% endif %}">
+                {% for product in products %}
+                    <div class="{% if view_mode == 'list' %}col-12{% else %}col{% endif %}">
+                        <div class="card h-100 shadow-sm {% if view_mode == 'list' %}flex-row{% endif %}">
+                            <img src="{{ product.image.url }}" class="card-img-top {% if view_mode == 'list' %}w-25{% endif %}" alt="{{ product.name }}">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <p class="card-text text-muted small">{{ product.description|truncatewords:20 }}</p>
+                                </div>
+                                <div>
+                                    <p class="fw-bold text-primary mb-2">${{ product.price }}</p>
+                                    <a href="{% url 'product:product_detail' product.slug %}" class="btn btn-sm btn-outline-primary">View Details</a>
                                 </div>
                             </div>
-                        {% endfor %}
+                        </div>
                     </div>
+                {% endfor %}
+            </div>
+
+            {% if not products %}
+                <div class="text-center py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No products found</h4>
+                    <p class="text-muted">Try adjusting your search criteria or filters.</p>
+                    <a href="{% url 'product:products_list' %}" class="btn btn-primary">Reset Search</a>
                 </div>
+            {% endif %}
 
-                <!-- No Products Message -->
-                {% if not products %}
-                    <div class="text-center py-5">
-                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                        <h4 class="text-muted">No products found</h4>
-                        <p class="text-muted">Try adjusting your search criteria or filters.</p>
-                        <button class="btn btn-primary" id="resetSearch">Reset Search</button>
-                    </div>
-                {% endif %}
-
-                <!-- Pagination -->
+            {% if is_paginated %}
                 <nav aria-label="Products pagination" class="mt-4">
                     <ul class="pagination justify-content-center">
                         {% for page_num in products.paginator.page_range %}
                             <li class="page-item {% if products.number == page_num %}active{% endif %}">
-                                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_num }}">{{ page_num }}</a>
                             </li>
                         {% endfor %}
                     </ul>
                 </nav>
-            </div>
-        </div>
+            {% endif %}
+        </section>
     </div>
+</div>
+
+<script>
+    function setViewMode(mode) {
+        document.getElementById('viewModeInput').value = mode;
+        document.getElementById('filtersForm').submit();
+    }
+</script>
 
 {% endblock body %}

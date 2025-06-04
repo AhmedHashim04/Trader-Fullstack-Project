@@ -19,7 +19,7 @@ def generate_brands(num_brands):
         return
 
     brands = [
-        Brand(name=f"Brand {i + 1}", desc=f"Description for Brand {i + 1}")
+        Brand(name=f"Brand {i + 1}", desc=f"Description for Brand {i + 1}", slug=f"brand-{i + 1}")
         for i in range(num_brands)
     ]
     Brand.objects.bulk_create(brands)
@@ -32,7 +32,7 @@ def generate_categories(num_categories):
         return
 
     categories = [
-        Category(name=f"Category {i + 1}", description=f"Description for Category {i + 1}")
+        Category(name=f"Category {i + 1}", description=f"Description for Category {i + 1}", slug=f"category-{i + 1}")
         for i in range(num_categories)
     ]
     Category.objects.bulk_create(categories)
@@ -102,7 +102,9 @@ def generate_products(num_products):
             brand=random.choice(brands),
             category=random.choice(categories),
             trending=random.choice([True, False]),
-            image=f"products/{product_name}.jpg"
+            image=f"products/{product_name}.jpg",
+            slug=product_name.lower().replace(" ", "-")
+
         )
         # Download the image
         image_path = f"media/products/{product_name}.jpg"
@@ -129,7 +131,7 @@ def clean_data():
         model.objects.all().delete()
 
     # User.objects.exclude(is_superuser=True).delete()
-    # print("All data has been removed successfully, except superusers.")
+    print("All data has been removed successfully, except superusers.")
 
 
 def add_tags():
