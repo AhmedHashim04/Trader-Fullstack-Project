@@ -1147,11 +1147,15 @@ html {
     min-width: 45px;
     min-height: 45px;
 }
+.cart-badge,
+.cart-price {
+    display: inline-block;
+    vertical-align: middle;
+}
 
 .cart-badge {
-    position: absolute;
-    top: -8px;
-    right: -8px;
+    position: relative;
+    top: -2px;
     background: hsl(var(--danger-color));
     color: white;
     border-radius: 50%;
@@ -1169,10 +1173,8 @@ html {
     font-size: 1rem;
     font-weight: 700;
     color: hsl(var(--text-warning));
-    margin-top: 0.5rem;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
-    text-align: center;
 }
 
 .btn-glow {
