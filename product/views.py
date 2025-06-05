@@ -176,46 +176,18 @@ class ProductViewDetail(LoginRequiredMixin, FormMixin, DetailView):
         messages.error(request, 'Failed to submit your review. Please correct the errors below.')
         return self.form_invalid(form)
 
-class CategorysView(ListView):
-    model = Category
-    context_object_name = 'all_categories'
-    template_name='product/categories.html'
-    paginate_by = 12
-
-class CategoryViewDetail(DetailView):
-    model = Category
-    template_name = 'product/category_detail.html'
-    context_object_name = 'category'
-    slug_field     = "slug"
-    slug_url_kwarg = "slug"
-    paginate_by = 12
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs) 
-        obj = self.get_object()
-        
-        # Get the products that belong to the category and add pagination
-        category_products = Product.objects.filter(category=obj)
-        paginator = Paginator(category_products, self.paginate_by)
-        page_number = self.request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
-        
-        context.update({
-            'all_products': page_obj,
-            'is_paginated': page_obj.has_other_pages()
-        })
-                    
-        return context
-
-class WishlistViewDetail(DetailView):
-    model = Profile
+class WishlistViewDetail(LoginRequiredMixin, TemplateView):
     template_name = 'product/wishlist.html'
-    context_object_name = 'profile'
-    slug_field     = "id"
-    slug_url_kwarg = "id"
-    
+
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        user_profile = get_object_or_404(Profile, user=self.request.user)
+        wishlist_products = user_profile.wishlist.select_related('category', 'brand')
+
+        context.update({
+            'wishlist_products': wishlist_products,
+            'wishlist_count': wishlist_products.count(),
+        })
         return context
 
 @login_required
@@ -232,6 +204,13 @@ def add_remove_wishlist(request,slug):
         messages.success(request, 'Product added to Wishlist successfully!')
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+@login_required
+def clear_wishlist(request):
+    user = get_object_or_404(Profile, user=request.user)
+    user.wishlist.clear()
+    messages.success(request, 'Wishlist cleared successfully!')
+    return redirect('product:wishlist', id=user.id)
 
 def user_see_product(request,slug):
     product = Product.objects.get(slug=slug)

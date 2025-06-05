@@ -2,57 +2,79 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block body %}
-<div class="container mt-5 mb-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow contact-card">
-                <div class="card-header">
-                    <h1 class="text-center mb-0">Register</h1>
-                </div>
-                <div class="card-body">
-                    <form method="post" class="contact-form needs-validation" novalidate>
+<section class="auth-section">
+    <div class="auth-background">
+        <div class="auth-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-lg-6 col-md-8">
+                <div class="auth-card">
+                    <div class="auth-header text-center mb-4">
+                        <div class="auth-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h2 class="auth-title">Join Trader!</h2>
+                        <p class="auth-subtitle">Create your account and start shopping amazing products</p>
+                    </div>
+                    
+                    <form method="post" class="auth-form needs-validation" novalidate>
                         {% csrf_token %}
-                        <div class="form-group mb-4">
-                            {% if form.username.errors %}{{form.username.errors}}{% endif %}
-                            {{ form.username.label_tag }}
-                            {{ form.username|add_class:"form-control"|attr:"placeholder:Enter your username" }}
+                        <div class="form-floating mb-3">
+                            {% if form.username.errors %}{{ form.username.errors }}{% endif %}
+                            {{ form.username|add_class:"form-control trendy-input"|attr:"placeholder:Enter your username" }}
+                            <label for="id_username">
+                                <i class="fas fa-user me-2"></i>Username
+                            </label>
                         </div>
-                        <div class="form-group mb-4">
-                            {{ form.email.label_tag }}
-                            {% if form.email.errors %}{{form.email.errors}}{% endif %}
-                            {{ form.email|add_class:"form-control"|attr:"placeholder:Enter your email" }}
+                        
+                        <div class="form-floating mb-3">
+                            {% if form.email.errors %}{{ form.email.errors }}{% endif %}
+                            {{ form.email|add_class:"form-control trendy-input"|attr:"placeholder:Enter your email" }}
+                            <label for="id_email">
+                                <i class="fas fa-envelope me-2"></i>Email Address
+                            </label>
                         </div>
-                        <div class="form-group mb-4">
-                            
-                            {{ form.password1.label_tag }}
-                            {% if form.password1.errors %}{{form.password1.errors}}{% endif %}
-
-                            {{ form.password1|add_class:"form-control"|attr:"placeholder:Enter your password" }}
+                        
+                        <div class="form-floating mb-3">
+                            {% if form.password1.errors %}{{ form.password1.errors }}{% endif %}
+                            {{ form.password1|add_class:"form-control trendy-input"|attr:"placeholder:Enter your password" }}
+                            <label for="id_password1">
+                                <i class="fas fa-lock me-2"></i>Password
+                            </label>
+                            <button type="button" class="password-toggle" onclick="togglePassword('id_password1')">
+                                <i class="far fa-eye"></i>
+                            </button>
                         </div>
-                        <div class="form-group mb-4">
-                            {% if form.password1.errors %}{{form.password1.errors}}{% endif %}
-                            {{ form.password2.label_tag }}
-                            {{ form.password2|add_class:"form-control"|attr:"placeholder:Confirm your password" }}
+                        
+                        <div class="form-floating mb-3">
+                            {% if form.password2.errors %}{{ form.password2.errors }}{% endif %}
+                            {{ form.password2|add_class:"form-control trendy-input"|attr:"placeholder:Confirm your password" }}
+                            <label for="id_password2">
+                                <i class="fas fa-lock me-2"></i>Confirm Password
+                            </label>
+                            <button type="button" class="password-toggle" onclick="togglePassword('id_password2')">
+                                <i class="far fa-eye"></i>
+                            </button>
                         </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary btn-lg px-5">Register</button>
-                        </div>
-                        {% for error in form.field.errors %}
-                        <div class="invalid-feedback d-block">{{ error }}</div>
-                        {% endfor %}
+                        
+                        <button type="submit" class="btn trendy-btn-primary w-100 auth-submit">
+                            <i class="fas fa-user-plus me-2"></i>Create Account
+                            <div class="btn-glow"></div>
+                        </button>
                     </form>
+                    
+                    <div class="auth-footer text-center mt-4">
+                        <p>Already have an account? <a href="{% url 'account:login' %}" class="auth-link">Sign in here</a></p>
+                    </div>
                 </div>
-            </div>
-            <div class="text-center mt-4">
-                <a href="{% url 'account:login' %}" class="btn btn-outline-secondary back-button">
-                    <i class="fa fa-arrow-left me-3"></i>Back to Login
-                </a>
-                <a href="{% url 'account:password_reset' %}" class="btn btn-outline-info back-button">
-                    <i class="fa fa-arrow-right me-3"></i>Forget Password
-                </a>
             </div>
         </div>
     </div>
-</div>
+</section>
 {% endblock %}
-

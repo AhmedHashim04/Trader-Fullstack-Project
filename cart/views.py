@@ -45,7 +45,7 @@ def cart_clear(request):
     cart.clear()
     messages.success(request, 'Cart cleared successfully.')
     return redirect('cart:cart_list')
-
+ 
 class CartView(LoginRequiredMixin, ListView):
     """Display the cart."""
     template_name = 'cart/cart.html'

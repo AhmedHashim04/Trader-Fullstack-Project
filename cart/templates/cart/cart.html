@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<!-- Page Header -->
+<section class="page-header bg-light py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="h2 mb-0">Shopping Cart</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
+                        <li class="breadcrumb-item active">Cart</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="{% url 'cart:cart_clear' %}" class="btn btn-outline-danger btn-sm">
+                    <i class="fas fa-trash me-1"></i>Clear Cart
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Cart Content -->
+<div class="container py-4">
+    <div class="row">
+        <!-- Cart Items -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Cart Items</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div id="cartItemsContainer">
+                        {% for item in cart %}
+                        <div class="cart-item p-3 border-bottom">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <img src="{{ item.product.image.url|default:'https://via.placeholder.com/400' }}" alt="{{ item.product.name }}" class="img-fluid rounded" style="width: 50px; height: 50px; object-fit: cover;" />
+                                </div>
+                                <div class="col-md-4">
+                                    <h6 class="mb-1">
+                                        <a href="{% url 'product:product_detail' item.product.slug %}" class="text-decoration-none text-dark">
+                                            {{ item.product.name }}
+                                        </a>
+                                    </h6>
+                                    <small class="text-muted">Category: {{ item.product.category.name }}</small>
+                                </div>
+                                <div class="col-md-2">
+                                    <span class="fw-bold">${{ item.price }}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <form method="post" action="{% url 'cart:cart_add' item.product.slug %}" class="d-flex align-items-center">
+                                        {% csrf_token %}
+                                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="form-control form-control-sm text-center" style="width: 70px;" required>
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm ms-2">Update</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-1 text-end">
+                                    <a href="{% url 'cart:cart_remove' item.product.slug %}" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-8 offset-md-2">
+                                    <small class="text-muted">Subtotal: ${{ item.get_total_price }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-lg-4">
+            <div class="card sticky-top" style="top: 100px;">
+                <div class="card-header">
+                    <h5 class="mb-0">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal:</span>
+                        <span>${{ total_price }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Tax:</span>
+                        <span>${{ tax }}</span>
+                    </div>
+                    {% if discount %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Discount:</span>
+                        <span>
+                            {% if discount_type == 'percent' %}
+                                {{ discount }}%
+                            {% else %}
+                                ${{ discount_amount }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% endif %}
+                    <hr>
+                    <div class="d-flex justify-content-between fw-bold h5">
+                        <span>Total:</span>
+                        <span>${{ total_with_tax }}</span>
+                    </div>
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="{% url 'order:create_order' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-credit-card me-2"></i>Proceed to Checkout
+                        </a>
+                        <a href="{% url 'product:products_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
+                        </a>
+                    </div>
+                    
+                    <!-- Promo Code -->
+                    <div class="mt-4">
+                        <h6 class="fw-bold">Promo Code</h6>
+                        <form method="post" action="{% url 'coupon:coupon_apply' %}">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input type="text" name="code" class="form-control" placeholder="Enter code" required>
+                                <button class="btn btn-outline-primary" type="submit">Apply</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

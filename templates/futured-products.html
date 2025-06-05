@@ -24,9 +24,13 @@
                             {% if product.tag == "sale" %}<div class="sale-badge">Sale</div>{% endif %}
                             {% if product.tag == "new" %}<div class="new-badge">New</div>{% endif %}
                             {% if product.tag == "best" %}<div class="best-badge">Best</div>{% endif %}
-                            <button href="{% url 'product:add_remove_wishlist' product.slug %}" class="wishlist-btn" title="Add to Wishlist">
-                                <i class="far fa-heart"></i>
-                            </button>
+                            <a href="{% url 'product:add_remove_wishlist' product.slug %}" class="wishlist-btn position-absolute top-0 end-0 m-2 p-2 rounded-circle bg-light shadow-sm" title="Add to Wishlist" style="z-index: 10;">
+                                {% if product in contextWishlist %}
+                                    <i class="fas fa-heart text-danger" style="font-size: 1.5rem;"></i>
+                                {% else %}
+                                    <i class="far fa-heart text-muted" style="font-size: 1.5rem;"></i>
+                                {% endif %}
+                            </a>
                             <div class="product-image">
                                 {% if product.image %}
                                     <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
@@ -61,7 +65,7 @@
                                     <span class="h6 text-primary mb-0">${{ product.price|floatformat:2 }}</span>
                                 </div>
                                     {% if product.slug in contextCart %}
-                                    <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-primary btn-sm w-100 btn-add-to-cart" ><i class="fas fa-shopping-cart me-1"></i>Added!</a>
+                                    <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-outline-primary btn-sm w-100 btn-add-to-cart" ><i class="fas fa-shopping-cart me-1"></i>Added!</a>
                                     {% else %}
                                     <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-primary btn-sm w-100 btn-add-to-cart" ><i class="fas fa-check me-1"></i>Add to Cart</a>
                                     {% endif %}

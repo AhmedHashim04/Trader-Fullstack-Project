@@ -7,7 +7,7 @@
             <div class="brands-track" id="brandsTrack">
                 {% for brand in featuredBrands %}
                 <div class="text-center px-4">
-                    <a href="{% url 'settings:brand_detail' brand.slug %}" class="brand-item box shadow-sm p-3 mb-3 bg-white rounded text-decoration-none">
+                    <a href="{% url 'product:products_list' %}?brand={{ brand.slug|escape }}" class="brand-item box shadow-sm p-3 mb-3 bg-white rounded text-decoration-none">
                     <div class="brand-item box shadow-sm p-3 mb-3 bg-white rounded">
                         <i class="fas fa-{{ brand.logo }} fa-3x text-muted brand-logo mb-2"></i>
                         <h6 class="text-muted">{{ brand.name|escape }}</h6>

@@ -5,7 +5,15 @@
         <strong class="me-auto">Error</strong>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
-    <div class="toast-body"></div>
+    <div class="toast-body">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    {{ message }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
 </div>
 
 <!-- Success Toast -->
@@ -15,7 +23,15 @@
         <strong class="me-auto">Success</strong>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
-    <div class="toast-body"></div>
+    <div class="toast-body">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    {{ message }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
 </div>
 
 <script>

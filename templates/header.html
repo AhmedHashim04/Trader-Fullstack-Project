@@ -58,10 +58,12 @@
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'product:wishlist' user.profile.id %}">
-                            <i class="fas fa-heart me-1"></i>Wishlist
-                        </a>
-                    </li>
+                            {% url 'product:wishlist' user.profile.id as wishlist_url %}
+                            <a class="nav-link {% if request.path == wishlist_url %}active{% endif %}" href="{{ wishlist_url }}">
+                                <i class="fas fa-heart me-1"></i>Wishlist
+                            </a>
+                        </li>
+
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'account:login' %}">
@@ -87,9 +89,9 @@
                     <a href="{% url 'account:user_profile' user.profile.id %}" class="btn trendy-btn-ghost me-2" title="{{ user.username }}">
                         <i class="fas fa-user"></i> {{ user.username }}
                     </a>
-                    <a href="{% url 'cart:cart_list' %}" class="btn trendy-btn-primary position-relative" title="Shopping Cart">
+                    <a href="{% url 'cart:cart_list' %}" class="btn btn-outline-light position-relative me-2" title="Shopping Cart">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-badge" id="cartCount">{{ total_cart_items }}</span>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">{{ total_cart_items }}</span>
                         <span class="cart-price">{% if total_cart_price %}{{ total_cart_price }}{% else %}0{% endif %} EGP</span>
                         <div class="btn-glow"></div>
                     </a>
@@ -97,9 +99,9 @@
                     <a href="{% url 'account:login' %}" class="btn trendy-btn-ghost me-2" title="Login">
                             <i class="fas fa-user"></i>
                     </a>
-                    <a href="{% url 'cart:cart_list' %}" class="btn trendy-btn-primary position-relative" title="Shopping Cart">
+                    <a href="{% url 'cart:cart_list' %}" class="btn btn-outline-light position-relative me-2" title="Shopping Cart">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-badge" id="cartCount">{{ total_cart_items }}</span>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">{{ total_cart_items }}</span>
                         <span class="cart-price">{% if total_cart_price %}{{ total_cart_price }}{% else %}0{% endif %} EGP</span>
                         <div class="btn-glow"></div>
                     </a>
