@@ -1,9 +1,12 @@
 from django.contrib import admin
-from django.contrib import admin
+from settings.admin import ProductImageInline
 from .models import Product, Category, Review
 from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponse
 import csv
+
+
+
 def export_products_to_csv(modeladmin, request, queryset):
     opts = modeladmin.model._meta
     response = HttpResponse(content_type='text/csv')
@@ -27,12 +30,15 @@ def export_products_to_csv(modeladmin, request, queryset):
 export_products_to_csv.short_description = _('Export selected products to CSV')
 
 class ProductAdmin(admin.ModelAdmin):
+    inlines = [ProductImageInline]
     list_display = ('name', 'price', 'cost', 'stock', 'created_at')
     list_filter = ('created_at', 'stock')
     search_fields = ('name', 'description')
     ordering = ('-created_at',)
     raw_id_fields = ('viewed_by',)
     actions = [export_products_to_csv]
+
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'parent', 'description')
     list_filter = ('parent',)
@@ -48,4 +54,6 @@ class ReviewAdmin(admin.ModelAdmin):
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Review, ReviewAdmin)
+
+
 

@@ -2,10 +2,16 @@ from django.db import models
 from django.utils.translation import gettext as _
 from django.utils.text import slugify
 from django.urls import reverse
+from product.models import Product
 
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images')
+    image = models.ImageField(upload_to='product_images/')
 
+    def __str__(self):
+        return f"Image for {self.product.name}"
+    
 
-# Create your models here.
 class Brand(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True)
     name  = models.CharField(max_length=40)
@@ -26,6 +32,24 @@ class Brand(models.Model):
     def get_absolute_url(self):
         return reverse('settings:brand_detail', kwargs={'slug': self.slug})
 
+class Collection(models.Model):
+    name = models.CharField(max_length=40)
+    desc  = models.TextField(_("Collection description"),max_length=1000,blank=True, null=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
+    products = models.ManyToManyField(Product, verbose_name=_("Products"), blank=True)
+
+    def get_absolute_url(self):
+        return reverse('settings:collection_detail', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(f'collection-{self.name}')
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
 
 
 # class Variant(models.Model):
@@ -40,20 +64,3 @@ class Brand(models.Model):
 #         if not self.slug:
 #             self.slug = slugify(self.name)
 #         super().save(*args, **kwargs)
-
-# class Collection(models.Model):
-#     name = models.CharField(max_length=40)
-#     desc  = models.TextField(_("Collection description"),max_length=1000,blank=True, null=True)
-#     slug = models.SlugField(unique=True, blank=True, null=True)
-#     products = models.ManyToManyField('Product', verbose_name=_("Products"), blank=True)
-
-#     def get_absolute_url(self):
-#         return reverse('settings:collection_detail', kwargs={'slug': self.slug})
-
-#     def save(self, *args, **kwargs):
-#         if not self.slug:
-#             self.slug = slugify(f'collection-{self.name}')
-#         super().save(*args, **kwargs)
-
-#     def __str__(self):
-#         return self.name

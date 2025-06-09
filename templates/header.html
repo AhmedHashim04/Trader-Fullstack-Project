@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-expand-lg trendy-navbar sticky-top">
     <div class="container">
         <a class="navbar-brand trendy-brand" href="/">
@@ -66,7 +67,7 @@
 
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'account:login' %}">
+                        <a class="nav-link {% if request.path == wishlist_url %}active{% endif %}" href="{% url 'account:login' %}">
                             <i class="fas fa-heart me-1"></i>Wishlist
                         </a>
                     </li>

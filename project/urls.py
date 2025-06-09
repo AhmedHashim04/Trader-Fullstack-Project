@@ -20,8 +20,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import handler404, handler500
 
+from wagtail.admin import urls as wagtailadmin_urls
+from wagtail.documents import urls as wagtaildocs_urls
+from wagtail import urls as wagtail_urls
 
 urlpatterns = [
+    path('cms/', wagtailadmin_urls),
+    path('documents/', wagtaildocs_urls),
     
     path('admin/'   , admin.site.urls),
     path('account/' ,include('account.urls',namespace='account')),
@@ -34,7 +39,8 @@ urlpatterns = [
     path('payment/' ,include('payment.urls',namespace='payment')),
     path('coupons/' ,include('coupons.urls',namespace='coupon')),
 
-]
+    path("", include(wagtail_urls)),  # ده آخر سطر
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)

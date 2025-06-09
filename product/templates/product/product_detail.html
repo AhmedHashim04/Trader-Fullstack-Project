@@ -19,18 +19,26 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6 mb-4">
-                <div class="product-image-gallery">
-                    <div class="main-image mb-3">
-                        {% if product.image %}
-                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded shadow">
-                        {% else %}
-                            <div class="product-image-placeholder">
-                                <i class="fas fa-image fa-3x text-muted"></i>
-                                <p class="text-muted mt-2">Product Image</p>
-                            </div>
-                        {% endif %}
+              <div class="product-image-gallery">
+                <div class="main-image mb-3">
+                  {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded shadow">
+                  {% else %}
+                    <div class="product-image-placeholder">
+                      <i class="fas fa-image fa-3x text-muted"></i>
+                      <p class="text-muted mt-2">Product Image</p>
                     </div>
+                  {% endif %}
                 </div>
+                <div class="secondary-images d-flex gap-2">
+                  {% for image in product.product_images.all %}
+                    <img src="{{ image.image.url }}" alt="Secondary Image for {{ product.name }}" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
+                  {% empty %}
+                    <p class="text-muted">No additional images available.</p>
+                  {% endfor %}
+                </div>
+              </div>
+              
             </div>
             <div class="col-lg-6">
                 <div class="product-info">
@@ -273,6 +281,19 @@
             });
         });
     });
-</script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const mainImage = document.querySelector('.product-image-gallery .main-image img');
+      const secondaryImages = document.querySelectorAll('.product-image-gallery .secondary-images img');
+  
+      secondaryImages.forEach(image => {
+        image.addEventListener('click', function () {
+          const tempSrc = mainImage.src;
+          mainImage.src = this.src;
+          this.src = tempSrc;
+        });
+      });
+    });
+  </script>
 
 {% endblock %}
+

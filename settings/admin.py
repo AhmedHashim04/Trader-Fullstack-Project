@@ -1,7 +1,4 @@
-from django.contrib import admin
-
-# Register your models here.
-# admin.site.register(Variant)
+from .models import Product, ProductImage
 from .models import Brand
 from django.contrib import admin
 
@@ -11,4 +8,11 @@ class BrandAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 admin.site.register(Brand, BrandAdmin)
+# admin.site.register(Variant)
+
+
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 1  # عدد الفورمات المبدئية
+
 

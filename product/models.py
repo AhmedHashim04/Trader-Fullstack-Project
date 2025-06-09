@@ -6,7 +6,6 @@ from django.utils.text import slugify
 # from taggit.managers import TaggableManager
 from django.db.models import Avg
 
-
     # ("new", _("New")),
     # ("best", _("Best")),
     # ("sale", _("Sale")),
