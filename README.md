@@ -110,7 +110,7 @@ python -m venv .
 source ./bin/activate    # On Linux/macOS
 mkdir src
 cd src
-git clone https://github.com/AhmedHashim04/Django-Ecommerce.git .
+git clone https://github.com/AhmedHashim04/Trader-Fullstack-Project.git .
 
 pip install -r requirements.txt
 ```
