@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from product.models import Product, Category, Review
-from settings.models import Brand
+from features.models import Brand
 from django.utils.text import slugify
 from django.utils import timezone
 import random

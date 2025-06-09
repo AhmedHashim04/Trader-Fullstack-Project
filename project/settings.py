@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'contact',
     'product',
     'home',
-    'settings',
+    'features',
     'cart',
     'order',
     'coupons',
@@ -50,22 +50,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'payment',
     'widget_tweaks',
-
-
-    'wagtail.contrib.forms',
-    'wagtail.contrib.redirects',
-    'wagtail.embeds',
-    'wagtail.sites',
-    'wagtail.users',
-    'wagtail.snippets',
-    'wagtail.documents',
-    'wagtail.images',
-    'wagtail.search',
-    'wagtail.admin',
-    'wagtail',
-    'modelcluster',
-    'taggit',
-
 ]
 
 LOGIN_URL = '/account/login/'
@@ -77,10 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
     
 ]
-WAGTAIL_SITE_NAME = "Trader"
 ROOT_URLCONF = 'project.urls'
 
 
@@ -96,7 +78,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'project.context_module.contexts',
-                'wagtail.contrib.settings.context_processors.settings',
 
             ],
         },
@@ -119,6 +100,8 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',

@@ -10,7 +10,7 @@ from .models import Product ,Category , Review
 from account.models import Profile
 from .forms import ReviewForm
 from django.contrib.auth.decorators import login_required
-from settings.models import Brand
+from features.models import Brand
 from django.core.cache import cache
 from django.db.models import Q
 

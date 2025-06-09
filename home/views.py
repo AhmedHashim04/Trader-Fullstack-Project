@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from product.models import *
-from settings.models import Brand
+from features.models import Brand, Collection
 
 
 class HomeView(TemplateView):
@@ -12,6 +12,7 @@ class HomeView(TemplateView):
         context['featuredProducts'] = Product.objects.filter(trending=True).order_by('-created_at')[:6]
         context['featuredCategories'] = Category.objects.filter(parent=None) 
         context['featuredBrands'] = Brand.objects.all() 
+        context['featuredCollections'] = Collection.objects.all()
 
         for product in context['featuredProducts']:
             reviews = Review.objects.filter(product=product)  

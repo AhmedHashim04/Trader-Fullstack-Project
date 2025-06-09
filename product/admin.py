@@ -1,8 +1,9 @@
 from django.contrib import admin
-from settings.admin import ProductImageInline
+from features.admin import ProductImageInline
 from .models import Product, Category, Review
 from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponse
+from features.models import Collection
 import csv
 
 
@@ -28,9 +29,11 @@ def export_products_to_csv(modeladmin, request, queryset):
     return response
 
 export_products_to_csv.short_description = _('Export selected products to CSV')
-
+class ProductInline(admin.TabularInline):
+    model = Collection.products.through  # Assuming ManyToManyField
+    extra = 1
 class ProductAdmin(admin.ModelAdmin):
-    inlines = [ProductImageInline]
+    inlines = [ProductImageInline, ProductInline]
     list_display = ('name', 'price', 'cost', 'stock', 'created_at')
     list_filter = ('created_at', 'stock')
     search_fields = ('name', 'description')

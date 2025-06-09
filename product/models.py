@@ -51,7 +51,7 @@ class Product(models.Model):
     trending = models.BooleanField(default=False, verbose_name=_("Trending"), help_text=_("Is this product trending?"))
     name = models.CharField(max_length=40, verbose_name=_("Name"))
     category = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name=_("Category"), blank=True, null=True)
-    brand = models.ForeignKey('settings.Brand', on_delete=models.PROTECT, verbose_name=_("Brand"), blank=True, null=True)
+    brand = models.ForeignKey('features.Brand', on_delete=models.PROTECT, verbose_name=_("Brand"), blank=True, null=True)
     description = models.TextField(max_length=1000, verbose_name=_("Description"))
     price = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Price"))
     cost = models.DecimalField(max_digits=20, decimal_places=2, verbose_name=_("Cost") , blank=True, null=True)

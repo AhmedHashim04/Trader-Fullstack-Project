@@ -8,7 +8,7 @@ import requests
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
 django.setup()
 
-from settings.models import Brand
+from features.models import Brand
 from product.models import Product, Category, Tag, Review
 from account.models import User
 

@@ -1,7 +1,7 @@
 from product.models import Category
 from cart.cart import Cart as cart_branch
 from account.models import Profile
-from settings.models import Brand
+from features.models import Brand
 
 def contexts(request):
     categories = Category.objects.filter(parent=None)

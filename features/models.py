@@ -31,24 +31,20 @@ class Brand(models.Model):
 
     def get_absolute_url(self):
         return reverse('settings:brand_detail', kwargs={'slug': self.slug})
-
 class Collection(models.Model):
-    name = models.CharField(max_length=40)
-    desc  = models.TextField(_("Collection description"),max_length=1000,blank=True, null=True)
-    slug = models.SlugField(unique=True, blank=True, null=True)
-    products = models.ManyToManyField(Product, verbose_name=_("Products"), blank=True)
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.TextField(blank=True)
+    products = models.ManyToManyField('product.Product', related_name='collections')
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    def get_absolute_url(self):
-        return reverse('settings:collection_detail', kwargs={'slug': self.slug})
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(f'collection-{self.name}')
-        super().save(*args, **kwargs)
+    class Meta:
+        verbose_name = "Collection"
+        verbose_name_plural = "Collections"
 
     def __str__(self):
         return self.name
-
 
 
 
