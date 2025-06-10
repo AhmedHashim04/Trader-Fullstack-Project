@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% block body %}
 {% load widget_tweaks %}
+
 <!-- Breadcrumb -->
-<section class="page-header bg-light py-3">
+<section class="page-header bg-light py-3 mb-4">
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
@@ -15,224 +16,420 @@
 </section>
 
 <!-- Product Detail -->
-<section class="py-5">
+<section class="py-4">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-6 mb-4">
-              <div class="product-image-gallery">
-                <div class="main-image mb-3">
-                  {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded shadow">
-                  {% else %}
-                    <div class="product-image-placeholder">
-                      <i class="fas fa-image fa-3x text-muted"></i>
-                      <p class="text-muted mt-2">Product Image</p>
-                    </div>
-                  {% endif %}
-                </div>
-                <div class="secondary-images d-flex gap-2">
-                  {% for image in product.product_images.all %}
-                    <img src="{{ image.image.url }}" alt="Secondary Image for {{ product.name }}" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
-                  {% empty %}
-                    <p class="text-muted">No additional images available.</p>
-                  {% endfor %}
-                </div>
-              </div>
-              
-            </div>
+        <div class="row g-4">
+            <!-- Product Images -->
             <div class="col-lg-6">
-                <div class="product-info">
-                    <h1 class="h2 mb-3">{{ product.name }}</h1>
-                    <div class="price-section mb-3">
+                <div class="product-gallery">
+                    <div class="main-image mb-3 border rounded-3 overflow-hidden">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" 
+                                 class="img-fluid w-100" id="mainProductImage" style="height: 400px; object-fit: contain;">
+                        {% else %}
+                            <div class="d-flex flex-column align-items-center justify-content-center bg-light" 
+                                 style="height: 400px;">
+                                <i class="fas fa-image fa-4x text-muted mb-3"></i>
+                                <p class="text-muted">No product image</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="thumbnail-container d-flex flex-wrap gap-2">
+                        {% if product.image %}
+                            <div class="thumbnail-item border rounded-2 overflow-hidden" style="width: 70px; height: 70px;">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" 
+                                     class="img-fluid h-100 w-100" style="object-fit: cover; cursor: pointer;"
+                                     onclick="changeMainImage(this)">
+                            </div>
+                        {% endif %}
+                        
+                        {% for image in product.product_images.all %}
+                            <div class="thumbnail-item border rounded-2 overflow-hidden" style="width: 70px; height: 70px;">
+                                <img src="{{ image.image.url }}" alt="Product image" 
+                                     class="img-fluid h-100 w-100" style="object-fit: cover; cursor: pointer;"
+                                     onclick="changeMainImage(this)">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Info -->
+            <div class="col-lg-6">
+                <div class="product-details p-3">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h1 class="h2 mb-0">{{ product.name }}</h1>
+                        <div class="d-flex align-items-center">
+                            {% if product in contextWishlist %}
+                                <a href="{% url 'product:add_remove_wishlist' product.slug %}" 
+                                   class="btn btn-link text-danger fs-5 p-1" title="Remove from wishlist">
+                                    <i class="fas fa-heart"></i>
+                                </a>
+                            {% else %}
+                                <a href="{% url 'product:add_remove_wishlist' product.slug %}" 
+                                   class="btn btn-link text-muted fs-5 p-1" title="Add to wishlist">
+                                    <i class="far fa-heart"></i>
+                                </a>
+                            {% endif %}
+                            <button class="btn btn-link text-muted fs-5 p-1" title="Share product">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rating-stars me-2">
+                            {% with rating=product.calculate_overall_rating %}
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= rating %}
+                                        <i class="fas fa-star text-warning"></i>
+                                    {% else %}
+                                        <i class="far fa-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                        </div>
+                        <a href="#reviews" class="text-muted small">({{ reviews_count }} reviews)</a>
+                    </div>
+                    
+                    <div class="price-section mb-4">
                         <span class="price-current h3 text-primary fw-bold">{{ product.price }} EGP</span>
+                        {% if product.old_price %}
+                            <span class="price-old text-muted text-decoration-line-through ms-2">{{ product.old_price }} EGP</span>
+                            <span class="badge bg-danger ms-2">Save {{ product.get_discount_percentage }}%</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="availability mb-4">
+                        <span class="badge bg-{% if product.stock > 0 %}success{% else %}danger{% endif %}">
+                            {% if product.stock > 0 %}
+                                <i class="fas fa-check-circle me-1"></i> In Stock ({{ product.stock }} available)
+                            {% else %}
+                                <i class="fas fa-times-circle me-1"></i> Out of Stock
+                            {% endif %}
+                        </span>
                     </div>
                     
                     <div class="product-description mb-4">
-                        <h5>Description</h5>
-                        <p class="text-muted">{{ product.description|default:"No description available for this product." }}</p>
+                        <p>{{ product.description|default:"No description available for this product." }}</p>
                     </div>
                     
-                    <div class="product-details mb-4">
-                        <h5>Product Details</h5>
-                        <ul class="list-unstyled">
-                            <li><strong>Category:</strong> {{ product.category.name }}</li>
-                            <li><strong>SKU:</strong> {{ product.id }}</li>
-                            <li><strong>Availability:</strong> <span class="text-success">In Stock</span></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="add-to-cart-section">
-                        <div class="row g-3 align-items-end">
-                            <div class="col-md-12 mb-3">
-                                {% if product.slug not in contextCart or not user.is_authenticated %}
-                                    <form method="POST" action="{% url 'cart:cart_add' product.slug %}" class="d-flex align-items-center">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="product_id" value="{{ product.id }}">
-                                        <div class="input-group" style="width: 250px;">
-                                            <input type="number" name="quantity" value="{{ quantity|default:1 }}" min="1" max="{{ product.stock }}" class="form-control" required>
-                                            <button type="submit" class="btn btn-outline-primary">Add To Cart</button>
-                                        </div>
-                                    </form>
-                                {% else %}
-                                    <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-outline-danger">
-                                        Remove from Cart
+                    <div class="product-actions mb-4">
+                        {% if product.stock > 0 %}
+                            {% if product.slug not in contextCart or not user.is_authenticated %}
+                                <form method="POST" action="{% url 'cart:cart_add' product.slug %}" class="d-flex align-items-center gap-3">
+                                    {% csrf_token %}
+                                    <div class="input-group" style="width: 150px;">
+                                        <button class="btn btn-outline-secondary quantity-btn minus" type="button">-</button>
+                                        <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" 
+                                               class="form-control text-center quantity-input" required>
+                                        <button class="btn btn-outline-secondary quantity-btn plus" type="button">+</button>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary flex-grow-1">
+                                        <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                                    </button>
+                                </form>
+                            {% else %}
+                                <div class="d-flex gap-2">
+                                    <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-outline-danger flex-grow-1">
+                                        <i class="fas fa-trash-alt me-2"></i>Remove from Cart
                                     </a>
+                                    <a href="{% url 'cart:cart_detail' %}" class="btn btn-primary">
+                                        <i class="fas fa-shopping-bag me-2"></i>View Cart
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <button class="btn btn-secondary w-100" disabled>Out of Stock</button>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="product-meta">
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center text-muted">
+                                    <i class="fas fa-tag me-2"></i>
+                                    <span>Category: {{ product.category.name }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center text-muted">
+                                    <i class="fas fa-barcode me-2"></i>
+                                    <span>SKU: {{ product.sku|default:"N/A" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Product Tabs -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="description-tab" data-bs-toggle="tab" 
+                                data-bs-target="#description" type="button" role="tab">
+                            Description
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="specifications-tab" data-bs-toggle="tab" 
+                                data-bs-target="#specifications" type="button" role="tab">
+                            Specifications
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" 
+                                data-bs-target="#reviews" type="button" role="tab">
+                            Reviews ({{ reviews_count }})
+                        </button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content bg-white p-4 border-start border-end border-bottom rounded-bottom">
+                    <!-- Description Tab -->
+                    <div class="tab-pane fade show active" id="description" role="tabpanel">
+                        <div class="product-description">
+                            {{ product.description|default:"No description available."|linebreaks }}
+                        </div>
+                    </div>
+                    
+                    <!-- Specifications Tab -->
+                    <div class="tab-pane fade" id="specifications" role="tabpanel">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th width="30%">Category</th>
+                                        <td>{{ product.category.name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Brand</th>
+                                        <td>{{ product.brand.name|default:"N/A" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>SKU</th>
+                                        <td>{{ product.sku|default:"N/A" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Weight</th>
+                                        <td>{{ product.weight|default:"N/A" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Dimensions</th>
+                                        <td>{{ product.dimensions|default:"N/A" }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Reviews Tab -->
+                    <div class="tab-pane fade" id="reviews" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="card border-0 shadow-sm mb-4">
+                                    <div class="card-body text-center">
+                                        <h3 class="mb-2">{{ overall_rating|floatformat:1 }}/5</h3>
+                                        <div class="rating-stars mb-3">
+                                            {% for i in "12345" %}
+                                                {% if forloop.counter <= overall_rating %}
+                                                    <i class="fas fa-star text-warning fs-4"></i>
+                                                {% else %}
+                                                    <i class="far fa-star text-warning fs-4"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        <p class="text-muted">Based on {{ reviews_count }} reviews</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Review Form -->
+                                {% if user.is_authenticated %}
+                                    <div class="card border-0 shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Write a Review</h5>
+                                            <form method="post" class="needs-validation" novalidate>
+                                                {% csrf_token %}
+                                                <div class="mb-3">
+                                                    <label class="form-label">Your Rating</label>
+                                                    <div class="rating-input">
+                                                        {% for i in "54321" %}
+                                                            <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}" 
+                                                                   {% if review_form.rating.value == i %}checked{% endif %} required>
+                                                            <label for="star{{ i }}" title="{{ i }} stars">
+                                                                <i class="fas fa-star"></i>
+                                                            </label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    {{ review_form.content|add_class:"form-control"|attr:"rows:4"|attr:"placeholder:Share your thoughts about this product..." }}
+                                                </div>
+                                                <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-info">
+                                        Please <a href="{% url 'account_login' %}?next={{ request.path }}">login</a> to submit a review.
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-7">
+                                {% if page_obj %}
+                                    <div class="review-list">
+                                        {% for review in page_obj %}
+                                            <div class="review-item mb-4 pb-3 border-bottom">
+                                                <div class="d-flex justify-content-between mb-2">
+                                                    <div>
+                                                        <h6 class="mb-0">{{ review.user.username }}</h6>
+                                                        <div class="rating-stars small">
+                                                            {% for i in "12345" %}
+                                                                {% if forloop.counter <= review.rating %}
+                                                                    <i class="fas fa-star text-warning"></i>
+                                                                {% else %}
+                                                                    <i class="far fa-star text-warning"></i>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                    <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                                                </div>
+                                                <p class="mb-0">{{ review.content }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    
+                                    <!-- Pagination -->
+                                    {% if page_obj.has_other_pages %}
+                                        <nav aria-label="Reviews pagination">
+                                            <ul class="pagination justify-content-center">
+                                                {% if page_obj.has_previous %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.rating %}&rating={{ request.GET.rating }}{% endif %}#reviews">
+                                                            &laquo;
+                                                        </a>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">&laquo;</span>
+                                                    </li>
+                                                {% endif %}
+                                                
+                                                {% for num in page_obj.paginator.page_range %}
+                                                    {% if page_obj.number == num %}
+                                                        <li class="page-item active">
+                                                            <span class="page-link">{{ num }}</span>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="?page={{ num }}{% if request.GET.rating %}&rating={{ request.GET.rating }}{% endif %}#reviews">
+                                                                {{ num }}
+                                                            </a>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                
+                                                {% if page_obj.has_next %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.rating %}&rating={{ request.GET.rating }}{% endif %}#reviews">
+                                                            &raquo;
+                                                        </a>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="page-item disabled">
+                                                        <span class="page-link">&raquo;</span>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="text-center py-5">
+                                        <i class="fas fa-comment-slash fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">No reviews yet</h5>
+                                        <p class="text-muted">Be the first to review this product!</p>
+                                    </div>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
-
-                    <div class="product-actions mt-3">
-                        {% if product in contextWishlist %}
-                            <a href="{% url 'product:add_remove_wishlist' product.slug %}" class="btn btn-outline-secondary me-2">
-                                <i class="fas fa-heart me-1"></i>Remove from Wishlist
-                            </a>
-                        {% else %}
-                            <a href="{% url 'product:add_remove_wishlist' product.slug %}" class="btn btn-outline-danger me-2">
-                                <i class="fas fa-heart me-1"></i>Add to Wishlist
-                            </a>
-                        {% endif %}
-                        <a class="btn btn-outline-secondary">
-                            <i class="fas fa-share-alt me-1"></i>Share
-                        </a>
-                    </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-<!-- Review Form -->
-<section class="py-5 bg-light border-top">
-    <div class="container">
-        <h4 class="mb-4 text-center text-primary">Share Your Experience</h4>
-        <form method="post" class="needs-validation trendy-form p-5 rounded shadow bg-white" novalidate>
-            {% csrf_token %}
-            <div class="mb-4">
-                <label for="{{ review_form.rating.id_for_label }}" class="form-label fw-bold text-secondary">{{ review_form.rating.label }}</label>
-                <div class="rating-input d-flex justify-content-center gap-3">
-                    {{ review_form.rating }}
-                </div>
-                <div class="invalid-feedback text-center mt-2">Please provide a rating.</div>
-            </div>
-            <div class="mb-4">
-                <label class="form-label fw-bold text-secondary">{{ review_form.content.label }}</label>
-                {{ review_form.content|add_class:"form-control trendy-textarea border-0 shadow-sm" }}
-                <div class="invalid-feedback mt-2">Please provide your review content.</div>
-            </div>
-            <div class="text-center">
-                <button type="submit" class="btn trendy-btn px-5 py-3 shadow-sm">Submit Review</button>
-            </div>
-        </form>
-    </div>
-</section>
-<!-- Product Reviews -->
-<!-- Average Rating Display -->
-<section class="py-5 border-top bg-white">
-    <div class="container text-center">
-      <h3 class="mb-3">Overall Rating</h3>
-      <div class="mb-2">
-        <span class="fs-4 fw-bold text-primary">{{ overall_rating|floatformat:1 }}/5</span>
-      </div>
-      <div class="mb-3">
-        <span class="text-warning fs-5">
-          {% for i in "12345"|slice:":overall_rating"|make_list %}
-            <i class="fas fa-star"></i>
-          {% endfor %}
-          {% for i in "12345"|slice:"overall_rating:"|make_list %}
-            <i class="far fa-star"></i>
-          {% endfor %}
-        </span>
-      </div>
-      <div class="progress mx-auto" style="height: 12px; max-width: 300px;">
-        <div class="progress-bar bg-success" role="progressbar"
-             style="width: {{ overall_rating|floatformat:1|floatformat:0|floatformat:0|add:"0"|divisibleby:5|floatformat:0 }}%;" 
-             aria-valuenow="{{ overall_rating|floatformat:1 }}" aria-valuemin="0" aria-valuemax="5">
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Filters -->
-  <section class="py-4 bg-light border-top">
-    <div class="container text-center">
-      <div class="btn-group" role="group" aria-label="Filter reviews by stars">
-        <a href="?rating=all" class="btn btn-outline-secondary {% if not request.GET.rating %}active{% endif %}">All</a>
-        {% for i in "54321" %}
-          <a href="?rating={{ i }}" class="btn btn-outline-primary {% if request.GET.rating == i %}active{% endif %}">
-            {{ i }} <i class="fas fa-star text-warning"></i>
-          </a>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
-  
-  <!-- Paginated Reviews -->
-  <section class="py-5">
-    <div class="container">
-      <h3 class="mb-4 text-center">Customer Reviews</h3>
-  
-      {% if page_obj %}
-        <div class="list-group">
-          {% for review in page_obj %}
-            <div class="list-group-item trendy-review">
-              <div class="d-flex justify-content-between align-items-center">
-                <h6 class="mb-1">{{ review.user.username }}</h6>
-                <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
-              </div>
-              <p class="mb-1">{{ review.content }}</p>
-              <small class="text-muted">Rating:
-                <span class="text-warning">
-                  {% for i in "12345"|slice:":review.rating"|make_list %}
-                    <i class="fas fa-star"></i>
-                  {% endfor %}
-                  {% for i in "12345"|slice:"review.rating:"|make_list %}
-                    <i class="far fa-star"></i>
-                  {% endfor %}
-                </span>
-              </small>
-            </div>
-          {% endfor %}
-        </div>
-  
-        <!-- Pagination -->
-        <nav class="mt-4 d-flex justify-content-center">
-          <ul class="pagination">
-            {% if page_obj.has_previous %}
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.rating %}&rating={{ request.GET.rating }}{% endif %}">Previous</a></li>
-            {% endif %}
-            {% for num in page_obj.paginator.page_range %}
-              <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                <a class="page-link" href="?page={{ num }}{% if request.GET.rating %}&rating={{ request.GET.rating }}{% endif %}">{{ num }}</a>
-              </li>
-            {% endfor %}
-            {% if page_obj.has_next %}
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.rating %}&rating={{ request.GET.rating }}{% endif %}">Next</a></li>
-            {% endif %}
-          </ul>
-        </nav>
-      {% else %}
-        <p class="text-center text-muted">No reviews available.</p>
-      {% endif %}
-    </div>
-  </section>
-  
 
 <!-- Related Products -->
 {% if related_products %}
-<section class="py-5 bg-light border-top">
+<section class="py-5">
     <div class="container">
-        <h3 class="mb-4">Related Products</h3>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="mb-0">You may also like</h3>
+            <a href="{% url 'product:products_list' %}?category={{ product.category.slug }}" class="btn btn-outline-primary btn-sm">
+                View all in {{ product.category.name }}
+            </a>
+        </div>
+        
         <div class="row g-4">
             {% for rp in related_products %}
-                <div class="col-md-3">
-                    <div class="card h-100 shadow-sm">
-                        <img src="{{ rp.image.url }}" class="card-img-top" alt="{{ rp.name }}">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ rp.name }}</h5>
-                            <p class="card-text text-muted">{{ rp.price }} EGP</p>
-                            <a href="{{ rp.get_absolute_url }}" class="btn btn-outline-primary mt-auto">View</a>
+                <div class="col-md-3 col-6">
+                    <div class="card product-card h-100 border-0 shadow-sm">
+                        <div class="badges">
+                            {% if rp.is_new %}
+                                <span class="badge bg-success">New</span>
+                            {% endif %}
+                            {% if rp.get_discount_percentage %}
+                                <span class="badge bg-danger">-{{ rp.get_discount_percentage }}%</span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="product-image">
+                            <a href="{{ rp.get_absolute_url }}">
+                                {% if rp.image %}
+                                    <img src="{{ rp.image.url }}" class="card-img-top" alt="{{ rp.name }}" 
+                                         style="height: 200px; object-fit: contain;">
+                                {% else %}
+                                    <div class="no-image" style="height: 200px; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-image fa-3x text-muted"></i>
+                                    </div>
+                                {% endif %}
+                            </a>
+                        </div>
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{{ rp.get_absolute_url }}" class="text-dark">{{ rp.name|truncatechars:40 }}</a>
+                            </h5>
+                            
+                            <div class="price mb-2">
+                                <span class="text-primary fw-bold">{{ rp.price }} EGP</span>
+                                {% if rp.old_price %}
+                                    <small class="text-muted text-decoration-line-through ms-1">{{ rp.old_price }} EGP</small>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{{ rp.get_absolute_url }}" class="btn btn-sm btn-outline-primary">View</a>
+                                {% if rp.stock > 0 %}
+                                    <form method="POST" action="{% url 'cart:cart_add' rp.slug %}" class="ms-auto">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary" title="Add to cart">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -242,58 +439,165 @@
 </section>
 {% endif %}
 
+<!-- Recently Viewed -->
+{% if recently_viewed %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <h3 class="mb-4">Recently Viewed</h3>
+        <div class="row g-4">
+            {% for rv in recently_viewed %}
+                <div class="col-md-2 col-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <a href="{{ rv.get_absolute_url }}">
+                            {% if rv.image %}
+                                <img src="{{ rv.image.url }}" class="card-img-top" alt="{{ rv.name }}" 
+                                     style="height: 120px; object-fit: contain;">
+                            {% else %}
+                                <div class="no-image" style="height: 120px; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-image fa-2x text-muted"></i>
+                                </div>
+                            {% endif %}
+                        </a>
+                        <div class="card-body p-2">
+                            <h6 class="card-title mb-1">
+                                <a href="{{ rv.get_absolute_url }}" class="text-dark">{{ rv.name|truncatechars:30 }}</a>
+                            </h6>
+                            <p class="card-text text-primary fw-bold mb-0 small">{{ rv.price }} EGP</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
 
-<!-- Style and JS -->
 <style>
-    .trendy-form .rating-input {
+    /* Product Gallery */
+    .product-gallery .main-image {
+        background: #f8f9fa;
         display: flex;
-        gap: 5px;
+        align-items: center;
+        justify-content: center;
     }
-    .trendy-textarea {
-        border-radius: 10px;
-        padding: 10px;
-    }
-    .trendy-btn {
-        background: linear-gradient(45deg, #6a11cb, #2575fc);
-        border: none;
-        color: white;
+    
+    .thumbnail-item {
         transition: all 0.3s ease;
+        cursor: pointer;
     }
-    .trendy-btn:hover {
-        background: linear-gradient(45deg, #2575fc, #6a11cb);
+    
+    .thumbnail-item:hover {
+        border-color: #0d6efd !important;
         transform: scale(1.05);
     }
-    .trendy-review {
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        margin-bottom: 15px;
-        padding: 15px;
+    
+    /* Rating Stars */
+    .rating-stars {
+        color: #ffc107;
+    }
+    
+    /* Quantity Input */
+    .quantity-input {
+        -moz-appearance: textfield;
+    }
+    
+    .quantity-input::-webkit-outer-spin-button,
+    .quantity-input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    
+    .quantity-btn {
+        width: 40px;
+    }
+    
+    /* Review Form */
+    .rating-input {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+    
+    .rating-input input {
+        display: none;
+    }
+    
+    .rating-input label {
+        color: #ddd;
+        font-size: 24px;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+    
+    .rating-input input:checked ~ label,
+    .rating-input label:hover,
+    .rating-input label:hover ~ label {
+        color: #ffc107;
+    }
+    
+    .rating-input input:checked + label {
+        color: #ffc107;
+    }
+    
+    /* Product Tabs */
+    .nav-tabs .nav-link {
+        border: none;
+        color: #6c757d;
+        font-weight: 500;
+        padding: 12px 20px;
+    }
+    
+    .nav-tabs .nav-link.active {
+        color: #0d6efd;
+        border-bottom: 3px solid #0d6efd;
+        background: transparent;
+    }
+    
+    /* Product Card */
+    .product-card {
+        transition: transform 0.3s ease;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .product-card .badges {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1;
     }
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const ratingInputs = document.querySelectorAll('.rating-input input');
-        ratingInputs.forEach(input => {
-            input.addEventListener('change', function () {
-                ratingInputs.forEach(i => i.parentElement.classList.remove('selected'));
-                this.parentElement.classList.add('selected');
+    // Change main product image when clicking on thumbnails
+    function changeMainImage(element) {
+        const mainImage = document.getElementById('mainProductImage');
+        mainImage.src = element.src;
+    }
+    
+    // Quantity input controls
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('.quantity-input');
+                if (parseInt(input.value) > parseInt(input.min)) {
+                    input.value = parseInt(input.value) - 1;
+                }
+            });
+        });
+        
+        document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('.quantity-input');
+                if (parseInt(input.value) < parseInt(input.max)) {
+                    input.value = parseInt(input.value) + 1;
+                }
             });
         });
     });
-    document.addEventListener('DOMContentLoaded', function () {
-      const mainImage = document.querySelector('.product-image-gallery .main-image img');
-      const secondaryImages = document.querySelectorAll('.product-image-gallery .secondary-images img');
-  
-      secondaryImages.forEach(image => {
-        image.addEventListener('click', function () {
-          const tempSrc = mainImage.src;
-          mainImage.src = this.src;
-          this.src = tempSrc;
-        });
-      });
-    });
-  </script>
+</script>
 
 {% endblock %}
-

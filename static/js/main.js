@@ -1,5 +1,3 @@
-
-
 // Global application state
 window.Trader = {
     config: {
@@ -76,12 +74,12 @@ function initializeApp() {
                 initializeCartPage();
                 break;
         }
-    } catch (error) {
-        console.error('Error initializing application:', error);
-        showErrorMessage('Failed to initialize application. Please refresh the page.');
-    }
-}
+    } 
+    catch (error) {
+        console.error('Initialization error:', error);
+    } 
 
+}
 /**
  * Get current page identifier
  */
@@ -200,86 +198,6 @@ function initializeLoadingOverlay() {
             transition: all 0.3s ease;
         `;
     }
-}
-
-
-/**
- * Initialize error handling
- */
-function initializeErrorHandling() {
-    // Global error handler
-    window.addEventListener('error', function(event) {
-        console.error('Global error:', event.error);
-        if (!Trader.state.isLoading) {
-            showErrorMessage('An unexpected error occurred. Please try again.');
-        }
-    });
-    
-    // Unhandled promise rejection handler
-    window.addEventListener('unhandledrejection', function(event) {
-        console.error('Unhandled promise rejection:', event.reason);
-        if (!Trader.state.isLoading) {
-            showErrorMessage('Failed to load data. Please check your connection and try again.');
-        }
-    });
-}
-
-/**
- * Show error message
- */
-function showErrorMessage(message, duration = 5000) {
-    // Create or update error toast
-    let errorToast = document.getElementById('errorToast');
-    
-    if (!errorToast) {
-        errorToast = document.createElement('div');
-        errorToast.id = 'errorToast';
-        errorToast.className = 'toast position-fixed top-0 end-0 m-3';
-        errorToast.style.zIndex = '10000';
-        errorToast.innerHTML = `
-            <div class="toast-header bg-danger text-white">
-                <i class="fas fa-exclamation-triangle me-2"></i>
-                <strong class="me-auto">Error</strong>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
-            </div>
-            <div class="toast-body">${message}</div>
-        `;
-        document.body.appendChild(errorToast);
-    } else {
-        errorToast.querySelector('.toast-body').textContent = message;
-    }
-    
-    // Show toast
-    const toast = new bootstrap.Toast(errorToast, { delay: duration });
-    toast.show();
-}
-
-/**
- * Show success message
- */
-function showSuccessMessage(message, duration = 3000) {
-    let successToast = document.getElementById('successToast');
-    
-    if (!successToast) {
-        successToast = document.createElement('div');
-        successToast.id = 'successToast';
-        successToast.className = 'toast position-fixed top-0 end-0 m-3';
-        successToast.style.zIndex = '10000';
-        successToast.innerHTML = `
-            <div class="toast-header bg-success text-white">
-                <i class="fas fa-check-circle me-2"></i>
-                <strong class="me-auto">Success</strong>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
-            </div>
-            <div class="toast-body">${message}</div>
-        `;
-        document.body.appendChild(successToast);
-    } else {
-        successToast.querySelector('.toast-body').textContent = message;
-    }
-    
-    const toast = new bootstrap.Toast(successToast, { delay: duration });
-    toast.show();
 }
 
 /**
@@ -440,8 +358,6 @@ function initializeNewsletterForm() {
 
 // Export functions for global use
 window.Trader.utils = {
-    showErrorMessage,
-    showSuccessMessage,
     escapeHtml,
     debounce,
     formatCurrency,

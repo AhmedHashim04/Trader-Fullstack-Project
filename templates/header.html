@@ -1,4 +1,5 @@
 
+
 <nav class="navbar navbar-expand-lg trendy-navbar sticky-top">
     <div class="container">
         <a class="navbar-brand trendy-brand" href="/">
@@ -112,3 +113,112 @@
         </div>
     </div>
 </nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Navbar Scroll Effect
+    const navbar = document.querySelector('.trendy-navbar');
+    if (navbar) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Trigger scroll event on load in case page is not at top
+        window.dispatchEvent(new Event('scroll'));
+    }
+
+    // Search Functionality
+    const searchBtn = document.getElementById('searchBtn');
+    const searchInput = document.getElementById('searchInput');
+    
+    if (searchBtn && searchInput) {
+        searchBtn.addEventListener('click', function() {
+            const searchTerm = searchInput.value.trim();
+            if (searchTerm) {
+                window.location.href = `/products/?q=${encodeURIComponent(searchTerm)}`;
+            }
+        });
+        
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const searchTerm = searchInput.value.trim();
+                if (searchTerm) {
+                    window.location.href = `/products/?q=${encodeURIComponent(searchTerm)}`;
+                }
+            }
+        });
+    }
+
+    // Dropdown Hover Effect (for desktop)
+    const dropdownToggle = document.querySelector('.nav-item.dropdown .dropdown-toggle');
+    const dropdownMenu = document.querySelector('.trendy-dropdown');
+    
+    if (dropdownToggle && dropdownMenu) {
+        // Show on hover for desktop
+        dropdownToggle.addEventListener('mouseenter', function() {
+            if (window.innerWidth > 992) {
+                dropdownToggle.click();
+            }
+        });
+        
+        // Hide when mouse leaves dropdown
+        dropdownMenu.addEventListener('mouseleave', function() {
+            if (window.innerWidth > 992) {
+                dropdownToggle.click();
+            }
+        });
+    }
+
+    // Cart Count Update (simulating real-time updates)
+    const cartCount = document.getElementById('cartCount');
+    if (cartCount) {
+        // This would normally come from an API or real-time update
+        function updateCartCount() {
+            // Simulate random count change for demo
+            const currentCount = parseInt(cartCount.textContent) || 0;
+            const newCount = Math.random() > 0.7 ? currentCount + 1 : currentCount;
+            if (newCount !== currentCount) {
+                cartCount.textContent = newCount;
+                // Add animation
+                cartCount.classList.add('pulse');
+                setTimeout(() => {
+                    cartCount.classList.remove('pulse');
+                }, 500);
+            }
+        }
+        
+        // Simulate updates every 30 seconds
+        setInterval(updateCartCount, 30000);
+    }
+
+    // Mobile Menu Close on Click
+    const navLinks = document.querySelectorAll('.trendy-nav .nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            const navbarCollapse = document.getElementById('navbarNav');
+            if (navbarCollapse.classList.contains('show') && window.innerWidth < 992) {
+                const toggler = document.querySelector('.trendy-toggler');
+                if (toggler) toggler.click();
+            }
+        });
+    });
+
+    // Add CSS for pulse animation
+    const style = document.createElement('style');
+    style.textContent = `
+        .pulse {
+            animation: pulse 0.5s ease;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+    `;
+    document.head.appendChild(style);
+});
+</script>

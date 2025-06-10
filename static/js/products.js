@@ -36,29 +36,6 @@ class ProductManager {
         }
     }
 
-    /**
-     * Load products from data source
-     */
-    async loadProducts() {
-        try {
-            if (typeof window.ShopEase !== 'undefined' && window.ShopEase.utils) {
-                this.products = await window.ShopEase.utils.loadProductData();
-            } else {
-                // Fallback method
-                const response = await fetch('data/products.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                this.products = Array.isArray(data) ? data : data.products || [];
-            }
-            
-            this.filteredProducts = [...this.products];
-        } catch (error) {
-            console.error('Error loading products:', error);
-            throw new Error('Failed to load product catalog');
-        }
-    }
 
     /**
      * Initialize event listeners
@@ -612,35 +589,6 @@ class ProductManager {
         
         if (noProductsElement) noProductsElement.classList.add('d-none');
         if (productsContainer) productsContainer.style.display = 'block';
-    }
-
-    /**
-     * Show error message
-     */
-    showError(message) {
-        const errorElement = document.getElementById('errorMessage');
-        if (errorElement) {
-            errorElement.classList.remove('d-none');
-            const messageElement = errorElement.querySelector('p');
-            if (messageElement) {
-                messageElement.textContent = message;
-            }
-        }
-        
-        // Hide other elements
-        this.hideNoProducts();
-        const productsContainer = document.getElementById('productsContainer');
-        if (productsContainer) productsContainer.style.display = 'none';
-    }
-
-    /**
-     * Hide error message
-     */
-    hideError() {
-        const errorElement = document.getElementById('errorMessage');
-        if (errorElement) {
-            errorElement.classList.add('d-none');
-        }
     }
 
     /**

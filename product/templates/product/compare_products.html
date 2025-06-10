@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Compare Products</h2>
+                <a href="{% url 'product:products_list' %}" class="btn btn-outline-primary">
+                    <i class="fas fa-plus"></i> Add More Products
+                </a>
+            </div>
+            
+            {% if products|length < 2 %}
+                <div class="alert alert-warning">
+                    You need at least 2 products to compare. Please go back and select more products.
+                </div>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 200px;">Specification</th>
+                                {% for product in products %}
+                                <th class="text-center" style="width: calc((100% - 200px) / {{ products|length }});">
+                                    <div class="d-flex flex-column align-items-center">
+
+                                        {% comment %} <img src="{{ product.image.url|default:product.image }}" alt="{{ product.name }}" class="img-fluid mb-2" style="max-height: 100px;"> {% endcomment %}
+                                        <h5 class="mb-1">{{ product.name }}</h5>
+                                        <div class="text-primary fw-bold mb-2">${{ product.price }}</div>
+                                        <a href="{{ product.get_absolute_url }}" class="btn btn-sm btn-outline-primary">View Details</a>
+                                    </div>
+                                </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for spec in specifications %}
+                            <tr>
+                                <td class="fw-bold">{{ spec.name }}</td>
+                                {% for value in spec.values %}
+                                <td class="text-center">
+                                    {% if value is True %}
+                                        <i class="fas fa-check text-success"></i>
+                                    {% elif value is False %}
+                                        <i class="fas fa-times text-danger"></i>
+                                    {% else %}
+                                        {{ value|default:"-" }}
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
