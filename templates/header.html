@@ -59,7 +59,7 @@
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                            {% url 'product:wishlist' user.profile.id as wishlist_url %}
+                            {% url 'product:wishlist' as wishlist_url %}
                             <a class="nav-link {% if request.path == wishlist_url %}active{% endif %}" href="{{ wishlist_url }}">
                                 <i class="fas fa-heart me-1"></i>Wishlist
                             </a>

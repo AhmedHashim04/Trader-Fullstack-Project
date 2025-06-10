@@ -60,9 +60,12 @@
                         </h6>
                         <p class="card-text text-muted small">${{ product.price }}</p>
                         <div class="mt-auto">
-                            <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-primary btn-sm w-100">
-                                <i class="fas fa-shopping-cart me-1"></i>Add to Cart
-                            </a>
+                            {% if product.slug in contextCart %}
+                            <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-outline-primary btn-sm w-100 btn-add-to-cart" ><i class="fas fa-shopping-cart me-1"></i>Added!</a>
+                            {% else %}
+                            <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-primary btn-sm w-100 btn-add-to-cart" ><i class="fas fa-check me-1"></i>Add to Cart</a>
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>

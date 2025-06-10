@@ -5,7 +5,7 @@
         <div class="row g-4" id="featuredCategories">
             {% for category in featuredCategories|slice:":6" %}
                 <div class="col-lg-2 col-md-4 col-sm-6">
-                    <a href="products.html?category={{ category.slug|escape }}" class="category-card">
+                    <a href="products?category={{ category.slug|escape }}" class="category-card">
                         <div class="category-icon">
                             <i class="fas fa-{{ category.image }}"></i>
                         </div>

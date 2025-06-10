@@ -13,11 +13,9 @@ django-modelcluster==6.4
 django-permissionedforms==0.1
 django-redis==5.4.0
 django-stubs-ext==5.2.0
-django-taggit==6.1.0
 django-tasks==0.7.0
 django-treebeard==4.7.1
 django-widget-tweaks==1.5.0
-djangorestframework==3.16.0
 draftjs_exporter==5.1.0
 et_xmlfile==2.0.0
 Faker==37.3.0
@@ -32,9 +30,6 @@ psycopg==3.2.9
 pycparser==2.22
 pydyf==0.11.0
 pyphen==0.17.2
-PyQt5==5.15.11
-PyQt5-Qt5==5.15.17
-PyQt5_sip==12.17.0
 redis==6.2.0
 requests==2.32.3
 soupsieve==2.7
@@ -46,7 +41,6 @@ tqdm==4.67.1
 typing_extensions==4.13.2
 tzdata==2025.2
 urllib3==2.4.0
-wagtail==7.0
 weasyprint==65.1
 webencodings==0.5.1
 Willow==1.10.0

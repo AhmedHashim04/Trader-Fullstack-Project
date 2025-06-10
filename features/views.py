@@ -29,7 +29,7 @@ class CollectionDetailView(ListView):
         queryset = cache.get(cache_key)
 
         if queryset is None:
-            queryset = collection.products.filter(is_active=True)
+            queryset = collection.products.filter()
 
             # Apply filters
             search_query = query_params.get('search', '').strip()

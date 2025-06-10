@@ -1,8 +1,8 @@
 from django.views.generic import FormView, TemplateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import PaymentForm
-from .models import Payment
+from .forms import PaymentConfirmationForm #PaymentForm
+from .models import PaymentConfirmation #Payment
 from django.shortcuts import redirect, get_object_or_404 , render
 from order.models import Order
 from django.contrib import messages
@@ -27,19 +27,34 @@ from django.contrib import messages
 class PaymentSuccessView(LoginRequiredMixin, TemplateView):
     template_name = 'payment/payment_success.html'
 
-def pay_by_vodafone(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
+# def pay_by_vodafone(request, order_id):
+#     order = get_object_or_404(Order, id=order_id)
+#     if request.method == 'POST':
+#         form = PaymentForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             order_pay = form.save(commit=False)
+#             order_pay.order = order
+#             order.paied = True
+#             order_pay.save()
+#             order.save()  # Save the order to persist changes
+#             return redirect('payment:success_payment', order.id)
+#         else:
+#             messages.error(request, "Payment form is not valid.")
+#     else:
+#         form = PaymentForm()
+#     return render(request, 'payment/payment.html', {'form': form, 'order': order})
+
+
+
+def confirm_vodafone_payment(request, order_id):
     if request.method == 'POST':
-        form = PaymentForm(request.POST, request.FILES)
+        form = PaymentConfirmationForm(request.POST, request.FILES)
         if form.is_valid():
-            order_pay = form.save(commit=False)
-            order_pay.order = order
-            order.paied = True
-            order_pay.save()
-            order.save()  # Save the order to persist changes
-            return redirect('payment:success_payment', order.id)
-        else:
-            messages.error(request, "Payment form is not valid.")
+            confirmation = form.save(commit=False)
+            confirmation.user = request.user
+            confirmation.order_id = order_id
+            confirmation.save()
+            return redirect('thank_you')
     else:
-        form = PaymentForm()
-    return render(request, 'payment/payment.html', {'form': form, 'order': order})
+        form = PaymentConfirmationForm()
+    return render(request, 'confirm_vodafone_payment.html', {'form': form})

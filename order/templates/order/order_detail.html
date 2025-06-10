@@ -43,6 +43,23 @@
                 </table>
             </div>
             <hr>
+            <h3 class="mb-4 text-primary">Pay via Vodafone Cash</h3>
+            <p>Wallet Number: <strong>01001234567</strong></p>
+            <p>After transferring, please enter the transaction ID and upload the transfer receipt.</p>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="transaction_id" class="form-label">Transaction ID:</label>
+                    <input type="text" name="transaction_id" id="transaction_id" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="screenshot" class="form-label">Receipt Screenshot:</label>
+                    <input type="file" name="screenshot" id="screenshot" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-success">Confirm Payment</button>
+            </form>
+            <hr>
             <div class="d-flex justify-content-between align-items-center">
                 <h4 class="text-secondary"><strong>Total Price:</strong></h4>
                 <h4 class="text-success">{{ order.total_price }} EGP</h4>

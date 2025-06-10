@@ -3,8 +3,7 @@
 
 {% block body %}
 
-{% extends 'base.html' %}
-{% block body %}
+
 
 <!-- Page Header -->
 <section class="page-header bg-light py-4 shadow-sm border-bottom">
@@ -12,7 +11,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0" id="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'features:collection_list' %}">{% if collection %}{{ collection.name }}{% else %}All Collections{% endif %}</a></li>
+                {% comment %} <li class="breadcrumb-item"><a href="{% url 'features:collection_list' %}">{% if collection %}{{ collection.name }}{% else %}All Collections{% endif %}</a></li> {% endcomment %}
                 <li class="breadcrumb-item active" id="currentProduct">
                     {% if search_query %}
                         Search: "{{ search_query }}"
@@ -140,8 +139,12 @@
                 {% for product in products %}
                     <div class="{% if view_mode == 'list' %}col-12{% else %}col{% endif %}">
                         <div class="card h-100 shadow-sm {% if view_mode == 'list' %}flex-row{% endif %}">
+                            {% if product.image %}
                             <img src="{{ product.image.url }}" class="card-img-top {% if view_mode == 'list' %}w-25{% endif %}" alt="{{ product.name }}">
-                            <div class="card-body d-flex flex-column justify-content-between">
+                            {% else %}
+                            <img src="{{ product.image }}" class="card-img-top {% if view_mode == 'list' %}w-25{% endif %}" alt="{{ product.name }}">
+                            {% endif %}
+                                <div class="card-body d-flex flex-column justify-content-between">
                                 <div>
                                     <h5 class="card-title">{{ product.name }}</h5>
                                     <p class="card-text text-muted small">{{ product.description|truncatewords:20 }}</p>
@@ -189,5 +192,3 @@
 
 {% endblock body %}
 
-
-{% endblock body %}

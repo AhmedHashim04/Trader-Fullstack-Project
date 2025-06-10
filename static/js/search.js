@@ -1,5 +1,5 @@
 /**
- * Search functionality for ShopEase E-commerce Website
+ * Search functionality for Trader E-commerce Website
  * Handles product search, suggestions, and search history
  */
 
@@ -10,7 +10,7 @@ class SearchManager {
         this.maxHistoryItems = 10;
         this.maxSuggestions = 8;
         this.debounceDelay = 300;
-        this.storageKey = 'shopease_search_history';
+        this.storageKey = 'Trader_search_history';
         
         this.loadSearchHistory();
         this.initializeSearch();
@@ -266,11 +266,11 @@ class SearchManager {
         this.addToHistory(trimmedQuery);
 
         // Redirect to products page with search parameter
-        const url = new URL('products.html', window.location.origin);
+        const url = new URL('products/', window.location.origin);
         url.searchParams.set('search', trimmedQuery);
         
         // If we're already on products page, update the current page
-        if (window.location.pathname.includes('products.html')) {
+        if (window.location.pathname.includes('products/')) {
             window.location.search = url.search;
         } else {
             window.location.href = url.toString();
@@ -464,33 +464,13 @@ class SearchManager {
         return null;
     }
 
-    /**
-     * Load products for suggestions
-     */
-    async loadProducts() {
-        try {
-            if (typeof window.ShopEase !== 'undefined' && window.ShopEase.utils) {
-                return await window.ShopEase.utils.loadProductData();
-            } else {
-                const response = await fetch('data/products.json');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                return Array.isArray(data) ? data : data.products || [];
-            }
-        } catch (error) {
-            console.error('Error loading products for search:', error);
-            return [];
-        }
-    }
 
     /**
      * Show error message
      */
     showError(message) {
-        if (typeof window.ShopEase !== 'undefined' && window.ShopEase.utils) {
-            window.ShopEase.utils.showErrorMessage(message);
+        if (typeof window.Trader !== 'undefined' && window.Trader.utils) {
+            window.Trader.utils.showErrorMessage(message);
         } else {
             alert(message);
         }
@@ -526,7 +506,7 @@ class SearchManager {
      * Advanced search functionality
      */
     performAdvancedSearch(filters) {
-        const url = new URL('products.html', window.location.origin);
+        const url = new URL('products/', window.location.origin);
         
         Object.keys(filters).forEach(key => {
             if (filters[key] !== null && filters[key] !== '') {

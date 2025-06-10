@@ -1,19 +1,28 @@
-/**
- * Main JavaScript file for ShopEase E-commerce Website
- * Handles global functionality, navigation, and application initialization
- */
+
 
 // Global application state
-window.ShopEase = {
+window.Trader = {
     config: {
+        apiEndpoint: '/api',
         itemsPerPage: 12,
         maxCartItems: 99,
         shippingThreshold: 50,
         taxRate: 0.08
+    },
+    state: {
+        currentPage: 1,
+        isLoading: false,
+        categories: [],
+        products: [],
+        filteredProducts: []
     }
 };
 
-document.addEventListener('DOMContentLoaded', function () {
+
+
+// DOM Content Loaded Event
+document.addEventListener('DOMContentLoaded', function() {
+    initializeApp();
     const gridViewBtn = document.getElementById('gridView');
     const listViewBtn = document.getElementById('listView');
     const productsContainer = document.getElementById('productsContainer'); // Define productsContainer
@@ -37,7 +46,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+
 /**
+
  * Initialize the application
  */
 function initializeApp() {
@@ -45,14 +57,56 @@ function initializeApp() {
         initializeNavigation();
         initializeLoadingOverlay();
         initializeErrorHandling();
+        updateCartCounter();
+        loadCategories();
         
-
+        // Page-specific initialization
+        const currentPage = getCurrentPage();
+        switch(currentPage) {
+            case 'home':
+                initializeHomePage();
+                break;
+            case 'products':
+                initializeProductsPage();
+                break;
+            case 'product-detail':
+                initializeProductDetailPage();
+                break;
+            case 'cart':
+                initializeCartPage();
+                break;
+        }
     } catch (error) {
         console.error('Error initializing application:', error);
         showErrorMessage('Failed to initialize application. Please refresh the page.');
     }
 }
 
+/**
+ * Get current page identifier
+ */
+function getCurrentPage() {
+    const path = window.location.pathname;
+    const filename = path.split('/').pop() || 'index.html';
+    
+    switch(filename) {
+        case 'index.html':
+        case '':
+            return 'home';
+        case 'products':
+            return 'products';
+        case 'product-detail.html':
+            return 'product-detail';
+        case 'cart.html':
+            return 'cart';
+        case 'about.html':
+            return 'about';
+        case 'contact.html':
+            return 'contact';
+        default:
+            return 'unknown';
+    }
+}
 
 /**
  * Initialize navigation functionality
@@ -98,6 +152,13 @@ function initializeNavigation() {
         });
     }
     
+    // Cart counter update
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'Trader_cart') {
+            updateCartCounter();
+        }
+    });
+}
 
 /**
  * Handle search functionality
@@ -108,37 +169,126 @@ function handleSearch() {
     
     if (searchTerm) {
         // Redirect to products page with search parameter
-        const url = new URL('products.html', window.location.origin);
+        const url = new URL('/products/', window.location.origin);
         url.searchParams.set('search', searchTerm);
         window.location.href = url.toString();
     }
 }
 
+/**
+ * Initialize loading overlay
+ */
+function initializeLoadingOverlay() {
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    if (!loadingOverlay) return;
+    
+    // Add loading overlay styles if not present
+    if (!loadingOverlay.style.position) {
+        loadingOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        `;
+    }
+}
+
 
 /**
- * Initialize product filters on home page
+ * Initialize error handling
  */
-
-function filterProducts(filter) {
-    const products = document.querySelectorAll('#featuredProducts .product-card');
-    products.forEach(product => {
-        const isTrending = product.dataset.trending === 'true';
-        const tag = product.dataset.tag; // Assuming 'tag' is a dataset attribute
-
-        if (filter === 'all') {
-            product.style.display = 'block';
-        } else if (filter === 'trending' && isTrending) {
-            product.style.display = 'block';
-        } else if (filter === tag) {
-            product.style.display = 'block';
-        } else {
-            product.style.display = 'none';
+function initializeErrorHandling() {
+    // Global error handler
+    window.addEventListener('error', function(event) {
+        console.error('Global error:', event.error);
+        if (!Trader.state.isLoading) {
+            showErrorMessage('An unexpected error occurred. Please try again.');
         }
     });
+    
+    // Unhandled promise rejection handler
+    window.addEventListener('unhandledrejection', function(event) {
+        console.error('Unhandled promise rejection:', event.reason);
+        if (!Trader.state.isLoading) {
+            showErrorMessage('Failed to load data. Please check your connection and try again.');
+        }
+    });
+}
 
-    const buttons = document.querySelectorAll('.btn-group button');
-    buttons.forEach(button => button.classList.remove('active'));
-    document.querySelector(`.btn-group button[data-filter="${filter}"]`).classList.add('active');
+/**
+ * Show error message
+ */
+function showErrorMessage(message, duration = 5000) {
+    // Create or update error toast
+    let errorToast = document.getElementById('errorToast');
+    
+    if (!errorToast) {
+        errorToast = document.createElement('div');
+        errorToast.id = 'errorToast';
+        errorToast.className = 'toast position-fixed top-0 end-0 m-3';
+        errorToast.style.zIndex = '10000';
+        errorToast.innerHTML = `
+            <div class="toast-header bg-danger text-white">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong class="me-auto">Error</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">${message}</div>
+        `;
+        document.body.appendChild(errorToast);
+    } else {
+        errorToast.querySelector('.toast-body').textContent = message;
+    }
+    
+    // Show toast
+    const toast = new bootstrap.Toast(errorToast, { delay: duration });
+    toast.show();
+}
+
+/**
+ * Show success message
+ */
+function showSuccessMessage(message, duration = 3000) {
+    let successToast = document.getElementById('successToast');
+    
+    if (!successToast) {
+        successToast = document.createElement('div');
+        successToast.id = 'successToast';
+        successToast.className = 'toast position-fixed top-0 end-0 m-3';
+        successToast.style.zIndex = '10000';
+        successToast.innerHTML = `
+            <div class="toast-header bg-success text-white">
+                <i class="fas fa-check-circle me-2"></i>
+                <strong class="me-auto">Success</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">${message}</div>
+        `;
+        document.body.appendChild(successToast);
+    } else {
+        successToast.querySelector('.toast-body').textContent = message;
+    }
+    
+    const toast = new bootstrap.Toast(successToast, { delay: duration });
+    toast.show();
+}
+
+/**
+ * Page-specific initialization functions
+ */
+function initializeHomePage() {
+    initializeProductFilters();
+    initializeAnimations();
+    initializeNewsletterForm();
 }
 
 /**
@@ -193,6 +343,20 @@ function initializeAnimations() {
 }
 
 /**
+ * Add to cart from product card
+ */
+
+/**
+ * Escape HTML to prevent XSS
+ */
+function escapeHtml(text) {
+    if (typeof text !== 'string') return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+/**
  * Debounce function for performance optimization
  */
 function debounce(func, wait) {
@@ -232,13 +396,55 @@ function isMobile() {
     return window.innerWidth <= 768;
 }
 
-
+/**
+ * Initialize newsletter form
+ */
+function initializeNewsletterForm() {
+    const newsletterForm = document.getElementById('newsletterForm');
+    if (!newsletterForm) return;
+    
+    newsletterForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const emailInput = this.querySelector('input[type="email"]');
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const email = emailInput.value.trim();
+        
+        if (!email || !isValidEmail(email)) {
+            showErrorMessage('Please enter a valid email address');
+            return;
+        }
+        
+        // Simulate newsletter signup
+        const originalBtnContent = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Subscribing...';
+        submitBtn.disabled = true;
+        
+        setTimeout(() => {
+            submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Subscribed!';
+            submitBtn.classList.remove('btn-light');
+            submitBtn.classList.add('btn-success');
+            emailInput.value = '';
+            
+            showSuccessMessage('Welcome! You\'ve been subscribed to our newsletter.');
+            
+            setTimeout(() => {
+                submitBtn.innerHTML = originalBtnContent;
+                submitBtn.classList.remove('btn-success');
+                submitBtn.classList.add('btn-light');
+                submitBtn.disabled = false;
+            }, 3000);
+        }, 1500);
+    });
+}
 
 // Export functions for global use
-window.ShopEase.utils = {
+window.Trader.utils = {
+    showErrorMessage,
+    showSuccessMessage,
+    escapeHtml,
     debounce,
     formatCurrency,
     isValidEmail,
     isMobile,
 };
-}

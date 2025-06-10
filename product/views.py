@@ -205,12 +205,19 @@ def add_remove_wishlist(request,slug):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+
+
 @login_required
 def clear_wishlist(request):
     user = get_object_or_404(Profile, user=request.user)
+    print("Adsd")
     user.wishlist.clear()
     messages.success(request, 'Wishlist cleared successfully!')
-    return redirect('product:wishlist', id=user.id)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+
+
 
 def user_see_product(request,slug):
     product = Product.objects.get(slug=slug)

@@ -9,12 +9,7 @@ from django.core.validators import RegexValidator
 import uuid
 
 class Profile(models.Model):
-    """
-        What diff between blank and true
-        what is the funcation of related name
-        what is property funcation
 
-    """
     id             = models.UUIDField(_("ID"), primary_key=True, editable=False , default=uuid.uuid4)
     user           = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile" ,verbose_name=_("User"))
     email          = models.EmailField(max_length=100, verbose_name=_("Email"))
