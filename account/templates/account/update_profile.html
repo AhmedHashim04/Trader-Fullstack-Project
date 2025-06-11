@@ -3,46 +3,206 @@
 {% load widget_tweaks %}
 
 {% block body %}
-<div class="container mt-5 mb-5">
+<div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow contact-card">
-                <div class="card-header">
-                    <h1 class="text-center mb-0">Update Your Information</h1>
+        <div class="col-lg-8">
+            <!-- Modern Glass Card -->
+            <div class="card border-0 rounded-4 overflow-hidden bg-blur">
+                <!-- Gradient Header -->
+                <div class="card-header bg-gradient-animated text-white text-center py-4">
+                    <div class="avatar-edit mb-3">
+                        <div class="avatar-preview">
+                            {% if profile.profile_image %}
+                                <img src="{{ profile.profile_image.url }}" alt="Profile Picture" id="imagePreview">
+                            {% else %}
+                                <i class="fas fa-user-edit"></i>
+                            {% endif %}
+                        </div>
+                        <label for="id_profile_picture" class="avatar-upload-btn">
+                            <i class="fas fa-camera"></i> Change Photo
+                        </label>
+                    </div>
+                    <h2 class="mb-0 fw-bold">Update Your Profile</h2>
+                    <p class="mb-0 opacity-75">Keep your information up to date</p>
                 </div>
-                <div class="card-body">
-                    <form method="POST" enctype="multipart/form-data" class="contact-form needs-validation" novalidate>
+                
+                <div class="card-body p-4 p-lg-5">
+                    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                         {% csrf_token %}
-                        {% for field in form %}
-                            <div class="mb-3">
-                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                                {{ field|add_class:"form-control" }}
-                                {% if field.initial %}
-                                    <small class="form-text text-muted">Pre-filled with: {{ field.initial }}</small>
+                        
+                        <div class="row g-4">
+                            {% for field in form %}
+                                {% if field.name != 'profile_picture' %}
+                                <div class="col-md-{% if field.name in 'first_name,last_name' %}6{% else %}12{% endif %}">
+                                    <div class="form-floating">
+                                        {{ field|add_class:"form-control modern-input"|attr:"placeholder: " }}
+                                        <label for="{{ field.id_for_label }}">
+                                            <i class="fas fa-{% if field.name == 'first_name' %}user{% elif field.name == 'last_name' %}user-tag{% elif field.name == 'email' %}envelope{% elif field.name == 'phone_number' %}phone{% elif field.name == 'date_of_birth' %}calendar-alt{% elif field.name == 'address' %}map-marked-alt{% elif field.name == 'city' %}city{% elif field.name == 'country' %}globe{% elif field.name == 'postal_code' %}mail-bulk{% endif %} me-2"></i>
+                                            {{ field.label }}
+                                        </label>
+                                        {% if field.help_text %}
+                                            <small class="form-text text-muted ps-4">{{ field.help_text }}</small>
+                                        {% endif %}
+                                        {% for error in field.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
                                 {% endif %}
-                                {% if field.help_text %}
-                                    <small class="form-text text-muted">{{ field.help_text }}</small>
-                                {% endif %}
-                                {% for error in field.errors %}
-                                    <div class="invalid-feedback d-block">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        {% endfor %}
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-success btn-lg px-5">Update</button>
-                            <a href="{% url 'account:password_change' %}" class="btn btn-warning ml-2">Change Password</a>
+                            {% endfor %}
+                        </div>
+
+                        <div class="d-flex justify-content-center gap-3 mt-5">
+                            <button type="submit" class="btn btn-success btn-lg px-5 rounded-pill shadow-sm hover-scale">
+                                <i class="fas fa-save me-2"></i>Update Profile
+                            </button>
+                            <a href="{% url 'account:password_change' %}" class="btn btn-warning btn-lg px-4 rounded-pill shadow-sm hover-scale">
+                                <i class="fas fa-key me-2"></i>Change Password
+                            </a>
                         </div>
                     </form>
                 </div>
-            </div>
-            <div class="text-center mt-4">
-                <a href="{% url 'home:home' %}" class="btn btn-outline-secondary back-button">
-                    <i class="fa fa-arrow-left me-2"></i>Back to Home
-                </a>
+                
+                <div class="card-footer text-center bg-transparent py-3">
+                    <a href="{% url 'home:home' %}" class="btn btn-outline-secondary rounded-pill px-4 hover-scale">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Home
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    /* Glass Morphism Effect */
+    .bg-blur {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    }
+    
+    /* Animated Gradient Header */
+    .bg-gradient-animated {
+        background: linear-gradient(135deg, #6B73FF 0%, #6B8DD6 50%, #8E6BFF 100%);
+        background-size: 200% 200%;
+        animation: gradient 8s ease infinite;
+    }
+    
+    @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* Avatar Edit Section */
+    .avatar-edit {
+        text-align: center;
+    }
+    
+    .avatar-preview {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        color: white;
+        margin: 0 auto 15px;
+        overflow: hidden;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .avatar-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .avatar-upload-btn {
+        display: inline-block;
+        padding: 8px 20px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    
+    .avatar-upload-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
+    /* Modern Input Styling */
+    .modern-input {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 16px 20px;
+        transition: all 0.3s;
+        background: rgba(255, 255, 255, 0.7);
+    }
+    
+    .modern-input:focus {
+        border-color: #6B73FF;
+        box-shadow: 0 0 0 0.25rem rgba(107, 115, 255, 0.25);
+        background: white;
+    }
+    
+    /* Floating Labels */
+    .form-floating label {
+        padding-left: 40px;
+    }
+    
+    .form-floating .fa {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.7;
+    }
+    
+    /* Hover Scale Effect */
+    .hover-scale {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-scale:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 2rem !important;
+        }
+        
+        .btn-lg {
+            padding: 0.5rem 1.5rem !important;
+            font-size: 1rem !important;
+        }
+    }
+</style>
+
+<script>
+    // Preview image before upload
+    document.getElementById('id_profile_picture').addEventListener('change', function(e) {
+        const preview = document.getElementById('imagePreview');
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+            preview.nextElementSibling.style.display = 'none';
+        }
+        
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 {% endblock %}
-
-

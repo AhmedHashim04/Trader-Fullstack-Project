@@ -1,4 +1,4 @@
-<section class="collections-section layout_padding">
+<section class="collections-section layout_padding" id="featured-collections" >
   <div class="container">
     <div class="section-header text-center mb-5">
       <h2 class="section-title">Our Collections</h2>
@@ -7,13 +7,17 @@
     <div class="row">
 
       {% for collection in featuredCollections  %}
-      <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
         
         <a href="{% url 'features:collection_detail' collection.slug %}" class="collection-box">
-          <img src="https://picsum.photos/400?random={{ forloop.counter }}" alt="Product {{ forloop.counter }}" class="collection-image">
+          <div class="collection-image-container">
+            <img src="https://picsum.photos/400?random={{ forloop.counter }}" alt="{{ collection.name }}" class="collection-image">
+            <div class="collection-overlay"></div>
+          </div>
           <div class="collection-info">
             <h3 class="collection-title">{{ collection.name }}</h3>
             <p class="collection-description">{{ collection.description }}</p>
+            <span class="view-collection-btn">View Collection</span>
           </div>
         </a>
 
@@ -26,44 +30,128 @@
 <style>
   .collections-section {
     background-color: #f8f9fa;
-    padding: 50px 0;
+    padding: 80px 0;
+  }
+  .section-header {
+    margin-bottom: 3rem !important;
   }
   .section-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #333;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+  }
+  .section-title:after {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 3px;
+    background: linear-gradient(90deg, #3498db, #9b59b6);
+    bottom: -10px;
+    left: 25%;
   }
   .section-subtitle {
     font-size: 1.2rem;
-    color: #666;
+    color: #7f8c8d;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
   }
   .collection-box {
     display: block;
     text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background: white;
+    height: 100%;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   }
   .collection-box:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+  .collection-image-container {
+    position: relative;
+    overflow: hidden;
+    height: 220px;
   }
   .collection-image {
     width: 100%;
-    height: auto;
-    border-bottom: 1px solid #ddd;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .collection-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+  }
+  .collection-box:hover .collection-overlay {
+    opacity: 0.9;
+  }
+  .collection-box:hover .collection-image {
+    transform: scale(1.05);
   }
   .collection-info {
-    padding: 15px;
+    padding: 20px 15px;
   }
   .collection-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.8rem;
+    transition: color 0.3s ease;
   }
   .collection-description {
-    font-size: 1rem;
-    color: #666;
+    font-size: 0.95rem;
+    color: #7f8c8d;
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
+  }
+  .view-collection-btn {
+    display: inline-block;
+    padding: 8px 20px;
+    background: linear-gradient(90deg, #3498db, #9b59b6);
+    color: white;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  .collection-box:hover .view-collection-btn {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  @media (max-width: 992px) {
+    .section-title {
+      font-size: 2.2rem;
+    }
+    .collection-image-container {
+      height: 180px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .collections-section {
+      padding: 60px 0;
+    }
+    .section-title {
+      font-size: 2rem;
+    }
+    .collection-image-container {
+      height: 150px;
+    }
   }
 </style>

@@ -59,7 +59,7 @@
             <div class="col-lg-6">
                 <div class="product-details p-3">
                     <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h1 class="h2 mb-0">{{ product.name }}</h1>
+                        <h1 class="h2 mb-0 text-primary">{{ product.name }}</h1>
                         <div class="d-flex align-items-center">
                             {% if product in contextWishlist %}
                                 <a href="{% url 'product:add_remove_wishlist' product.slug %}" 
@@ -123,7 +123,7 @@
                                     <div class="input-group" style="width: 150px;">
                                         <button class="btn btn-outline-secondary quantity-btn minus" type="button">-</button>
                                         <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" 
-                                               class="form-control text-center quantity-input" required>
+                                                class="form-control text-center quantity-input" required>
                                         <button class="btn btn-outline-secondary quantity-btn plus" type="button">+</button>
                                     </div>
                                     <button type="submit" class="btn btn-primary flex-grow-1">
@@ -135,7 +135,7 @@
                                     <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-outline-danger flex-grow-1">
                                         <i class="fas fa-trash-alt me-2"></i>Remove from Cart
                                     </a>
-                                    <a href="{% url 'cart:cart_detail' %}" class="btn btn-primary">
+                                    <a href="{% url 'cart:cart_list' %}" class="btn btn-primary">
                                         <i class="fas fa-shopping-bag me-2"></i>View Cart
                                     </a>
                                 </div>

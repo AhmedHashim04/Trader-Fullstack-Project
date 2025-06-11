@@ -1,110 +1,253 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load widget_tweaks %}
+
 {% block body %}
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-10">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-gradient-primary text-primary text-center py-4 rounded-top">
-                    <h2 class="mb-0">User Profile</h2>
+            <!-- Modern Card with Glass Morphism Effect -->
+            <div class="card border-0 rounded-4 overflow-hidden bg-blur">
+                <!-- Gradient Header with Animated Background -->
+                <div class="card-header bg-gradient-animated text-white text-center py-4">
+                    <div class="avatar-container mb-3">
+                        <div class="avatar-circle">
+                            <img src="{% if profile.profile_image %}{{ profile.profile_image.url }}{% else %}{% static 'account/img/avatars/avatar-1.jpg' %}{% endif %}" alt="Profile Picture" class="rounded-circle"alt="Profile Picture" style="width: 60px; height: 60px; object-fit: cover;">
+                        </div>
+                    </div>
+                    <h2 class="mb-0 fw-bold">{{ profile.user.get_full_name|default:"My Profile" }}</h2>
+                    <p class="mb-0 opacity-75">Member since {{ profile.user.date_joined|date:"M Y" }}</p>
                 </div>
-                <div class="card-body p-4">
+                
+                <div class="card-body p-4 p-lg-5">
                     <div class="row g-4">
-                        <!-- Personal Information -->
+                        <!-- Personal Information Card -->
                         <div class="col-md-6">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title text-primary mb-3">
-                                        <i class="fas fa-user-circle me-2"></i>Personal Information
-                                    </h5>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">
-                                            <strong>Full Name:</strong> {{ profile.user.first_name }} {{ profile.user.last_name }}
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong>Phone:</strong> {{ profile.phone_number }}
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong>Date of Birth:</strong> {{ profile.date_of_birth }}
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong>Email:</strong> {{ profile.user.email }}
-                                        </li>
-                                    </ul>
+                            <div class="card border-0 shadow-soft h-100 hover-scale">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="icon-circle bg-primary-light text-primary">
+                                            <i class="fas fa-user-circle"></i>
+                                        </div>
+                                        <h5 class="card-title mb-0 ms-3">Personal Information</h5>
+                                    </div>
+                                    
+                                    <div class="profile-detail-list">
+                                        <div class="detail-item">
+                                            <span class="detail-label">Full Name</span>
+                                            <span class="detail-value">{{ profile.user.get_full_name|default:"Not set" }}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Phone</span>
+                                            <span class="detail-value">{{ profile.phone_number|default:"Not set" }}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Date of Birth</span>
+                                            <span class="detail-value">{{ profile.date_of_birth|date:"d M Y"|default:"Not set" }}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Email</span>
+                                            <span class="detail-value">{{ profile.user.email }}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Shipping Address -->
+                        <!-- Shipping Address Card -->
                         <div class="col-md-6">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <h5 class="card-title text-primary mb-3">
-                                        <i class="fas fa-map-marker-alt me-2"></i>Shipping Address
-                                    </h5>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">
-                                            <strong>Address:</strong> {{ profile.address }}, {{ profile.city }}, {{ profile.country }}
-                                        </li>
-                                        <li class="list-group-item">
-                                            <strong>ZIP Code:</strong> {{ profile.postal_code }}
-                                        </li>
-                                    </ul>
+                            <div class="card border-0 shadow-soft h-100 hover-scale">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="icon-circle bg-info-light text-info">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </div>
+                                        <h5 class="card-title mb-0 ms-3">Shipping Address</h5>
+                                    </div>
+                                    
+                                    <div class="profile-detail-list">
+                                        <div class="detail-item">
+                                            <span class="detail-label">Address</span>
+                                            <span class="detail-value">
+                                                {% if profile.address %}
+                                                    {{ profile.address }}, {{ profile.city }}, {{ profile.country }}
+                                                {% else %}
+                                                    Not set
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">ZIP Code</span>
+                                            <span class="detail-value">{{ profile.postal_code|default:"Not set" }}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Last Updated</span>
+                                            <span class="detail-value">{{ profile.updated_at|timesince }} ago</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Action Buttons -->
                     <div class="row g-4 mt-4">
-                        <!-- View Orders -->
                         <div class="col-md-4">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title text-primary mb-3">
-                                        <i class="fas fa-list me-2"></i>View Orders
-                                    </h5>
-                                    <a href="{% url 'order:order_list' %}" class="btn btn-outline-secondary w-100 shadow-sm">
-                                        <i class="fa fa-list me-2"></i>View Orders
-                                    </a>
+                            <a href="{% url 'order:order_list' %}" class="card action-card border-0 h-100 text-decoration-none hover-scale">
+                                <div class="card-body text-center p-4">
+                                    <div class="action-icon bg-warning-light text-warning mb-3">
+                                        <i class="fas fa-shopping-bag"></i>
+                                    </div>
+                                    <h5 class="card-title mb-2">My Orders</h5>
+                                    <p class="text-muted small">View your order history</p>
+                                    <div class="btn btn-sm btn-outline-warning mt-2">View Orders</div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
 
-                        <!-- Edit Profile -->
                         <div class="col-md-4">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title text-primary mb-3">
-                                        <i class="fas fa-edit me-2"></i>Edit Profile
-                                    </h5>
-                                    <a href="{% url 'account:user_profile_edit' user.profile.id %}" class="btn btn-primary w-100 shadow-sm">
-                                        <i class="fas fa-edit me-2"></i>Edit Profile
-                                    </a>
+                            <a href="{% url 'account:user_profile_edit' user.profile.id %}" class="card action-card border-0 h-100 text-decoration-none hover-scale">
+                                <div class="card-body text-center p-4">
+                                    <div class="action-icon bg-success-light text-success mb-3">
+                                        <i class="fas fa-user-edit"></i>
+                                    </div>
+                                    <h5 class="card-title mb-2">Edit Profile</h5>
+                                    <p class="text-muted small">Update your information</p>
+                                    <div class="btn btn-sm btn-outline-success mt-2">Edit Profile</div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
 
-                        <!-- Logout -->
                         <div class="col-md-4">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title text-primary mb-3">
-                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
-                                    </h5>
-                                    <a href="{% url 'account:logout' %}" class="btn btn-danger w-100 shadow-sm">
-                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
-                                    </a>
+                            <a href="{% url 'account:logout' %}" class="card action-card border-0 h-100 text-decoration-none hover-scale">
+                                <div class="card-body text-center p-4">
+                                    <div class="action-icon bg-danger-light text-danger mb-3">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                    </div>
+                                    <h5 class="card-title mb-2">Logout</h5>
+                                    <p class="text-muted small">Sign out from your account</p>
+                                    <div class="btn btn-sm btn-outline-danger mt-2">Logout</div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="card-footer text-center bg-light rounded-bottom py-3">
-                    <small class="text-muted">© {% now "DATE_FORMAT" %} Trader E-commerce Platform</small>
+                
+                <!-- Modern Footer -->
+                <div class="card-footer text-center bg-transparent py-3 border-top-0">
+                    <small class="text-muted">© {% now "Y" %} Trader E-commerce Platform • Last login: {{ user.last_login|date:"d M Y H:i" }}</small>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    /* Modern Glass Morphism Effect */
+    .bg-blur {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    }
+    
+    /* Animated Gradient Header */
+    .bg-gradient-animated {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6B8DD6 100%);
+        background-size: 200% 200%;
+        animation: gradient 8s ease infinite;
+    }
+    
+    @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* Avatar Circle */
+    .avatar-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    /* Detail List Styling */
+    .profile-detail-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .detail-item {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+    }
+    
+    .detail-label {
+        font-weight: 600;
+        color: #6c757d;
+    }
+    
+    .detail-value {
+        text-align: right;
+        color: #495057;
+    }
+    
+    /* Icon Circles */
+    .icon-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+    }
+    
+    /* Action Cards */
+    .action-card {
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.7);
+    }
+    
+    .action-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    }
+    
+    .action-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin: 0 auto;
+    }
+    
+    /* Hover Scale Effect */
+    .hover-scale {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-scale:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Soft Shadow */
+    .shadow-soft {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+    }
+</style>
 {% endblock %}

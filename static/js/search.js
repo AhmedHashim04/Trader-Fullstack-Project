@@ -352,7 +352,7 @@ class SearchManager {
                 left: 0;
                 right: 0;
                 background: white;
-                border: 1px solid #dee2e6;
+                border: 1px solidrgb(228, 222, 230);
                 border-top: none;
                 border-radius: 0 0 0.375rem 0.375rem;
                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);

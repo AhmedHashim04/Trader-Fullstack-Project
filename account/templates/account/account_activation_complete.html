@@ -1,13 +1,185 @@
 {% extends "base.html" %}
 
 {% block body %}
-<div class="container mt-5">
-    <div class="card shadow">
-        <div class="card-body text-center">
-            <h1 class="card-title mb-4">Account_Activation Complete</h1>
-            <p class="card-text">Your Account has been set. You may go ahead and log in now.</p>
-            <a href="{% url 'account:login' %}" class="btn btn-primary">Log in</a>
+<div class="activation-complete-container">
+    <div class="activation-complete-card">
+        <div class="card-body text-center p-5">
+            <!-- Animated Checkmark Icon -->
+            <div class="success-animation mb-4">
+                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+            </div>
+            
+            <h1 class="card-title display-5 mb-3">Account Activated Successfully!</h1>
+            <p class="card-text lead mb-4">Your account has been successfully activated. You can now log in and start using our services.</p>
+            
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                <a href="{% url 'account:login' %}" class="btn btn-primary btn-lg px-4 gap-3">
+                    <i class="fas fa-sign-in-alt me-2"></i> Log In Now
+                </a>
+                <a href="{% url 'product:products_list' %}" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="fas fa-home me-2"></i> Return Home
+                </a>
+            </div>
         </div>
     </div>
 </div>
+
+<style>
+    /* Activation Complete Page Styles */
+    .activation-complete-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 120px);
+        padding: 2rem;
+        background-color: hsl(var(--background-color));
+    }
+
+    .activation-complete-card {
+        max-width: 600px;
+        width: 100%;
+        border-radius: var(--border-radius-lg);
+        overflow: hidden;
+        border: none;
+        box-shadow: var(--shadow-heavy);
+        background: hsl(var(--surface-color));
+    }
+
+    /* Success Animation */
+    .success-animation {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 1.5rem;
+    }
+
+    .checkmark {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        display: block;
+        stroke-width: 4;
+        stroke: hsl(var(--text-primary));
+        stroke-miterlimit: 10;
+        box-shadow: var(--shadow-colored);
+        animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+    }
+
+    .checkmark__circle {
+        stroke-dasharray: 166;
+        stroke-dashoffset: 166;
+        stroke-width: 4;
+        stroke-miterlimit: 10;
+        stroke: hsl(var(--primary-color));
+        fill: none;
+        animation: stroke .6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+
+    .checkmark__check {
+        transform-origin: 50% 50%;
+        stroke-dasharray: 48;
+        stroke-dashoffset: 48;
+        animation: stroke .3s cubic-bezier(0.65, 0, 0.45, 1) .8s forwards;
+    }
+
+    @keyframes stroke {
+        100% {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    @keyframes scale {
+        0%, 100% {
+            transform: none;
+        }
+        50% {
+            transform: scale3d(1.1, 1.1, 1);
+        }
+    }
+
+    @keyframes fill {
+        100% {
+            box-shadow: inset 0 0 0 100px hsl(var(--primary-color) / 0.1);
+        }
+    }
+
+    /* Card Content Styling */
+    .card-title {
+        font-weight: 700;
+        color: hsl(var(--primary-color));
+        margin-bottom: 1.5rem;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .card-text {
+        color: hsl(var(--text-secondary) / 0.9);
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Button Styling */
+    .btn-primary {
+        background: var(--gradient-primary);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        transition: var(--transition);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-colored);
+    }
+
+    .btn-outline-secondary {
+        border-color: hsl(var(--border-color));
+        color: hsl(var(--text-secondary));
+        transition: var(--transition);
+    }
+
+    .btn-outline-secondary:hover {
+        border-color: hsl(var(--primary-color));
+        color: hsl(var(--primary-color));
+        background: hsl(var(--primary-color) / 0.05);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .activation-complete-container {
+            padding: 1rem;
+            min-height: calc(100vh - 80px);
+        }
+
+        .activation-complete-card {
+            box-shadow: var(--shadow-medium);
+        }
+
+        .card-body {
+            padding: 2rem !important;
+        }
+
+        .success-animation {
+            width: 80px;
+            height: 80px;
+        }
+
+        .card-title {
+            font-size: 1.75rem;
+        }
+
+        .card-text {
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.25rem;
+            font-size: 0.9rem;
+        }
+    }
+</style>
 {% endblock body %}

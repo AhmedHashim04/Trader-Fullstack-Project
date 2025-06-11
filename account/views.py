@@ -10,7 +10,7 @@ from .models import Profile
 from django.contrib.auth.models import User
 from .forms import RegisterForm, UpdateProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.mail import send_mail
+# from django.core.mail import send_mail
 from django.conf import settings
 import uuid
 

@@ -1,61 +1,159 @@
-<!-- Error Toast -->
-
-
-<div id="errorToast" class="toast position-fixed top-0 end-0 m-3" style="z-index: 10000;" aria-live="polite" aria-atomic="true">
-    <div class="toast-header bg-danger text-white">
-        <i class="fas fa-exclamation-triangle me-2"></i>
-        <strong class="me-auto">Error</strong>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body">
-        {% if messages %}
-            {% for message in messages %}
-                {% if message.tags == 'error' %}
-                    {{ message }}
-                {% endif %}
-            {% endfor %}
+{% if messages %}
+<div class="message-container">
+  {% for message in messages %}
+  <div class="alert-notification alert-{{ message.tags }} animate__animated animate__fadeInRight animate__faster">
+    <div class="alert-content">
+      <div class="alert-icon">
+        {% if message.tags == 'success' %}
+        <i class="fas fa-check-circle"></i>
+        {% elif message.tags == 'error' %}
+        <i class="fas fa-times-circle"></i>
+        {% elif message.tags == 'warning' %}
+        <i class="fas fa-exclamation-triangle"></i>
+        {% else %}
+        <i class="fas fa-info-circle"></i>
         {% endif %}
+      </div>
+      <div class="alert-message">{{ message }}</div>
     </div>
+    <div class="alert-close">
+      <i class="fas fa-times"></i>
+    </div>
+    <div class="alert-progress"></div>
+  </div>
+  {% endfor %}
 </div>
 
-<!-- Success Toast -->
-<div id="successToast" class="toast position-fixed top-0 end-0 m-3" style="z-index: 10000;" aria-live="polite" aria-atomic="true">
-    <div class="toast-header bg-success text-white">
-        <i class="fas fa-check-circle me-2"></i>
-        <strong class="me-auto">Success</strong>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body">
-        {% if messages %}
-            {% for message in messages %}
-                {% if message.tags == 'success' %}
-                    {{ message }}
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-    </div>
-</div>
+<style>
+  .message-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 350px;
+    width: 100%;
+  }
+
+  .alert-notification {
+    position: relative;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    border: none;
+    color: white;
+    transform: translateX(120%);
+    animation: slideIn 0.5s forwards;
+  }
+
+  @keyframes slideIn {
+    100% { transform: translateX(0); }
+  }
+
+  .alert-content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+  }
+
+  .alert-icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    flex-shrink: 0;
+  }
+
+  .alert-message {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .alert-close {
+    margin-left: 15px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    flex-shrink: 0;
+  }
+
+  .alert-close:hover {
+    opacity: 1;
+  }
+
+  .alert-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .alert-progress:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: white;
+    animation: progress 5s linear forwards;
+  }
+
+  @keyframes progress {
+    100% { width: 0; }
+  }
+
+  /* Color Schemes */
+  .alert-success {
+    background: rgba(40, 167, 69, 0.9);
+  }
+
+  .alert-error {
+    background: rgba(220, 53, 69, 0.9);
+  }
+
+  .alert-warning {
+    background: rgba(255, 193, 7, 0.9);
+    color: #212529;
+  }
+
+  .alert-warning .alert-progress:after {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .alert-info {
+    background: rgba(23, 162, 184, 0.9);
+  }
+
+  .alert-danger {
+    background: rgba(220, 53, 69, 0.9);
+  }
+</style>
 
 <script>
-    /**
-     * Show error message
-     */
-    function showErrorMessage(message, duration = 5000) {
-        const errorToast = document.getElementById('errorToast');
-        errorToast.querySelector('.toast-body').textContent = message;
+  document.addEventListener('DOMContentLoaded', function() {
+    // Auto-close notifications after 5 seconds
+    const alerts = document.querySelectorAll('.alert-notification');
+    alerts.forEach(alert => {
+      setTimeout(() => {
+        alert.classList.add('animate__fadeOutRight');
+        setTimeout(() => alert.remove(), 500);
+      }, 5000);
+    });
 
-        const toast = new bootstrap.Toast(errorToast, { delay: duration });
-        toast.show();
-    }
-
-    /**
-     * Show success message
-     */
-    function showSuccessMessage(message, duration = 3000) {
-        const successToast = document.getElementById('successToast');
-        successToast.querySelector('.toast-body').textContent = message;
-
-        const toast = new bootstrap.Toast(successToast, { delay: duration });
-        toast.show();
-    }
+    // Manual close
+    document.querySelectorAll('.alert-close').forEach(closeBtn => {
+      closeBtn.addEventListener('click', function() {
+        const alert = this.closest('.alert-notification');
+        alert.classList.add('animate__fadeOutRight');
+        setTimeout(() => alert.remove(), 500);
+      });
+    });
+  });
 </script>
+{% endif %}

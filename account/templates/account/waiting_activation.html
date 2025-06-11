@@ -2,23 +2,202 @@
 {% load static %}
 {% block body %}
 
-<div class="container mt-5">
-    <div class="card shadow">
-        <div class="card-body text-center">
-            <h1 class="card-title mb-4">Account Activation</h1>
-            <p class="card-text">We've sent an activation link to your email. If you don't receive it within a few minutes, check your spam folder.</p>
-            <p class="card-text">Once you activate, you'll be able to login to your account.</p>
-            <a href="{% url 'account:login' %}" class="btn btn-primary btn-lg w-100 shadow-sm">
-                <i class="fas fa-lock-open me-2"></i>Login Now
-            </a>
-            <p class="card-text mt-3">
-                <small>
-                    If you have any questions or need further assistance, please don't hesitate to <a href="{% url 'contact:contact' %}">contact us</a>.
-                </small>
-            </p>
+<div class="activation-email-container">
+    <div class="activation-email-card">
+        <div class="card-body text-center p-5">
+            <!-- Email Illustration -->
+            <div class="email-illustration mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <div class="envelope-flap"></div>
+                <div class="email-dots">
+                    <span class="dot dot-1"></span>
+                    <span class="dot dot-2"></span>
+                    <span class="dot dot-3"></span>
+                </div>
+            </div>
+            
+            <h1 class="card-title display-5 mb-3">Activation Email Sent!</h1>
+            <div class="activation-message">
+                <p class="lead">We've sent an activation link to your email address.</p>
+                <div class="alert alert-light mt-3 mb-4">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle me-2 text-primary"></i>
+                        <span>If you don't receive it within a few minutes, please check your spam folder.</span>
+                    </div>
+                </div>
+                <p>Once you activate your account, you'll be able to access all features.</p>
+            </div>
+            
+            <div class="activation-actions">
+                <a href="{% url 'account:login' %}" class="btn btn-primary btn-lg px-4 gap-3 shadow-sm">
+                    <i class="fas fa-lock-open me-2"></i> Go to Login
+                </a>
+                <div class="mt-3">
+                    <small class="text-muted">
+                        Need help? <a href="{% url 'contact:contact' %}" class="text-decoration-none">Contact our support team</a>
+                    </small>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-{% endblock %}
+<style>
+    /* Activation Email Container */
+    .activation-email-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100vh - 120px);
+        padding: 2rem;
+        background-color: hsl(var(--background-color));
+    }
 
+    .activation-email-card {
+        max-width: 600px;
+        width: 100%;
+        border-radius: var(--border-radius-lg);
+        overflow: hidden;
+        border: none;
+        box-shadow: var(--shadow-heavy);
+        background: hsl(var(--surface-color));
+    }
+
+    /* Email Illustration */
+    .email-illustration {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 2rem;
+        color: hsl(var(--primary-color));
+    }
+
+    .email-illustration svg {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 2;
+    }
+
+    .envelope-flap {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 60px;
+        background: hsl(var(--background-color));
+        border-radius: 0 0 10px 10px;
+        z-index: 1;
+        animation: flap 2s ease-in-out infinite;
+        transform-origin: top center;
+    }
+
+    .email-dots {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+    }
+
+    .dot {
+        display: block;
+        width: 6px;
+        height: 6px;
+        background: hsl(var(--primary-color));
+        border-radius: 50%;
+        margin: 4px auto;
+        opacity: 0;
+    }
+
+    .dot-1 { animation: dot-appear 2s infinite; }
+    .dot-2 { animation: dot-appear 2s infinite 0.3s; }
+    .dot-3 { animation: dot-appear 2s infinite 0.6s; }
+
+    @keyframes flap {
+        0%, 100% { transform: translateX(-50%) rotateX(0deg); }
+        50% { transform: translateX(-50%) rotateX(-20deg); }
+    }
+
+    @keyframes dot-appear {
+        0%, 100% { opacity: 0; transform: translateY(10px); }
+        50% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Card Content Styling */
+    .card-title {
+        font-weight: 700;
+        color: hsl(var(--primary-color));
+        margin-bottom: 1.5rem;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .activation-message p {
+        color: hsl(var(--text-secondary) / 0.9);
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .alert-light {
+        background-color: hsl(var(--background-color));
+        border-left: 4px solid hsl(var(--primary-color));
+    }
+
+    /* Button Styling */
+    .btn-primary {
+        background: var(--gradient-primary);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        transition: var(--transition);
+        min-width: 200px;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-colored);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .activation-email-container {
+            padding: 1rem;
+            min-height: calc(100vh - 80px);
+        }
+
+        .activation-email-card {
+            box-shadow: var(--shadow-medium);
+        }
+
+        .card-body {
+            padding: 2rem !important;
+        }
+
+        .email-illustration {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.75rem;
+        }
+
+        .activation-message p {
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.25rem;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,17 +1,187 @@
 <!-- Featured Categories -->
-<section class="py-5">
+<section class="featured-categories py-5 bg-light">
     <div class="container">
-        <h2 class="text-center mb-5">Featured Categories</h2>
-        <div class="row g-4" id="featuredCategories">
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title mb-3">Featured Categories</h2>
+            <p class="section-subtitle text-muted">Explore our wide range of products</p>
+        </div>
+        
+        <div class="row g-4 justify-content-center" id="featuredCategories">
             {% for category in featuredCategories|slice:":6" %}
-                <div class="col-lg-2 col-md-4 col-sm-6">
-                    <a href="products?category={{ category.slug|escape }}" class="category-card">
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+                <a href="products?category={{ category.slug|escape }}" class="category-card">
+                    <div class="category-card-inner">
                         <div class="category-icon">
-                            <i class="fas fa-{{ category.image }}"></i>
+                            <i class="fas fa-{{ category.icon|default:'shopping-bag' }}"></i>
                         </div>
-                        <h5>{{ category.name|escape }}</h5>
-                    </a>
-                </div>
+                        <h5 class="category-name">{{ category.name|escape }}</h5>
+                        <span class="category-products-count">{{ category.product_count }} products</span>
+                        <div class="category-hover-effect"></div>
+                    </div>
+                </a>
+            </div>
             {% endfor %}
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="{% comment %}{% url 'product:categories_list' %}{% endcomment %}" class="btn btn-outline-primary btn-lg px-4">
+                Browse All Categories <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
     </div>
 </section>
+
+<style>
+    /* Featured Categories Section */
+    .featured-categories {
+        background-color: #f8f9fa;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        position: relative;
+    }
+    
+    .section-title:after {
+        content: '';
+        position: absolute;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(90deg, #3498db, #9b59b6);
+        bottom: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+    
+    .section-subtitle {
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 1rem auto 0;
+    }
+    
+    /* Category Card */
+    .category-card {
+        display: block;
+        text-decoration: none;
+        height: 100%;
+    }
+    
+    .category-card-inner {
+        position: relative;
+        background: white;
+        border-radius: 12px;
+        padding: 30px 15px;
+        text-align: center;
+        height: 100%;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+    
+    .category-card:hover .category-card-inner {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    /* Category Icon */
+    .category-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f5f7fa, #e4e8eb);
+        border-radius: 50%;
+        font-size: 1.75rem;
+        color: #3498db;
+        transition: all 0.3s ease;
+    }
+    
+    .category-card:hover .category-icon {
+        background: linear-gradient(135deg, #3498db, #9b59b6);
+        color: white;
+        transform: scale(1.1);
+    }
+    
+    /* Category Name */
+    .category-name {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        transition: color 0.3s ease;
+    }
+    
+    .category-card:hover .category-name {
+        color: #3498db;
+    }
+    
+    /* Products Count */
+    .category-products-count {
+        display: block;
+        font-size: 0.85rem;
+        color: #7f8c8d;
+        transition: all 0.3s ease;
+    }
+    
+    .category-card:hover .category-products-count {
+        color: #3498db;
+    }
+    
+    /* Hover Effect */
+    .category-hover-effect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .category-card:hover .category-hover-effect {
+        opacity: 1;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+        .section-title {
+            font-size: 2.2rem;
+        }
+        
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .section-title {
+            font-size: 2rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1rem;
+        }
+        
+        .category-card-inner {
+            padding: 25px 15px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .row.justify-content-center {
+            justify-content: flex-start;
+        }
+        
+        .col-sm-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+    }
+</style>

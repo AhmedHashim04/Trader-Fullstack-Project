@@ -29,28 +29,36 @@ def admin_order_pdf(request, id):
     return response
 
 def create_order(request):
-    cart = cart_branch(request)
-    if not cart.cart:
-        messages.warning(request, 'Your shopping cart is empty!')
-        return redirect('cart:cart_list')
+        cart = cart_branch(request)
+        if not cart.cart:
+            messages.warning(request, 'Your shopping cart is empty!')
+            return redirect('cart:cart_list')
 
-    if request.method == 'POST':
-        form = CompleteOrderForm(request.POST)
-        if form.is_valid():
-            request.session['form_data'] = form.cleaned_data
-            return redirect('order:preview_order')
-    else:
-        profile = request.user.profile
-        form = CompleteOrderForm(initial={
-            'phone_number': profile.phone_number,
-            'address': profile.address,
-            'city': profile.city,
-            'country': profile.country,
-            'postal_code': profile.postal_code,
-            'paied': False,
+        if request.method == 'POST':
+            form = CompleteOrderForm(request.POST)
+            if form.is_valid():
+                request.session['form_data'] = form.cleaned_data
+                return redirect('order:preview_order')
+        else:
+            profile = request.user.profile
+            form = CompleteOrderForm(initial={
+                'phone_number': profile.phone_number,
+                'address': profile.address,
+                'city': profile.city,
+                'country': profile.country,
+                'postal_code': profile.postal_code,
+                'paied': False,
+            })
+
+        subtotal = cart.get_total_price()
+
+        return render(request, 'order/create_order.html', {
+            "form": form,
+            "cart": cart,
+            "total_price": subtotal,
+            "discount_amount": (cart.get_discount),
+            "total_price_after_discount": (cart.get_total_price_after_discount),
         })
-
-    return render(request, 'order/create_order.html', {"form": form})
 
 class PreviewView(TemplateView):
     template_name = "order/preview_order.html"

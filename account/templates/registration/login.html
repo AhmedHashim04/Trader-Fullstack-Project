@@ -1,78 +1,80 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load widget_tweaks %}
+
 {% block body %}
-<!-- Auth Section -->
-<section class="auth-section">
-    <div class="auth-background">
-        <div class="auth-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-            <div class="shape shape-3"></div>
+    <!-- Auth Section -->
+    <section class="auth-section">
+        <div class="auth-background">
+            <div class="auth-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
         </div>
-    </div>
-    
-    <div class="container">
-        <div class="row justify-content-center align-items-center min-vh-100">
-            <div class="col-lg-5 col-md-7">
-                <div class="auth-card">
-                    <div class="auth-header text-center mb-4">
-                        <div class="auth-icon">
-                            <i class="fas fa-user-circle"></i>
-                        </div>
-                        <h2 class="auth-title">Welcome Back!</h2>
-                        <p class="auth-subtitle">Sign in to your account to continue shopping</p>
-                    </div>
-                    
-                    <form method="post" class="auth-form" novalidate>
-                        {% csrf_token %}
-                        <div class="form-floating mb-3">
-                            {{ form.username|add_class:"form-control trendy-input"|attr:"placeholder:Enter your username" }}
-                            <label for="id_username">
-                                <i class="fas fa-user me-2"></i>Username
-                            </label>
+        
+        <div class="container">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-lg-5 col-md-7">
+                    <div class="auth-card">
+                        <div class="auth-header text-center mb-4">
+                            <div class="auth-icon">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <h2 class="auth-link">Welcome Back!</h2>
+                            <p class="auth-subtitle text-primary">Sign in to your account to continue shopping</p>
                         </div>
                         
-                        <div class="form-floating mb-3">
-                            {{ form.password|add_class:"form-control trendy-input"|attr:"placeholder:Enter your password" }}
-                            <label for="id_password">
-                                <i class="fas fa-lock me-2"></i>Password
-                            </label>
-                            <button type="button" class="password-toggle" onclick="togglePassword('id_password')">
-                                <i class="far fa-eye"></i>
+                        <form method="post" class="auth-form" novalidate>
+                            {% csrf_token %}
+                            <div class="form-floating mb-3">
+                                {{ form.username|add_class:"form-control trendy-input"|attr:"placeholder:Enter your username" }}
+                                <label for="id_username">
+                                    <i class="fas fa-user me-2"></i>Username
+                                </label>
+                            </div>
+                            
+                            <div class="form-floating mb-3">
+                                {{ form.password|add_class:"form-control trendy-input"|attr:"placeholder:Enter your password" }}
+                                <label for="id_password">
+                                    <i class="fas fa-lock me-2"></i>Password
+                                </label>
+                                <button type="button" class="password-toggle" onclick="togglePassword('id_password')">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            
+                            <button type="submit" class="btn trendy-btn-primary w-100 auth-submit">
+                                <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                                <div class="btn-glow"></div>
                             </button>
-                        </div>
+                        </form>
                         
-                        <button type="submit" class="btn trendy-btn-primary w-100 auth-submit">
-                            <i class="fas fa-sign-in-alt me-2"></i>Sign In
-                            <div class="btn-glow"></div>
-                        </button>
-                    </form>
-                    
-                    <div class="auth-footer text-center mt-4">
-                        <p>Don't have an account? <a href="{% url 'account:register' %}" class="auth-link">Create one now</a></p>
+                        <div class="auth-footer text-center text-primary mt-4">
+                            <p>Don't have an account? <a href="{% url 'account:register' %}" class="auth-link">Create one now</a></p>
+                            <p>Forgot your password? <a href="{% url 'account:password_reset' %}" class="auth-link">Reset Now</a></p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<script>
-    function togglePassword(inputId) {
-        const input = document.getElementById(inputId);
-        const toggle = input.nextElementSibling.nextElementSibling;
-        const icon = toggle.querySelector('i');
-        
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.classList.remove('far', 'fa-eye');
-            icon.classList.add('fas', 'fa-eye-slash');
-        } else {
-            input.type = 'password';
-            icon.classList.remove('fas', 'fa-eye-slash');
-            icon.classList.add('far', 'fa-eye');
+    <script>
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const toggle = input.nextElementSibling.nextElementSibling;
+            const icon = toggle.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('far', 'fa-eye');
+                icon.classList.add('fas', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fas', 'fa-eye-slash');
+                icon.classList.add('far', 'fa-eye');
+            }
         }
-    }
-</script>
+    </script>
 {% endblock body %}

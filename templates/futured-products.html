@@ -3,86 +3,331 @@
     <div class="container">
         <div class="row align-items-center mb-5">
             <div class="col-md-6">
-                <h2 class="mb-0">Trending Products</h2>
-                <p class="text-muted">Discover what's popular right now</p>
+                <h2 class="mb-2 fw-bold text-gradient">Trending Products</h2>
+                <p class="text-muted lead">Discover what's popular right now</p>
             </div>
             <div class="col-md-6 text-md-end">
-                <div class="btn-group" role="group">
-                    <button class="btn btn-outline-primary active" data-filter="all" onclick="filterProducts('all')">All</button>
-                    <button class="btn btn-outline-primary" data-filter="new" onclick="filterProducts('new')">New</button>
-                    <button class="btn btn-outline-primary" data-filter="trending" onclick="filterProducts('trending')">Hot</button>
-                    <button class="btn btn-outline-primary" data-filter="sale" onclick="filterProducts('sale')">On Sale</button>
+                <div class="btn-group filter-buttons" role="group">
+                    <button class="btn btn-filter active" data-filter="all" onclick="filterProducts('all')">All</button>
+                    <button class="btn btn-filter" data-filter="new" onclick="filterProducts('new')">New</button>
+                    <button class="btn btn-filter" data-filter="trending" onclick="filterProducts('trending')">Hot</button>
+                    <button class="btn btn-filter" data-filter="sale" onclick="filterProducts('sale')">On Sale</button>
                 </div>
             </div>
         </div>
+        
         <div class="row g-4" id="featuredProducts">
             {% if featuredProducts %}
                 {% for product in featuredProducts %}
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <div class="card product-card h-100" data-product-id="{{ product.slug }}" data-trending="{{ product.trending }}" data-sale="{{ product.tag }}">
-                            <div class="trending-badge">🔥 Trending</div>
-                            {% if product.tag == "sale" %}<div class="sale-badge">Sale</div>{% endif %}
-                            {% if product.tag == "new" %}<div class="new-badge">New</div>{% endif %}
-                            {% if product.tag == "best" %}<div class="best-badge">Best</div>{% endif %}
-                            <a href="{% url 'product:add_remove_wishlist' product.slug %}" class="wishlist-btn position-absolute top-0 end-0 m-2 p-2 rounded-circle bg-light shadow-sm" title="Add to Wishlist" style="z-index: 10;">
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card product-card h-100 border-0 shadow-sm" data-product-id="{{ product.slug }}" data-trending="{{ product.trending }}" data-sale="{{ product.tag }}">
+                            <!-- Badges -->
+                            <div class="product-badges">
+                                {% if product.tag == "sale" %}<span class="badge bg-danger">Sale</span>{% endif %}
+                                {% if product.tag == "new" %}<span class="badge bg-success">New</span>{% endif %}
+                                {% if product.tag == "best" %}<span class="badge bg-warning text-dark">Best</span>{% endif %}
+                                {% if product.trending %}<span class="badge bg-primary">Trending</span>{% endif %}
+                            </div>
+                            
+                            <!-- Wishlist Button -->
+                            <div class="d-flex align-items-right position-absolute top-0 end-0 p-2 wishlist-btn">
                                 {% if product in contextWishlist %}
-                                    <i class="fas fa-heart text-danger" style="font-size: 1.5rem;"></i>
+                                    <a href="{% url 'product:add_remove_wishlist' product.slug %}" 
+                                       class="btn btn-link text-danger fs-5 p-1" title="Remove from wishlist">
+                                        <i class="fas fa-heart"></i>
+                                    </a>
                                 {% else %}
-                                    <i class="far fa-heart text-muted" style="font-size: 1.5rem;"></i>
-                                {% endif %}
-                            </a>
-                            <div class="product-image">
-                                {% if product.image %}
-                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
-                                {% else %}
-                                    <div class="product-image-placeholder">
-                                        <i class="fas fa-image fa-2x text-muted"></i>
-                                        <p class="text-muted mt-2 mb-0">Product Image</p>
-                                    </div>
+                                    <a href="{% url 'product:add_remove_wishlist' product.slug %}" 
+                                       class="btn btn-link text-muted fs-5 p-1" title="Add to wishlist">
+                                        <i class="far fa-heart"></i>
+                                    </a>
                                 {% endif %}
                             </div>
-                            <div class="card-body d-flex flex-column">
-                                <div class="mb-2">
-                                    <span class="badge bg-light text-dark small">{% if product.brand %}{{ product.brand }}{% else %}{% endif %}</span>
+                            
+                            <!-- Product Image -->
+                            <div class="product-image position-relative overflow-hidden">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid w-100">
+                                    <div class="image-overlay"></div>
+                                {% else %}
+                                    <div class="product-image-placeholder d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-image fa-3x text-muted"></i>
+                                    </div>
+                                {% endif %}
+                                <div class="quick-view-btn">
+                                    <a href="{% url 'product:product_detail' product.slug %}" class="btn btn-sm btn-outline-light rounded-pill">Quick View</a>
                                 </div>
-                                <h6 class="card-title">
-                                    <a href="{% url 'product:product_detail' product.slug %}" class="text-decoration-none text-dark">
+                            </div>
+                            
+                            <!-- Product Info -->
+                            <div class="card-body pt-3 pb-2 px-3">
+                                <div class="mb-2">
+                                    {% if product.brand %}
+                                    <span class="badge bg-light text-dark small rounded-pill">{{ product.brand }}</span>
+                                    {% endif %}
+                                </div>
+                                
+                                <h6 class="card-title mb-1">
+                                    <a href="{% url 'product:product_detail' product.slug %}" class="text-decoration-none text-dark product-name">
                                         {{ product.name }}
                                     </a>
                                 </h6>
-                                <p class="card-text text-muted small">{% if product.category %}{{ product.category }}{% else %}{% endif %}</p>
-                                <p class="text-muted small">
-                                    {% if product.is_in_stock %}
-                                        <span class="text-success">In Stock</span>
-                                    {% else %}
-                                        <span class="text-danger">Out of Stock</span>
-                                    {% endif %}
-                                </p>
-                                <div class="mt-auto">
-                                    {% if product.tag == "sale" %}
-                                        <span class="text-decoration-line-through text-muted me-2">${{ product.price|floatformat:2 }}</span>
-                                    {% endif %}
-                                    <span class="h6 text-primary mb-0">${{ product.price|floatformat:2 }}</span>
+                                
+                                {% if product.category %}
+                                <p class="card-text text-muted small mb-2">{{ product.category }}</p>
+                                {% endif %}
+                                
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        {% if product.tag == "sale" %}
+                                            <span class="text-decoration-line-through text-muted me-2 small">${{ product.price|floatformat:2 }}</span>
+                                        {% endif %}
+                                        <span class="h6 text-primary mb-0">${{ product.price|floatformat:2 }}</span>
+                                    </div>
+                                    <div>
+                                        {% if product.is_in_stock %}
+                                            <span class="badge bg-success bg-opacity-10 text-success small">In Stock</span>
+                                        {% else %}
+                                            <span class="badge bg-danger bg-opacity-10 text-danger small">Out of Stock</span>
+                                        {% endif %}
+                                    </div>
                                 </div>
-                                    {% if product.slug in contextCart %}
-                                    <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-outline-primary btn-sm w-100 btn-add-to-cart" ><i class="fas fa-shopping-cart me-1"></i>Added!</a>
-                                    {% else %}
-                                    <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-primary btn-sm w-100 btn-add-to-cart" ><i class="fas fa-check me-1"></i>Add to Cart</a>
-                                    {% endif %}
+                            </div>
+                            
+                            <!-- Add to Cart Button -->
+                            <div class="card-footer bg-transparent border-top-0 px-3 pb-3 pt-0">
+                                {% if product.slug in contextCart %}
+                                    <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-outline-danger btn-sm w-100">
+                                        <i class="fas fa-shopping-cart me-1"></i>Remove
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-dark btn-sm w-100 btn-add-to-cart">
+                                        <i class="fas fa-plus me-1"></i>Add to Cart
+                                    </a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                    </div>
-
                 {% endfor %}
             {% else %}
-                <div class="col-12 text-center">
-                    <p class="text-muted">No products available at the moment.</p>
+                <div class="col-12 text-center py-5">
+                    <div class="empty-state">
+                        <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No products available</h5>
+                        <p class="text-muted">Check back later for new arrivals</p>
+                        <a href="{% url 'product:products_list' %}" class="btn btn-outline-primary mt-2">Browse Products</a>
+                    </div>
                 </div>
             {% endif %}
-
         </div>
-        <div class="text-center mt-4">
-            <a href="{% url 'product:products_list' %}" class="btn btn-primary btn-lg">View All Products</a>
+        
+        <div class="text-center mt-5">
+            <a href="{% url 'product:products_list' %}" class="btn btn-primary btn-lg px-4 py-2 rounded-pill">
+                View All Products <i class="fas fa-arrow-right ms-2"></i>
+            </a>
         </div>
     </div>
 </section>
+
+<style>
+    /* General Styles */
+    #featured-products {
+        background-color: #f8f9fa;
+    }
+    
+    .text-gradient {
+        background: linear-gradient(90deg, #3498db, #9b59b6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        display: inline-block;
+    }
+    
+    /* Filter Buttons */
+    .btn-group.filter-buttons {
+        border-radius: 50px;
+        background: white;
+        padding: 4px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .btn-filter {
+        border: none;
+        border-radius: 50px !important;
+        padding: 8px 20px;
+        font-weight: 500;
+        color: #6c757d;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-filter.active, 
+    .btn-filter:hover {
+        background: linear-gradient(90deg, #3498db, #9b59b6);
+        color: white;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    }
+    
+    /* Product Card */
+    .product-card {
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    /* Product Badges */
+    .product-badges {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .product-badges .badge {
+        font-size: 0.7rem;
+        font-weight: 500;
+        padding: 4px 8px;
+        border-radius: 4px;
+    }
+    
+    /* Wishlist Button */
+    .wishlist-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 2;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border-radius: 50%;
+        color: #dc3545;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .wishlist-btn:hover {
+        background: #dc3545;
+        color: white;
+        transform: scale(1.1);
+    }
+    
+    /* Product Image */
+    .product-image {
+        height: 220px;
+        background: #f8f9fa;
+    }
+    
+    .product-image img {
+        object-fit: cover;
+        height: 100%;
+        transition: transform 0.5s ease;
+    }
+    
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.03);
+        transition: background 0.3s ease;
+    }
+    
+    .product-card:hover .image-overlay {
+        background: rgba(0,0,0,0.1);
+    }
+    
+    .product-card:hover img {
+        transform: scale(1.05);
+    }
+    
+    .product-image-placeholder {
+        height: 100%;
+        color: #dee2e6;
+    }
+    
+    /* Quick View Button */
+    .quick-view-btn {
+        position: absolute;
+        bottom: -50px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+    
+    .product-card:hover .quick-view-btn {
+        bottom: 20px;
+    }
+    
+    /* Product Name */
+    .product-name {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 40px;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        padding: 40px 0;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .product-image {
+            height: 180px;
+        }
+        
+        .row.align-items-center.mb-5 {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .col-md-6.text-md-end {
+            text-align: center !important;
+            margin-top: 20px;
+        }
+        
+        .btn-group.filter-buttons {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn-filter {
+            padding: 6px 12px;
+            margin: 2px;
+            font-size: 0.85rem;
+        }
+    }
+</style>
+
+<script>
+    function filterProducts(filter) {
+        // Remove active class from all buttons
+        document.querySelectorAll('.btn-filter').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Add active class to clicked button
+        event.target.classList.add('active');
+        
+        // Filter logic would go here
+        // This is just a placeholder for the actual filtering implementation
+        console.log('Filtering by:', filter);
+    }
+</script>

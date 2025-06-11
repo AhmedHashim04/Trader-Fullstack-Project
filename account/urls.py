@@ -1,6 +1,17 @@
 from django.urls import path 
-from .views import MyLoginView ,MyLogoutView, RegisterView , ProfileView , UpdateProfile , ActivateAccountView ,WaitingActivation, MyPasswordResetPassword
 from django.contrib.auth import views as auth_views
+from .views import (
+    ActivateAccountView,
+    MyLoginView,
+    MyLogoutView,
+    MyPasswordResetPassword,
+    ProfileView,
+    RegisterView,
+    UpdateProfile,
+    WaitingActivation,
+    
+)
+from django.urls import reverse_lazy
 app_name = 'account' 
 
 urlpatterns = [
@@ -9,8 +20,8 @@ urlpatterns = [
     path('logout/', MyLogoutView.as_view(), name='logout'),
     path('login/', MyLoginView.as_view(), name='login'),
 
-    path('password_change/', auth_views.PasswordChangeView.as_view(), name='password_change'),
-
+    path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
+    path('password_change/',auth_views.PasswordChangeView.as_view(success_url=reverse_lazy('account:password_change_done')), name='password_change'),
     path('password_reset/', MyPasswordResetPassword.as_view(), name='password_reset'),
     path('password_reset_done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('active/',WaitingActivation.as_view(),name='waiting_activation'),

@@ -14,59 +14,11 @@ class Profile(models.Model):
     user           = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile" ,verbose_name=_("User"))
     email          = models.EmailField(max_length=100, verbose_name=_("Email"))
     phone_number   = models.CharField(max_length=20, verbose_name=_("Phone Number"), blank=True, null=True)
-    address        = models.CharField(
-        validators=[
-            RegexValidator(
-                regex=r'^[\u0600-\u06FF\s\d]+(?:\s[\u0600-\u06FF\s\d]+)*$',
-                message="Enter a valid Egyptian Address in Arabic"
-            )
-        ],
-        max_length=255,
-        verbose_name=_("Address"),
-        blank=True,
-        null=True
-    )
-    CITY_CHOICES = [
-        ('الجيزة', 'الجيزة'),
-        ('القاهرة', 'القاهرة'),
-        ('الاسماعيلية', 'الاسماعيلية'),
-        ('الفيوم', 'الفيوم'),
-        ('المنيا', 'المنيا'),
-        ('المنوفية', 'المنوفية'),
-        ('الوادي الجديد', 'الوادي الجديد'),
-        ('القليوبية', 'القليوبية'),
-        ('الشرقية', 'الشرقية'),
-        ('الغربية', 'الغربية'),
-        ('الدقهلية', 'الدقهلية'),
-        ('الدمياط', 'الدمياط'),
-        ('البحرالاحمر', 'البحرالاحمر'),
-    ]
-    city           = models.CharField(
-        choices=CITY_CHOICES,
-        max_length=100,
-        verbose_name=_("City"),
-        blank=True,
-        null=True
-    )
-    country        = models.CharField(
-        choices=[('مصر', 'مصر')],
-        max_length=100,
-        verbose_name=_("Country"),
-        blank=True,
-        null=True
-    )
-    postal_code    = models.CharField(
-        validators=[
-            RegexValidator(
-                regex=r'^(?:[1-9]\d{2}|[1-9]\d{4})$',
-                message="Enter a valid Egyptian Postal Code"
-            )
-        ],
-        max_length=10,
-        verbose_name=_("Postal Code"),
-        blank=True,
-        null=True
-    )
+    address        = models.CharField(validators=[RegexValidator(regex=r'^[\u0600-\u06FF\s\d]+(?:\s[\u0600-\u06FF\s\d]+)*$',message="Enter a valid Egyptian Address in Arabic"    )],max_length=255,verbose_name=_("Address"),blank=True,null=True)
+    CITY_CHOICES   = [('الجيزة', 'الجيزة'),('القاهرة', 'القاهرة'),('الاسماعيلية', 'الاسماعيلية'),('الفيوم', 'الفيوم'),('المنيا', 'المنيا'),('المنوفية', 'المنوفية'),('الوادي الجديد', 'الوادي الجديد'),('القليوبية', 'القليوبية'),('الشرقية', 'الشرقية'),('الغربية', 'الغربية'),('الدقهلية', 'الدقهلية'),('الدمياط', 'الدمياط'),('البحرالاحمر', 'البحرالاحمر'),]
+    city           = models.CharField(choices=CITY_CHOICES,max_length=100,verbose_name=_("City"),blank=True,null=True)
+    country        = models.CharField(choices=[('مصر', 'مصر')],max_length=100,verbose_name=_("Country"),blank=True,null=True)
+    postal_code    = models.CharField(validators=[RegexValidator(regex=r'^(?:[1-9]\d{2}|[1-9]\d{4})$',message="Enter a valid Egyptian Postal Code")],max_length=10,verbose_name=_("Postal Code"),blank=True,null=True)
     profile_image  = models.ImageField(upload_to='profile_pictures/', verbose_name=_("Profile Image"), blank=True, null=True)
     date_of_birth  = models.DateField(blank=True, null=True, verbose_name=_("Date of Birth"))
     wishlist       = models.ManyToManyField(Product, verbose_name=_("Wishlist"), related_name="wishlist", blank=True)

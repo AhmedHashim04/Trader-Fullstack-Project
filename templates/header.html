@@ -1,10 +1,175 @@
+<style>
+    /* Navbar Styles */
+    .trendy-navbar {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--glass-border);
+        padding: 0.8rem 1rem;
+        transition: var(--transition);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .trendy-navbar.scrolled {
+        padding: 0.5rem 1rem;
+        background: rgba(15, 23, 42, 0.95);
+    }
+
+    /* Nav Links */
+    .trendy-nav .nav-link {
+        color: var(--text-gray);
+        font-weight: 500;
+        padding: 0.8rem 1.2rem;
+        margin: 0 0.2rem;
+        border-radius: 8px;
+        transition: var(--transition);
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .trendy-nav .nav-link i {
+        margin-right: 0.5rem;
+        font-size: 1.1rem;
+        transition: var(--transition);
+    }
+
+    .trendy-nav .nav-link:hover, 
+    .trendy-nav .nav-link.active {
+        color: var(--text-light);
+        background: rgba(108, 99, 255, 0.15);
+    }
+
+    .trendy-nav .nav-link:hover i, 
+    .trendy-nav .nav-link.active i {
+        color: var(--primary-color);
+    }
+
+    .trendy-nav .nav-link:hover::after, 
+    .trendy-nav .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40%;
+        height: 3px;
+        background: var(--primary-color);
+        border-radius: 10px;
+    }
+
+    /* Dropdown */
+    .trendy-dropdown {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        padding: 0.5rem 0;
+    }
+
+    .trendy-dropdown .dropdown-item {
+        color: var(--text-gray);
+        padding: 0.7rem 1.5rem;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .trendy-dropdown .dropdown-item:hover {
+        color: var(--text-light);
+        background: rgba(108, 99, 255, 0.1);
+    }
+
+    .trendy-dropdown .dropdown-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(108, 99, 255, 0.2), transparent);
+        transition: var(--transition);
+    }
+
+    .trendy-dropdown .dropdown-item:hover::before {
+        left: 100%;
+    }
 
 
+    /* Hamburger */
+    .trendy-toggler {
+        border: none;
+        background: transparent;
+        padding: 0.5rem;
+        outline: none;
+        cursor: pointer;
+    }
+
+    .hamburger-lines {
+        width: 30px;
+        height: 21px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .hamburger-lines span {
+        display: block;
+        height: 3px;
+        width: 100%;
+        border-radius: 10px;
+        background: var(--text-light);
+        transition: var(--transition);
+    }
+
+    .trendy-toggler[aria-expanded="true"] .hamburger-lines span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .trendy-toggler[aria-expanded="true"] .hamburger-lines span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .trendy-toggler[aria-expanded="true"] .hamburger-lines span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+        .trendy-search {
+            width: 200px;
+        }
+        
+        .trendy-search:focus {
+            width: 200px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .trendy-navbar {
+            padding: 0.8rem;
+        }
+        
+        
+        .user-actions {
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .trendy-nav .nav-link {
+            margin: 0.2rem 0;
+            padding: 0.8rem 1rem;
+        }
+    }
+</style>
 <nav class="navbar navbar-expand-lg trendy-navbar sticky-top">
     <div class="container">
         <a class="navbar-brand trendy-brand" href="/">
-            <div class="brand-wrapper">
-                <i class="fas fa-shopping-bag brand-icon"></i>
+            <div class="brand-wrapper d-flex align-items-center">
+                <i class="fas fa-shopping-bag brand-icon me-2"></i>
                 <span class="brand-text">Trader</span>
                 <div class="brand-glow"></div>
             </div>

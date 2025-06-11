@@ -1,20 +1,308 @@
-<section class="hero-section">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 hero-content">
-                <h1 class="display-4 fw-bold mb-3">Welcome to Trader</h1>
-                <p class="lead mb-4">Your ultimate trading hub for premium products, exclusive deals, and authentic marketplace experiences. Trade smart, shop smarter.</p>
-                <div class="hero-buttons">
-                    <a href="{% url 'product:products_list' %}" class="btn btn-primary btn-lg me-3">Shop Now</a>
-                    <a href="#featured-products" class="btn btn-outline-light btn-lg me-3">View Deals</a>
-                    <a href="#featured-collections" class="btn btn-secondary btn-lg">Explore Collections</a>
+<!-- Hero Section -->
+<section class="hero-section position-relative overflow-hidden">
+    <div class="container h-100">
+        <div class="row align-items-center h-100">
+            <div class="col-lg-6 hero-content py-5">
+                <h1 class="hero-title mb-4">
+                    <span class="text-gradient">Welcome to Trader</span>
+                    <span class="hero-highlight">Premium Marketplace</span>
+                </h1>
+                <p class="hero-subtitle mb-4">
+                    Your ultimate trading hub for premium products, exclusive deals, and authentic marketplace experiences. 
+                    <span class="d-block mt-2">Trade smart, shop smarter.</span>
+                </p>
+                <div class="hero-buttons d-flex flex-wrap gap-3">
+                    <a href="{% url 'product:products_list' %}" class="btn btn-danger btn-lg px-4 py-3">
+                        <i class="fas fa-shopping-bag me-2"></i> Shop Now
+                    </a>
+                    <a href="#featured-products" class="btn btn-outline-light btn-lg px-4 py-3">
+                        <i class="fas fa-bolt me-2"></i> Hot Deals
+                    </a>
+                    <a href="#featured-collections" class="btn btn-outline-primary btn-lg px-4 py-3">
+                        <i class="fas fa-gem me-2"></i> Collections
+                    </a>
+                </div>
+                <div class="hero-features mt-4">
+                    <div class="d-flex flex-wrap gap-4">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            <span>100% Authentic Products</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-shipping-fast text-primary me-2"></i>
+                            <span>Fast Delivery</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="hero-image text-center">
-                    <i class="fas fa-shopping-cart hero-icon float"></i>
+            <div class="col-lg-6 hero-image-col">
+                <div class="hero-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                         alt="Happy shopping" 
+                         class="hero-image img-fluid rounded-3 shadow-lg">
+                    <div class="hero-badge hero-badge-1">
+                        <div class="badge-content">
+                            <span class="badge-value">50% OFF</span>
+                            <span class="badge-label">Today Only</span>
+                        </div>
+                    </div>
+                    <div class="hero-badge hero-badge-2">
+                        <div class="badge-content">
+                            <i class="fas fa-star"></i>
+                            <span class="badge-label">Top Rated</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <!-- Hero Waves -->
+    <div class="hero-waves">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" 
+                  opacity=".25" class="shape-fill"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" 
+                  opacity=".5" class="shape-fill"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" 
+                  class="shape-fill"></path>
+        </svg>
+    </div>
 </section>
+<style>
+    /* Hero Section */
+    .hero-section {
+        background: var(--gradient-primary);
+        color: hsl(var(--text-primary));
+        padding: 100px 0 0;
+        position: relative;
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    /* Hero Typography */
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+    }
+    
+    .text-gradient {
+        background: var(--gradient-secondary);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        display: block;
+    }
+    
+    .hero-highlight {
+        background: hsla(var(--accent-color), 0.1);
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        border-radius: var(--border-radius-lg);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: 1px solid hsla(var(--accent-color), 0.2);
+        margin-top: 1rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.4rem;
+        line-height: 1.6;
+        max-width: 90%;
+        opacity: 0.9;
+    }
+    
+    /* Hero Buttons */
+    .hero-buttons .btn {
+        font-weight: 600;
+        border-radius: var(--border-radius-lg);
+        transition: var(--transition);
+        border-width: 2px;
+    }
+    
+    .hero-buttons .btn-primary {
+        background-color: hsl(var(--accent-color));
+        color: hsl(var(--primary-color));
+        border-color: hsl(var(--accent-color));
+    }
+    
+    .hero-buttons .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-colored);
+    }
+    
+    .hero-buttons .btn-outline-light:hover {
+        background-color: hsla(var(--accent-color), 0.1);
+    }
+    
+    .hero-buttons .btn-outline-primary {
+        color: hsl(var(--accent-color));
+        border-color: hsl(var(--accent-color));
+    }
+    
+    .hero-buttons .btn-outline-primary:hover {
+        background-color: hsl(var(--accent-color));
+        color: hsl(var(--primary-color));
+    }
+    
+    /* Hero Features */
+    .hero-features {
+        opacity: 0.9;
+    }
+    
+    .hero-features i {
+        font-size: 1.2rem;
+    }
+    
+    /* Hero Image */
+    .hero-image-col {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .hero-image-wrapper {
+        position: relative;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+    }
+    
+    .hero-image {
+        border: 10px solid hsl(var(--surface-color));
+        transform: rotateY(-5deg) rotateX(5deg);
+        transition: var(--transition);
+    }
+    
+    .hero-image-wrapper:hover .hero-image {
+        transform: rotateY(0) rotateX(0);
+    }
+    
+    /* Hero Badges */
+    .hero-badge {
+        position: absolute;
+        background: hsl(var(--surface-color));
+        color: hsl(var(--primary-color));
+        border-radius: var(--border-radius-lg);
+        padding: 10px 15px;
+        font-weight: 700;
+        box-shadow: var(--shadow-light);
+        z-index: 3;
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    .hero-badge-1 {
+        top: -20px;
+        right: -20px;
+        background: var(--gradient-warning);
+        color: hsl(var(--text-primary));
+        animation-delay: 0.2s;
+    }
+    
+    .hero-badge-2 {
+        bottom: -20px;
+        left: -20px;
+        background: var(--gradient-info);
+        color: hsl(var(--text-primary));
+        animation-delay: 0.4s;
+    }
+    
+    .badge-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .badge-value {
+        font-size: 1.5rem;
+        line-height: 1;
+    }
+    
+    .badge-label {
+        font-size: 0.8rem;
+    }
+    
+    /* Hero Waves */
+    .hero-waves {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        overflow: hidden;
+    }
+    
+    .hero-waves svg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .shape-fill {
+        fill: hsl(var(--background-color));
+    }
+    
+    /* Animations */
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+        .hero-section {
+            min-height: auto;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 2.8rem;
+        }
+        
+        .hero-subtitle {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-buttons {
+            justify-content: center;
+        }
+        
+        .hero-features {
+            justify-content: center;
+        }
+        
+        .hero-image {
+            max-width: 80%;
+            margin: 40px auto 0;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.2rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .hero-buttons .btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+    }
+</style>

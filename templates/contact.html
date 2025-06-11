@@ -1,310 +1,425 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% load static %}
-{% block title %}About Trader - Your Ultimate Shopping Destination{% endblock %}
-<body>
-    <!-- Navigation -->
-    {% include 'header.html' %}
-    {% block body %}
-    <!-- Page Header -->
-    <section class="page-header bg-light py-4">
-        <div class="container">
-            <h1 class="h2 mb-0">Contact Us</h1>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">Contact</li>
-                </ol>
-            </nav>
-        </div>
-    </section>
 
-    <!-- Contact Content -->
-    <div class="container py-5">
-        <div class="row">
-            <!-- Contact Form -->
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="mb-0">Get in Touch</h3>
-                        <p class="text-muted mb-0">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
-                    </div>
-                    <div class="card-body">
-                        <form id="contactForm">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="firstName" class="form-label">First Name *</label>
-                                    <input type="text" class="form-control" id="firstName" required>
-                                    <div class="invalid-feedback">Please provide a valid first name.</div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="lastName" class="form-label">Last Name *</label>
-                                    <input type="text" class="form-control" id="lastName" required>
-                                    <div class="invalid-feedback">Please provide a valid last name.</div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="email" class="form-label">Email *</label>
-                                    <input type="email" class="form-control" id="email" required>
-                                    <div class="invalid-feedback">Please provide a valid email address.</div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="phone" class="form-label">Phone Number</label>
-                                    <input type="tel" class="form-control" id="phone">
-                                </div>
-                                <div class="col-12">
-                                    <label for="subject" class="form-label">Subject *</label>
-                                    <select class="form-select" id="subject" required>
-                                        <option value="">Choose a subject</option>
-                                        <option value="general">General Inquiry</option>
-                                        <option value="order">Order Support</option>
-                                        <option value="returns">Returns & Exchanges</option>
-                                        <option value="shipping">Shipping Questions</option>
-                                        <option value="product">Product Information</option>
-                                        <option value="technical">Technical Support</option>
-                                        <option value="partnership">Partnership Opportunities</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                    <div class="invalid-feedback">Please select a subject.</div>
-                                </div>
-                                <div class="col-12">
-                                    <label for="orderNumber" class="form-label">Order Number (if applicable)</label>
-                                    <input type="text" class="form-control" id="orderNumber" placeholder="e.g., #12345">
-                                </div>
-                                <div class="col-12">
-                                    <label for="message" class="form-label">Message *</label>
-                                    <textarea class="form-control" id="message" rows="5" required placeholder="Please provide as much detail as possible..."></textarea>
-                                    <div class="invalid-feedback">Please enter your message.</div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="agreeTerms" required>
-                                        <label class="form-check-label" for="agreeTerms">
-                                            I agree to the <a href="#" class="text-decoration-none">Privacy Policy</a> and <a href="#" class="text-decoration-none">Terms of Service</a> *
-                                        </label>
-                                        <div class="invalid-feedback">You must agree to the terms and conditions.</div>
+{% block title %}Contact Us - Your Ultimate Shopping Destination{% endblock %}
+
+{% block body %}
+<!-- Enhanced Page Header -->
+<section class="page-header bg-gradient-primary-to-secondary py-5">
+    <div class="container btn-primary">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="display-4 fw-bold text-white mb-3 animate__animated animate__fadeInDown">Let's Connect</h1>
+                <p class="lead text-white-80 mb-0 animate__animated animate__fadeIn animate__delay-1s">We're here to help and answer any questions you might have.</p>
+            </div>
+            <div class="col-md-4 animate__animated animate__fadeIn animate__delay-2s">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-md-end">
+                        <li class="breadcrumb-item"><a href="/" class="text-white">Home</a></li>
+                        <li class="breadcrumb-item active text-white-50" aria-current="page">Contact</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Contact Content -->
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Contact Form Section -->
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-lg animate__animated animate__fadeInLeft">
+                <div class="card-header bg-white py-4 border-0">
+                    <h2 class="h3 mb-1 text-gradient-primary">Send us a message</h2>
+                    <p class="text-muted mb-0">We typically respond within 24 hours</p>
+                </div>
+                <div class="card-body p-4 p-lg-5">
+                    <form method="post" class="needs-validation" novalidate id="contactForm">
+                        {% csrf_token %}
+                        <div class="row g-4">
+                            <!-- Name Field -->
+                            <div class="col-md-6">
+                                <div class="form-group floating-label-group">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-text bg-transparent border-end-0">
+                                            <i class="fas fa-user text-primary"></i>
+                                        </span>
+                                        {% render_field form.name class+="form-control modern-input" placeholder=" " %}
+                                        <label for="{{ form.name.id_for_label }}" class="floating-label">Your Full Name</label>
+                                    </div>
+                                    <div class="invalid-feedback animated fadeIn">
+                                        <i class="fas fa-exclamation-circle me-2"></i>Please provide your name
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
-                                        <i class="fas fa-paper-plane me-2"></i>Send Message
-                                    </button>
+                            </div>
+                            
+                            <!-- Email Field -->
+                            <div class="col-md-6">
+                                <div class="form-group floating-label-group">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-text bg-transparent border-end-0">
+                                            <i class="fas fa-envelope text-primary"></i>
+                                        </span>
+                                        {% render_field form.from_email class+="form-control modern-input" placeholder=" " %}
+                                        <label for="{{ form.from_email.id_for_label }}" class="floating-label">Email Address</label>
+                                    </div>
+                                    <div class="invalid-feedback animated fadeIn">
+                                        <i class="fas fa-exclamation-circle me-2"></i>Please provide a valid email
+                                    </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                            
+                            <!-- Subject Field -->
+                            <div class="col-12">
+                                <div class="form-group floating-label-group">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-text bg-transparent border-end-0">
+                                            <i class="fas fa-tag text-primary"></i>
+                                        </span>
+                                        {% render_field form.title class+="form-control modern-input" placeholder=" " %}
+                                        <label for="{{ form.title.id_for_label }}" class="floating-label">Subject</label>
+                                    </div>
+                                    <div class="invalid-feedback animated fadeIn">
+                                        <i class="fas fa-exclamation-circle me-2"></i>Please provide a subject
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Message Field -->
+                            <div class="col-12">
+                                <div class="form-group floating-label-group">
+                                    <div class="input-group">
+                                        {% render_field form.message class+="form-control modern-input" placeholder=" " rows="5" %}
+                                        <label for="{{ form.message.id_for_label }}" class="floating-label">Your Message</label>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-2">
+                                        <div class="invalid-feedback animated fadeIn">
+                                            <i class="fas fa-exclamation-circle me-2"></i>Please enter your message
+                                        </div>
+                                        <div class="form-text text-end">
+                                            <span id="messageCounter">0</span>/500 characters
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="col-12 mt-3">
+                                <button type="submit" class="btn btn-primary btn-lg w-100 py-3 shadow-primary">
+                                    <span class="submit-text">
+                                        <i class="fas fa-paper-plane me-2"></i>Send Message
+                                    </span>
+                                    <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </div>
 
-            <!-- Contact Information -->
-            <div class="col-lg-4">
-                <div class="contact-info">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5 class="mb-0">Contact Information</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="contact-item mb-3">
-                                <i class="fas fa-map-marker-alt text-primary me-3"></i>
-                                <div>
-                                    <h6 class="mb-1">Address</h6>
-                                    <p class="text-muted mb-0">123 Commerce Street<br>Business District<br>New York, NY 10001</p>
-                                </div>
+        <!-- Contact Information Section -->
+        <div class="col-lg-5">
+            <div class="sticky-top" style="top: 30px;">
+                <!-- Location Card -->
+                <div class="card border-0 shadow-sm mb-4 animate__animated animate__fadeInRight animate__delay-1s">
+                    <div class="card-header bg-white py-3 d-flex align-items-center">
+                        <i class="fas fa-map-marker-alt text-primary me-2 fs-4"></i>
+                        <h3 class="h5 mb-0">Our Location</h3>
+                    </div>
+                    <div class="card-body">
+                        <address class="mb-0">
+                            <p class="mb-3"><i class="fas fa-building me-2 text-muted"></i>123 Commerce Street<br>
+                            <i class="fas fa-city me-2 text-muted"></i>Business District<br>
+                            <i class="fas fa-globe-americas me-2 text-muted"></i>New York, NY 10001</p>
+                            <div class="ratio ratio-16x9 mb-3 rounded-3 overflow-hidden border">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215256018144!2d-73.9878449241641!3d40.74844097138959!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQ0JzU0LjQiTiA3M8KwNTknMTMuNiJX!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" 
+                                        style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                             </div>
-                            <div class="contact-item mb-3">
-                                <i class="fas fa-phone text-primary me-3"></i>
+                        </address>
+                    </div>
+                </div>
+
+                <!-- Contact Details Card -->
+                <div class="card border-0 shadow-sm mb-4 animate__animated animate__fadeInRight animate__delay-2s">
+                    <div class="card-header bg-white py-3 d-flex align-items-center">
+                        <i class="fas fa-headset text-primary me-2 fs-4"></i>
+                        <h3 class="h5 mb-0">Contact Details</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-3 d-flex">
+                                <div class="icon-circle bg-primary-soft text-primary me-3">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
                                 <div>
                                     <h6 class="mb-1">Phone</h6>
-                                    <p class="text-muted mb-0">+1 (555) 123-4567</p>
+                                    <a href="tel:+15551234567" class="text-muted">+1 (555) 123-4567</a>
                                 </div>
-                            </div>
-                            <div class="contact-item mb-3">
-                                <i class="fas fa-envelope text-primary me-3"></i>
+                            </li>
+                            <li class="mb-3 d-flex">
+                                <div class="icon-circle bg-primary-soft text-primary me-3">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
                                 <div>
                                     <h6 class="mb-1">Email</h6>
-                                    <p class="text-muted mb-0">support@shopease.com</p>
+                                    <a href="mailto:support@shopease.com" class="text-muted">support@shopease.com</a>
                                 </div>
-                            </div>
-                            <div class="contact-item">
-                                <i class="fas fa-clock text-primary me-3"></i>
+                            </li>
+                            <li class="d-flex">
+                                <div class="icon-circle bg-primary-soft text-primary me-3">
+                                    <i class="fas fa-clock"></i>
+                                </div>
                                 <div>
                                     <h6 class="mb-1">Business Hours</h6>
                                     <p class="text-muted mb-0">
-                                        Mon - Fri: 9:00 AM - 6:00 PM<br>
-                                        Sat: 10:00 AM - 4:00 PM<br>
+                                        Mon-Fri: 9AM - 6PM<br>
+                                        Sat: 10AM - 4PM<br>
                                         Sun: Closed
                                     </p>
                                 </div>
-                            </div>
-                        </div>
+                            </li>
+                        </ul>
                     </div>
+                </div>
 
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h5 class="mb-0">Quick Help</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="list-group list-group-flush">
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-question-circle me-2"></i>FAQ
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-truck me-2"></i>Shipping Information
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-undo-alt me-2"></i>Return Policy
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-ruler me-2"></i>Size Guide
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-shield-alt me-2"></i>Privacy Policy
-                                </a>
-                            </div>
-                        </div>
+                <!-- Social Media Card -->
+                <div class="card border-0 shadow-sm animate__animated animate__fadeInRight animate__delay-3s">
+                    <div class="card-header bg-white py-3 d-flex align-items-center">
+                        <i class="fas fa-share-alt text-primary me-2 fs-4"></i>
+                        <h3 class="h5 mb-0">Follow Us</h3>
                     </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Follow Us</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="social-links d-flex gap-3">
-                                <a href="#" class="btn btn-outline-primary">
-                                    <i class="fab fa-facebook-f"></i>
-                                </a>
-                                <a href="#" class="btn btn-outline-info">
-                                    <i class="fab fa-twitter"></i>
-                                </a>
-                                <a href="#" class="btn btn-outline-danger">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
-                                <a href="#" class="btn btn-outline-primary">
-                                    <i class="fab fa-linkedin-in"></i>
-                                </a>
-                            </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap gap-3 justify-content-center">
+                            <a href="#" class="btn btn-icon btn-primary btn-lg rounded-circle shadow-sm" data-bs-toggle="tooltip" title="Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-info btn-lg rounded-circle shadow-sm" data-bs-toggle="tooltip" title="Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-danger btn-lg rounded-circle shadow-sm" data-bs-toggle="tooltip" title="Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-primary btn-lg rounded-circle shadow-sm" data-bs-toggle="tooltip" title="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-dark btn-lg rounded-circle shadow-sm" data-bs-toggle="tooltip" title="TikTok">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                            <a href="#" class="btn btn-icon btn-success btn-lg rounded-circle shadow-sm" data-bs-toggle="tooltip" title="WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Success Modal -->
-    <div class="modal fade" id="successModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas fa-check-circle text-success me-2"></i>Message Sent!
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-body text-center p-5">
+                <div class="mb-4">
+                    <div class="icon-xl rounded-circle bg-success bg-opacity-10 text-success mx-auto mb-4">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                    <h3 class="mb-3 text-gradient-success">Message Sent!</h3>
+                    <p class="text-muted mb-4">Thank you for contacting us! We've received your message and will respond within 24 hours.</p>
+                    <div class="alert alert-light border mb-4">
+                        <p class="mb-0">We'll reply to: <strong id="responseEmail" class="text-primary"></strong></p>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <p>Thank you for contacting us! We've received your message and will respond within 24 hours.</p>
-                    <p class="text-muted mb-0">You can expect a response at: <span id="responseEmail" class="fw-bold"></span></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Continue Shopping</button>
-                </div>
+                <button type="button" class="btn btn-primary px-4 shadow-sm" data-bs-dismiss="modal">
+                    <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
+                </button>
             </div>
         </div>
     </div>
+</div>
+{% endblock %}
 
-    <!-- Footer -->
-    {% include 'footer.html' %}
+{% block extra_css %}
+<style>
+/* Modern Gradient Background */
+.bg-gradient-primary-to-secondary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="js/main.js"></script>
-    <script src="js/cart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('contactForm');
-            const submitBtn = document.getElementById('submitBtn');
-            
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                if (validateForm()) {
-                    submitForm();
-                }
-            });
-            
-            function validateForm() {
-                const form = document.getElementById('contactForm');
-                const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
-                let isValid = true;
-                
-                inputs.forEach(input => {
-                    if (!input.value.trim()) {
-                        input.classList.add('is-invalid');
-                        isValid = false;
-                    } else {
-                        input.classList.remove('is-invalid');
-                        input.classList.add('is-valid');
-                    }
-                });
-                
-                // Validate email format
-                const email = document.getElementById('email');
-                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (email.value && !emailPattern.test(email.value)) {
-                    email.classList.add('is-invalid');
-                    isValid = false;
-                }
-                
-                return isValid;
+/* Text Gradient Effect */
+.text-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-success {
+    background: linear-gradient(135deg, #2af598 0%, #009efd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Form Styles */
+.floating-label-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.floating-label {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    color: #6c757d;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    z-index: 1;
+    background: white;
+    padding: 0 0.25rem;
+    margin-left: 0.5rem;
+}
+
+.form-control:focus ~ .floating-label,
+.form-control:not(:placeholder-shown) ~ .floating-label {
+    top: -0.5rem;
+    left: 0.75rem;
+    font-size: 0.75rem;
+    color: #667eea;
+}
+
+.modern-input {
+    border-radius: 0.375rem !important;
+    padding: 1rem 1rem !important;
+    border: 1px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.modern-input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+}
+
+.input-group-text {
+    border-radius: 0.375rem 0 0 0.375rem !important;
+}
+
+/* Icon Circles */
+.icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-xl {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Button Shadow */
+.shadow-primary {
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Text Colors */
+.text-white-80 {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Animations */
+.animate-delay-1 {
+    animation-delay: 0.1s;
+}
+
+.animate-delay-2 {
+    animation-delay: 0.2s;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+    .page-header {
+        text-align: center;
+    }
+    
+    .breadcrumb {
+        justify-content: center !important;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Character counter for message
+    const messageInput = document.getElementById('{{ form.message.id_for_label }}');
+    const messageCounter = document.getElementById('messageCounter');
+    
+    if (messageInput && messageCounter) {
+        messageInput.addEventListener('input', function() {
+            messageCounter.textContent = this.value.length;
+            if (this.value.length > 500) {
+                messageCounter.classList.add('text-danger');
+            } else {
+                messageCounter.classList.remove('text-danger');
             }
-            
-            function submitForm() {
-                const submitBtn = document.getElementById('submitBtn');
-                const originalText = submitBtn.innerHTML;
-                
+        });
+    }
+    
+    // Form submission handling
+    const form = document.getElementById('contactForm');
+    if (form) {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const submitText = submitBtn.querySelector('.submit-text');
+        const spinner = submitBtn.querySelector('.spinner-border');
+        
+        form.addEventListener('submit', function(e) {
+            if (!form.checkValidity()) {
+                e.preventDefault();
+                e.stopPropagation();
+            } else {
                 // Show loading state
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
+                submitText.classList.add('d-none');
+                spinner.classList.remove('d-none');
                 submitBtn.disabled = true;
                 
-                // Simulate form submission
+                // Simulate AJAX submission
                 setTimeout(() => {
-                    const email = document.getElementById('email').value;
+                    const email = document.getElementById('{{ form.from_email.id_for_label }}').value;
                     document.getElementById('responseEmail').textContent = email;
                     
                     // Show success modal
-                    const modal = new bootstrap.Modal(document.getElementById('successModal'));
-                    modal.show();
+                    const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                    successModal.show();
                     
                     // Reset form
-                    document.getElementById('contactForm').reset();
-                    document.querySelectorAll('.is-valid').forEach(el => el.classList.remove('is-valid'));
+                    form.reset();
+                    form.classList.remove('was-validated');
                     
-                    // Reset button
-                    submitBtn.innerHTML = originalText;
+                    // Reset button state
+                    submitText.classList.remove('d-none');
+                    spinner.classList.add('d-none');
                     submitBtn.disabled = false;
                 }, 1500);
             }
             
-            // Real-time validation
-            const inputs = form.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                input.addEventListener('blur', function() {
-                    if (this.hasAttribute('required') && !this.value.trim()) {
-                        this.classList.add('is-invalid');
-                    } else {
-                        this.classList.remove('is-invalid');
-                        if (this.value.trim()) {
-                            this.classList.add('is-valid');
-                        }
-                    }
-                });
-                
-                input.addEventListener('input', function() {
-                    if (this.classList.contains('is-invalid') && this.value.trim()) {
-                        this.classList.remove('is-invalid');
-                        this.classList.add('is-valid');
-                    }
-                });
-            });
+            form.classList.add('was-validated');
         });
-    </script>
-    {% endblock body %}
-</body>
+    }
+});
+</script>
+{% endblock %}
