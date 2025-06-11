@@ -29,8 +29,8 @@
                         {% else %}
                             <div class="d-flex flex-column align-items-center justify-content-center bg-light" 
                                  style="height: 400px;">
-                                <i class="fas fa-image fa-4x text-muted mb-3"></i>
-                                <p class="text-muted">No product image</p>
+                                <i class="fas fa-image fa-4x text-primary mb-3"></i>
+                                <p class="text-primary">No product image</p>
                             </div>
                         {% endif %}
                     </div>
@@ -68,11 +68,11 @@
                                 </a>
                             {% else %}
                                 <a href="{% url 'product:add_remove_wishlist' product.slug %}" 
-                                   class="btn btn-link text-muted fs-5 p-1" title="Add to wishlist">
+                                   class="btn btn-link text-primary fs-5 p-1" title="Add to wishlist">
                                     <i class="far fa-heart"></i>
                                 </a>
                             {% endif %}
-                            <button class="btn btn-link text-muted fs-5 p-1" title="Share product">
+                            <button class="btn btn-link text-primary fs-5 p-1" title="Share product">
                                 <i class="fas fa-share-alt"></i>
                             </button>
                         </div>
@@ -90,13 +90,13 @@
                                 {% endfor %}
                             {% endwith %}
                         </div>
-                        <a href="#reviews" class="text-muted small">({{ reviews_count }} reviews)</a>
+                        <a href="#reviews" class="text-primary small">({{ reviews_count }} reviews)</a>
                     </div>
                     
                     <div class="price-section mb-4">
                         <span class="price-current h3 text-primary fw-bold">{{ product.price }} EGP</span>
                         {% if product.old_price %}
-                            <span class="price-old text-muted text-decoration-line-through ms-2">{{ product.old_price }} EGP</span>
+                            <span class="price-old text-primary text-decoration-line-through ms-2">{{ product.old_price }} EGP</span>
                             <span class="badge bg-danger ms-2">Save {{ product.get_discount_percentage }}%</span>
                         {% endif %}
                     </div>
@@ -111,7 +111,7 @@
                         </span>
                     </div>
                     
-                    <div class="product-description mb-4">
+                    <div class="product-description text-secondary mb-4">
                         <p>{{ product.description|default:"No description available for this product." }}</p>
                     </div>
                     
@@ -148,13 +148,13 @@
                     <div class="product-meta">
                         <div class="row g-2">
                             <div class="col-md-6">
-                                <div class="d-flex align-items-center text-muted">
+                                <div class="d-flex align-items-center text-primary">
                                     <i class="fas fa-tag me-2"></i>
                                     <span>Category: {{ product.category.name }}</span>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="d-flex align-items-center text-muted">
+                                <div class="d-flex align-items-center text-primary">
                                     <i class="fas fa-barcode me-2"></i>
                                     <span>SKU: {{ product.sku|default:"N/A" }}</span>
                                 </div>
@@ -196,7 +196,7 @@
                 <div class="tab-content bg-white p-4 border-start border-end border-bottom rounded-bottom">
                     <!-- Description Tab -->
                     <div class="tab-pane fade show active" id="description" role="tabpanel">
-                        <div class="product-description">
+                        <div class="product-description text-secondary">
                             {{ product.description|default:"No description available."|linebreaks }}
                         </div>
                     </div>
@@ -247,7 +247,7 @@
                                                 {% endif %}
                                             {% endfor %}
                                         </div>
-                                        <p class="text-muted">Based on {{ reviews_count }} reviews</p>
+                                        <p class="text-primary">Based on {{ reviews_count }} reviews</p>
                                     </div>
                                 </div>
                                 
@@ -291,7 +291,7 @@
                                             <div class="review-item mb-4 pb-3 border-bottom">
                                                 <div class="d-flex justify-content-between mb-2">
                                                     <div>
-                                                        <h6 class="mb-0">{{ review.user.username }}</h6>
+                                                        <h6 class="mb-0 text-primary">{{ review.user.username }}</h6>
                                                         <div class="rating-stars small">
                                                             {% for i in "12345" %}
                                                                 {% if forloop.counter <= review.rating %}
@@ -302,9 +302,9 @@
                                                             {% endfor %}
                                                         </div>
                                                     </div>
-                                                    <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+                                                    <small class="text-primary">{{ review.created_at|date:"M d, Y" }}</small>
                                                 </div>
-                                                <p class="mb-0">{{ review.content }}</p>
+                                                <p class="mb-0 text-secondary" >{{ review.content }}</p>
                                             </div>
                                         {% endfor %}
                                     </div>
@@ -355,9 +355,9 @@
                                     {% endif %}
                                 {% else %}
                                     <div class="text-center py-5">
-                                        <i class="fas fa-comment-slash fa-3x text-muted mb-3"></i>
-                                        <h5 class="text-muted">No reviews yet</h5>
-                                        <p class="text-muted">Be the first to review this product!</p>
+                                        <i class="fas fa-comment-slash fa-3x text-primary mb-3"></i>
+                                        <h5 class="text-primary">No reviews yet</h5>
+                                        <p class="text-primary">Be the first to review this product!</p>
                                     </div>
                                 {% endif %}
                             </div>
@@ -374,7 +374,7 @@
 <section class="py-5">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h3 class="mb-0">You may also like</h3>
+            <h3 class="mb-0 text-primary ">You may also like</h3>
             <a href="{% url 'product:products_list' %}?category={{ product.category.slug }}" class="btn btn-outline-primary btn-sm">
                 View all in {{ product.category.name }}
             </a>
@@ -400,7 +400,7 @@
                                          style="height: 200px; object-fit: contain;">
                                 {% else %}
                                     <div class="no-image" style="height: 200px; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
-                                        <i class="fas fa-image fa-3x text-muted"></i>
+                                        <i class="fas fa-image fa-3x text-primary"></i>
                                     </div>
                                 {% endif %}
                             </a>
@@ -414,7 +414,7 @@
                             <div class="price mb-2">
                                 <span class="text-primary fw-bold">{{ rp.price }} EGP</span>
                                 {% if rp.old_price %}
-                                    <small class="text-muted text-decoration-line-through ms-1">{{ rp.old_price }} EGP</small>
+                                    <small class="text-primary text-decoration-line-through ms-1">{{ rp.old_price }} EGP</small>
                                 {% endif %}
                             </div>
                             
@@ -443,7 +443,7 @@
 {% if recently_viewed %}
 <section class="py-5 bg-light">
     <div class="container">
-        <h3 class="mb-4">Recently Viewed</h3>
+        <h3 class="mb-4 text-primary">Recently Viewed</h3>
         <div class="row g-4">
             {% for rv in recently_viewed %}
                 <div class="col-md-2 col-4">
@@ -454,7 +454,7 @@
                                      style="height: 120px; object-fit: contain;">
                             {% else %}
                                 <div class="no-image" style="height: 120px; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
-                                    <i class="fas fa-image fa-2x text-muted"></i>
+                                    <i class="fas fa-image fa-2x text-primary"></i>
                                 </div>
                             {% endif %}
                         </a>

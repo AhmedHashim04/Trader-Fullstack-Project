@@ -51,7 +51,7 @@
                     <a href="{% url 'product:add_remove_wishlist' product.slug %}" class="remove-from-wishlist" title="Remove from wishlist">
                         <i class="fas fa-times"></i>
                     </a>
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top">
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% endif %}" alt="{{ product.name }}" class="card-img-top">
                     <div class="card-body d-flex flex-column">
                         <h6 class="card-title">
                             <a href="{% url 'product:product_detail' product.slug %}" class="text-decoration-none text-dark">
