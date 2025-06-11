@@ -10,10 +10,12 @@ from .models import Profile
 from django.contrib.auth.models import User
 from .forms import RegisterForm, UpdateProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-# from django.core.mail import send_mail
+from django.http import Http404
+from django.utils import timezone
+import logging
+logger = logging.getLogger(__name__)
 from django.conf import settings
 import uuid
-
 
 class RegisterView(CreateView):
     form_class = RegisterForm
@@ -29,6 +31,11 @@ class RegisterView(CreateView):
         user = form.save(commit=False)
         user.is_active = False
         user.save()
+
+        logger.info(f"New user registered: {user.email}")
+        from django.template.loader import render_to_string
+
+        
         self.send_activation_email(user)
         messages.success(self.request, 'Account created successfully! Please check your email to activate your account.')
         return super().form_valid(form)
@@ -38,9 +45,20 @@ class RegisterView(CreateView):
         user.profile.activation_key = activation_key
         user.profile.save()
         activation_url = self.request.build_absolute_uri(reverse('account:activate', args=[activation_key]))
+
         subject = 'Activate Your Account'
-        message = f'Please click the link to activate your account: {activation_url}'
+        # expiry_date = timezone.now() + timezone.timedelta(hours=24)  # صلاحية الرابط لمدة 24 ساعة
+        # user.profile.activation_key_expires = expiry_date  # إضافة تاريخ انتهاء الصلاحية
+
+        # from django.template.loader import render_to_string
+        # subject = 'Activate Your Account'
+        # message = render_to_string('account/activation_email.html', {
+        #     'user': user,
+        #     'activation_url': activation_url,
+        # })
+        # from django.core.mail import send_mail
         # send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
+        message = f'Please click the link to activate your account: {activation_url}'
         print(subject, message, settings.EMAIL_HOST_USER, [user.email])
 
 
@@ -49,13 +67,26 @@ class WaitingActivation(TemplateView):
     
 class ActivateAccountView(View):
     def get(self, request, activation_key):
-        user = get_object_or_404(User, profile__activation_key=activation_key)
+        try:
+            user = User.objects.select_related('profile').get(profile__activation_key=activation_key)
+        except User.DoesNotExist:
+            messages.error(request, 'Invalid or expired activation link.')
+            raise Http404("User not found")
+        # try:
+        #     user = User.objects.select_related('profile').get(profile__activation_key=activation_key,profile__activation_key_expires__gt=timezone.now(),is_active=False)
+        # except User.DoesNotExist:
+        #     messages.error(request, 'Invalid or expired activation link.')
+        #     return redirect('account:register')
+        # user = get_object_or_404(User, profile__activation_key=activation_key,profile__activation_key_expires__gt=timezone.now(),is_active=False)
         if user.is_active:
             messages.info(request, 'Your account is already activated.')
             return redirect('home:home')
 
         user.is_active = True
         user.profile.activation_key = ''
+        # user.profile.activation_key_expires = None
+        from django.contrib.auth import login
+        login(request, user)
         user.save()
         messages.success(request, 'Your account has been activated successfully!')
         return render(request, 'account/account_activation_complete.html')
@@ -67,6 +98,8 @@ class ProfileView(LoginRequiredMixin, DetailView):
     context_object_name = "profile"
     pk_url_kwarg = "id"
 
+    def get_queryset(self):
+        return super().get_queryset().select_related('user')
 
 class UpdateProfile(LoginRequiredMixin, UpdateView):
     model = Profile
@@ -75,10 +108,13 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
     context_object_name = "profile"
     pk_url_kwarg = "id"
 
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+    
     def form_valid(self, form):
-        form.save()
+        response = super().form_valid(form)
         messages.success(self.request, 'Your profile has been updated successfully!')
-        return super().form_valid(form)
+        return response
 
     def get_success_url(self):
         return reverse('account:user_profile', kwargs={'id': self.object.id})
@@ -87,19 +123,20 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
 class MyLoginView(LoginView):
     redirect_authenticated_user = True
 
+    def form_valid(self, form):
+        user = form.get_user()
+        user.last_login = timezone.now()
+        user.save(update_fields=['last_login'])
+        return super().form_valid(form)
+
 
 class MyLogoutView(LogoutView):
     next_page = 'home:home'
-    http_method_names = ["get", "options"]
+    http_method_names = ["post", "options"]
 
-    def get(self, request, *args, **kwargs):
-        """Logout may be done via GET."""
-        logout(request)
-        redirect_to = self.get_success_url()
-        if redirect_to != request.get_full_path():
-            # Redirect to target page once the session has been cleared.
-            return HttpResponseRedirect(redirect_to)
-        return super().get(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        logger.info(f"User {request.user.username} logged out")
+        return super().dispatch(request, *args, **kwargs)
 
 
 class MyPasswordResetPassword(PasswordResetView):

@@ -23,6 +23,7 @@ class Profile(models.Model):
     date_of_birth  = models.DateField(blank=True, null=True, verbose_name=_("Date of Birth"))
     wishlist       = models.ManyToManyField(Product, verbose_name=_("Wishlist"), related_name="wishlist", blank=True)
     activation_key = models.CharField(max_length=255, blank=True, null=True, verbose_name=_("Activation Key"))
+    # activation_key_expires = models.DateTimeField(blank=True, null=True, verbose_name=_("Activation Key Expires"))
     date_joined    = models.DateTimeField(auto_now_add=True, verbose_name=_("Date Joined"))
 
     class Meta:
