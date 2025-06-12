@@ -21,7 +21,7 @@ class ProductListView(ListView):
     model = Product
     context_object_name = 'products'
     template_name = 'product/products.html'
-    paginate_by = 12  # default
+    paginate_by = 4
 
     @cached_property
     def filters(self):
@@ -58,8 +58,8 @@ class ProductListView(ListView):
             
             # Annotate with average rating and review count
             queryset = queryset.annotate(
-                average_rating=Avg('product_review__rating'),  # استبدل reviews بـ product_review
-                review_count=Count('product_review')          # استبدل reviews بـ product_review
+                average_rating=Avg('product_review__rating'),  
+                review_count=Count('product_review')        
             )
             
             # Apply filters

@@ -71,6 +71,23 @@ class Product(models.Model):
     def is_in_stock(self):
         return self.stock > 0
 
+class Review(models.Model):
+    RATING_CHOICES = [(i, str(i)) for i in range(1, 6)]
+
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name="product_review", verbose_name=_("Product"))
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_review", verbose_name=_("User"))
+    content = models.TextField(max_length=1000, verbose_name=_("Review"),default="")
+    rating = models.IntegerField(choices=RATING_CHOICES, default=3, verbose_name=_("Rating"))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created At"))
+
+    class Meta:
+        verbose_name = _("Review")
+        verbose_name_plural = _("Reviews")
+
+    def __str__(self):
+        return f"{self.user.username}'s review of {self.product.name}"
+
+
 class Category(models.Model):
     name = models.CharField(max_length=50, verbose_name=_("Name"))
     parent = models.ForeignKey('self', limit_choices_to={'parent__isnull': True}, on_delete=models.CASCADE, verbose_name=_("Parent Category"), blank=True, null=True)
@@ -92,23 +109,6 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         return reverse('product:category_detail', kwargs={'slug': self.slug})
-
-
-class Review(models.Model):
-    RATING_CHOICES = [(i, str(i)) for i in range(1, 6)]
-
-    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name="product_review", verbose_name=_("Product"))
-    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_review", verbose_name=_("User"))
-    content = models.TextField(max_length=1000, verbose_name=_("Review"),default="")
-    rating = models.IntegerField(choices=RATING_CHOICES, default=3, verbose_name=_("Rating"))
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created At"))
-
-    class Meta:
-        verbose_name = _("Review")
-        verbose_name_plural = _("Reviews")
-
-    def __str__(self):
-        return f"{self.user.username}'s review of {self.product.name}"
 
 
 
