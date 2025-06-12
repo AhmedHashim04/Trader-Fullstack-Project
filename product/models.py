@@ -3,48 +3,14 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.utils.text import slugify
-# from taggit.managers import TaggableManager
 from django.db.models import Avg
 
-    # ("new", _("New")),
-    # ("best", _("Best")),
-    # ("sale", _("Sale")),
-    # ("summer", _("Summer")),
-    # ("winter", _("Winter")),
-    # ("spring", _("Spring")),
-    # ("autumn", _("Autumn")),
-    # ("limited", _("Limited")),
-    # ("recommended", _("Recommended")),
-    # ("gift", _("Gift")),
-    # ("popular", _("Popular")),
-    # ("top", _("Top")),
-    # ("exclusive", _("Exclusive")),
-    # ("special", _("Special")),
-    # ("new_arrivals", _("New Arrivals")),
-    # ("best_sellers", _("Best Sellers")),
-    # ("on_sale", _("On Sale")),
-    # ("summer_collection", _("Summer Collection")),
-    # ("winter_collection", _("Winter Collection")),
-    # ("spring_collection", _("Spring Collection")),
-    # ("autumn_collection", _("Autumn Collection")),
-    # ("limited_collection", _("Limited Collection")),
-    # ("recommended_collection", _("Recommended Collection")),
-    # ("gift_collection", _("Gift Collection")),
-    # ("popular_collection", _("Popular Collection")),
-    # ("top_collection", _("Top Collection")),
-    # ("exclusive_collection", _("Exclusive Collection")),
-    # ("special_collection", _("Special Collection")),
-    # ("new_arrivals_collection", _("New Arrivals Collection")),
-    # ("best_sellers_collection", _("Best Sellers Collection")),
-    # ("on_sale_collection", _("On Sale Collection")),
 class Tag(models.Model):
     key = models.CharField(max_length=40, unique=True)
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
-
-
 
 class Product(models.Model):
     tags = models.ManyToManyField(Tag, verbose_name=_("Tags"), blank=True)
@@ -61,25 +27,8 @@ class Product(models.Model):
     viewed_by = models.ManyToManyField("account.Profile", verbose_name=_("Viewed By"), related_name="viewed_products", blank=True)
     stock = models.PositiveIntegerField(default=0, verbose_name=_("Stock"))
     overall_rating = models.FloatField(default=0.0, verbose_name=_("Overall Rating"))
-
-    class Meta:
-        verbose_name = _("Product")
-        verbose_name_plural = _("Products")
-        ordering = ['-created_at']
-
-    def __str__(self):
-        return self.name
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
-
-    def get_absolute_url(self):
-        return reverse('product:product_detail', kwargs={'slug': self.slug})
-
-    def is_in_stock(self):
-        return self.stock > 0
+    is_available = models.BooleanField(default=True, verbose_name=_("Is Available"))
+    discount = models.DecimalField(max_digits=5, decimal_places=2, default=0.0, verbose_name=_("Discount"), help_text=_("Discount percentage on the product"), blank=True, null=True)
 
     def update_overall_rating(self) -> None:
         reviews = self.product_review.all()
@@ -100,6 +49,27 @@ class Product(models.Model):
         total_rating = sum(review.rating for review in reviews)
         return total_rating / reviews.count()
 
+    def price_after_discount(self):
+        return self.price - (self.price * self.discount / 100)
+
+    class Meta:
+        verbose_name = _("Product")
+        verbose_name_plural = _("Products")
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('product:product_detail', kwargs={'slug': self.slug})
+
+    def is_in_stock(self):
+        return self.stock > 0
 
 class Category(models.Model):
     name = models.CharField(max_length=50, verbose_name=_("Name"))
@@ -140,3 +110,36 @@ class Review(models.Model):
     def __str__(self):
         return f"{self.user.username}'s review of {self.product.name}"
 
+
+
+    # ("new", _("New")),
+    # ("best", _("Best")),
+    # ("sale", _("Sale")),
+    # ("summer", _("Summer")),
+    # ("winter", _("Winter")),
+    # ("spring", _("Spring")),
+    # ("autumn", _("Autumn")),
+    # ("limited", _("Limited")),
+    # ("recommended", _("Recommended")),
+    # ("gift", _("Gift")),
+    # ("popular", _("Popular")),
+    # ("top", _("Top")),
+    # ("exclusive", _("Exclusive")),
+    # ("special", _("Special")),
+    # ("new_arrivals", _("New Arrivals")),
+    # ("best_sellers", _("Best Sellers")),
+    # ("on_sale", _("On Sale")),
+    # ("summer_collection", _("Summer Collection")),
+    # ("winter_collection", _("Winter Collection")),
+    # ("spring_collection", _("Spring Collection")),
+    # ("autumn_collection", _("Autumn Collection")),
+    # ("limited_collection", _("Limited Collection")),
+    # ("recommended_collection", _("Recommended Collection")),
+    # ("gift_collection", _("Gift Collection")),
+    # ("popular_collection", _("Popular Collection")),
+    # ("top_collection", _("Top Collection")),
+    # ("exclusive_collection", _("Exclusive Collection")),
+    # ("special_collection", _("Special Collection")),
+    # ("new_arrivals_collection", _("New Arrivals Collection")),
+    # ("best_sellers_collection", _("Best Sellers Collection")),
+    # ("on_sale_collection", _("On Sale Collection")),

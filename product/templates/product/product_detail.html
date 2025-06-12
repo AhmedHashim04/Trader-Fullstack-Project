@@ -132,9 +132,12 @@
                                 </form>
                             {% else %}
                                 <div class="d-flex gap-2">
-                                    <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-outline-danger flex-grow-1">
-                                        <i class="fas fa-trash-alt me-2"></i>Remove from Cart
-                                    </a>
+                                    <form method="POST" action="{% url 'cart:cart_remove' product.slug %}" class="d-inline-block">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-danger flex-grow-1">
+                                            <i class="fas fa-trash-alt me-2"></i>Remove from Cart
+                                        </button>
+                                    </form>
                                     <a href="{% url 'cart:cart_list' %}" class="btn btn-primary">
                                         <i class="fas fa-shopping-bag me-2"></i>View Cart
                                     </a>
@@ -379,12 +382,12 @@
                 View all in {{ product.category.name }}
             </a>
         </div>
-        
         <div class="row g-4">
             {% for rp in related_products %}
                 <div class="col-md-3 col-6">
-                    <div class="card product-card h-100 border-0 shadow-sm">
-                        <div class="badges">
+                    <div class="card product-card h-100 border-0 shadow-sm position-relative">
+                        <!-- Badges -->
+                        <div class="position-absolute top-0 start-0 p-2">
                             {% if rp.is_new %}
                                 <span class="badge bg-success">New</span>
                             {% endif %}
@@ -392,41 +395,45 @@
                                 <span class="badge bg-danger">-{{ rp.get_discount_percentage }}%</span>
                             {% endif %}
                         </div>
-                        
-                        <div class="product-image">
-                            <a href="{{ rp.get_absolute_url }}">
-                                {% if rp.image %}
-                                    <img src="{{ rp.image.url }}" class="card-img-top" alt="{{ rp.name }}" 
-                                         style="height: 200px; object-fit: contain;">
-                                {% else %}
-                                    <div class="no-image" style="height: 200px; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
-                                        <i class="fas fa-image fa-3x text-primary"></i>
-                                    </div>
-                                {% endif %}
-                            </a>
-                        </div>
-                        
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <a href="{{ rp.get_absolute_url }}" class="text-dark">{{ rp.name|truncatechars:40 }}</a>
-                            </h5>
-                            
-                            <div class="price mb-2">
+
+                        <!-- Product Image -->
+                        <a href="{{ rp.get_absolute_url }}" class="d-block overflow-hidden rounded-top">
+                            {% if rp.image %}
+                                <img src="{{ rp.image.url }}" class="card-img-top" alt="{{ rp.name }}" 
+                                     style="height: 220px; object-fit: cover; transition: transform 0.3s;">
+                            {% else %}
+                                <div class="d-flex align-items-center justify-content-center bg-light" 
+                                     style="height: 220px;">
+                                    <i class="fas fa-image fa-3x text-primary"></i>
+                                </div>
+                            {% endif %}
+                        </a>
+
+                        <!-- Card Body -->
+                        <div class="card-body text-center">
+                            <h6 class="card-title mb-2">
+                                <a href="{{ rp.get_absolute_url }}" class="text-dark text-decoration-none">{{ rp.name|truncatechars:40 }}</a>
+                            </h6>
+                            <div class="price mb-3">
                                 <span class="text-primary fw-bold">{{ rp.price }} EGP</span>
                                 {% if rp.old_price %}
-                                    <small class="text-primary text-decoration-line-through ms-1">{{ rp.old_price }} EGP</small>
+                                    <small class="text-muted text-decoration-line-through ms-1">{{ rp.old_price }} EGP</small>
                                 {% endif %}
                             </div>
-                            
-                            <div class="d-flex justify-content-between align-items-center">
-                                <a href="{{ rp.get_absolute_url }}" class="btn btn-sm btn-outline-primary">View</a>
+                            <div class="d-flex justify-content-center gap-2">
                                 {% if rp.stock > 0 %}
-                                    <form method="POST" action="{% url 'cart:cart_add' rp.slug %}" class="ms-auto">
+                                    <form method="POST" action="{% url 'cart:cart_add' rp.slug %}">
                                         {% csrf_token %}
                                         <input type="hidden" name="quantity" value="1">
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary" title="Add to cart">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </button>
+                                        {% if rp.slug in contextCart %}
+                                            <a href="{% url 'cart:cart_list' %}" class="btn btn-sm btn-primary" title="Remove from cart"> 
+                                                <i class="fas fa-shopping-bag"></i>
+                                            </a>
+                                        {% else %}
+                                            <button type="submit" class="btn btn-sm btn-outline-primary" title="Add to cart">
+                                                <i class="fas fa-shopping-cart"></i>Add
+                                            </button>
+                                        {% endif %}
                                     </form>
                                 {% endif %}
                             </div>
@@ -435,6 +442,18 @@
                 </div>
             {% endfor %}
         </div>
+
+        <style>
+            .product-card:hover img {
+                transform: scale(1.1);
+            }
+            .product-card .card-body {
+                transition: background-color 0.3s ease;
+            }
+            .product-card:hover .card-body {
+                background-color: #f8f9fa;
+            }
+        </style>
     </div>
 </section>
 {% endif %}
@@ -447,20 +466,21 @@
         <div class="row g-4">
             {% for rv in recently_viewed %}
                 <div class="col-md-2 col-4">
-                    <div class="card border-0 shadow-sm h-100">
-                        <a href="{{ rv.get_absolute_url }}">
+                    <div class="card border-0 shadow-sm h-100 position-relative trendy-card">
+                        <a href="{{ rv.get_absolute_url }}" class="d-block overflow-hidden rounded-top">
                             {% if rv.image %}
                                 <img src="{{ rv.image.url }}" class="card-img-top" alt="{{ rv.name }}" 
-                                     style="height: 120px; object-fit: contain;">
+                                     style="height: 120px; object-fit: cover; transition: transform 0.3s;">
                             {% else %}
-                                <div class="no-image" style="height: 120px; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                                <div class="no-image d-flex align-items-center justify-content-center bg-light" 
+                                     style="height: 120px;">
                                     <i class="fas fa-image fa-2x text-primary"></i>
                                 </div>
                             {% endif %}
                         </a>
-                        <div class="card-body p-2">
+                        <div class="card-body p-2 text-center">
                             <h6 class="card-title mb-1">
-                                <a href="{{ rv.get_absolute_url }}" class="text-dark">{{ rv.name|truncatechars:30 }}</a>
+                                <a href="{{ rv.get_absolute_url }}" class="text-dark text-decoration-none">{{ rv.name|truncatechars:30 }}</a>
                             </h6>
                             <p class="card-text text-primary fw-bold mb-0 small">{{ rv.price }} EGP</p>
                         </div>
@@ -470,6 +490,19 @@
         </div>
     </div>
 </section>
+
+<style>
+    .trendy-card:hover img {
+        transform: scale(1.1);
+    }
+    .trendy-card .card-body {
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .trendy-card:hover .card-body {
+        background-color: #f8f9fa;
+        transform: translateY(-5px);
+    }
+</style>
 {% endif %}
 
 <style>

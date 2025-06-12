@@ -10,7 +10,6 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.product.name}"
-    
 
 class Brand(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True)
@@ -21,13 +20,10 @@ class Brand(models.Model):
     def __str__(self) -> str:
         return self.name
     
-    
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-
-
 
     def get_absolute_url(self):
         return reverse('settings:brand_detail', kwargs={'slug': self.slug})

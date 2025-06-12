@@ -6,7 +6,7 @@ from django.utils import timezone
 from product.models import Product
 from django.utils.translation import gettext_lazy as _
 import uuid
-from coupons.models import Coupon
+from cart.models import Coupon
 from django.contrib.sessions.models import Session
 class Order(models.Model):
     ORDER_STATUS = (

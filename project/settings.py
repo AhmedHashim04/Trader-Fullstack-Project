@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'features',
     'cart',
     'order',
-    'coupons',
+    # 'coupons',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -108,6 +108,11 @@ DATABASES = {
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+LOG_PATH = BASE_DIR / 'logs'
+LOG_PATH.mkdir(exist_ok=True)  
 
 LOGGING = {
     'version': 1,

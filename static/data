@@ -1,0 +1,188 @@
+
+            <div class="products-grid" id="featuredProducts">
+                <!-- Product 1 -->
+                <div class="product-card" data-product-id="1" data-trending="true" data-sale="sale">
+                    <div class="product-badges">
+                        <span class="badge bg-danger">Sale</span>
+                        <span class="badge bg-primary">Trending</span>
+                    </div>
+                    
+                    <div class="wishlist-btn">
+                        <a href="#" class="text-danger" title="Remove from wishlist">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1099&q=80" alt="Premium Headphones">
+                        <div class="image-overlay"></div>
+                        <div class="quick-view-btn">
+                            <a href="#">Quick View</a>
+                        </div>
+                    </div>
+                    
+                    <div class="product-info">
+                        <span class="brand-badge">Sony</span>
+                        <a href="#" class="product-name">Wireless Noise-Cancelling Headphones</a>
+                        <p class="product-category">Audio & Sound</p>
+                        
+                        <div class="price-stock">
+                            <div class="price">
+                                <span class="original-price">$299.99</span>
+                                <span class="discount-price">$249.99</span>
+                            </div>
+                            <span class="stock-badge in-stock">In Stock</span>
+                        </div>
+                    </div>
+                    
+                    <div class="add-to-cart">
+                        <form class="quantity-control">
+                            <button class="quantity-btn minus" type="button">-</button>
+                            <input type="number" value="1" min="1" max="10" class="quantity-input">
+                            <button class="quantity-btn plus" type="button">+</button>
+                            <button type="submit" class="add-cart-btn">
+                                <i class="fas fa-shopping-cart"></i> Add 
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card" data-product-id="2" data-trending="true" data-sale="new">
+                    <div class="product-badges">
+                        <span class="badge bg-success">New</span>
+                        <span class="badge bg-primary">Trending</span>
+                    </div>
+                    
+                    <div class="wishlist-btn">
+                        <a href="#" title="Add to wishlist">
+                            <i class="far fa-heart"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80" alt="Smart Watch">
+                        <div class="image-overlay"></div>
+                        <div class="quick-view-btn">
+                            <a href="#">Quick View</a>
+                        </div>
+                    </div>
+                    
+                    <div class="product-info">
+                        <span class="brand-badge">Apple</span>
+                        <a href="#" class="product-name">Smart Watch Series 8</a>
+                        <p class="product-category">Wearables</p>
+                        
+                        <div class="price-stock">
+                            <div class="price">
+                                <span class="discount-price">$399.00</span>
+                            </div>
+                            <span class="stock-badge in-stock">In Stock</span>
+                        </div>
+                    </div>
+                    
+                    <div class="add-to-cart">
+                        <form class="quantity-control">
+                            <button class="quantity-btn minus" type="button">-</button>
+                            <input type="number" value="1" min="1" max="10" class="quantity-input">
+                            <button class="quantity-btn plus" type="button">+</button>
+                            <button type="submit" class="add-cart-btn">
+                                <i class="fas fa-shopping-cart"></i> Add 
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card" data-product-id="3" data-trending="false" data-sale="best">
+                    <div class="product-badges">
+                        <span class="badge bg-warning">Best</span>
+                    </div>
+                    
+                    <div class="wishlist-btn">
+                        <a href="#" title="Add to wishlist">
+                            <i class="far fa-heart"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Camera">
+                        <div class="image-overlay"></div>
+                        <div class="quick-view-btn">
+                            <a href="#">Quick View</a>
+                        </div>
+                    </div>
+                    
+                    <div class="product-info">
+                        <span class="brand-badge">Canon</span>
+                        <a href="#" class="product-name">Professional DSLR Camera</a>
+                        <p class="product-category">Photography</p>
+                        
+                        <div class="price-stock">
+                            <div class="price">
+                                <span class="discount-price">$899.99</span>
+                            </div>
+                            <span class="stock-badge in-stock">In Stock</span>
+                        </div>
+                    </div>
+                    
+                    <div class="add-to-cart">
+                        <form class="quantity-control">
+                            <button class="quantity-btn minus" type="button">-</button>
+                            <input type="number" value="1" min="1" max="10" class="quantity-input">
+                            <button class="quantity-btn plus" type="button">+</button>
+                            <button type="submit" class="add-cart-btn">
+                                <i class="fas fa-shopping-cart"></i> Add 
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card" data-product-id="4" data-trending="true" data-sale="sale">
+                    <div class="product-badges">
+                        <span class="badge bg-danger">Sale</span>
+                        <span class="badge bg-primary">Trending</span>
+                    </div>
+                    
+                    <div class="wishlist-btn">
+                        <a href="#" class="text-danger" title="Remove from wishlist">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="Laptop">
+                        <div class="image-overlay"></div>
+                        <div class="quick-view-btn">
+                            <a href="#">Quick View</a>
+                        </div>
+                    </div>
+                    
+                    <div class="product-info">
+                        <span class="brand-badge">Dell</span>
+                        <a href="#" class="product-name">Ultra Thin Laptop Pro</a>
+                        <p class="product-category">Computers</p>
+                        
+                        <div class="price-stock">
+                            <div class="price">
+                                <span class="original-price">$1499.99</span>
+                                <span class="discount-price">$1299.99</span>
+                            </div>
+                            <span class="stock-badge out-stock">Out of Stock</span>
+                        </div>
+                    </div>
+                    
+                    <div class="add-to-cart">
+                        <div class="quantity-control">
+                            <button class="remove-cart-btn">
+                                <i class="fas fa-shopping-bag"></i> Remove 
+                            </button>
+                            <button class="view-cart-btn">
+                                <i class="fas fa-shopping-bag"></i> View 
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            

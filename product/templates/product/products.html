@@ -35,56 +35,56 @@
 <div class="container py-4">
     <div class="row">
         <!-- Sidebar Filters (Desktop) -->
-        <aside class="sidebar col-lg-3 d-none d-lg-block">
+        <aside class="sidebar col-lg-3 d-none d-lg-block mt-4">
             <!-- Compare Products Card -->
-            <div class="compare-card card shadow-sm sticky-top">
-                <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="compare-card card shadow-sm  border-0 rounded-3">
+                <div class="card-header btn-primary text-white d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-exchange-alt me-2"></i>Compare Products
                     </h5>
-                    <span class="compare-count badge rounded-pill">0</span>
+                    <span class="compare-count badge bg-light text-primary rounded-pill">0</span>
                 </div>
-                <div class="card-body">
+                <div class="card-body bg-light">
                     <div class="compare-empty-state text-center py-3">
-                        <i class="empty-icon fas fa-exchange-alt"></i>
-                        <p class="empty-text">Select products to compare</p>
+                        <i class="empty-icon fas fa-exchange-alt fa-2x text-muted"></i>
+                        <p class="empty-text text-muted mt-2">Select products to compare</p>
                     </div>
                     <ul class="compare-list list-group mb-3 d-none"></ul>
                     <div class="compare-actions d-flex gap-2">
-                        <button class="clear-btn btn btn-sm w-50 d-none">
+                        <button class="clear-btn btn btn-sm btn-outline-danger w-50 d-none">
                             <i class="fas fa-trash-alt me-1"></i> Clear
                         </button>
-                        <a href="#" class="compare-btn btn btn-sm w-50 d-none">
+                        <a href="#" class="compare-btn btn btn-sm btn-primary w-50 d-none">
                             <i class="fas fa-chart-bar me-1"></i> Compare
                         </a>
                     </div>
                 </div>
             </div>
-        
+
             <!-- Filters Card -->
-            <div class="filters-card card shadow-sm sticky-top">
-                <div class="card-header">
+            <div class="filters-card card shadow-sm sticky-t border-0 rounded-3 mt-4">
+                <div class="card-header  btn-secondary text-white">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-sliders-h me-2"></i>Filters
                     </h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body bg-light">
                     <form method="get" id="filtersForm" class="filter-form">
                         <!-- Search Filter -->
-                        <div class="filter-group">
-                            <label for="search" class="filter-label">
+                        <div class="filter-group mb-3">
+                            <label for="search" class="filter-label fw-bold">
                                 <i class="fas fa-search me-2"></i>Search
                             </label>
                             <input type="text" name="search" id="search" value="{{ search_query }}" 
-                                   class="form-control" placeholder="Search products...">
+                                    class="form-control rounded-pill" placeholder="Search products...">
                         </div>
-        
+
                         <!-- Category Filter -->
-                        <div class="filter-group">
-                            <label for="category" class="filter-label">
+                        <div class="filter-group mb-3">
+                            <label for="category" class="filter-label fw-bold">
                                 <i class="fas fa-tags me-2"></i>Category
                             </label>
-                            <select name="category" id="category" class="form-select">
+                            <select name="category" id="category" class="form-select rounded-pill">
                                 <option value="">All Categories</option>
                                 {% for cat in categories %}
                                     <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>
@@ -93,13 +93,13 @@
                                 {% endfor %}
                             </select>
                         </div>
-        
+
                         <!-- Brand Filter -->
-                        <div class="filter-group">
-                            <label for="brand" class="filter-label">
+                        <div class="filter-group mb-3">
+                            <label for="brand" class="filter-label fw-bold">
                                 <i class="fas fa-copyright me-2"></i>Brand
                             </label>
-                            <select name="brand" id="brand" class="form-select">
+                            <select name="brand" id="brand" class="form-select rounded-pill">
                                 <option value="">All Brands</option>
                                 {% for brand in brands %}
                                     <option value="{{ brand.slug }}" {% if selected_brand == brand.slug %}selected{% endif %}>
@@ -108,30 +108,30 @@
                                 {% endfor %}
                             </select>
                         </div>
-        
+
                         <!-- Price Range Filter -->
-                        <div class="filter-group">
-                            <label class="filter-label">
+                        <div class="filter-group mb-3">
+                            <label class="filter-label fw-bold">
                                 <i class="fas fa-dollar-sign me-2"></i>Price Range
                             </label>
                             <div class="row g-2">
                                 <div class="col">
                                     <input type="number" name="min_price" id="min_price" value="{{ min_price }}" 
-                                           step="0.01" class="form-control" placeholder="Min">
+                                           step="0.01" class="form-control rounded-pill" placeholder="Min">
                                 </div>
                                 <div class="col">
                                     <input type="number" name="max_price" id="max_price" value="{{ max_price }}" 
-                                           step="0.01" class="form-control" placeholder="Max">
+                                           step="0.01" class="form-control rounded-pill" placeholder="Max">
                                 </div>
                             </div>
                         </div>
-        
+
                         <!-- Sort Filter -->
-                        <div class="filter-group">
-                            <label for="sort_by" class="filter-label">
+                        <div class="filter-group mb-3">
+                            <label for="sort_by" class="filter-label fw-bold">
                                 <i class="fas fa-sort me-2"></i>Sort by
                             </label>
-                            <select name="sort_by" id="sort_by" class="form-select">
+                            <select name="sort_by" id="sort_by" class="form-select rounded-pill">
                                 <option value="">Default</option>
                                 <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
                                 <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
@@ -139,9 +139,9 @@
                                 <option value="name_desc" {% if sort_by == 'name_desc' %}selected{% endif %}>Name: Z to A</option>
                             </select>
                         </div>
-        
+
                         <!-- View Controls -->
-                        <div class="filter-group">
+                        <div class="filter-group mb-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="view-toggle btn-group">
                                     <input type="hidden" name="view_mode" id="viewModeInput" value="{{ view_mode }}">
@@ -154,20 +154,20 @@
                                         <i class="fas fa-list"></i>
                                     </button>
                                 </div>
-                                <select class="form-select items-per-page" name="items_per_page">
+                                <select class="form-select items-per-page rounded-pill" name="items_per_page">
                                     <option value="12" {% if items_per_page == 12 %}selected{% endif %}>12/page</option>
                                     <option value="24" {% if items_per_page == 24 %}selected{% endif %}>24/page</option>
                                     <option value="48" {% if items_per_page == 48 %}selected{% endif %}>48/page</option>
                                 </select>
                             </div>
                         </div>
-        
+
                         <!-- Form Actions -->
                         <div class="filter-actions mt-4">
-                            <button type="submit" class="btn btn-primary w-100 apply-btn">
+                            <button type="submit" class="btn btn-primary w-100 apply-btn rounded-pill">
                                 <i class="fas fa-filter me-2"></i>Apply Filters
                             </button>
-                            <a href="{% url 'product:products_list' %}" class="btn btn-outline-secondary w-100 mt-2 reset-btn">
+                            <a href="{% url 'product:products_list' %}" class="btn btn-outline-secondary w-100 mt-2 reset-btn rounded-pill">
                                 <i class="fas fa-undo me-2"></i>Reset
                             </a>
                         </div>
@@ -175,7 +175,6 @@
                 </div>
             </div>
         </aside>
-     
 
         <!-- Products Grid -->
         <section class="col-lg-9">
@@ -471,932 +470,198 @@
     </div>
 </div>
 
-<style>
-    /* Product Card Styles */
-    .product-card {
-        transition: all 0.3s ease;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-    
-    .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-    
-    .product-badges {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
-    
-    .product-image {
-        position: relative;
-        overflow: hidden;
-        background: #f8f9fa;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .no-image-placeholder {
-        color: #6c757d;
-    }
-    
-    /* Rating Stars */
-    .rating-stars {
-        color: #ffc107;
-        font-size: 0.9rem;
-    }
-    
-    /* Compare Button */
-    .compare-btn {
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50% !important;
-    }
-    
-    /* Active Filters */
-    .badge.bg-light {
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-weight: normal;
-    }
-    
-    /* Responsive Adjustments */
-    @media (max-width: 767.98px) {
-        .card-body {
-            padding: 1rem;
-        }
-    }
-    
-    @media (min-width: 768px) and (max-width: 991.98px) {
-        .card-body {
-            padding: 1.25rem;
-        }
-    }
-
-        /* ===== Featured Products Section ===== */
-        .featured-products-section {
-            background-color: hsl(var(--background-color));
-            position: relative;
-            overflow: hidden;
-        }
-    
-        /* Section Header */
-        .section-header {
-            position: relative;
-            z-index: 2;
-        }
-    
-        .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-        }
-    
-        .section-subtitle {
-            color: hsl(var(--text-secondary) / 0.8);
-            font-size: 1.1rem;
-        }
-    
-        /* Filter Buttons */
-        .filter-buttons {
-            display: inline-flex;
-            background: hsl(var(--surface-color));
-            border-radius: 50px;
-            padding: 5px;
-            box-shadow: var(--shadow-light);
-        }
-    
-        .filter-btn {
-            border: none;
-            border-radius: 50px;
-            padding: 8px 20px;
-            font-weight: 500;
-            color: hsl(var(--text-secondary) / 0.7);
-            background: transparent;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 0.9rem;
-        }
-    
-        .filter-btn.active,
-        .filter-btn:hover {
-            background: var(--gradient-primary);
-            color: hsl(var(--text-primary));
-            box-shadow: var(--shadow-colored);
-        }
-    
-        /* Product Card */
-        .product-card {
-            background: hsl(var(--surface-color));
-            border-radius: var(--border-radius-lg);
-            overflow: hidden;
-            transition: var(--transition);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            box-shadow: var(--shadow-light);
-        }
-    
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-medium);
-        }
-    
-        /* Product Badges */
-        .product-badges {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-    
-        .badge {
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: var(--border-radius);
-            display: inline-block;
-        }
-    
-        .sale-badge {
-            background: hsl(var(--danger-color));
-            color: white;
-        }
-    
-        .new-badge {
-            background: hsl(var(--text-success));
-            color: white;
-        }
-    
-        .best-badge {
-            background: hsl(var(--text-warning));
-            color: hsl(var(--dark-surface));
-        }
-    
-        .trending-badge {
-            background: hsl(var(--primary-color));
-            color: white;
-        }
-    
-        /* Wishlist Button */
-        .wishlist-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            z-index: 3;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: hsl(var(--surface-color));
-            border-radius: 50%;
-            color: hsl(var(--danger-color));
-            transition: var(--transition);
-            box-shadow: var(--shadow-light);
-        }
-    
-        .wishlist-btn:hover {
-            background: hsl(var(--danger-color));
-            color: white;
-            transform: scale(1.1);
-        }
-    
-        /* Product Image */
-        .product-image {
-            position: relative;
-            height: 220px;
-            overflow: hidden;
-            background: hsl(var(--background-color));
-        }
-    
-        .product-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-    
-        .product-card:hover .product-img {
-            transform: scale(1.05);
-        }
-    
-        .image-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.2));
-            transition: var(--transition);
-        }
-    
-        .image-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: hsl(var(--border-color));
-        }
-    
-        .image-placeholder i {
-            font-size: 3rem;
-        }
-    
-        /* Quick View Button */
-        .quick-view-btn {
-            position: absolute;
-            bottom: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 8px 20px;
-            background: hsl(var(--surface-color));
-            color: hsl(var(--primary-color));
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-decoration: none;
-            box-shadow: var(--shadow-light);
-            transition: var(--transition);
-            z-index: 2;
-            white-space: nowrap;
-        }
-    
-        .product-card:hover .quick-view-btn {
-            bottom: 20px;
-        }
-    
-        .quick-view-btn:hover {
-            background: hsl(var(--primary-color));
-            color: white;
-        }
-    
-        /* Product Info */
-        .product-info {
-            padding: 1.25rem;
-            flex-grow: 1;
-        }
-    
-        .product-brand {
-            display: inline-block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: hsl(var(--text-secondary));
-            background: hsl(var(--secondary-color) / 0.1);
-            padding: 3px 10px;
-            border-radius: 50px;
-            margin-bottom: 0.5rem;
-        }
-    
-        .product-name {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            line-height: 1.4;
-        }
-    
-        .product-name a {
-            color: hsl(var(--dark-surface));
-            text-decoration: none;
-            transition: var(--transition);
-        }
-    
-        .product-name a:hover {
-            color: hsl(var(--primary-color));
-        }
-    
-        .product-category {
-            color: hsl(var(--text-secondary) / 0.7);
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-        }
-    
-        /* Product Footer */
-        .product-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto;
-        }
-    
-        .price-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-    
-        .current-price {
-            font-weight: 700;
-            color: hsl(var(--primary-color));
-            font-size: 1.1rem;
-        }
-    
-        .original-price {
-            font-size: 0.85rem;
-            color: hsl(var(--text-secondary) / 0.6);
-            text-decoration: line-through;
-        }
-    
-        .stock-status {
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-    
-        .in-stock {
-            color: hsl(var(--text-success));
-            background: hsl(var(--text-success) / 0.1);
-            padding: 3px 8px;
-            border-radius: 50px;
-        }
-    
-        .out-of-stock {
-            color: hsl(var(--text-danger));
-            background: hsl(var(--text-danger) / 0.1);
-            padding: 3px 8px;
-            border-radius: 50px;
-        }
-    
-        /* Product Actions */
-        .product-actions {
-            padding: 0 1.25rem 1.25rem;
-        }
-    
-        .add-to-cart-btn,
-        .remove-from-cart-btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            border-radius: var(--border-radius);
-            font-size: 0.9rem;
-            font-weight: 500;
-            text-align: center;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-    
-        .add-to-cart-btn {
-            background: hsl(var(--dark-surface));
-            color: white;
-        }
-    
-        .add-to-cart-btn:hover {
-            background: hsl(var(--primary-color));
-            box-shadow: var(--shadow-colored);
-        }
-    
-        .remove-from-cart-btn {
-            background: hsl(var(--text-danger) / 0.1);
-            color: hsl(var(--text-danger));
-            border: 1px solid hsl(var(--text-danger) / 0.3);
-        }
-    
-        .remove-from-cart-btn:hover {
-            background: hsl(var(--text-danger));
-            color: white;
-        }
-    
-        /* Empty State */
-        .empty-state {
-            padding: 3rem 0;
-        }
-    
-        .empty-icon {
-            font-size: 3rem;
-            color: hsl(var(--border-color));
-            margin-bottom: 1rem;
-        }
-    
-        .empty-title {
-            color: hsl(var(--text-secondary));
-            margin-bottom: 0.5rem;
-        }
-    
-        .empty-message {
-            color: hsl(var(--text-secondary) / 0.7);
-            margin-bottom: 1.5rem;
-        }
-    
-        .empty-action-btn {
-            display: inline-block;
-            padding: 8px 20px;
-            background: hsl(var(--primary-color));
-            color: white;
-            border-radius: var(--border-radius);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-    
-        .empty-action-btn:hover {
-            background: hsl(var(--secondary-color));
-            box-shadow: var(--shadow-colored);
-        }
-    
-        /* View All Button */
-        .view-all-btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: var(--gradient-primary);
-            color: white;
-            border-radius: 50px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: var(--transition);
-            box-shadow: var(--shadow-light);
-        }
-    
-        .view-all-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-medium);
-        }
-    
-        .view-all-icon {
-            margin-left: 8px;
-            transition: var(--transition);
-        }
-    
-        .view-all-btn:hover .view-all-icon {
-            transform: translateX(3px);
-        }
-    
-        /* Responsive Adjustments */
-        @media (max-width: 992px) {
-            .product-image {
-                height: 180px;
-            }
-        }
-    
-        @media (max-width: 768px) {
-            .section-header {
-                flex-direction: column;
-                text-align: center;
-            }
-    
-            .section-header .col-md-6:last-child {
-                margin-top: 1.5rem;
-                text-align: center !important;
-            }
-    
-            .filter-buttons {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-    
-            .filter-btn {
-                padding: 6px 15px;
-                margin: 3px;
-            }
-    
-            .section-title {
-                font-size: 1.75rem;
-            }
-    
-            .section-subtitle {
-                font-size: 1rem;
-            }
-        }
-    
-        @media (max-width: 576px) {
-            .product-col {
-                padding-left: 8px;
-                padding-right: 8px;
-            }
-    
-            .product-image {
-                height: 160px;
-            }
-    
-            .view-all-btn {
-                padding: 10px 25px;
-                font-size: 0.9rem;
-            }
-        }
-
-        .sidebar {
-                position: relative;
-                z-index: 10;
-            }
-        
-            /* Card Styles */
-            .compare-card,
-            .filters-card {
-                border-radius: var(--border-radius-lg);
-                overflow: hidden;
-                margin-bottom: 1.5rem;
-                border: 1px solid hsl(var(--border-color));
-            }
-        
-            .compare-card {
-                top: 20px;
-            }
-        
-            .filters-card {
-                top: 300px;
-            }
-        
-            /* Card Header */
-            .card-header {
-                padding: 1rem 1.25rem;
-                background: var(--gradient-primary);
-                color: hsl(var(--text-primary));
-                border-bottom: none;
-            }
-        
-            .card-title {
-                font-size: 1rem;
-                font-weight: 600;
-                display: flex;
-                align-items: center;
-            }
-        
-            .card-title i {
-                font-size: 0.9em;
-            }
-        
-            /* Compare Count Badge */
-            .compare-count {
-                background: hsl(var(--accent-color));
-                color: hsl(var(--primary-color));
-                font-weight: 600;
-                padding: 5px 10px;
-                min-width: 30px;
-            }
-        
-            /* Empty State */
-            .compare-empty-state {
-                padding: 1.5rem 0;
-            }
-        
-            .empty-icon {
-                font-size: 1.75rem;
-                color: hsl(var(--border-color));
-                margin-bottom: 0.75rem;
-            }
-        
-            .empty-text {
-                color: hsl(var(--text-secondary) / 0.7);
-                font-size: 0.9rem;
-                margin-bottom: 0;
-            }
-        
-            /* Compare List */
-            .compare-list {
-                max-height: 300px;
-                overflow-y: auto;
-            }
-        
-            .compare-list .list-group-item {
-                padding: 0.75rem 1.25rem;
-                border-color: hsl(var(--border-color));
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-        
-            .compare-list .item-name {
-                font-size: 0.85rem;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                max-width: 70%;
-            }
-        
-            .compare-list .remove-item {
-                color: hsl(var(--text-danger));
-                background: none;
-                border: none;
-                padding: 0;
-                font-size: 0.9rem;
-                cursor: pointer;
-            }
-        
-            /* Compare Buttons */
-            .compare-actions {
-                margin-top: 1rem;
-            }
-        
-            .clear-btn {
-                background: hsl(var(--text-danger) / 0.1);
-                color: hsl(var(--text-danger));
-                border: 1px solid hsl(var(--text-danger) / 0.3);
-            }
-        
-            .clear-btn:hover {
-                background: hsl(var(--text-danger));
-                color: white;
-            }
-        
-            .compare-btn {
-                background: hsl(var(--primary-color));
-                color: white;
-            }
-        
-            .compare-btn:hover {
-                background: hsl(var(--secondary-color));
-                box-shadow: var(--shadow-colored);
-            }
-        
-            /* Filter Form */
-            .filter-form {
-                display: flex;
-                flex-direction: column;
-                gap: 1.25rem;
-            }
-        
-            .filter-group {
-                margin-bottom: 0;
-            }
-        
-            .filter-label {
-                display: flex;
-                align-items: center;
-                font-size: 0.85rem;
-                font-weight: 500;
-                color: hsl(var(--text-secondary));
-                margin-bottom: 0.5rem;
-            }
-        
-            .filter-label i {
-                font-size: 0.8em;
-                width: 18px;
-                text-align: center;
-            }
-        
-            /* Form Controls */
-            .form-control,
-            .form-select {
-                border-radius: var(--border-radius);
-                border: 1px solid hsl(var(--border-color));
-                padding: 0.5rem 0.75rem;
-                font-size: 0.85rem;
-            }
-        
-            .form-control:focus,
-            .form-select:focus {
-                border-color: hsl(var(--primary-color));
-                box-shadow: 0 0 0 0.25rem hsl(var(--primary-color) / 0.2);
-            }
-        
-            /* View Toggle */
-            .view-toggle .btn {
-                padding: 0.375rem 0.75rem;
-                border-radius: var(--border-radius) !important;
-            }
-        
-            .view-toggle .btn.active {
-                background: hsl(var(--primary-color));
-                color: white;
-            }
-        
-            /* Items Per Page */
-            .items-per-page {
-                width: auto;
-                font-size: 0.85rem;
-                padding: 0.375rem 0.75rem;
-            }
-        
-            /* Filter Actions */
-            .apply-btn {
-                background: var(--gradient-primary);
-                border: none;
-                font-weight: 500;
-                padding: 0.5rem;
-                transition: var(--transition);
-            }
-        
-            .apply-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: var(--shadow-colored);
-            }
-        
-            .reset-btn {
-                border-color: hsl(var(--border-color));
-                color: hsl(var(--text-secondary));
-            }
-        
-            .reset-btn:hover {
-                border-color: hsl(var(--text-danger));
-                color: hsl(var(--text-danger));
-                background: hsl(var(--text-danger) / 0.05);
-            }
-        
-            /* Responsive Adjustments */
-            @media (max-width: 992px) {
-                .sidebar {
-                    display: none !important;
-                }
-            }
-        </style>
-
-        <script>
-            // Initialize tooltips
-            document.addEventListener('DOMContentLoaded', function() {
-                const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-                tooltipTriggerList.map(function (tooltipTriggerEl) {
-                    return new bootstrap.Tooltip(tooltipTriggerEl);
-                });
-                
-                // Auto-submit form when items per page changes
-                document.querySelector('.items-per-page').addEventListener('change', function() {
-                    document.getElementById('filtersForm').submit();
-                });
-            });
-        
-            // View mode toggle function
-            function setViewMode(mode) {
-                document.getElementById('viewModeInput').value = mode;
-                document.getElementById('filtersForm').submit();
-            }
-
+<script>
     // Initialize tooltips
     document.addEventListener('DOMContentLoaded', function() {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
-    });
-
-    // Compare Products Functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        // عناصر المقارنة
-        const compareButton = document.querySelector('.compare-btn:not([data-product-slug])'); // زر Go to Compare
-        const clearCompareButton = document.querySelector('.clear-btn');
-        const compareList = document.querySelector('.compare-list');
-        const compareEmptyState = document.querySelector('.compare-empty-state');
-        const compareCount = document.querySelector('.compare-count');
-        const compareBtns = document.querySelectorAll('.compare-btn[data-product-slug]');
-
-        let selectedProducts = JSON.parse(localStorage.getItem('compareProducts')) || [];
-        const MAX_COMPARE_ITEMS = 4;
-
-        function updateCompareUI() {
-            // إزالة العناصر القديمة
-            compareList.innerHTML = '';
-            const uniqueProducts = [...new Set(selectedProducts)];
-            compareCount.textContent = uniqueProducts.length;
-
-            // إظهار/إخفاء العناصر حسب الحالة
-            compareEmptyState.classList.toggle('d-none', uniqueProducts.length > 0);
-            compareList.classList.toggle('d-none', uniqueProducts.length === 0);
-            clearCompareButton.classList.toggle('d-none', uniqueProducts.length === 0);
-            compareButton.classList.toggle('d-none', uniqueProducts.length < 2);
-
-            // تحديث زر Go to Compare
-            compareButton.textContent = `Compare (${uniqueProducts.length})`;
-            compareButton.href = `{% url 'product:compare_products' %}?${uniqueProducts.map(slug => `product_slug=${encodeURIComponent(slug)}`).join('&')}`;
-
-            // عرض المنتجات المختارة
-            uniqueProducts.forEach(slug => {
-                const btn = document.querySelector(`.compare-btn[data-product-slug="${slug}"]`);
-                if (btn) {
-                    const productName = btn.getAttribute('data-product-name');
-                    const productImage = btn.getAttribute('data-product-image');
-                    const li = document.createElement('li');
-                    li.className = 'list-group-item d-flex align-items-center';
-                    li.innerHTML = `
-                        <img src="${productImage}" alt="${productName}" class="me-2 rounded" width="30" height="30" style="object-fit: cover;">
-                        <span class="small text-truncate flex-grow-1">${productName}</span>
-                        <button class="btn btn-sm btn-outline-danger remove-compare" data-product-slug="${slug}">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    `;
-                    compareList.appendChild(li);
-                }
-            });
-
-            // تحديث أزرار المنتجات
-            compareBtns.forEach(btn => {
-                const slug = btn.getAttribute('data-product-slug');
-                if (selectedProducts.includes(slug)) {
-                    btn.classList.remove('btn-outline-primary');
-                    btn.classList.add('btn-primary');
-                } else {
-                    btn.classList.remove('btn-primary');
-                    btn.classList.add('btn-outline-primary');
-                }
-            });
-        }
-
-        function toggleProductCompare(slug) {
-            const index = selectedProducts.indexOf(slug);
-            if (index > -1) {
-                selectedProducts.splice(index, 1);
-            } else {
-                if (selectedProducts.length >= MAX_COMPARE_ITEMS) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Maximum Reached',
-                        text: `You can compare up to ${MAX_COMPARE_ITEMS} products only.`,
-                        confirmButtonColor: '#3085d6',
-                    });
-                    return false;
-                }
-                selectedProducts.push(slug);
-            }
-            localStorage.setItem('compareProducts', JSON.stringify(selectedProducts));
-            return true;
-        }
-
-        // حدث زر إضافة/إزالة منتج للمقارنة
-        compareBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const slug = this.getAttribute('data-product-slug');
-                if (toggleProductCompare(slug)) {
-                    updateCompareUI();
-                }
-            });
-        });
-
-        // حدث إزالة منتج من القائمة
-        compareList.addEventListener('click', function(e) {
-            if (e.target.closest('.remove-compare')) {
-                const slug = e.target.closest('.remove-compare').getAttribute('data-product-slug');
-                selectedProducts = selectedProducts.filter(s => s !== slug);
-                localStorage.setItem('compareProducts', JSON.stringify(selectedProducts));
-                updateCompareUI();
-            }
-        });
-
-        // حدث مسح القائمة
-        clearCompareButton.addEventListener('click', function() {
-            Swal.fire({
-                title: 'Clear Compare List?',
-                text: 'Are you sure you want to remove all products from comparison?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, clear it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    selectedProducts = [];
-                    localStorage.removeItem('compareProducts');
-                    updateCompareUI();
-                }
-            });
-        });
-
-        // تهيئة الواجهة
-        updateCompareUI();
-    });
-        // Filter Products Function
-        function filterProducts(filter) {
-            // Remove active class from all buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Add active class to clicked button
-            event.target.classList.add('active');
-            
-            // Here you would implement your actual filtering logic
-            console.log('Filtering by:', filter);
-            
-            // Example filtering logic (would need to be implemented properly):
-            // const products = document.querySelectorAll('.product-card');
-            // products.forEach(product => {
-            //     if (filter === 'all' || product.dataset[filter] === 'true') {
-            //         product.style.display = 'block';
-            //     } else {
-            //         product.style.display = 'none';
-            //     }
-            // });
-        }
         
-        // Add click event listeners to filter buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const filter = this.dataset.filter;
-                filterProducts(filter);
-            });
+        // Auto-submit form when items per page changes
+        document.querySelector('.items-per-page').addEventListener('change', function() {
+            document.getElementById('filtersForm').submit();
         });
+    });
 
-    // View mode functions
+    // View mode toggle function
     function setViewMode(mode) {
         document.getElementById('viewModeInput').value = mode;
         document.getElementById('filtersForm').submit();
     }
-    
-    function setMobileViewMode(mode) {
-        document.getElementById('mobileViewModeInput').value = mode;
+
+// Initialize tooltips
+document.addEventListener('DOMContentLoaded', function() {
+const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+});
+});
+
+// Compare Products Functionality
+document.addEventListener('DOMContentLoaded', function() {
+// عناصر المقارنة
+const compareButton = document.querySelector('.compare-btn:not([data-product-slug])'); // زر Go to Compare
+const clearCompareButton = document.querySelector('.clear-btn');
+const compareList = document.querySelector('.compare-list');
+const compareEmptyState = document.querySelector('.compare-empty-state');
+const compareCount = document.querySelector('.compare-count');
+const compareBtns = document.querySelectorAll('.compare-btn[data-product-slug]');
+
+let selectedProducts = JSON.parse(localStorage.getItem('compareProducts')) || [];
+const MAX_COMPARE_ITEMS = 4;
+
+function updateCompareUI() {
+    // إزالة العناصر القديمة
+    compareList.innerHTML = '';
+    const uniqueProducts = [...new Set(selectedProducts)];
+    compareCount.textContent = uniqueProducts.length;
+
+    // إظهار/إخفاء العناصر حسب الحالة
+    compareEmptyState.classList.toggle('d-none', uniqueProducts.length > 0);
+    compareList.classList.toggle('d-none', uniqueProducts.length === 0);
+    clearCompareButton.classList.toggle('d-none', uniqueProducts.length === 0);
+    compareButton.classList.toggle('d-none', uniqueProducts.length < 2);
+
+    // تحديث زر Go to Compare
+    compareButton.textContent = `Compare (${uniqueProducts.length})`;
+    compareButton.href = `{% url 'product:compare_products' %}?${uniqueProducts.map(slug => `product_slug=${encodeURIComponent(slug)}`).join('&')}`;
+
+    // عرض المنتجات المختارة
+    uniqueProducts.forEach(slug => {
+        const btn = document.querySelector(`.compare-btn[data-product-slug="${slug}"]`);
+        if (btn) {
+            const productName = btn.getAttribute('data-product-name');
+            const productImage = btn.getAttribute('data-product-image');
+            const li = document.createElement('li');
+            li.className = 'list-group-item d-flex align-items-center';
+            li.innerHTML = `
+                <img src="${productImage}" alt="${productName}" class="me-2 rounded" width="30" height="30" style="object-fit: cover;">
+                <span class="small text-truncate flex-grow-1">${productName}</span>
+                <button class="btn btn-sm btn-outline-danger remove-compare" data-product-slug="${slug}">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            compareList.appendChild(li);
+        }
+    });
+
+    // تحديث أزرار المنتجات
+    compareBtns.forEach(btn => {
+        const slug = btn.getAttribute('data-product-slug');
+        if (selectedProducts.includes(slug)) {
+            btn.classList.remove('btn-outline-primary');
+            btn.classList.add('btn-primary');
+        } else {
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-outline-primary');
+        }
+    });
+}
+
+function toggleProductCompare(slug) {
+    const index = selectedProducts.indexOf(slug);
+    if (index > -1) {
+        selectedProducts.splice(index, 1);
+    } else {
+        if (selectedProducts.length >= MAX_COMPARE_ITEMS) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Maximum Reached',
+                text: `You can compare up to ${MAX_COMPARE_ITEMS} products only.`,
+                confirmButtonColor: '#3085d6',
+            });
+            return false;
+        }
+        selectedProducts.push(slug);
     }
+    localStorage.setItem('compareProducts', JSON.stringify(selectedProducts));
+    return true;
+}
+
+// حدث زر إضافة/إزالة منتج للمقارنة
+compareBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+        const slug = this.getAttribute('data-product-slug');
+        if (toggleProductCompare(slug)) {
+            updateCompareUI();
+        }
+    });
+});
+
+// حدث إزالة منتج من القائمة
+compareList.addEventListener('click', function(e) {
+    if (e.target.closest('.remove-compare')) {
+        const slug = e.target.closest('.remove-compare').getAttribute('data-product-slug');
+        selectedProducts = selectedProducts.filter(s => s !== slug);
+        localStorage.setItem('compareProducts', JSON.stringify(selectedProducts));
+        updateCompareUI();
+    }
+});
+
+// حدث مسح القائمة
+clearCompareButton.addEventListener('click', function() {
+    Swal.fire({
+        title: 'Clear Compare List?',
+        text: 'Are you sure you want to remove all products from comparison?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, clear it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            selectedProducts = [];
+            localStorage.removeItem('compareProducts');
+            updateCompareUI();
+        }
+    });
+});
+
+// تهيئة الواجهة
+updateCompareUI();
+});
+// Filter Products Function
+function filterProducts(filter) {
+    // Remove active class from all buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Add active class to clicked button
+    event.target.classList.add('active');
+    
+    // Here you would implement your actual filtering logic
+    console.log('Filtering by:', filter);
+    
+    // Example filtering logic (would need to be implemented properly):
+    // const products = document.querySelectorAll('.product-card');
+    // products.forEach(product => {
+    //     if (filter === 'all' || product.dataset[filter] === 'true') {
+    //         product.style.display = 'block';
+    //     } else {
+    //         product.style.display = 'none';
+    //     }
+    // });
+}
+
+// Add click event listeners to filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const filter = this.dataset.filter;
+        filterProducts(filter);
+    });
+});
+
+// View mode functions
+function setViewMode(mode) {
+document.getElementById('viewModeInput').value = mode;
+document.getElementById('filtersForm').submit();
+}
+
+function setMobileViewMode(mode) {
+document.getElementById('mobileViewModeInput').value = mode;
+}
 
 </script>
 
