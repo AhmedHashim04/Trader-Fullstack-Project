@@ -16,7 +16,6 @@ class HomeView(TemplateView):
 
         for product in context['featuredProducts']:
             reviews = Review.objects.filter(product=product)  
-            product.overall_rating = Product.calculate_overall_rating(reviews)  
 
         return context
 

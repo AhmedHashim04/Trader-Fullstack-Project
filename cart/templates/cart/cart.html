@@ -17,9 +17,12 @@
             </div>
             <div class="col-md-6 text-md-end">
                 {% if cart %}
-                <a href="{% url 'cart:cart_clear' %}" class="btn btn-outline-light btn-sm rounded-pill hover-scale">
-                    <i class="fas fa-trash-alt me-1"></i>Clear Cart
-                </a>
+                <form method="post" action="{% url 'cart:cart_clear' %}" class="d-inline-block">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-light btn-sm rounded-pill hover-scale">
+                        <i class="fas fa-trash-alt me-1"></i>Clear Cart
+                    </button>
+                </form>
                 {% endif %}
             </div>
         </div>
@@ -49,12 +52,12 @@
                                     <div class="product-thumbnail">
                                         {% if item.product.image %}
                                         <img src="{{ item.product.image.url|default:'https://via.placeholder.com/400' }}" 
-                                             alt="{{ item.product.name }}" 
-                                             class="img-fluid rounded-3">
+                                            alt="{{ item.product.name }}" 
+                                            class="img-fluid rounded-3">
                                         {% else %}
                                         <img src="https://via.placeholder.com/10" 
-                                             alt="{{ item.product.name }}" 
-                                             class="img-fluid rounded-3">
+                                            alt="{{ item.product.name }}" 
+                                            class="img-fluid rounded-3">
                                         {% endif %}
                                     </div>
                                 </div>
@@ -63,7 +66,7 @@
                                 <div class="col-md-4">
                                     <h6 class="mb-1">
                                         <a href="{% url 'product:product_detail' item.product.slug %}" 
-                                           class="text-decoration-none text-dark hover-primary">
+                                            class="text-decoration-none text-dark hover-primary">
                                             {{ item.product.name }}
                                         </a>
                                     </h6>
@@ -72,7 +75,14 @@
                                 
                                 <!-- Price -->
                                 <div class="col-md-2">
-                                    <span class="fw-bold text-primary">${{ item.price }}</span>
+                                    {% if item.discount > 0 %}
+
+                                    <span class="original-price">${{ item.price }}</span>
+                                    <span class="discount-price">$-{{ item.discount|floatformat:2 }}</span>
+                                    {% else %}
+                                    <span class="discount-price">${{ item.price }}</span>
+                                    {% endif %}    
+                                    <span class="fw-bold text-primary">${{ item.price_after_discount }}</span>
                                 </div>
                                 
                                 <!-- Quantity Update -->
@@ -113,7 +123,7 @@
                             <div class="row mt-2">
                                 <div class="col-12 text-end">
                                     <small class="text-muted">
-                                        Subtotal: <span class="fw-bold">${{ item.get_total_price }}</span>
+                                        Subtotal(AfterDiscount): <span class="fw-bold">${{ item.total_price_after_discount }}</span>
                                     </small>
                                 </div>
                             </div>
@@ -149,7 +159,11 @@
                 <div class="card-body">
                     <div class="summary-item d-flex justify-content-between mb-2">
                         <span>Subtotal:</span>
-                        <span>${{ total_price }}</span>
+                        <span>${{ cart_summary.total_price }}</span>
+                    </div>
+                    <div class="summary-item d-flex justify-content-between mb-2">
+                        <span>Subtotal(AfterDiscount):</span>
+                        <span>${{ cart_summary.total_price_after_discount }}</span>
                     </div>
                     <div class="summary-item d-flex justify-content-between mb-2">
                         <span>Tax:</span>
@@ -178,17 +192,17 @@
                     
                     <div class="d-grid gap-2">
                         <a href="{% url 'order:create_order' %}" 
-                           class="btn btn-primary btn-lg rounded-pill hover-scale {% if not cart %}disabled{% endif %}">
+                            class="btn btn-primary btn-lg rounded-pill hover-scale {% if not cart %}disabled{% endif %}">
                             <i class="fas fa-credit-card me-2"></i>Proceed to Checkout
                         </a>
                         <a href="{% url 'product:products_list' %}" 
-                           class="btn btn-outline-secondary rounded-pill hover-scale">
+                            class="btn btn-outline-secondary rounded-pill hover-scale">
                             <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
                         </a>
                     </div>
                     
                     <!-- Promo Code -->
-                    <div class="mt-4">
+                    {% comment %} <div class="mt-4">
                         <h6 class="fw-bold mb-3">
                             <i class="fas fa-tag me-2"></i>Promo Code
                         </h6>
@@ -202,7 +216,7 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
+                    </div> {% endcomment %}
                 </div>
             </div>
         </div>

@@ -566,7 +566,11 @@
                     </div>
 
                     <div class="product-image">
+                        {% if product.image %}
                         <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                        <img src="https://picsum.photos/400?random={{ forloop.counter }}" alt="{{ product.name }}">
+                        {% endif %}
                         <div class="image-overlay"></div>
                         <div class="quick-view-btn">
                             <a href="{% url 'product:product_detail' product.slug %}">Quick View</a>

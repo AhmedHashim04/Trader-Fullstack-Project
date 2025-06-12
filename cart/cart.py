@@ -2,11 +2,9 @@ from django.conf import settings
 from django.utils import timezone
 from django.core.cache import cache
 from decimal import Decimal
-from typing import Dict, Any, Iterator, Optional
+from typing import Dict, Any, Iterator
 from product.models import Product
-from cart.models import Coupon
 import logging
-from django_redis import get_redis_connection
 
 logger = logging.getLogger(__name__)
 
@@ -22,8 +20,6 @@ class Cart:
         self.session = request.session
         self.session_id = settings.CART_SESSION_ID
         self.cart = self._get_or_create_cart()
-        self.coupon_code = self.session.get('coupon_code')
-        self._coupon = None  # Cache for coupon object
 
     def _get_or_create_cart(self):
         """
@@ -50,11 +46,13 @@ class Cart:
 
         product_slug = str(product.slug)
         product_price = str(product.price)
+        product_discount = str(product.discount)
         
         if product_slug not in self.cart:
             self.cart[product_slug] = {
                 'quantity': 0,
                 'price': product_price,
+                'discount': product_discount,
                 'added_at': timezone.now().isoformat()
             }
         
@@ -85,59 +83,32 @@ class Cart:
             for item in self.cart.values()
         )
 
+    def get_total_discount(self) -> Decimal:
+        """
+        Calculate the total price of all items in the cart.
+        """
+        return sum(
+            Decimal(item['discount']) * item['quantity']
+            for item in self.cart.values()
+        )
+
+    def get_total_price_after_discount(self) -> Decimal:
+        """
+        Calculate the total price of all items in the cart.
+        """
+        return sum(
+            (Decimal(item['price']) - Decimal(item['discount'])) * item['quantity']
+            for item in self.cart.values()
+        )
+
     def clear(self) -> None:
         """
         Remove all items from the cart.
         """
         self.cart = {}
         self.session[self.session_id] = {}
-        self._clear_coupon()
         self._update_cache(clear=True)
         self.save()
-
-    @property
-    def coupon(self) -> Optional[Coupon]:
-        """
-        Get the applied coupon with caching and validation.
-        """
-        if self._coupon is not None:
-            return self._coupon
-            
-        if self.coupon_code:
-            try:
-                self._coupon = Coupon.objects.get(
-                    code=self.coupon_code,
-                    active=True,
-                    valid_from__lte=timezone.now(),
-                    valid_to__gte=timezone.now()
-                )
-                return self._coupon
-            except Coupon.DoesNotExist as e:
-                logger.warning(f"Invalid coupon attempt: {self.coupon_code} - {str(e)}")
-                self._clear_coupon()
-                
-        return None
-
-    def get_discount(self) -> Decimal:
-        """
-        Calculate the discount amount based on the applied coupon.
-        """
-        if not self.coupon:
-            return Decimal(0)
-            
-        discount_percent = self.coupon.discount / Decimal(100)
-        return discount_percent * self.get_total_price()
-
-    def get_total_price_after_discount(self) -> Decimal:
-        """
-        Calculate the total price after applying the discount.
-        """
-        total = self.get_total_price()
-        if not self.coupon:
-            return total
-            
-        discount_factor = Decimal(1) - (self.coupon.discount / Decimal(100))
-        return total * discount_factor
 
     def __iter__(self) -> Iterator[Dict[str, Any]]:
         """
@@ -150,7 +121,7 @@ class Cart:
             for p in Product.objects.filter(
                 slug__in=product_slugs
             ).select_related('category').only(
-                'slug', 'name', 'price', 'image', 'category__name'
+                'slug', 'name', 'price', 'discount', 'image', 'category__name'
             )
         }
         
@@ -163,8 +134,10 @@ class Cart:
                 'product': product,
                 'quantity': item['quantity'],
                 'price': Decimal(item['price']),
+                'discount': Decimal(item['discount']),
                 'added_at': item.get('added_at'),
-                'get_total_price': Decimal(item['price']) * item['quantity']
+                'price_after_discount': (Decimal(item['price']) - Decimal(item['discount'])),
+                'total_price_after_discount': (Decimal(item['price']) - Decimal(item['discount'])) * item['quantity']
             }
 
     def __len__(self) -> int:
@@ -191,28 +164,6 @@ class Cart:
         else:
             cache.set(cache_key, self.cart, timeout=3600)
 
-    def _clear_coupon(self) -> None:
-        """
-        Clear the applied coupon from session and cache.
-        """
-        if 'coupon_code' in self.session:
-            del self.session['coupon_code']
-        self._coupon = None
-        self.coupon_code = None
-
-    def apply_coupon(self, coupon_code: str) -> bool:
-        """
-        Apply a coupon to the cart with validation.
-        """
-        self.coupon_code = coupon_code
-        self._coupon = None  # Reset cache
-        
-        if self.coupon:  # This will trigger validation
-            self.session['coupon_code'] = coupon_code
-            self.save()
-            return True
-            
-        return False
 
     def get_cart_summary(self) -> Dict[str, Any]:
         """
@@ -221,7 +172,5 @@ class Cart:
         return {
             'total_items': len(self),
             'total_price': self.get_total_price(),
-            'discount': self.get_discount(),
-            'total_after_discount': self.get_total_price_after_discount(),
-            'has_coupon': bool(self.coupon)
+            'total_price_after_discount': self.get_total_price_after_discount()
         }
