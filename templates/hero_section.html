@@ -1,6 +1,6 @@
 <!-- Hero Section -->
 <section class="hero-section position-relative overflow-hidden">
-    <div class="container h-100">
+    <div class="container btn-primary h-1000">
         <div class="row align-items-center h-100">
             <div class="col-lg-6 hero-content py-5">
                 <h1 class="hero-title mb-4">
@@ -12,8 +12,11 @@
                     <span class="d-block mt-2">Trade smart, shop smarter.</span>
                 </p>
                 <div class="hero-buttons d-flex flex-wrap gap-3">
-                    <a href="{% url 'product:products_list' %}" class="btn btn-danger btn-lg px-4 py-3">
+                    <a href="{% url 'product:products_list' %}" class="btn btn-primary text-warning btn-lg px-4 py-3">
                         <i class="fas fa-shopping-bag me-2"></i> Shop Now
+                    </a>
+                    <a href="{% url 'coupon:coupon_list' %}" class="btn btn-light btn-lg px-4 py-3">
+                        <i class="fas fa-ticket-alt me-2"></i> Coupons
                     </a>
                     <a href="#featured-products" class="btn btn-outline-light btn-lg px-4 py-3">
                         <i class="fas fa-bolt me-2"></i> Hot Deals
@@ -21,6 +24,7 @@
                     <a href="#featured-collections" class="btn btn-outline-primary btn-lg px-4 py-3">
                         <i class="fas fa-gem me-2"></i> Collections
                     </a>
+
                 </div>
                 <div class="hero-features mt-4">
                     <div class="d-flex flex-wrap gap-4">
@@ -72,9 +76,9 @@
 <style>
     /* Hero Section */
     .hero-section {
-        background: var(--gradient-primary);
+        background: var(--gradient-secondary);
         color: hsl(var(--text-primary));
-        padding: 100px 0 0;
+        padding: 10px 0 0;
         position: relative;
         min-height: 90vh;
         display: flex;
@@ -305,4 +309,98 @@
             font-size: 1rem;
         }
     }
+
+    .hero-section {
+        background: var(--gradient-primary);
+        color: hsl(var(--text-primary));
+        padding: 120px 0 60px;
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+    
+    .hero-title {
+        font-size: 3.75rem;
+        font-weight: 800;
+        line-height: 1.2;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.25rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+    }
+    
+    .hero-buttons .btn {
+        min-width: 160px;
+        padding: 14px 22px;
+        font-size: 1.1rem;
+        border-radius: var(--border-radius-lg);
+        transition: all 0.3s ease;
+    }
+    
+    .hero-buttons .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    
+    .hero-image {
+        transform: rotateY(-3deg) rotateX(3deg);
+        border-radius: 1.25rem;
+        border: 8px solid hsl(var(--surface-color));
+        transition: transform 0.5s ease;
+    }
+    
+    .hero-image-wrapper:hover .hero-image {
+        transform: rotateY(0deg) rotateX(0deg);
+    }
+    
+    .hero-badge {
+        font-size: 0.95rem;
+        padding: 8px 14px;
+        border-radius: 12px;
+        box-shadow: var(--shadow-colored);
+    }
+    
+    /* Responsive Optimizations */
+    @media (max-width: 992px) {
+        .hero-section {
+            padding: 80px 0;
+            text-align: center;
+        }
+    
+        .hero-title {
+            font-size: 2.5rem;
+        }
+    
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+    
+        .hero-buttons {
+            justify-content: center;
+        }
+    
+        .hero-image {
+            margin: 40px auto 0;
+            max-width: 85%;
+        }
+    
+        .hero-badge {
+            display: none;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+    
+        .hero-buttons .btn {
+            font-size: 1rem;
+            padding: 10px 16px;
+        }
+    }
+    
 </style>

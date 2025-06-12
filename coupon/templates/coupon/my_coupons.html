@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="mb-4">{{ title }}</h2>
+    
+    {% if used_coupons %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Coupon Code</th>
+                    <th>Discount</th>
+                    <th>Used On</th>
+                    <th>Order</th>
+                    <th>Amount Saved</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usage in used_coupons %}
+                <tr>
+                    <td>{{ usage.coupon.code }}</td>
+                    <td>
+                        {% if usage.coupon.discount_type == 'fixed' %}
+                            ${{ usage.coupon.amount }} off
+                        {% elif usage.coupon.discount_type == 'percent' %}
+                            {{ usage.coupon.amount }}% off
+                        {% else %}
+                            Free Shipping
+                        {% endif %}
+                    </td>
+                    <td>{{ usage.used_at|date:"M d, Y H:i" }}</td>
+                    <td>
+                        {% if usage.order_id %}
+                            <a href="{% url 'order_detail' usage.order_id %}">#{{ usage.order_id }}</a>
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>${{ usage.discount_amount }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        You haven't used any coupons yet.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

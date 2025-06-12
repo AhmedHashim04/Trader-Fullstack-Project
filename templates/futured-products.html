@@ -542,7 +542,7 @@
                     <button class="btn-filter" data-filter="sale" onclick="filterProducts('sale')">On Sale</button>
                 </div>
             </div>
-            <div class="products-grid" id="featuredProducts">
+            <div class="products-grid" id="featured-products">
                 {% for product in featuredProducts %}
                 <div class="product-card" data-product-id="{{ product.id }}" data-trending="{{ product.trending }}" data-sale="{{ product.discount|yesno:'sale,' }}">
                     <div class="product-badges">
@@ -675,7 +675,7 @@
             console.log('Filtering by:', filter);
             
             // Visual feedback
-            const productsGrid = document.getElementById('featuredProducts');
+            const productsGrid = document.getElementById('featured-products');
             productsGrid.style.opacity = '0.5';
             productsGrid.style.transition = 'opacity 0.3s ease';
             

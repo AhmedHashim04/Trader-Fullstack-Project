@@ -200,13 +200,20 @@
                             <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
                         </a>
                     </div>
-                    
                     <!-- Promo Code -->
-                    {% comment %} <div class="mt-4">
+                    <div class="mt-4">
+                        {% if request.session.coupon_code %}
+                        <div class="alert alert-success">
+                                Coupon <strong>{{ request.session.coupon_code }}</strong> applied successfully.
+                                Discount: ${{ request.session.coupon_discount }}
+                                <a href="{% url 'coupon:remove_coupon' %}" class="btn btn-sm btn-danger float-right">Remove</a>
+                        </div>
+                        </div>
+                        {% else %}
                         <h6 class="fw-bold mb-3">
                             <i class="fas fa-tag me-2"></i>Promo Code
                         </h6>
-                        <form method="post" action="{% url 'cart:coupon_apply' %}">
+                        <form method="post" action="{% url 'coupon:apply_coupon' %}">
                             {% csrf_token %}
                             <div class="input-group">
                                 <input type="text" name="code" class="form-control rounded-start-pill" 
@@ -216,7 +223,8 @@
                                 </button>
                             </div>
                         </form>
-                    </div> {% endcomment %}
+                    </div> 
+                        {% endif %}
                 </div>
             </div>
         </div>
