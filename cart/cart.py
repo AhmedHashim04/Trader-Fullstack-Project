@@ -20,11 +20,10 @@ class Cart:
         self.session = request.session
         self.session_id = settings.CART_SESSION_ID
         self.cart = self._get_or_create_cart()
-
     def _get_or_create_cart(self):
         """
         Get existing cart or create a new one in session.
-        Uses caching for better performance.
+        Uses caching for better performance and faster cart retrieval for high concurrent requests.
         """
         cache_key = f"cart_{self.session.session_key}"
         cart = cache.get(cache_key)
@@ -33,13 +32,10 @@ class Cart:
             cart = self.session.get(self.session_id, {})
             if not isinstance(cart, dict):
                 cart = {}
-            cache.set(cache_key, cart, timeout=3600)  # Cache for 1 hour
+            cache.set(cache_key, cart, timeout=3600)  #Cache for 1hour
         return cart
-
     def add(self, product: Product, quantity: int = 1, override_quantity: bool = False) -> None:
-        """
-        Add a product to the cart or update its quantity.
-        """
+
         if quantity <= 0:
             self.remove(product)
             return
@@ -47,13 +43,15 @@ class Cart:
         product_slug = str(product.slug)
         product_price = str(product.price)
         product_discount = str(product.discount)
+        product_price_after_discount = str(product.price_after_discount)
         
         if product_slug not in self.cart:
             self.cart[product_slug] = {
                 'quantity': 0,
                 'price': product_price,
                 'discount': product_discount,
-                'added_at': timezone.now().isoformat()
+                'price_after_discount': product_price_after_discount,
+                'added_at': timezone.now().isoformat(),
             }
         
         if override_quantity:
@@ -61,55 +59,19 @@ class Cart:
         else:
             self.cart[product_slug]['quantity'] += quantity
             
-        self._update_cache()
         self.save()
-
     def remove(self, product: Product) -> None:
-        """
-        Remove a product from the cart.
-        """
         product_slug = str(product.slug)
         if product_slug in self.cart:
             del self.cart[product_slug]
-            self._update_cache()
             self.save()
-
-    def get_total_price(self) -> Decimal:
-        """
-        Calculate the total price of all items in the cart.
-        """
-        return sum(
-            Decimal(item['price']) * item['quantity']
-            for item in self.cart.values()
-        )
-
-    def get_total_discount(self) -> Decimal:
-        """
-        Calculate the total price of all items in the cart.
-        """
-        return sum(
-            Decimal(item['discount']) * item['quantity']
-            for item in self.cart.values()
-        )
-
-    def get_total_price_after_discount(self) -> Decimal:
-        """
-        Calculate the total price of all items in the cart.
-        """
-        return sum(
-            (Decimal(item['price']) - Decimal(item['discount'])) * item['quantity']
-            for item in self.cart.values()
-        )
-
     def clear(self) -> None:
         """
         Remove all items from the cart.
         """
         self.cart = {}
         self.session[self.session_id] = {}
-        self._update_cache(clear=True)
-        self.save()
-
+        self.save(clear=True)
     def __iter__(self) -> Iterator[Dict[str, Any]]:
         """
         Iterate over the items in the cart and fetch the corresponding products.
@@ -135,42 +97,38 @@ class Cart:
                 'quantity': item['quantity'],
                 'price': Decimal(item['price']),
                 'discount': Decimal(item['discount']),
+                'price_after_discount': Decimal(item['price']) - Decimal(item['discount']),
                 'added_at': item.get('added_at'),
-                'price_after_discount': (Decimal(item['price']) - Decimal(item['discount'])),
-                'total_price_after_discount': (Decimal(item['price']) - Decimal(item['discount'])) * item['quantity']
+                'total_price': (Decimal(item['price']) - Decimal(item['discount']))*item['quantity'],
             }
-
     def __len__(self) -> int:
         """
         Return the total number of items in the cart.
         """
         return sum(item['quantity'] for item in self.cart.values())
-
-    def save(self) -> None:
+    def save(self,clear: bool = False) -> None:
         """
         Save the cart state to session and update cache.
         """
         self.session[self.session_id] = self.cart
         self.session.modified = True
-        self._update_cache()
-
+        self._update_cache(clear=clear)
     def _update_cache(self, clear: bool = False) -> None:
-        """
-        Update the cached cart data.
-        """
         cache_key = f"cart_{self.session.session_key}"
         if clear:
             cache.delete(cache_key)
         else:
             cache.set(cache_key, self.cart, timeout=3600)
-
-
+    def get_total_price(self):return sum(Decimal(item['price']) * item['quantity']for item in self.cart.values())
+    def get_total_discount(self):return sum(Decimal(item['discount']) * item['quantity']for item in self.cart.values())
+    def get_total_price_after_discount(self):return sum((Decimal(item['price']) - Decimal(item['discount'])) * item['quantity']for item in self.cart.values())
     def get_cart_summary(self) -> Dict[str, Any]:
-        """
-        Return a summary of the cart contents with totals.
-        """
+
         return {
             'total_items': len(self),
             'total_price': self.get_total_price(),
+            'total_discount': self.get_total_discount(),
             'total_price_after_discount': self.get_total_price_after_discount()
         }
+
+

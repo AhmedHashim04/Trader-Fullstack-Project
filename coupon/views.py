@@ -20,7 +20,7 @@ def apply_coupon(request):
             code = form.cleaned_data['code']
             try:
                 coupon = Coupon.objects.get(code=code)
-                usage = CouponUsage.objects.create(coupon=coupon, user=request.user, discount_amount=coupon.amount)
+                CouponUsage.objects.create(coupon=coupon, user=request.user, discount_amount=coupon.amount)
                 coupon.used_count += 1
                 coupon.save()
                 cart = ShoppingCart(request)

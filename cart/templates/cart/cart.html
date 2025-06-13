@@ -82,7 +82,7 @@
                                     {% else %}
                                     <span class="discount-price">${{ item.price }}</span>
                                     {% endif %}    
-                                    <span class="fw-bold text-primary">${{ item.price_after_discount }}</span>
+                                    <span class="fw-bold text-primary">${{ item.price_after_discount|floatformat:2 }}</span>
                                 </div>
                                 
                                 <!-- Quantity Update -->
@@ -123,7 +123,7 @@
                             <div class="row mt-2">
                                 <div class="col-12 text-end">
                                     <small class="text-muted">
-                                        Subtotal(AfterDiscount): <span class="fw-bold">${{ item.total_price_after_discount }}</span>
+                                        Subtotal: <span class="fw-bold">${{ item.total_price|floatformat:2 }}</span>
                                     </small>
                                 </div>
                             </div>
@@ -159,15 +159,15 @@
                 <div class="card-body">
                     <div class="summary-item d-flex justify-content-between mb-2">
                         <span>Subtotal:</span>
-                        <span>${{ cart_summary.total_price }}</span>
+                        <span>${{ cart_summary.total_price|floatformat:2}}</span>
                     </div>
                     <div class="summary-item d-flex justify-content-between mb-2">
                         <span>Subtotal(AfterDiscount):</span>
-                        <span>${{ cart_summary.total_price_after_discount }}</span>
+                        <span>${{ cart_summary.total_price_after_discount|floatformat:2 }}</span>
                     </div>
                     <div class="summary-item d-flex justify-content-between mb-2">
                         <span>Tax:</span>
-                        <span>${{ tax }}</span>
+                        <span>${{ tax|floatformat:2 }}</span>
                     </div>
                     
                     {% if discount %}
@@ -187,7 +187,7 @@
                     
                     <div class="summary-total d-flex justify-content-between fw-bold h5 mb-4">
                         <span>Total:</span>
-                        <span class="text-primary">${{ total_with_tax }}</span>
+                        <span class="text-primary">${{ total_with_tax|floatformat:2 }}</span>
                     </div>
                     
                     <div class="d-grid gap-2">
@@ -205,7 +205,9 @@
                         {% if request.session.coupon_code %}
                         <div class="alert alert-success">
                                 Coupon <strong>{{ request.session.coupon_code }}</strong> applied successfully.
-                                Discount: ${{ request.session.coupon_discount }}
+                                Coupon Discount: ${{ request.session.coupon_discount }}
+                                Cart Total After Coupon Discount: ${{ request.session.cart_total|floatformat:2 }}
+                                
                                 <a href="{% url 'coupon:remove_coupon' %}" class="btn btn-sm btn-danger float-right">Remove</a>
                         </div>
                         </div>
