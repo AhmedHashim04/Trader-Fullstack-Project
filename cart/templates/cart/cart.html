@@ -190,28 +190,49 @@
                         <span class="text-primary">${{ total_with_tax|floatformat:2 }}</span>
                     </div>
                     
-                    <div class="d-grid gap-2">
-                        <a href="{% url 'order:create_order' %}" 
-                            class="btn btn-primary btn-lg rounded-pill hover-scale {% if not cart %}disabled{% endif %}">
-                            <i class="fas fa-credit-card me-2"></i>Proceed to Checkout
-                        </a>
-                        <a href="{% url 'product:products_list' %}" 
-                            class="btn btn-outline-secondary rounded-pill hover-scale">
-                            <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
-                        </a>
-                    </div>
-                    <!-- Promo Code -->
-                    <div class="mt-4">
+                    <div class="mt-4 btn-secondary">
                         {% if request.session.coupon_code %}
-                        <div class="alert alert-success">
-                                Coupon <strong>{{ request.session.coupon_code }}</strong> applied successfully.
-                                Coupon Discount: ${{ request.session.coupon_discount }}
-                                Cart Total After Coupon Discount: ${{ request.session.cart_total|floatformat:2 }}
+                        <div class="alert alert-success coupon-alert btn-secondary " style="border-left: 4px solid #28a745; border-radius: 0; background-color: #f8f9fa; color: #212529;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-tag mr-2" style="color: #28a745;"></i>
+                                    <strong style="font-size: 1.1em;">{{ request.session.coupon_code }}</strong> applied successfully!
+                                </div>
+                                <a href="{% url 'coupon:remove_coupon' %}" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-times"></i> Remove
+                                </a>
+                            </div>
+                            
+                            <div class="coupon-details mt-2" style="display: flex; gap: 15px; flex-wrap: wrap;">
+
                                 
-                                <a href="{% url 'coupon:remove_coupon' %}" class="btn btn-sm btn-danger float-right">Remove</a>
+                                <div class="detail-item" style="background: white; padding: 8px 12px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                    <div style="font-size: 0.8em; color: #6c757d;">Discount</div>
+                                    <div style="font-weight: bold; color: #dc3545;">{% if request.session.coupon_type == 'percent' %}{{ request.session.coupon_amount }}%{% else %}-${{ request.session.coupon_amount }}{% endif %}</div>
+                                </div>
+                                
+                                <div class="detail-item" style="background: #e8f5e9; padding: 8px 12px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                    <div style="font-size: 0.8em; color: #6c757d;">New Total</div>
+                                    <div style="font-weight: bold; color: #28a745;">${{ request.session.coupon_discount|floatformat:2 }}</div>
+                                </div>
+                            </div>
                         </div>
                         </div>
-                        {% else %}
+                        
+                        <style>
+                            .coupon-alert {
+                                transition: all 0.3s ease;
+                            }
+                            .coupon-alert:hover {
+                                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                            }
+                            .detail-item {
+                                transition: transform 0.2s ease;
+                            }
+                            .detail-item:hover {
+                                transform: translateY(-2px);
+                            }
+                        </style>                        {% else %}
                         <h6 class="fw-bold mb-3">
                             <i class="fas fa-tag me-2"></i>Promo Code
                         </h6>
@@ -227,6 +248,17 @@
                         </form>
                     </div> 
                         {% endif %}
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'order:create_order' %}" 
+                            class="btn btn-primary btn-lg rounded-pill hover-scale {% if not cart %}disabled{% endif %}">
+                            <i class="fas fa-credit-card me-2"></i>Proceed to Checkout
+                        </a>
+                        <a href="{% url 'product:products_list' %}" 
+                            class="btn btn-outline-secondary rounded-pill hover-scale">
+                            <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
+                        </a>
+                    </div>
+                    <!-- Promo Code -->
                 </div>
             </div>
         </div>

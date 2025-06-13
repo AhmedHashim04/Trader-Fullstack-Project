@@ -83,7 +83,6 @@ class CartView(LoginRequiredMixin, ListView):
         tax_amount = calculate_tax(cart.get_total_price_after_discount())
         cart_summary = cart.get_cart_summary()
         total_with_tax = cart.get_total_price_after_discount() + tax_amount
-        print(cart.cart)
         context.update({
 
             'cart_summary': cart_summary,

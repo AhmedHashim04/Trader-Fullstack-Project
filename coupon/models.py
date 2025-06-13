@@ -1,7 +1,4 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
 from django.utils import timezone

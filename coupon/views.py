@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Coupon, CouponUsage
 from .forms import CouponApplyForm
 from cart.cart import Cart as ShoppingCart
+from cart.utils import calculate_tax
+
 def coupon_list(request):
     coupons = Coupon.objects.filter(active=True)
     context = {
@@ -24,13 +26,14 @@ def apply_coupon(request):
                 coupon.used_count += 1
                 coupon.save()
                 cart = ShoppingCart(request)
-                cart_total = cart.get_total_price_after_discount()
+                cart_total = calculate_tax(cart.get_total_price_after_discount())+cart.get_total_price_after_discount()
                 if coupon.is_valid(user=request.user, cart_total=cart_total):
                     # Apply coupon to session
                     request.session['coupon_id'] = coupon.id
                     request.session['coupon_code'] = coupon.code
+                    request.session['coupon_type'] = coupon.discount_type
+                    request.session['coupon_amount'] = str(coupon.amount)
                     request.session['coupon_discount'] = str(coupon.apply_discount(cart_total))
-                    request.session['cart_total'] =  str(cart_total - coupon.apply_discount(cart_total))
 
                     messages.success(request, f'Coupon "{coupon.code}" applied successfully!')
                 else:
@@ -40,7 +43,7 @@ def apply_coupon(request):
         else:
             messages.error(request, 'Invalid coupon code format.')
     
-    return redirect('cart:cart_list')  # Redirect to cart page or wherever you want
+    return redirect('cart:cart_list')  
 
 @login_required
 def remove_coupon(request):
