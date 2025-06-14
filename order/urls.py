@@ -1,24 +1,14 @@
+
 from django.urls import path
 from .views import (
-    create_order,
-    confirm_order,
     OrderListView,
     OrderDetailView,
-    CheckoutView,
-    PreviewView,
-    clear_order_history,
-    admin_order_pdf,
+    OrderCreateView,
 )
-
 app_name = 'order'
 
 urlpatterns = [
-    path('orders/', OrderListView.as_view(), name='order_list'), 
-    path('order/<str:id>/', OrderDetailView.as_view(), name='order_detail'),  
-    path('checkout/<str:id>/', CheckoutView.as_view(), name='checkout'),
-    path('preview/', PreviewView.as_view(), name='preview_order'), 
-    path('create-order/', create_order, name='create_order'), 
-    path('confirm/<str:confirmation_key>/', confirm_order, name='confirm_order'),  
-    path('clear-order-history/', clear_order_history, name='clear_order_history'),  
-    path('admin/order/<str:id>/pdf/', admin_order_pdf, name='admin_order_pdf'),
+    path('', OrderListView.as_view(), name='list'),
+    path('create/', OrderCreateView.as_view(), name='create'),
+    path('<uuid:pk>/', OrderDetailView.as_view(), name='detail'),
 ]

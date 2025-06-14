@@ -1,41 +1,73 @@
-from django import conf
-from django.apps import config
-from django.db import models
-from django.contrib.auth.models import User
-from django.utils import timezone
-from product.models import Product
-from django.utils.translation import gettext_lazy as _
 import uuid
-from django.contrib.sessions.models import Session
-class Order(models.Model):
-    ORDER_STATUS = (
-        ('pending', 'Pending'),
-        ('processing', 'Processing'),
-        ('shipped', 'Shipped'),
-        ('delivered', 'Delivered'),
-        ('cancelled', 'Cancelled'),
-    )
+from decimal import Decimal
+from django.db import models
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
+from product.models import Product
 
+
+class OrderStatus(models.TextChoices):
+    PENDING = 'pending', _("Pending")
+    PROCESSING = 'processing', _("Processing")
+    SHIPPED = 'shipped', _("Shipped")
+    DELIVERED = 'delivered', _("Delivered")
+    CANCELLED = 'cancelled', _("Cancelled")
+    RETURNED = 'returned', _("Returned")
+    FAILED = 'failed', _("Failed")
+
+
+class PaymentMethod(models.TextChoices):
+    COD = 'cod', _("Cash on Delivery")
+    CREDIT_CARD = 'credit_card', _("Credit Card")
+    VODAFONE_CASH = 'vodafone_cash', _("Vodafone Cash")
+    PAYPAL = 'paypal', _("PayPal")
+
+
+class ShippingMethod(models.TextChoices):
+    STANDARD = 'standard', _("Standard Shipping")
+    EXPRESS = 'express', _("Express Shipping")
+    PICKUP = 'pickup', _("In-store Pickup")
+
+
+# Address Model
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses")
+    full_name = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=20)
+    address_line = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=10)
+    is_default = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.city}, {self.country}"
+
+
+# Order Model
+class Order(models.Model):
     id = models.UUIDField(_("ID"), primary_key=True, editable=False, default=uuid.uuid4)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
-    phone_number = models.CharField(max_length=20, verbose_name=_("Phone Number"), blank=True, null=True)
-    address = models.TextField(max_length=255, verbose_name=_("Address"), blank=True, null=True)
-    city = models.CharField(max_length=100, verbose_name=_("City"), blank=True, null=True)
-    country = models.CharField(max_length=100, verbose_name=_("Country"), blank=True, null=True)
-    postal_code = models.CharField(max_length=10, verbose_name=_("Postal Code"), blank=True, null=True)
-    created_at = models.DateTimeField(default=timezone.now)
+    address = models.ForeignKey(Address, on_delete=models.PROTECT, verbose_name=_("Shipping Address"))
+    status = models.CharField(max_length=20, choices=OrderStatus.choices, default=OrderStatus.PENDING)
+    payment_method = models.CharField(max_length=20, choices=PaymentMethod.choices, default=PaymentMethod.COD)
+    shipping_method = models.CharField(max_length=20, choices=ShippingMethod.choices, default=ShippingMethod.STANDARD)
+    shipping_cost = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=20, choices=ORDER_STATUS, default='pending')
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     status_changed_at = models.DateTimeField(null=True, blank=True)
-    paied = models.BooleanField(_("Paied"), default=False)
+    paid = models.BooleanField(_("Paid"), default=False)
     confirmed = models.BooleanField(_("Confirmed"), default=False)
     confirmation_key = models.CharField(max_length=32, blank=True, null=True)
-    discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    class Meta:
+        ordering = ['-created_at']
 
     def __str__(self):
         return f"Order {self.id} - {self.user.username}"
-    
+
     def get_items(self):
         return self.items.all()
 
@@ -44,12 +76,35 @@ class Order(models.Model):
         self.status_changed_at = timezone.now()
         self.save()
 
+    def calculate_shipping_cost(self, weight: float) -> Decimal:
+        """
+        Calculate the shipping cost based on the weight and shipping method.
+        """
+        if self.shipping_method == ShippingMethod.STANDARD:
+            return Decimal('5.00') + Decimal(weight) * Decimal('0.50')
+        elif self.shipping_method == ShippingMethod.EXPRESS:
+            return Decimal('10.00') + Decimal(weight) * Decimal('1.00')
+        elif self.shipping_method == ShippingMethod.PICKUP:
+            return Decimal('0.00')
+        return Decimal('0.00')
 
+    def calculate_total_price(self):
+        items_total = sum(item.get_total_price() for item in self.get_items())
+        self.total_price = (items_total + self.shipping_cost).quantize(Decimal('0.01'))
+
+    def save(self, *args, **kwargs):
+        if not self.shipping_cost:
+            self.shipping_cost = self.calculate_shipping_cost(weight=1.0)  # weight يمكن تمريره ديناميكياً
+        self.calculate_total_price()
+        super().save(*args, **kwargs)
+
+
+# Order Item
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField(default=1)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2)  # سعر المنتج وقت الطلب
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name} in Order {self.order.id}"
