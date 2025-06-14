@@ -128,7 +128,7 @@ class Cart:
             cache.set(cache_key, self.cart, timeout=3600)
     def get_total_price(self):return sum(Decimal(item['price']) * item['quantity']for item in self.cart.values())
     def get_total_discount(self):return sum((Decimal(item['price']) * item['quantity']) * (Decimal(item['discount']) / 100) for item in self.cart.values()) 
-    def get_total_price_after_discount(self):return self.get_total_price() - self.get_total_discount()
+    def get_total_price_after_discount(self):return (self.get_total_price() - self.get_total_discount())
     def get_cart_summary(self) -> Dict[str, Any]:
 
         return {
