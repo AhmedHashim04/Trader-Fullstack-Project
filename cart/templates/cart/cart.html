@@ -162,6 +162,9 @@
                         <span>${{ cart_summary.total_price|floatformat:2}}</span>
                     </div>
                     <div class="summary-item d-flex justify-content-between mb-2">
+                        <span>Subtotal Discount:</span>
+                        <span>${{ cart_summary.total_discount|floatformat:2 }}</span>
+                    </div>                    <div class="summary-item d-flex justify-content-between mb-2">
                         <span>Subtotal(AfterDiscount):</span>
                         <span>${{ cart_summary.total_price_after_discount|floatformat:2 }}</span>
                     </div>
@@ -190,7 +193,8 @@
                         <span class="text-primary">${{ total_with_tax|floatformat:2 }}</span>
                     </div>
                     
-                    <div class="mt-4 btn-secondary">
+                    {% if request.user.is_authenticated %}
+                    <div class="mt-4">
                         {% if request.session.coupon_code %}
                         <div class="alert alert-success coupon-alert btn-secondary " style="border-left: 4px solid #28a745; border-radius: 0; background-color: #f8f9fa; color: #212529;">
                             <div class="d-flex justify-content-between align-items-center">
@@ -246,13 +250,21 @@
                                 </button>
                             </div>
                         </form>
-                    </div> 
+                    </div>
+                        {% endif %}
                         {% endif %}
                     <div class="d-grid gap-2">
+                        {% if user.is_authenticated %}
                         <a href="{% url 'order:create_order' %}" 
                             class="btn btn-primary btn-lg rounded-pill hover-scale {% if not cart %}disabled{% endif %}">
                             <i class="fas fa-credit-card me-2"></i>Proceed to Checkout
                         </a>
+                        {% else %}
+                        <a href="{% url 'account:login' %}" 
+                            class="btn btn-primary btn-lg rounded-pill hover-scale">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login to Checkout
+                        </a>
+                        {% endif %}
                         <a href="{% url 'product:products_list' %}" 
                             class="btn btn-outline-secondary rounded-pill hover-scale">
                             <i class="fas fa-shopping-bag me-2"></i>Continue Shopping
