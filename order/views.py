@@ -8,7 +8,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from cart.cart import Cart
 from .models import Order, OrderItem, Address
 from .forms import OrderCreateForm
-
+from django.views.generic import View
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'order/order_list.html'
@@ -47,11 +49,19 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         order.save()
 
         # create order items
-        for item in cart:OrderItem.objects.create(order=order,product=item['product'],quantity=item['quantity'],price=item['price'])
-        
+        for item in cart:
+            OrderItem.objects.create(order=order, product=item['product'], quantity=item['quantity'], price=item['price'])
 
         cart.clear()
         return super().form_valid(form)
+
+
+class OrderCancelView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        order = Order.objects.filter(pk=pk, user=request.user).first()
+        if order and hasattr(order, 'status'):
+            order.update_status('cancelled')
+        return HttpResponseRedirect(reverse('order:order_detail', args=[order.pk]))
 
 
 @login_required

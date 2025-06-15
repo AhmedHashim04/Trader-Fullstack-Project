@@ -1,60 +1,53 @@
-from django.views.generic import FormView, TemplateView
-from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import PaymentConfirmationForm #PaymentForm
-from .models import PaymentConfirmation #Payment
-from django.shortcuts import redirect, get_object_or_404 , render
-from order.models import Order
-from django.contrib import messages
 
-# class PaymentView(LoginRequiredMixin, FormView):
-#     template_name = 'payment/payment.html'
-#     form_class = PaymentForm
-#     success_url = reverse_lazy('payment:success')
+from django.shortcuts import redirect
 
-#     def form_valid(self, form):
-#         amount = self.request.GET.get('amount', 0)
-#         product_id = self.request.GET.get('product_id')
-#         product = Product.objects.get(id=product_id) if product_id else None
-#         Payment.objects.create(
-#             user=self.request.user,
-#             product=product,
-#             amount=amount,
-#             status='completed'
-#         )
-#         return super().form_valid(form)
+from cart.cart import Cart as ShoppingCart
+from django.shortcuts import redirect
+from .utils import get_auth_token, create_paymob_order, generate_payment_key
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+import hmac
+import hashlib
 
-class PaymentSuccessView(LoginRequiredMixin, TemplateView):
-    template_name = 'payment/payment_success.html'
+def pay_with_paymob(request):
+    cart = ShoppingCart(request.user)
+    amount_cents = int(cart.get_total() * 100)
 
-# def pay_by_vodafone(request, order_id):
-#     order = get_object_or_404(Order, id=order_id)
-#     if request.method == 'POST':
-#         form = PaymentForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             order_pay = form.save(commit=False)
-#             order_pay.order = order
-#             order.paied = True
-#             order_pay.save()
-#             order.save()  # Save the order to persist changes
-#             return redirect('payment:success_payment', order.id)
-#         else:
-#             messages.error(request, "Payment form is not valid.")
-#     else:
-#         form = PaymentForm()
-#     return render(request, 'payment/payment.html', {'form': form, 'order': order})
+    token = get_auth_token()
 
+    order_id = create_paymob_order(token, amount_cents)
 
+    billing_data = {
+        "first_name": request.user.first_name or "Ahmed",
+        "last_name": request.user.last_name or "Hashim",
+        "email": request.user.email or "ahmed@example.com",
+        "phone_number": "01000000000",
+        "city": "Cairo",
+        "country": "EG",
+        "street": "Street 123",
+        "building": "1",
+        "floor": "2",
+        "apartment": "3",
+    }
 
-def confirm_vodafone_payment(request, order_id):
-    if request.method == 'POST':
-        form = PaymentConfirmationForm(request.POST, request.FILES)
-        if form.is_valid():
-            confirmation = form.save(commit=False)
-            confirmation.user = request.user
-            confirmation.order_id = order_id
-            confirmation.save()
-            return redirect('thank_you')
-    else:
-        form = PaymentConfirmationForm()
-    return render(request, 'confirm_vodafone_payment.html', {'form': form})
+    payment_token = generate_payment_key(token, order_id, amount_cents, billing_data)
+
+    redirect_url = f"https://accept.paymobsolutions.com/api/acceptance/iframes/your_iframe_id?payment_token={payment_token}"
+    return redirect(redirect_url)
+
+@csrf_exempt
+def payment_callback(request):
+    data = request.POST.dict()
+    
+    # Verify HMAC signature (مهم للأمان)
+    hmac_secret = b'your_hmac_secret'
+    sent_hmac = data.get("hmac")
+    computed_hmac = hmac.new(hmac_secret, msg=request.body, digestmod=hashlib.sha512).hexdigest()
+
+    if hmac.compare_digest(sent_hmac, computed_hmac):
+        if data.get("success") == "true":
+            order_id = data.get("order")
+            # حدّث الطلب في DB: order.status = 'paid'
+            return HttpResponse("OK")
+    
+    return HttpResponse("FAILED", status=400)

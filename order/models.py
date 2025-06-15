@@ -55,8 +55,6 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     status_changed_at = models.DateTimeField(null=True, blank=True)
     paid = models.BooleanField(_("Paid"), default=False)
-    confirmed = models.BooleanField(_("Confirmed"), default=False)
-    confirmation_key = models.CharField(max_length=32, blank=True, null=True)
 
     class Meta:
         ordering = ['-created_at']

@@ -1,10 +1,11 @@
 from django.urls import path
-from .views import PaymentSuccessView,confirm_vodafone_payment#  pay_by_vodafone , 
+from .views import payment_callback
 app_name = 'payment'
 
 urlpatterns = [
-    # path('', pay_by_vodafone, name='payment'),
-    path('', confirm_vodafone_payment, name='payment'),
-    path('success/', PaymentSuccessView.as_view(), name='success'),
+
+    path("payment/callback/", payment_callback, name="payment_callback")
+
+
 ]
  

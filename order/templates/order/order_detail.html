@@ -8,11 +8,16 @@
             <div class="card border-0 rounded-4 overflow-hidden bg-blur">
                 <!-- Gradient Header -->
                 <div class="card-header btn-primary text-white text-center py-4">
+
+
+                    
                     <div class="order-icon mb-3">
                         <i class="fas fa-receipt"></i>
                     </div>
                     <h2 class="mb-0 fw-bold">Order #{{ order.id }}</h2>
                     <p class="mb-0 opacity-75">Order Details</p>
+                                        
+    
                 </div>
                 
                 <div class="card-body p-4 p-lg-5">
@@ -28,9 +33,54 @@
                                     </div>
                                 </div>
                             </div>
+                            {% if order.status != 'pending' %}
+                            <div class="col-md-12 d-flex flex-row gap-3">
+                            <div class="detail-card p-3 rounded-3 flex-fill">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-calendar-alt me-3 text-primary"></i>
+                                    <div>
+                                        <small class="text-muted">Order {{ order.status.title }} at </small>
+                                        <div class="fw-bold">{{ order.status_changed_at|date:"F j, Y H:i" }}</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        {% endif %}
+
+
+                            <div class="detail-card p-3 rounded-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-map-marker-alt me-3 text-primary"></i>
+                                    <div>
+                                        <small class="text-muted">Order Address</small>
+                                        <div class="fw-bold">{{ order.address }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-md-6">
                             <div class="detail-card p-3 rounded-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-truck me-3 text-primary"></i>
+                                    <div>
+                                        <small class="text-muted">Shipping Method</small>
+                                        <div class="fw-bold">{{ order.get_shipping_method_display }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="detail-card p-3 rounded-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-credit-card me-3 text-primary"></i>
+                                    <div>
+                                        <small class="text-muted">Payment Method</small>
+                                        <div class="fw-bold">{{ order.get_payment_method_display }}</div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="col-md-12 d-flex flex-row gap-3">
+                            <div class="detail-card p-3 rounded-3 flex-fill">
                                 <div class="d-flex align-items-center">
                                     <i class="fas fa-tag me-3 text-primary"></i>
                                     <div>
@@ -43,11 +93,48 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <div class="detail-card p-3 rounded-3 flex-fill">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-shipping-fast me-3 text-primary"></i>
+                                    <div>
+                                        <small class="text-muted">Shipping Cost</small>
+                                        <div>
+                                            <span>
+                                                {{ order.shipping_cost }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    
                     </div>
                     
                     <!-- Order Items -->
                     <h4 class="mb-4 text-primary">
+                        <div class="card-body p-1 p-sm-1 text-center">
+                            <div class="col-md-6 mt-3 mt-md-0 mx-auto">
+                                {% if order.status == 'pending' %}
+                                    <a href="{% url 'payment:payment' %}?amount={{ order.total_price }}" class="btn btn-primary btn-sm rounded-pill hover-scale">
+                                        <i class="fas fa-credit-card me-2"></i>Complete Payment
+                                    </a>
+                                {% elif order.status == 'cancelled' %}
+                                    <span class="badge bg-danger rounded-pill px-3 py-2">
+                                        <i class="fas fa-times-circle me-1"></i>Cancelled
+                                    </span>
+                                {% elif order.status == 'failed' %}
+                                    <span class="badge bg-warning rounded-pill px-3 py-2">
+                                        <i class="fas fa-check-circle me-1"></i>failed
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-success rounded-pill px-3 py-2">
+                                        <i class="fas fa-check-circle me-1"></i>Paid
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
                         <i class="fas fa-box-open me-2"></i>Order Items
                     </h4>
                     <div class="table-responsive">
@@ -60,8 +147,11 @@
                                     <th class="text-end">Total</th>
                                 </tr>
                             </thead>
+
                             <tbody>
+                                
                                 {% for item in order.items.all %}
+                                
                                 <tr class="border-bottom">
                                     <td>
                                         <div class="d-flex align-items-center">
@@ -86,6 +176,7 @@
                     </div>
                     
                     <!-- Payment Section -->
+                    {% if order.payment_method == 'vodafone_cash' %}
                     <div class="payment-section mt-5 p-4 rounded-4">
                         <h4 class="mb-4 text-primary">
                             <i class="fas fa-money-bill-wave me-2"></i>Payment Details
@@ -108,6 +199,7 @@
                                     <p class="mb-3">2. Enter the transaction details below:</p>
                                 </div>
                             </div>
+                            
                         </div>
                         
                         <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
@@ -144,13 +236,24 @@
                                 <button type="submit" class="btn btn-success btn-lg rounded-pill hover-scale flex-grow-1">
                                     <i class="fas fa-check-circle me-2"></i>Confirm Payment
                                 </button>
-                                <a href="{% url 'order:order_list' %}" class="btn btn-outline-secondary btn-lg rounded-pill hover-scale flex-grow-1">
-                                    <i class="fas fa-arrow-left me-2"></i>Back to Orders
-                                </a>
                             </div>
                         </form>
+                        {% endif %}
                     </div>
-                </div>
+                    <div class="d-flex flex-row-reverse align-items-center gap-3">
+                            {% if order.status != 'cancelled' %}
+                            <form method="post" action="{% url 'order:cancel_order' order.id %}" class="d-inline m-0 p-0" style="flex: 1;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-lg rounded-pill hover-scale w-100">
+                                    <i class="fas fa-arrow-right me-2"></i>Cancel Order
+                                </button>
+                            </form>
+                            {% endif %}
+                            <a href="{% url 'order:order_list' %}" class="btn btn-outline-secondary btn-lg rounded-pill hover-scale w-100" style="flex: 1;">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Orders
+                            </a>
+                        </div>
+                
             </div>
         </div>
     </div>

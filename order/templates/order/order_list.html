@@ -67,6 +67,14 @@
                                             <a href="{% url 'payment:payment' %}?amount={{ order.total_price }}" class="btn btn-primary btn-sm rounded-pill hover-scale">
                                                 <i class="fas fa-credit-card me-2"></i>Complete Payment
                                             </a>
+                                        {% elif order.status == 'cancelled' %}
+                                            <span class="badge bg-danger rounded-pill px-3 py-2">
+                                                <i class="fas fa-times-circle me-1"></i>Cancelled
+                                            </span>
+                                        {% elif order.status == 'failed' %}
+                                            <span class="badge bg-warning rounded-pill px-3 py-2">
+                                                <i class="fas fa-check-circle me-1"></i>failed
+                                            </span>
                                         {% else %}
                                             <span class="badge bg-success rounded-pill px-3 py-2">
                                                 <i class="fas fa-check-circle me-1"></i>Paid
