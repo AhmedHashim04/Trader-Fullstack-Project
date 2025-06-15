@@ -10,8 +10,8 @@ import hmac
 import hashlib
 
 def pay_with_paymob(request):
-    cart = ShoppingCart(request.user)
-    amount_cents = int(cart.get_total() * 100)
+    cart = ShoppingCart(request)
+    amount_cents = int(cart.get_total_price_after_discount_and_tax() * 100)
 
     token = get_auth_token()
 

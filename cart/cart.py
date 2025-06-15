@@ -14,7 +14,6 @@ class Cart:
         print(self.cart)
     def _get_or_create_cart(self):
         if self.request.user.is_authenticated:
-            # FIX: Use user ID instead of session key
             cache_key = f"cart_user_{self.request.user.id}"
             cart = cache.get(cache_key)
         else:

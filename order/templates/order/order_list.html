@@ -64,7 +64,7 @@
                                     
                                     <div class="col-md-6 text-md-end mt-3 mt-md-0">
                                         {% if order.status == 'pending' %}
-                                            <a href="{% url 'payment:payment' %}?amount={{ order.total_price }}" class="btn btn-primary btn-sm rounded-pill hover-scale">
+                                            <a href="{% url 'payment:pay_with_paymob' %}?amount={{ order.total_price }}" class="btn btn-primary btn-sm rounded-pill hover-scale">
                                                 <i class="fas fa-credit-card me-2"></i>Complete Payment
                                             </a>
                                         {% elif order.status == 'cancelled' %}
