@@ -13,6 +13,7 @@
                 <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'product:products_list' %}">Products</a></li>
                 <li class="breadcrumb-item active">{{ product.name }}</li>
+
             </ol>
         </nav>
     </div>
@@ -63,7 +64,17 @@
                 <div class="product-details p-3">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <h1 class="h2 mb-0 text-primary">{{ product.name }}</h1>
-                        <div class="d-flex align-items-center">
+
+
+
+                            <div class="product-badges">
+                                {% if product.trending %}<span class="badge bg-primary">Trending</span>{% endif %}
+                                {% if product.tags %}
+                                {% for tag in product.tags.all %}
+                                <span style="color:{{ tag.color }}" class="badge bg-{{tag.bg_color}}">{{ tag.key }}</span>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
                             {% if product in contextWishlist %}
                                 <a href="{% url 'product:add_remove_wishlist' product.slug %}" 
                                    class="btn btn-link text-danger fs-5 p-1" title="Remove from wishlist">
