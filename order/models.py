@@ -98,5 +98,7 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.product.name} in Order {self.order.id}"
 
-    def get_total_price(self):
-        return self.price * self.quantity
+    def get_total_price(self) -> Decimal:
+        discount_amount = (self.price * self.quantity * self.product.discount) / 100
+        return (self.price * self.quantity) - discount_amount
+

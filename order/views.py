@@ -54,6 +54,10 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
 
         cart.clear()
         return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cart'] = Cart(self.request)
+        return context
 
 
 class OrderCancelView(LoginRequiredMixin, View):

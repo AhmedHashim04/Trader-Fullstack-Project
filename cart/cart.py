@@ -11,7 +11,6 @@ class Cart:
         self.session = request.session
         self.session_id = settings.CART_SESSION_ID
         self.cart = self._get_or_create_cart()
-        print(self.cart)
     def _get_or_create_cart(self):
         if self.request.user.is_authenticated:
             cache_key = f"cart_user_{self.request.user.id}"
@@ -69,7 +68,6 @@ class Cart:
             self.save()
 
     def clear(self) -> None:
-        # FIX: Remove redundant session deletion
         self.cart = {}
         self.save(clear=True)
 
@@ -83,7 +81,6 @@ class Cart:
             if not product:
                 continue
                 
-            # FIX: Correct discount calculation
             discount_amount = (Decimal(item['price']) * Decimal(item['discount']) / 100)
             
             yield {
@@ -138,7 +135,6 @@ class Cart:
         return (self.get_total_price_after_discount() * self.get_tax()) + self.get_total_price_after_discount()
 
     def get_cart_summary(self) -> Dict[str, Any]:
-        # FIX: Actually call the methods
         total_price_after_discount = self.get_total_price_after_discount()
         tax_amount = (self.get_tax()*total_price_after_discount)
         total_price_after_discount_and_tax = total_price_after_discount + tax_amount

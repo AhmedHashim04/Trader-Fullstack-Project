@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
 {% block body %}
+<!-- Page Header - Modern Gradient -->
+<section class="page-header py-5 shadow-sm" style="background: var(--gradient-dark);">
 
-<!-- Page Header -->
-<section class="page-header bg-light py-4 shadow-sm border-bottom">
+</section>
+<section class="page-header py-5 shadow-sm" style="background: var(--gradient-dark);">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'product:products_list' %}">Products</a></li>
-                    <li class="breadcrumb-item active">
+                <ol class="breadcrumb mb-0 bg-transparent text-light">
+                    <li class="breadcrumb-item"><a href="{% url 'home:home' %}" class="text-light opacity-75">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'product:products_list' %}" class="text-light opacity-75">Products</a></li>
+                    <li class="breadcrumb-item active text-light">
                         {% if search_query %}
                             Search: "{{ search_query }}"
                         {% else %}
@@ -22,7 +24,7 @@
                 <span class="badge bg-primary rounded-pill me-3">
                     {{ products.paginator.count }} Products
                 </span>
-                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="offcanvas" 
+                <button class="btn btn-sm glass-btn" data-bs-toggle="offcanvas" 
                         data-bs-target="#filtersOffcanvas" aria-controls="filtersOffcanvas">
                     <i class="fas fa-filter me-1"></i> Filters
                 </button>
@@ -37,8 +39,8 @@
         <!-- Sidebar Filters (Desktop) -->
         <aside class="sidebar col-lg-3 d-none d-lg-block mt-4">
             <!-- Compare Products Card -->
-            <div class="compare-card card shadow-sm  border-0 rounded-3">
-                <div class="card-header btn-primary text-white d-flex justify-content-between align-items-center">
+            <div class="compare-card card shadow-sm glass-card border-0 rounded-3 mb-4">
+                <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-exchange-alt me-2"></i>Compare Products
                     </h5>
@@ -62,8 +64,8 @@
             </div>
 
             <!-- Filters Card -->
-            <div class="filters-card card shadow-sm sticky-t border-0 rounded-3 mt-4">
-                <div class="card-header  btn-secondary text-white">
+            <div class="filters-card card shadow-sm glass-card border-0 rounded-3 ">
+                <div class="card-header bg-gradient-secondary text-white">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-sliders-h me-2"></i>Filters
                     </h5>
@@ -72,16 +74,19 @@
                     <form method="get" id="filtersForm" class="filter-form">
                         <!-- Search Filter -->
                         <div class="filter-group mb-3">
-                            <label for="search" class="filter-label fw-bold">
+                            <label for="search" class="filter-label fw-bold text-dark">
                                 <i class="fas fa-search me-2"></i>Search
                             </label>
-                            <input type="text" name="search" id="search" value="{{ search_query }}" 
-                                    class="form-control rounded-pill" placeholder="Search products...">
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent"><i class="fas fa-search"></i></span>
+                                <input type="text" name="search" id="search" value="{{ search_query }}" 
+                                       class="form-control rounded-pill" placeholder="Search products...">
+                            </div>
                         </div>
 
                         <!-- Category Filter -->
                         <div class="filter-group mb-3">
-                            <label for="category" class="filter-label fw-bold">
+                            <label for="category" class="filter-label fw-bold text-dark">
                                 <i class="fas fa-tags me-2"></i>Category
                             </label>
                             <select name="category" id="category" class="form-select rounded-pill">
@@ -96,7 +101,7 @@
 
                         <!-- Brand Filter -->
                         <div class="filter-group mb-3">
-                            <label for="brand" class="filter-label fw-bold">
+                            <label for="brand" class="filter-label fw-bold text-dark">
                                 <i class="fas fa-copyright me-2"></i>Brand
                             </label>
                             <select name="brand" id="brand" class="form-select rounded-pill">
@@ -111,24 +116,30 @@
 
                         <!-- Price Range Filter -->
                         <div class="filter-group mb-3">
-                            <label class="filter-label fw-bold">
+                            <label class="filter-label fw-bold text-dark">
                                 <i class="fas fa-dollar-sign me-2"></i>Price Range
                             </label>
                             <div class="row g-2">
                                 <div class="col">
-                                    <input type="number" name="min_price" id="min_price" value="{{ min_price }}" 
-                                           step="0.01" class="form-control rounded-pill" placeholder="Min">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent">Min</span>
+                                        <input type="number" name="min_price" id="min_price" value="{{ min_price }}" 
+                                               step="0.01" class="form-control rounded-pill" placeholder="0.00">
+                                    </div>
                                 </div>
                                 <div class="col">
-                                    <input type="number" name="max_price" id="max_price" value="{{ max_price }}" 
-                                           step="0.01" class="form-control rounded-pill" placeholder="Max">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent">Max</span>
+                                        <input type="number" name="max_price" id="max_price" value="{{ max_price }}" 
+                                               step="0.01" class="form-control rounded-pill" placeholder="1000.00">
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Sort Filter -->
                         <div class="filter-group mb-3">
-                            <label for="sort_by" class="filter-label fw-bold">
+                            <label for="sort_by" class="filter-label fw-bold text-dark">
                                 <i class="fas fa-sort me-2"></i>Sort by
                             </label>
                             <select name="sort_by" id="sort_by" class="form-select rounded-pill">
@@ -143,18 +154,18 @@
                         <!-- View Controls -->
                         <div class="filter-group mb-3">
                             <div class="d-flex justify-content-between align-items-center">
-                                <div class="view-toggle btn-group">
+                                <div class="view-toggle btn-group glass-btn-group">
                                     <input type="hidden" name="view_mode" id="viewModeInput" value="{{ view_mode }}">
-                                    <button type="button" class="btn btn-outline-secondary {% if view_mode == 'grid' %}active{% endif %}" 
+                                    <button type="button" class="btn btn-outline-light {% if view_mode == 'grid' %}active{% endif %}" 
                                             onclick="setViewMode('grid')" data-bs-toggle="tooltip" title="Grid View">
                                         <i class="fas fa-th"></i>
                                     </button>
-                                    <button type="button" class="btn btn-outline-secondary {% if view_mode == 'list' %}active{% endif %}" 
+                                    <button type="button" class="btn btn-outline-light {% if view_mode == 'list' %}active{% endif %}" 
                                             onclick="setViewMode('list')" data-bs-toggle="tooltip" title="List View">
                                         <i class="fas fa-list"></i>
                                     </button>
                                 </div>
-                                <select class="form-select items-per-page rounded-pill" name="items_per_page">
+                                <select class="form-select items-per-page glass-select rounded-pill" name="items_per_page">
                                     <option value="12" {% if items_per_page == 12 %}selected{% endif %}>12/page</option>
                                     <option value="24" {% if items_per_page == 24 %}selected{% endif %}>24/page</option>
                                     <option value="48" {% if items_per_page == 48 %}selected{% endif %}>48/page</option>
@@ -164,7 +175,7 @@
 
                         <!-- Form Actions -->
                         <div class="filter-actions mt-4">
-                            <button type="submit" class="btn btn-primary w-100 apply-btn rounded-pill">
+                            <button type="submit" class="btn btn-primary w-100 apply-btn rounded-pill shadow-primary">
                                 <i class="fas fa-filter me-2"></i>Apply Filters
                             </button>
                             <a href="{% url 'product:products_list' %}" class="btn btn-outline-secondary w-100 mt-2 reset-btn rounded-pill">
@@ -180,12 +191,12 @@
         <section class="col-lg-9">
             <!-- Active Filters -->
             {% if search_query or selected_category or selected_brand or min_price or max_price or sort_by %}
-            <div class="card mb-4 border-0 shadow-sm">
+            <div class="card mb-4 border-0 glass-card shadow-sm">
                 <div class="card-body py-2">
                     <div class="d-flex flex-wrap align-items-center gap-2">
                         <small class="text-muted me-2">Active filters:</small>
                         {% if search_query %}
-                        <span class="badge bg-light text-dark">
+                        <span class="badge bg-light text-dark glass-badge">
                             Search: "{{ search_query }}"
                             <a href="?{% querystring request.GET search='' %}" class="text-danger ms-1">
                                 <i class="fas fa-times"></i>
@@ -193,7 +204,7 @@
                         </span>
                         {% endif %}
                         {% if selected_category %}
-                        <span class="badge bg-light text-dark">
+                        <span class="badge bg-light text-dark glass-badge">
                             Category: {{ selected_category }}
                             <a href="?{% querystring request.GET category='' %}" class="text-danger ms-1">
                                 <i class="fas fa-times"></i>
@@ -201,7 +212,7 @@
                         </span>
                         {% endif %}
                         {% if selected_brand %}
-                        <span class="badge bg-light text-dark">
+                        <span class="badge bg-light text-dark glass-badge">
                             Brand: {{ selected_brand }}
                             <a href="?{% querystring request.GET brand='' %}" class="text-danger ms-1">
                                 <i class="fas fa-times"></i>
@@ -209,7 +220,7 @@
                         </span>
                         {% endif %}
                         {% if min_price %}
-                        <span class="badge bg-light text-dark">
+                        <span class="badge bg-light text-dark glass-badge">
                             Min: {{ min_price }}
                             <a href="?{% querystring request.GET min_price='' %}" class="text-danger ms-1">
                                 <i class="fas fa-times"></i>
@@ -217,7 +228,7 @@
                         </span>
                         {% endif %}
                         {% if max_price %}
-                        <span class="badge bg-light text-dark">
+                        <span class="badge bg-light text-dark glass-badge">
                             Max: {{ max_price }}
                             <a href="?{% querystring request.GET max_price='' %}" class="text-danger ms-1">
                                 <i class="fas fa-times"></i>
@@ -225,7 +236,7 @@
                         </span>
                         {% endif %}
                         {% if sort_by %}
-                        <span class="badge bg-light text-dark">
+                        <span class="badge bg-light text-dark glass-badge">
                             Sorted by: {{ sort_by|title }}
                             <a href="?{% querystring request.GET sort_by='' %}" class="text-danger ms-1">
                                 <i class="fas fa-times"></i>
@@ -240,7 +251,7 @@
             <div id="productsContainer" class="row {% if view_mode == 'grid' %}row-cols-1 row-cols-sm-2 row-cols-md-3 g-4{% else %}gy-4{% endif %}">
                 {% for product in products %}
                     <div class="{% if view_mode == 'list' %}col-12{% else %}col{% endif %}">
-                        <div class="card h-100 shadow-sm border-0 {% if view_mode == 'list' %}flex-row{% endif %} product-card">
+                        <div class="card h-100 shadow-sm border-0 glass-card product-card hover-effect {% if view_mode == 'list' %}flex-row{% endif %}">
                             <!-- Product Badges -->
                             {% if product.is_new or product.discount_percentage %}
                             <div class="product-badges">
@@ -254,13 +265,13 @@
                             {% endif %}
                             
                             <!-- Product Image -->
-                            <div class="product-image {% if view_mode == 'list' %}w-25{% endif %}">
+                            <div class="product-image {% if view_mode == 'list' %}w-25{% else %}p-3{% endif %}">
                                 <a href="{% url 'product:product_detail' product.slug %}">
                                     {% if product.image %}
-                                    <img src="{{ product.image.url }}" class="card-img-top h-100" alt="{{ product.name }}" 
+                                    <img src="{{ product.image.url }}" class="card-img-top rounded-3 h-100" alt="{{ product.name }}" 
                                          style="object-fit: {% if view_mode == 'list' %}cover{% else %}contain{% endif %};">
                                     {% else %}
-                                    <div class="no-image-placeholder d-flex align-items-center justify-content-center bg-light" 
+                                    <div class="no-image-placeholder d-flex align-items-center justify-content-center bg-light rounded-3" 
                                          style="height: {% if view_mode == 'list' %}100%{% else %}200px{% endif %};">
                                         <i class="fas fa-image fa-2x text-muted"></i>
                                     </div>
@@ -272,7 +283,7 @@
                             <div class="card-body d-flex flex-column {% if view_mode == 'list' %}w-75{% endif %}">
                                 <div class="mb-2">
                                     <h5 class="card-title mb-1">
-                                        <a href="{% url 'product:product_detail' product.slug %}" class="text-dark">
+                                        <a href="{% url 'product:product_detail' product.slug %}" class="text-dark text-decoration-none">
                                             {{ product.name }}
                                         </a>
                                     </h5>
@@ -314,13 +325,12 @@
                                         {% endif %}
                                     </div>
                                     
-                                    
                                     <div class="d-flex gap-2">
                                         <a href="{% url 'product:product_detail' product.slug %}" 
-                                            class="btn btn-outline-primary btn-sm flex-grow-1">
+                                            class="btn btn-outline-primary btn-sm flex-grow-1 rounded-pill">
                                             <i class="fas fa-eye me-1"></i> View
                                         </a>
-                                        <button class="btn btn-sm compare-btn btn-outline-primary" 
+                                        <button class="btn btn-sm compare-btn btn-outline-primary rounded-pill" 
                                                 data-product-slug="{{ product.slug }}" 
                                                 onclick="toggleProductCompare('{{ product.slug }}'); return false;"
                                                 data-product-name="{{ product.name }}"
@@ -328,7 +338,6 @@
                                                 data-bs-toggle="tooltip" title="Add to compare">
                                             <i class="fas fa-exchange-alt"></i>
                                         </button>
-
                                     </div>
                                 </div>
                             </div>
@@ -338,11 +347,11 @@
             </div>
 
             {% if not products %}
-                <div class="text-center py-5">
+                <div class="text-center py-5 glass-card rounded-4 p-5">
                     <i class="fas fa-search fa-3x text-muted mb-3"></i>
                     <h4 class="text-muted">No products found</h4>
                     <p class="text-muted">Try adjusting your search criteria or filters.</p>
-                    <a href="{% url 'product:products_list' %}" class="btn btn-primary">
+                    <a href="{% url 'product:products_list' %}" class="btn btn-primary rounded-pill mt-3">
                         <i class="fas fa-undo me-1"></i> Reset Search
                     </a>
                 </div>
@@ -353,8 +362,8 @@
                     <ul class="pagination justify-content-center">
                         {% if products.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="?{% querystring request.GET page=products.previous_page_number %}">
-                                    <i class="fas fa-angle-left"></i>
+                                <a class="page-link glass-btn rounded-pill me-2" href="?{% querystring request.GET page=products.previous_page_number %}">
+                                    <i class="fas fa-angle-left"></i> Prev
                                 </a>
                             </li>
                         {% endif %}
@@ -362,7 +371,7 @@
                         {% for page_num in products.paginator.page_range %}
                             {% if page_num >= products.number|add:-3 and page_num <= products.number|add:3 %}
                                 <li class="page-item {% if products.number == page_num %}active{% endif %}">
-                                    <a class="page-link" href="?{% querystring request.GET page=page_num %}">
+                                    <a class="page-link glass-btn rounded-pill mx-1" href="?{% querystring request.GET page=page_num %}">
                                         {{ page_num }}
                                     </a>
                                 </li>
@@ -371,8 +380,8 @@
                         
                         {% if products.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?{% querystring request.GET page=products.next_page_number %}">
-                                    <i class="fas fa-angle-right"></i>
+                                <a class="page-link glass-btn rounded-pill ms-2" href="?{% querystring request.GET page=products.next_page_number %}">
+                                    Next <i class="fas fa-angle-right"></i>
                                 </a>
                             </li>
                         {% endif %}
@@ -385,20 +394,25 @@
 
 <!-- Mobile Filters Offcanvas -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="filtersOffcanvas" aria-labelledby="filtersOffcanvasLabel">
-    <div class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title" id="filtersOffcanvasLabel">Filters</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <div class="offcanvas-header border-bottom bg-gradient-secondary text-white">
+        <h5 class="offcanvas-title" id="filtersOffcanvasLabel">
+            <i class="fas fa-sliders-h me-2"></i>Filters
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body">
+    <div class="offcanvas-body glass-bg">
         <form method="get" id="mobileFiltersForm" class="vstack gap-3">
             <div>
-                <label for="mobileSearch" class="form-label">Search</label>
-                <input type="text" name="search" id="mobileSearch" value="{{ search_query }}" 
-                       class="form-control" placeholder="Search products...">
+                <label for="mobileSearch" class="form-label text-light">Search</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent text-light"><i class="fas fa-search"></i></span>
+                    <input type="text" name="search" id="mobileSearch" value="{{ search_query }}" 
+                           class="form-control rounded-pill glass-input" placeholder="Search products...">
+                </div>
             </div>
             <div>
-                <label for="mobileCategory" class="form-label">Category</label>
-                <select name="category" id="mobileCategory" class="form-select">
+                <label for="mobileCategory" class="form-label text-light">Category</label>
+                <select name="category" id="mobileCategory" class="form-select rounded-pill glass-input">
                     <option value="">All Categories</option>
                     {% for cat in categories %}
                         <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>
@@ -408,8 +422,8 @@
                 </select>
             </div>
             <div>
-                <label for="mobileBrand" class="form-label">Brand</label>
-                <select name="brand" id="mobileBrand" class="form-select">
+                <label for="mobileBrand" class="form-label text-light">Brand</label>
+                <select name="brand" id="mobileBrand" class="form-select rounded-pill glass-input">
                     <option value="">All Brands</option>
                     {% for brand in brands %}
                         <option value="{{ brand.slug }}" {% if selected_brand == brand.slug %}selected{% endif %}>
@@ -420,19 +434,25 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <label for="mobileMinPrice" class="form-label">Min Price</label>
-                    <input type="number" name="min_price" id="mobileMinPrice" value="{{ min_price }}" 
-                           step="0.01" class="form-control" placeholder="0.00">
+                    <label for="mobileMinPrice" class="form-label text-light">Min Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent text-light">Min</span>
+                        <input type="number" name="min_price" id="mobileMinPrice" value="{{ min_price }}" 
+                               step="0.01" class="form-control rounded-pill glass-input" placeholder="0.00">
+                    </div>
                 </div>
                 <div class="col">
-                    <label for="mobileMaxPrice" class="form-label">Max Price</label>
-                    <input type="number" name="max_price" id="mobileMaxPrice" value="{{ max_price }}" 
-                           step="0.01" class="form-control" placeholder="1000.00">
+                    <label for="mobileMaxPrice" class="form-label text-light">Max Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent text-light">Max</span>
+                        <input type="number" name="max_price" id="mobileMaxPrice" value="{{ max_price }}" 
+                               step="0.01" class="form-control rounded-pill glass-input" placeholder="1000.00">
+                    </div>
                 </div>
             </div>
             <div>
-                <label for="mobileSortBy" class="form-label">Sort by</label>
-                <select name="sort_by" id="mobileSortBy" class="form-select">
+                <label for="mobileSortBy" class="form-label text-light">Sort by</label>
+                <select name="sort_by" id="mobileSortBy" class="form-select rounded-pill glass-input">
                     <option value="">Default</option>
                     <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
                     <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
@@ -441,34 +461,161 @@
                 </select>
             </div>
             <div class="d-flex justify-content-between align-items-end">
-                <div class="btn-group">
+                <div class="btn-group glass-btn-group">
                     <input type="hidden" name="view_mode" id="mobileViewModeInput" value="{{ view_mode }}">
-                    <button type="button" class="btn btn-outline-secondary {% if view_mode == 'grid' %}active{% endif %}" 
+                    <button type="button" class="btn btn-outline-light {% if view_mode == 'grid' %}active{% endif %}" 
                             onclick="setMobileViewMode('grid')" data-bs-toggle="tooltip" title="Grid View">
                         <i class="fas fa-th"></i>
                     </button>
-                    <button type="button" class="btn btn-outline-secondary {% if view_mode == 'list' %}active{% endif %}" 
+                    <button type="button" class="btn btn-outline-light {% if view_mode == 'list' %}active{% endif %}" 
                             onclick="setMobileViewMode('list')" data-bs-toggle="tooltip" title="List View">
                         <i class="fas fa-list"></i>
                     </button>
                 </div>
-                <select class="form-select w-auto ms-2" name="items_per_page">
+                <select class="form-select w-auto ms-2 glass-select rounded-pill" name="items_per_page">
                     <option value="12" {% if items_per_page == 12 %}selected{% endif %}>12/page</option>
                     <option value="24" {% if items_per_page == 24 %}selected{% endif %}>24/page</option>
                     <option value="48" {% if items_per_page == 48 %}selected{% endif %}>48/page</option>
                 </select>
             </div>
             <div class="d-grid gap-2 mt-3">
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="offcanvas">
+                <button type="submit" class="btn btn-primary rounded-pill shadow-primary" data-bs-dismiss="offcanvas">
                     <i class="fas fa-filter me-1"></i> Apply Filters
                 </button>
-                <a href="{% url 'product:products_list' %}" class="btn btn-outline-danger">
+                <a href="{% url 'product:products_list' %}" class="btn btn-outline-light rounded-pill">
                     <i class="fas fa-undo me-1"></i> Reset
                 </a>
             </div>
         </form>
     </div>
 </div>
+</div>
+
+<style>
+    /* Glassmorphism effect */
+    .glass-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .glass-btn {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        color: hsl(var(--text-primary));
+        transition: var(--transition);
+    }
+    
+    .glass-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-colored);
+    }
+    
+    .glass-input {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--glass-border);
+        color: white;
+    }
+    
+    .glass-input:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: hsl(var(--primary-light));
+        box-shadow: 0 0 0 0.25rem hsla(var(--primary-color), 0.25);
+        color: white;
+    }
+    
+    .glass-select {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--glass-border);
+        color: white;
+    }
+    
+    .glass-badge {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .glass-bg {
+        background: linear-gradient(135deg, hsla(var(--dark-surface), 0.8), hsla(var(--primary-color), 0.2));
+    }
+    
+    /* Product card hover effect */
+    .product-card.hover-effect {
+        transition: var(--transition);
+    }
+    
+    .product-card.hover-effect:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    /* Gradient backgrounds */
+    .bg-gradient-primary {
+        background: var(--gradient-primary);
+    }
+    
+    .bg-gradient-secondary {
+        background: var(--gradient-secondary);
+    }
+    
+    .bg-gradient-dark {
+        background: var(--gradient-dark);
+    }
+    
+    /* Colored shadows */
+    .shadow-primary {
+        box-shadow: 0 4px 15px hsla(var(--primary-color), 0.2);
+    }
+    
+    /* Rounded corners */
+    .rounded-3 {
+        border-radius: var(--border-radius-md) !important;
+    }
+    
+    .rounded-4 {
+        border-radius: var(--border-radius-lg) !important;
+    }
+    
+    /* Button group styling */
+    .glass-btn-group .btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--glass-border);
+        color: white;
+    }
+    
+    .glass-btn-group .btn.active {
+        background: hsla(var(--primary-color), 0.3);
+        border-color: hsl(var(--primary-light));
+    }
+    
+    /* Placeholder styling */
+    .no-image-placeholder {
+        border-radius: var(--border-radius-md);
+    }
+    
+    /* Active filter styling */
+    .filter-label {
+        color: hsl(var(--text-primary));
+    }
+    
+    /* Pagination styling */
+    .pagination .page-link.glass-btn {
+        color: hsl(var(--text-primary));
+    }
+    
+    .pagination .page-item.active .page-link {
+        background: hsla(var(--primary-color), 0.7);
+        border-color: hsl(var(--primary-light));
+    }
+</style>
+
 
 <script>
     // Initialize tooltips

@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 
 from cart.cart import Cart as ShoppingCart
 from django.shortcuts import redirect
-from .utils import get_auth_token, create_paymob_order, generate_payment_key
+from .utils.paymob import get_auth_token, create_paymob_order, generate_payment_key
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import hmac

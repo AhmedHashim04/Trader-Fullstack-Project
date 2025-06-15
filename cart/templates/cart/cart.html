@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block body %}
-<!-- Modern Page Header -->
+<section class="page-header py-5 shadow-sm" style="background: var(--gradient-dark);">
+
+</section>
 <section class="page-header bg-gradient-animated py-5">
     <div class="container">
         <div class="row align-items-center">
@@ -78,7 +80,9 @@
                                     {% if item.discount > 0 %}
 
                                     <span class="original-price">${{ item.price }}</span>
-                                    <span class="discount-price">$-{{ item.discount|floatformat:2 }}</span>
+                                    <div>
+                                        <span class="discount-price">-${{ item.discount|floatformat:2 }}</span>
+                                    </div>
                                     {% else %}
                                     <span class="discount-price">${{ item.price }}</span>
                                     {% endif %}    
@@ -149,7 +153,7 @@
 
         <!-- Order Summary -->
         <div class="col-lg-4">
-            <div class="card border-0 rounded-4 shadow-soft sticky-top" style="top: 20px;">
+            <div class="card border-0 rounded-4 shadow-soft" style="top: 20px;">
                 <div class="card-header bg-primary-light">
                     <h5 class="mb-0">
                         <i class="fas fa-receipt me-2"></i>Order Summary
@@ -165,7 +169,7 @@
                         <span>Subtotal Discount:</span>
                         <span>${{ cart_summary.total_discount|floatformat:2 }}</span>
                     </div>                    <div class="summary-item d-flex justify-content-between mb-2">
-                        <span>Subtotal(AfterDiscount):</span>
+                        <span>Subtotal (After Discount):</span>
                         <span>${{ cart_summary.total_price_after_discount|floatformat:2 }}</span>
                     </div>
                     <div class="summary-item d-flex justify-content-between mb-2">
