@@ -1,0 +1,50 @@
+<!-- templates/order/address_list_create.html -->
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container mt-4 btn-primary">
+    <h2 class="mb-3">Your Shipping Addresses</h2>
+
+    {% if addresses %}
+        <div class="row">
+            {% for address in addresses %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm p-3">
+                        <h5>{{ address.full_name }}</h5>
+                        <p class="mb-1">{{ address.phone_number }}</p>
+                        <p class="mb-1">{{ address.address_line }}</p>
+                        <p class="mb-1">{{ address.city }}, {{ address.country }}</p>
+                        <p class="mb-1">{{ address.postal_code }}</p>
+                        {% if address.is_default %}
+                            <span class="badge bg-success">Default</span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No addresses yet.</p>
+    {% endif %}
+
+    <hr class="my-4">
+
+    <h4>Add New Address</h4>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="row">
+            {% for field in form %}
+                <div class="col-md-6 mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary">Add Address</button>
+    </form>
+</div>
+{% endblock %}

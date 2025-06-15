@@ -4,7 +4,6 @@ from django.contrib import messages
 from .models import Coupon, CouponUsage
 from .forms import CouponApplyForm
 from cart.cart import Cart as ShoppingCart
-from cart.utils import calculate_tax
 
 def coupon_list(request):
     coupons = Coupon.objects.filter(active=True)
@@ -13,7 +12,6 @@ def coupon_list(request):
         'title': 'Available Coupons'
     }
     return render(request, 'coupon/coupon_list.html', context)
-
 @login_required
 def apply_coupon(request):
     if request.method == 'POST':
@@ -22,19 +20,27 @@ def apply_coupon(request):
             code = form.cleaned_data['code']
             try:
                 coupon = Coupon.objects.get(code=code)
-                CouponUsage.objects.create(coupon=coupon, user=request.user, discount_amount=coupon.amount)
-                coupon.used_count += 1
-                coupon.save()
                 cart = ShoppingCart(request)
-                cart_total = calculate_tax(cart.get_total_price_after_discount())+cart.get_total_price_after_discount()
+                cart_total = cart.get_total_price_after_discount()
+                
+                # FIX: Validate BEFORE usage
                 if coupon.is_valid(user=request.user, cart_total=cart_total):
-                    # Apply coupon to session
+                    discount_amount = coupon.apply_discount(cart_total)
+                    
+                    # Record usage AFTER validation
+                    CouponUsage.objects.create(
+                        coupon=coupon, 
+                        user=request.user, 
+                        discount_amount=discount_amount
+                    )
+                    coupon.used_count += 1
+                    coupon.save()
+                    
+                    # FIX: Store discount amount instead of coupon value
                     request.session['coupon_id'] = coupon.id
                     request.session['coupon_code'] = coupon.code
-                    request.session['coupon_type'] = coupon.discount_type
-                    request.session['coupon_amount'] = str(coupon.amount)
-                    request.session['coupon_discount'] = str(coupon.apply_discount(cart_total))
-
+                    request.session['coupon_discount'] = str(discount_amount)
+                    
                     messages.success(request, f'Coupon "{coupon.code}" applied successfully!')
                 else:
                     messages.error(request, 'This coupon is not valid or has expired.')
@@ -43,14 +49,14 @@ def apply_coupon(request):
         else:
             messages.error(request, 'Invalid coupon code format.')
     
-    return redirect('cart:cart_list')  
-
+    return redirect('cart:cart_list')
 @login_required
 def remove_coupon(request):
     if 'coupon_id' in request.session:
         del request.session['coupon_id']
         del request.session['coupon_code']
         del request.session['coupon_discount']
+        
         messages.success(request, 'Coupon removed successfully.')
     return redirect('cart:cart_list')
 

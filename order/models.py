@@ -29,8 +29,6 @@ class ShippingMethod(models.TextChoices):
     EXPRESS = 'express', _("Express Shipping")
     PICKUP = 'pickup', _("In-store Pickup")
 
-
-# Address Model
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses")
     full_name = models.CharField(max_length=100)
@@ -44,8 +42,6 @@ class Address(models.Model):
     def __str__(self):
         return f"{self.full_name} - {self.city}, {self.country}"
 
-
-# Order Model
 class Order(models.Model):
     id = models.UUIDField(_("ID"), primary_key=True, editable=False, default=uuid.uuid4)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
@@ -77,9 +73,6 @@ class Order(models.Model):
         self.save()
 
     def calculate_shipping_cost(self, weight: float) -> Decimal:
-        """
-        Calculate the shipping cost based on the weight and shipping method.
-        """
         if self.shipping_method == ShippingMethod.STANDARD:
             return Decimal('5.00') + Decimal(weight) * Decimal('0.50')
         elif self.shipping_method == ShippingMethod.EXPRESS:
@@ -94,17 +87,15 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.shipping_cost:
-            self.shipping_cost = self.calculate_shipping_cost(weight=1.0)  # weight يمكن تمريره ديناميكياً
+            self.shipping_cost = self.calculate_shipping_cost(weight=1.0)
         self.calculate_total_price()
         super().save(*args, **kwargs)
 
-
-# Order Item
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField(default=1)
-    price = models.DecimalField(max_digits=10, decimal_places=2)  # سعر المنتج وقت الطلب
+    price = models.DecimalField(max_digits=10, decimal_places=2)  
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name} in Order {self.order.id}"

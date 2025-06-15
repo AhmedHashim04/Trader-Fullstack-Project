@@ -170,7 +170,7 @@
                     </div>
                     <div class="summary-item d-flex justify-content-between mb-2">
                         <span>Tax:</span>
-                        <span>${{ tax|floatformat:2 }}</span>
+                        <span>${{ cart_summary.tax_amount|floatformat:2 }}</span>
                     </div>
                     
                     {% if discount %}
@@ -190,7 +190,7 @@
                     
                     <div class="summary-total d-flex justify-content-between fw-bold h5 mb-4">
                         <span>Total:</span>
-                        <span class="text-primary">${{ total_with_tax|floatformat:2 }}</span>
+                        <span class="text-primary">${{ cart_summary.total_price_after_discount_and_tax|floatformat:2 }}</span>
                     </div>
                     
                     {% if request.user.is_authenticated %}
@@ -217,8 +217,12 @@
                                 
                                 <div class="detail-item" style="background: #e8f5e9; padding: 8px 12px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                                     <div style="font-size: 0.8em; color: #6c757d;">New Total</div>
-                                    <div style="font-weight: bold; color: #28a745;">${{ request.session.coupon_discount|floatformat:2 }}</div>
+                                    <div style="font-weight: bold; color: #28a745;">
+                                        ${{ request.session.coupon_discount|floatformat:2 }}
+                                        <span style="font-size: 0.8em; color: #6c757d;">+Tax</span>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                         </div>

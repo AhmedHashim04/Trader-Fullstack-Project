@@ -136,3 +136,6 @@ class Command(BaseCommand):
         Collection.objects.all().delete()
         ProductImage.objects.all().delete()
         self.stdout.write(self.style.SUCCESS("🗑️ All seeded data deleted successfully."))
+
+
+

@@ -1,5 +1,7 @@
 from decimal import Decimal
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
+from .forms import AddressForm
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,7 +26,7 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
     model = Order
     form_class = OrderCreateForm
     template_name = 'order/create_order.html'
-    success_url = reverse_lazy('order:list')
+    success_url = reverse_lazy('order:order_list')
 
     def form_valid(self, form):
         cart = Cart(self.request)
@@ -35,7 +37,7 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         order = form.save(commit=False)
         order.user = self.request.user
         # calculate shipping cost
-        order.shipping_cost = order.calculate_shipping_cost(weight=cart.get_weight())
+        order.shipping_cost = order.calculate_shipping_cost(weight=1)
         # apply discount and tax from cart
         discount = cart.get_total_discount() or Decimal('0.00')
         tax = cart.get_tax() or Decimal('0.00')
@@ -45,12 +47,29 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         order.save()
 
         # create order items
-        for item in cart:
-            OrderItem.objects.create(
-                order=order,
-                product=item['product'],
-                quantity=item['quantity'],
-                price=item['price'],
-            )
+        for item in cart:OrderItem.objects.create(order=order,product=item['product'],quantity=item['quantity'],price=item['price'])
+        
+
         cart.clear()
         return super().form_valid(form)
+
+
+@login_required
+def address_list_create_view(request):
+    addresses = Address.objects.filter(user=request.user)
+    form = AddressForm()
+
+    if request.method == 'POST':
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+            if address.is_default:
+                Address.objects.filter(user=request.user, is_default=True).update(is_default=False)
+            address.save()
+            return redirect('order:address')
+
+    return render(request, 'order/address_list_create.html', {
+        'form': form,
+        'addresses': addresses,
+    })

@@ -33,7 +33,8 @@ def order_status_updated(sender, instance, created, **kwargs):
     """
     Send notification when an order status is updated.
     """
-    if not created and 'status' in instance.get_dirty_fields():
+    # if not created and 'status' in instance.get_dirty_fields():
+    if not created :
         subject = f"Your order {instance.id} status updated"
         message = (
             f"Hi {instance.user.username},\n"

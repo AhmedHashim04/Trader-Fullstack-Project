@@ -8,7 +8,7 @@ def calculate_tax(subtotal: Decimal) -> Decimal:
     else:
         tax_rate = Decimal('0.001')  # .01% tax
     """Calculate tax with precise decimal operations"""
-    return subtotal * tax_rate
+    return tax_rate
 
 # def apply_discount(subtotal: Decimal, coupon: Coupon) -> Decimal:
 #     """Apply coupon discount with type safety"""

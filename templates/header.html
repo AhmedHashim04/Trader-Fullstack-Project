@@ -269,7 +269,7 @@
                     <a href="{% url 'cart:cart_list' %}" class="btn btn-outline-light position-relative me-2" title="Shopping Cart">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">{{ total_cart_items }}</span>
-                        <span class="cart-price">{% if total_cart_price %}{{ total_cart_price }}{% else %}0{% endif %} EGP</span>
+                        <span class="cart-price">{% if total_cart_price %}{{ total_cart_price|floatformat:2 }}{% else %}0{% endif %} EGP</span>
                         <div class="btn-glow"></div>
                     </a>
                     {% endif %}

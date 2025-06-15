@@ -18,6 +18,9 @@
                 </div>
                 
                 <div class="card-body p-4 p-lg-5">
+                    <a href="{% url 'order:address' %}" class="btn btn-outline-secondary btn-sm px-1 rounded-pill shadow-sm hover-scale">
+                        <i class="fas fa-edit me-2"></i>Add Address
+                    </a>
                     <form method="post" class="needs-validation" novalidate>
                         {% csrf_token %}
                         
