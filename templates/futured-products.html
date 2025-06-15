@@ -571,69 +571,7 @@
                             {% if product.image %}
                             <img src="{{ product.image.url }}" alt="{{ product.name }}">
                             {% else %}
-                            <img src="https://picsum.photos/400?random={{ forloop.counter }}" alt="{{ product.name }}">
-                            {% endif %}
-                            <div class="image-overlay"></div>
-                            <div class="quick-view-btn">
-                                <a href="{% url 'product:product_detail' product.slug %}">Quick View</a>
-                            </div>
-                        </div>
-
-                        <div class="product-info">
-                            {% if product.brand %}
-                            <span class="brand-badge">{{ product.brand.name }}</span>
-                            {% endif %}
-                            <a href="{% url 'product:product_detail' product.slug %}" class="product-name">{{ product.name }}</a>
-                            {% if product.category %}
-                            <p class="product-category">{{ product.category.name }}</p>
-                            {% endif %}
-
-                            <div class="price-stock">
-                                <div class="price">
-                                    {% if product.discount > 0 %}
-                                    <span class="original-price">${{ product.price }}</span>
-                                    <span class="discount-price">${{ product.price_after_discount|floatformat:2 }}</span>
-                                    {% else %}
-                                    <span class="discount-price">${{ product.price }}</span>
-                                    {% endif %}
-                                </div>
-                                <span class="stock-badge {% if product.stock > 0 %}in-stock{% else %}out-stock{% endif %}">
-                                    {% if product.stock > 0 %}In Stock{% else %}Out of Stock{% endif %}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="add-to-cart">
-                            {% if product.stock > 0 %}
-                                {% if product.slug in contextCart %}
-                                <form class="quantity-control" method="post" action="{% url 'cart:cart_remove' product.slug %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="remove-cart-btn">
-                                        <i class="fas fa-trash"></i> Remove
-                                    </button>
-                                </form>
-
-                                {% else %}
-                                <form class="quantity-control" method="post" action="{% url 'cart:cart_add' product.slug %}">
-                                    {% csrf_token %}
-                                    <button class="quantity-btn minus" type="button">-</button>
-                                    <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" class="quantity-input">
-                                    <button class="quantity-btn plus" type="button">+</button>
-                                    <button type="submit" class="add-cart-btn">
-                                        <i class="fas fa-shopping-cart"></i> Add
-                                    </button>
-                                </form>
-                                {% endif %}
-
-                            {% else %}
-                            <button class="remove-cart-btn" disabled>
-                                <i class="fas fa-shopping-bag"></i> Out of Stock
-                            </button>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% endif %}
-                {% endfor %}    {% for
+                            <img src="https://picsum.photos/400?random={{ forloop.counter }}" alt
                 <div class="product-card" data-product-id="{{ product.id }}" data-trending="{{ product.trending }}" data-sale="{{ product.discount|yesno:'sale,' }}">
                     <div class="product-badges">
                         {% if product.discount > 0 %}
