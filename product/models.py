@@ -8,6 +8,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Tag(models.Model):
     key = models.CharField(max_length=40, unique=True)
     name = models.CharField(max_length=100)
+    color = models.CharField(max_length=20, blank=True, null=True, verbose_name=_("Color"), help_text=_("Text color for tag (e.g. #fff or 'red')"))
+    bg_color = models.CharField(max_length=20, blank=True, null=True, verbose_name=_("Background Color"), help_text=_("Background color for tag (e.g. #000 or 'blue')"))
 
     def __str__(self):
         return self.name

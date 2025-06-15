@@ -536,50 +536,25 @@
                     <p>Discover what's popular right now</p>
                 </div>
                 <div class="filter-buttons">
-                    <button class="btn-filter active" data-filter="all" onclick="filterProducts('all')">All</button>
-                    <button class="btn-filter" data-filter="new" onclick="filterProducts('new')">New</button>
-                    <button class="btn-filter" data-filter="trending" onclick="filterProducts('trending')">Hot</button>
-                    <button class="btn-filter" data-filter="sale" onclick="filterProducts('sale')">On Sale</button>
-                </div>
-            </div>
+                    <button class="btn-filter {% if not tag_filter %}active{% endif %}" data-filter="all" onclick="window.location.href='?';">All</button>
+                    {% for tag in tags %}
+                    <button class="btn-filter {% if tag_filter == tag %}active{% endif %}" data-filter="{{ tag }}" onclick="window.location.href='?tag={{ tag }}';">{{ tag|title }}</button>
+                    {% endfor %}
+                </div>    
+             </div>
             <div class="products-grid" id="featured-products">
                 {% for product in featuredProducts %}
-                    {% if product.is_new %}
-                    <div class="product-card" data-product-id="{{ product.id }}" data-trending="{{ product.trending }}" data-sale="{{ product.discount|yesno:'sale,' }}">
-                        <div class="product-badges">
-                            {% if product.discount > 0 %}
-                            <span class="badge bg-danger">Sale</span>
-                            {% endif %}
-                            {% if product.trending %}
-                            <span class="badge bg-primary">Trending</span>
-                            {% endif %}
-                            <span class="badge bg-success">New</span>
-                        </div>
-                        <div class="wishlist-btn">
-                            {% if product in contextWishlist %}
-                            <a href="{% url 'product:add_remove_wishlist' product.slug %}" style="color: var(--warning);" title="Remove from wishlist">
-                                <i class="fas fa-times"></i>
-                            </a>
-                            {% else %}
-                            <a href="{% url 'product:add_remove_wishlist' product.slug %}" style="color:rgb(255, 0, 0);" title="Add to wishlist">
-                                <i class="fas fa-heart"></i>    
-                            </a>
-                            {% endif %}
-                        </div>
-
-                        <div class="product-image">
-                            {% if product.image %}
-                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                            {% else %}
-                            <img src="https://picsum.photos/400?random={{ forloop.counter }}" alt
                 <div class="product-card" data-product-id="{{ product.id }}" data-trending="{{ product.trending }}" data-sale="{{ product.discount|yesno:'sale,' }}">
                     <div class="product-badges">
-                        {% if product.discount > 0 %}
-                        <span class="badge bg-danger">Sale</span>
-                        {% endif %}
                         {% if product.trending %}
                         <span class="badge bg-primary">Trending</span>
                         {% endif %}
+                        {% if product.tags %}
+                        {% for tag in product.tags.all %}
+                        <span style="color:{{ tag.color }}" class="badge bg-{{tag.bg_color}}">{{ tag.key }}</span>
+                        {% endfor %}
+                        {% endif %}
+
                     </div>
                     <div class="wishlist-btn">
                         {% if product in contextWishlist %}

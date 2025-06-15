@@ -1,6 +1,6 @@
 from django.contrib import admin
 from features.admin import ProductImageInline
-from .models import Product, Category, Review
+from .models import Product, Category, Review, Tag
 from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponse
 from features.models import Collection
@@ -57,6 +57,6 @@ class ReviewAdmin(admin.ModelAdmin):
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Review, ReviewAdmin)
-
+admin.site.register(Tag, admin.ModelAdmin)
 
 
