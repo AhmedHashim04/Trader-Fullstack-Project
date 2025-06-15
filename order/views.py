@@ -11,6 +11,7 @@ from .forms import OrderCreateForm
 from django.views.generic import View
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib import messages
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'order/order_list.html'
@@ -53,6 +54,7 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
             OrderItem.objects.create(order=order, product=item['product'], quantity=item['quantity'], price=item['price'])
 
         cart.clear()
+        messages.success(self.request, 'Your order has been placed successfully. Order Status email has been sent to you.')
         return super().form_valid(form)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

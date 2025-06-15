@@ -1,3 +1,4 @@
+</div>
 <footer class="trendy-footer">
     <div class="footer-wave">
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
@@ -45,9 +46,9 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-6">
+                <div class="col-lg-2 col-md-2">
                     <div class="footer-section">
-                        <h5 class="section-title">Categories</h5>
+                        <h6 class="section-title">{% if request.path != '/' %}Categories{% endif %}</h6>
                         <ul class="footer-links">
                             <li><a href="#">📱 Electronics</a></li>
                             <li><a href="#">👕 Fashion</a></li>
@@ -59,6 +60,7 @@
                 </div>
                 <div class="col-lg-2 col-md-6">
                     <div class="footer-section">
+
                         <h5 class="section-title">Support</h5>
                         <ul class="footer-links">
                             <li><a href="#">💬 Help Center</a></li>

@@ -1,15 +1,17 @@
-# utils/paymob.py
 import requests
 
 BASE_URL = "https://accept.paymobsolutions.com/api"
 API_KEY = "your_api_key_here"
-
 def get_auth_token():
     url = f"{BASE_URL}/auth/tokens"
     response = requests.post(url, json={"api_key": API_KEY})
-    return response.json()["token"]
+    data = response.json()
 
-
+    print("Paymob auth response:", data)
+    if "token" not in data:
+        raise Exception("Paymob authentication failed: " + str(data))
+    
+    return data["token"]
 
 def create_paymob_order(token, amount_cents, items=[]):
     url = f"{BASE_URL}/ecommerce/orders"
