@@ -1,156 +1,1028 @@
 {
-    "products": [
-      {
-        "id": 1,
-        "name": "iPhone 15 Pro Max",
-        "price": 1199.99,
-        "category": "Electronics",
-        "description": "Latest flagship iPhone with advanced camera system and titanium design",
-        "featured": true,
-        "inStock": true,
-        "tags": ["smartphone", "apple", "premium"],
-        "brand": "Apple",
-        "trending": true,
-        "sale": false
-      },
-      {
-        "id": 2,
-        "name": "MacBook Air M3",
-        "price": 1099.99,
-        "category": "Electronics",
-        "description": "Ultra-thin laptop with M3 chip for incredible performance and battery life",
-        "featured": true,
-        "inStock": true,
-        "tags": ["laptop", "apple", "productivity"],
-        "brand": "Apple",
-        "trending": false,
-        "sale": true,
-        "originalPrice": 1299.99
-      },
-      {
-        "id": 3,
-        "name": "Nike Air Jordan 1",
-        "price": 170.00,
-        "category": "Fashion",
-        "description": "Classic basketball shoes with timeless style and premium comfort",
-        "featured": true,
-        "inStock": true,
-        "tags": ["shoes", "basketball", "style"],
-        "brand": "Nike",
-        "trending": true,
-        "sale": false
-      },
-      {
-        "id": 4,
-        "name": "Samsung 65\" QLED TV",
-        "price": 899.99,
-        "category": "Electronics",
-        "description": "4K QLED TV with Quantum HDR and smart TV features",
-        "featured": false,
-        "inStock": true,
-        "tags": ["tv", "4k", "smart"],
-        "brand": "Samsung",
-        "trending": false,
-        "sale": true,
-        "originalPrice": 1199.99
-      },
-      {
-        "id": 5,
-        "name": "Adidas Ultraboost 23",
-        "price": 190.00,
-        "category": "Fashion",
-        "description": "Premium running shoes with boost technology for maximum energy return",
-        "featured": false,
-        "inStock": true,
-        "tags": ["shoes", "running", "comfort"],
-        "brand": "Adidas",
-        "trending": false,
-        "sale": false
-      },
-      {
-        "id": 6,
-        "name": "Sony WH-1000XM5",
-        "price": 399.99,
-        "category": "Electronics",
-        "description": "Industry-leading noise canceling wireless headphones",
-        "featured": true,
-        "inStock": true,
-        "tags": ["headphones", "wireless", "noise-canceling"],
-        "brand": "Sony",
-        "trending": true,
-        "sale": false
-      },
-      {
-        "id": 7,
-        "name": "Levi's 511 Slim Jeans",
-        "price": 69.99,
-        "category": "Fashion",
-        "description": "Classic slim-fit jeans with modern stretch comfort",
-        "featured": false,
-        "inStock": true,
-        "tags": ["jeans", "denim", "casual"],
-        "brand": "Levi's",
-        "trending": false,
-        "sale": true,
-        "originalPrice": 89.99
-      },
-      {
-        "id": 8,
-        "name": "Nintendo Switch OLED",
-        "price": 349.99,
-        "category": "Electronics",
-        "description": "Hybrid gaming console with vibrant OLED screen",
-        "featured": true,
-        "inStock": true,
-        "tags": ["gaming", "console", "portable"],
-        "brand": "Nintendo",
-        "trending": true,
-        "sale": false
-      }
-    ],
-    "categories": ["Electronics", "Fashion", "Sports", "Home & Garden", "Books"],
-    "brands": [
-      {
-        "name": "Apple",
-        "logo": "fa-apple",
-        "featured": true
-      },
-      {
-        "name": "Samsung",
-        "logo": "fa-mobile-alt",
-        "featured": true
-      },
-      {
-        "name": "Nike",
-        "logo": "fa-running",
-        "featured": true
-      },
-      {
-        "name": "Adidas",
-        "logo": "fa-shoe-prints",
-        "featured": true
-      },
-      {
-        "name": "Sony",
-        "logo": "fa-headphones",
-        "featured": true
-      },
-      {
-        "name": "Levi's",
-        "logo": "fa-tshirt",
-        "featured": false
-      },
-      {
-        "name": "Nintendo",
-        "logo": "fa-gamepad",
-        "featured": true
-      }
-    ],
-    "metadata": {
-      "version": "1.0.0",
-      "lastUpdated": "2025-05-25T00:00:00Z",
-      "totalProducts": 8,
-      "status": "active"
+  "products": [
+    {
+      "name": "iPhone 15 Pro Max",
+      "cost": 899.00,
+      "price": 1199.00,
+      "discount": 0,
+      "category": "Electronics",
+      "description": "6.7-inch Super Retina XDR display, A17 Pro chip, 48MP triple-camera system with Cinematic mode, Titanium design, 5G capable",
+      "is_available": true,
+      "stock": 42,
+      "tags": ["smartphone", "apple", "premium", "5g"],
+      "brand": "Apple",
+      "trending": true
+
+    },
+    {
+      "name": "MacBook Air M3",
+      "cost": 899.00,
+      "price": 1099.00,
+      "discount": 0,
+      "category": "Electronics",
+      "description": "13.6-inch Liquid Retina display, Apple M3 chip, 18-hour battery life, 8GB RAM, 256GB SSD, Fanless design",
+      "is_available": true,
+      "stock": 28,
+      "tags": ["laptop", "apple", "productivity", "ultraportable"],
+      "brand": "Apple",
+      "trending": true
+    },
+    {
+      "name": "Nike Air Jordan 1 Retro High",
+      "cost": 75.00,
+      "price": 170.00,
+      "discount": 10,
+      "category": "Fashion",
+      "description": "Classic high-top basketball sneakers with genuine leather, Air-Sole unit, Nike's iconic wing logo, and padded collar",
+      "is_available": true,
+      "stock": 16,
+      "tags": ["shoes", "basketball", "sneakers", "limited-edition"],
+      "brand": "Nike",
+      "trending": true
+    },
+    {
+      "name": "Samsung 65\" Q80C QLED 4K Smart TV",
+      "cost": 749.00,
+      "price": 1199.00,
+      "discount": 15,
+      "category": "Electronics",
+      "description": "Quantum HDR 16X, Direct Full Array, Quantum Processor 4K, Object Tracking Sound, Alexa/Google Assistant built-in",
+      "is_available": true,
+      "stock": 9,
+      "tags": ["tv", "4k", "smart", "qled", "home-theater"],
+      "brand": "Samsung",
+      "trending": false
+    },
+    {
+      "name": "Adidas Ultraboost Light",
+      "cost": 85.00,
+      "price": 190.00,
+      "discount": 15,
+      "category": "Fashion",
+      "description": "Running shoes with Lightboost foam, Primeknit+ upper, Torsion System, Continental rubber outsole",
+      "is_available": true,
+      "stock": 32,
+      "tags": ["shoes", "running", "athletic", "performance"],
+      "brand": "Adidas",
+      "trending": false
+    },
+    {
+      "name": "Sony WH-1000XM5 Wireless Noise Canceling Headphones",
+      "cost": 279.00,
+      "price": 399.00,
+      "discount": 0,
+      "category": "Electronics",
+      "description": "Industry-leading ANC, 30-hour battery, HD Noise Canceling Processor QN1, Speak-to-Chat technology, Multipoint connection",
+      "is_available": true,
+      "stock": 22,
+      "tags": ["headphones", "wireless", "noise-canceling", "premium-audio"],
+      "brand": "Sony",
+      "trending": true
+    },
+    {
+      "name": "Levi's 511 Slim Fit Jeans",
+      "cost": 35.00,
+      "price": 69.99,
+      "discount": 20,
+      "category": "Fashion",
+      "description": "Classic slim fit, 99% cotton 1% elastane, mid-rise, zip fly, available in multiple washes",
+      "is_available": true,
+      "stock": 87,
+      "tags": ["jeans", "denim", "casual", "menswear"],
+      "brand": "Levi's",
+      "trending": false
+    },
+    {
+      "name": "Nintendo Switch OLED Model",
+      "cost": 299.00,
+      "price": 349.99,
+      "discount": 0,
+      "category": "Electronics",
+      "description": "7-inch OLED screen, 64GB internal storage, adjustable stand, dock with wired LAN port, enhanced audio",
+      "is_available": true,
+      "stock": 14,
+      "tags": ["gaming", "console", "portable", "family"],
+      "brand": "Nintendo",
+      "trending": true
+    },
+    {
+      "name": "Kindle Paperwhite Signature Edition",
+      "cost": 139.00,
+      "price": 189.99,
+      "discount": 10,
+      "category": "Electronics",
+      "description": "6.8\" glare-free display, adjustable warm light, wireless charging, 32GB storage, IPX8 waterproof",
+      "is_available": true,
+      "stock": 31,
+      "tags": ["ereader", "books", "portable", "waterproof"],
+      "brand": "Amazon",
+      "trending": false
+    },
+    {
+      "name": "Sony PlayStation 5 Digital Edition",
+      "cost": 399.00,
+      "price": 449.99,
+      "discount": 0,
+      "category": "Electronics",
+      "description": "Ultra-high speed SSD, integrated I/O, 3D Audio, DualSense wireless controller, 4K/120fps output",
+      "is_available": true,
+      "stock": 7,
+      "tags": ["gaming", "console", "sony", "next-gen"],
+      "brand": "Sony",
+      "trending": true
+    },
+    {
+      "name": "Apple Watch Series 9 GPS + Cellular",
+      "cost": 329.00,
+      "price": 499.00,
+      "discount": 5,
+      "category": "Electronics",
+      "description": "Always-On Retina display, ECG app, blood oxygen monitoring, crash detection, 18-hour battery",
+      "is_available": true,
+      "stock": 25,
+      "tags": ["smartwatch", "apple", "fitness", "health"],
+      "brand": "Apple",
+      "trending": true
+    },
+    {
+      "name": "Adidas UEFA Champions League Pro Ball",
+      "cost": 39.00,
+      "price": 129.99,
+      "discount": 15,
+      "category": "Sports",
+      "description": "Official match ball with Connected Ball technology, 20-panel design, FIFA Quality Pro certified",
+      "is_available": true,
+      "stock": 36,
+      "tags": ["soccer", "sports", "adidas", "official"],
+      "brand": "Adidas",
+      "trending": false
+    },
+    {
+      "name": "Nike Dri-FIT Legend Men's Training T-Shirt",
+      "cost": 12.00,
+      "price": 34.99,
+      "discount": 10,
+      "category": "Fashion",
+      "description": "100% polyester, sweat-wicking technology, standard fit, embroidered Swoosh logo",
+      "is_available": true,
+      "stock": 143,
+      "tags": ["tshirt", "nike", "sportswear", "athletic"],
+      "brand": "Nike",
+      "trending": false
+    },
+    {
+      "name": "Samsung Galaxy Buds2 Pro",
+      "cost": 149.00,
+      "price": 229.99,
+      "discount": 0,
+      "category": "Electronics",
+      "description": "Intelligent ANC, 360 Audio, Hi-Fi 24bit audio, IPX7 water resistance, 8-hour battery",
+      "is_available": true,
+      "stock": 38,
+      "tags": ["earbuds", "wireless", "samsung", "noise-canceling"],
+      "brand": "Samsung",
+      "trending": true
+    },
+    {
+      "name": "Levi's Men's Trucker Jacket",
+      "cost": 45.00,
+      "price": 98.00,
+      "discount": 15,
+      "category": "Fashion",
+      "description": "Classic denim jacket with corduroy collar, button-front closure, two chest pockets, regular fit",
+      "is_available": true,
+      "stock": 64,
+      "tags": ["jacket", "denim", "levis", "casual"],
+      "brand": "Levi's",
+      "trending": false
+    },
+    {
+      "name": "Sony Bravia XR A80L 55\" OLED TV",
+      "cost": 1099.00,
+      "price": 1799.99,
+      "discount": 12,
+      "category": "Electronics",
+      "description": "Cognitive Processor XR, Acoustic Surface Audio+, Google TV, Dolby Vision/Atmos, IMAX Enhanced",
+      "is_available": true,
+      "stock": 5,
+      "tags": ["tv", "oled", "sony", "home-theater"],
+      "brand": "Sony",
+      "trending": false
+    },
+    {
+      "name": "Nintendo Switch Pro Controller",
+      "cost": 42.00,
+      "price": 69.99,
+      "discount": 0,
+      "category": "Electronics",
+      "description": "Motion controls, HD rumble, built-in amiibo functionality, 40-hour battery life",
+      "is_available": true,
+      "stock": 52,
+      "tags": ["controller", "gaming", "nintendo", "wireless"],
+      "brand": "Nintendo",
+      "trending": false
+    },
+    {
+      "name": "Apple AirPods Pro (2nd Generation)",
+      "cost": 159.00,
+      "price": 249.00,
+      "discount": 0,
+      "category": "Electronics",
+      "description": "Active Noise Cancellation, Adaptive Transparency, Personalized Spatial Audio, MagSafe charging case",
+      "is_available": true,
+      "stock": 47,
+      "tags": ["earbuds", "apple", "wireless", "noise-canceling"],
+      "brand": "Apple",
+      "trending": true
+    },
+    {
+      "name": "Adidas Yoga Essentials Mat",
+      "cost": 22.00,
+      "price": 49.99,
+      "discount": 20,
+      "category": "Sports",
+      "description": "6mm thickness, non-slip surface, moisture-resistant, alignment markers, includes carrying strap",
+      "is_available": true,
+      "stock": 78,
+      "tags": ["yoga", "mat", "adidas", "fitness"],
+      "brand": "Adidas",
+      "trending": false
+    },
+    {
+      "name": "Nike Elite Training Backpack",
+      "cost": 34.00,
+      "price": 79.99,
+      "discount": 15,
+      "category": "Sports",
+      "description": "30L capacity, ventilated shoe compartment, padded laptop sleeve, water-resistant, multiple pockets",
+      "is_available": true,
+      "stock": 62,
+      "tags": ["backpack", "nike", "sports", "gym"],
+      "brand": "Nike",
+      "trending": false
+    },
+    {
+      "name": "Atomic Habits by James Clear",
+      "cost": 8.50,
+      "price": 19.99,
+      "discount": 20,
+      "category": "Books",
+      "description": "New York Times bestseller, practical framework for building good habits and breaking bad ones",
+      "is_available": true,
+      "stock": 93,
+      "tags": ["self-help", "habits", "bestseller", "personal-development"],
+      "brand": "Penguin",
+      "trending": true
+    },
+    {
+      "name": "The Alchemist by Paulo Coelho",
+      "cost": 6.75,
+      "price": 16.99,
+      "discount": 15,
+      "category": "Books",
+      "description": "25th Anniversary Edition, international bestseller about following your dreams and listening to your heart",
+      "is_available": true,
+      "stock": 127,
+      "tags": ["novel", "fiction", "classic", "inspirational"],
+      "brand": "HarperOne",
+      "trending": false
+    },
+    {
+      "name": "Sapiens: A Brief History of Humankind",
+      "cost": 11.00,
+      "price": 24.99,
+      "discount": 10,
+      "category": "Books",
+      "description": "New York Times bestseller exploring how biology and history have defined humanity",
+      "is_available": true,
+      "stock": 68,
+      "tags": ["history", "non-fiction", "bestseller", "anthropology"],
+      "brand": "Harper",
+      "trending": true
+    },
+    {
+      "name": "Rich Dad Poor Dad by Robert Kiyosaki",
+      "cost": 7.25,
+      "price": 18.99,
+      "discount": 25,
+      "category": "Books",
+      "description": "20th Anniversary Edition, challenges conventional beliefs about money and investing",
+      "is_available": true,
+      "stock": 105,
+      "tags": ["finance", "self-help", "classic", "investing"],
+      "brand": "Plata Publishing",
+      "trending": false
+    },
+    {
+      "name": "Harry Potter and the Sorcerer's Stone",
+      "cost": 6.99,
+      "price": 14.99,
+      "discount": 0,
+      "category": "Books",
+      "description": "Illustrated Edition by Jim Kay, full-color artwork throughout, hardcover",
+      "is_available": true,
+      "stock": 142,
+      "tags": ["fantasy", "children", "bestseller", "illustrated"],
+      "brand": "Scholastic",
+      "trending": true
+    },
+    {
+      "name": "Dyson V11 Torque Drive Cordless Vacuum",
+      "cost": 399.00,
+      "price": 599.99,
+      "discount": 10,
+      "category": "Home & Garden",
+      "description": "60-minute runtime, LCD screen, 3 power modes, whole-machine filtration, includes 10 accessories",
+      "is_available": true,
+      "stock": 18,
+      "tags": ["vacuum", "cleaning", "cordless", "smart"],
+      "brand": "Dyson",
+      "trending": true
+    },
+    {
+      "name": "Philips Hue White & Color Ambiance Starter Kit",
+      "cost": 149.00,
+      "price": 199.99,
+      "discount": 15,
+      "category": "Home & Garden",
+      "description": "3 A19 bulbs, hub, 16 million colors, voice control (Alexa/Google/HomeKit), geofencing",
+      "is_available": true,
+      "stock": 37,
+      "tags": ["lighting", "smart-home", "led", "automation"],
+      "brand": "Philips",
+      "trending": false
+    },
+    {
+      "name": "IKEA MALM Queen Bed Frame with Storage",
+      "cost": 229.00,
+      "price": 349.99,
+      "discount": 10,
+      "category": "Home & Garden",
+      "description": "High-gloss white finish, 4 storage drawers, slatted bed base included, minimal Scandinavian design",
+      "is_available": true,
+      "stock": 11,
+      "tags": ["furniture", "bed", "storage", "modern"],
+      "brand": "IKEA",
+      "trending": true
+    },
+    {
+      "name": "Weber Spirit II E-310 3-Burner Gas Grill",
+      "cost": 449.00,
+      "price": 549.99,
+      "discount": 5,
+      "category": "Home & Garden",
+      "description": "529 sq. in. cooking area, GS4 grilling system, Infinity ignition, 10-year warranty",
+      "is_available": true,
+      "stock": 8,
+      "tags": ["grill", "outdoor", "bbq", "stainless-steel"],
+      "brand": "Weber",
+      "trending": false
+    },
+    {
+      "name": "Instant Pot Duo Plus 9-in-1 Pressure Cooker",
+      "cost": 69.00,
+      "price": 129.99,
+      "discount": 20,
+      "category": "Home & Garden",
+      "description": "6-quart capacity, 48 programs, sterilizer function, sous vide, cake maker, yogurt maker",
+      "is_available": true,
+      "stock": 53,
+      "tags": ["kitchen", "cooker", "appliance", "multi-function"],
+      "brand": "Instant Pot",
+      "trending": true
+    },
+    {
+      "name": "Samsung Galaxy Tab S9 Ultra",
+      "cost": 699.00,
+      "price": 1099.99,
+      "discount": 5,
+      "category": "Electronics",
+      "description": "14.6-inch Dynamic AMOLED display, Snapdragon 8 Gen 2, S Pen included, IP68 water resistance, 12GB RAM",
+      "is_available": true,
+      "stock": 15,
+      "tags": ["tablet", "samsung", "productivity", "premium"],
+      "brand": "Samsung",
+      "trending": true
+    },
+    {
+      "name": "Nike React Infinity Run Flyknit 3",
+      "cost": 80.00,
+      "price": 160.00,
+      "discount": 15,
+      "category": "Fashion",
+      "description": "Road running shoes with Flyknit upper, React foam midsole, rocker geometry for smooth transitions",
+      "is_available": true,
+      "stock": 45,
+      "tags": ["shoes", "running", "nike", "performance"],
+      "brand": "Nike",
+      "trending": true
+    },
+    {
+      "name": "Sony SRS-XB43 Extra Bass Bluetooth Speaker",
+      "cost": 149.00,
+      "price": 248.00,
+      "discount": 12,
+      "category": "Electronics",
+      "description": "Waterproof portable speaker with 24-hour battery, party lights, and deep bass sound",
+      "is_available": true,
+      "stock": 21,
+      "tags": ["speaker", "wireless", "sony", "portable"],
+      "brand": "Sony",
+      "trending": false
+    },
+    {
+      "name": "Adidas Originals Trefoil Hoodie",
+      "cost": 35.00,
+      "price": 79.99,
+      "discount": 10,
+      "category": "Fashion",
+      "description": "Classic fleece hoodie with signature Trefoil logo, kangaroo pocket, ribbed cuffs",
+      "is_available": true,
+      "stock": 68,
+      "tags": ["hoodie", "casual", "adidas", "streetwear"],
+      "brand": "Adidas",
+      "trending": true
+    },
+    {
+      "name": "Levi's Women's 721 High Rise Skinny Jeans",
+      "cost": 42.00,
+      "price": 79.99,
+      "discount": 15,
+      "category": "Fashion",
+      "description": "High-rise skinny jeans with sculpt technology, 79% cotton/20% polyester/1% elastane",
+      "is_available": true,
+      "stock": 53,
+      "tags": ["jeans", "denim", "levis", "womens"],
+      "brand": "Levi's",
+      "trending": false
+    },
+    {
+      "name": "Nintendo Switch Sports Bundle",
+      "cost": 269.00,
+      "price": 349.99,
+      "discount": 8,
+      "category": "Electronics",
+      "description": "Includes Switch console, Joy-Con controllers, Nintendo Switch Sports game",
+      "is_available": true,
+      "stock": 11,
+      "tags": ["gaming", "console", "nintendo", "bundle"],
+      "brand": "Nintendo",
+      "trending": true
+    },
+    {
+      "name": "Amazon Fire TV Stick 4K Max",
+      "cost": 34.00,
+      "price": 59.99,
+      "discount": 25,
+      "category": "Electronics",
+      "description": "4K streaming with Wi-Fi 6, Alexa Voice Remote, Dolby Vision/Atmos support",
+      "is_available": true,
+      "stock": 87,
+      "tags": ["streaming", "smart", "amazon", "4k"],
+      "brand": "Amazon",
+      "trending": true
+    },
+    {
+      "name": "The 7 Habits of Highly Effective People",
+      "cost": 7.50,
+      "price": 18.99,
+      "discount": 20,
+      "category": "Books",
+      "description": "Stephen Covey's classic principles for personal and professional effectiveness",
+      "is_available": true,
+      "stock": 92,
+      "tags": ["self-help", "bestseller", "personal-development", "business"],
+      "brand": "Penguin",
+      "trending": false
+    },
+    {
+      "name": "Dyson Purifier Cool Autoreact TP7A",
+      "cost": 399.00,
+      "price": 549.99,
+      "discount": 12,
+      "category": "Home & Garden",
+      "description": "Air purifier and fan with HEPA filtration, detects pollutants automatically, 350° oscillation",
+      "is_available": true,
+      "stock": 14,
+      "tags": ["air-purifier", "dyson", "appliance", "smart-home"],
+      "brand": "Dyson",
+      "trending": true
+    },
+    {
+      "name": "Philips Sonicare ProtectiveClean 6100",
+      "cost": 69.00,
+      "price": 119.99,
+      "discount": 15,
+      "category": "Home & Garden",
+      "description": "Electric toothbrush with pressure sensor, 3 modes, 2-week battery life, brush sync app",
+      "is_available": true,
+      "stock": 37,
+      "tags": ["oral-care", "philips", "health", "rechargeable"],
+      "brand": "Philips",
+      "trending": false
+    },
+    {
+      "name": "IKEA HEMNES 8-Drawer Dresser",
+      "cost": 199.00,
+      "price": 349.99,
+      "discount": 10,
+      "category": "Home & Garden",
+      "description": "Solid wood construction, soft-closing drawers, timeless Scandinavian design",
+      "is_available": true,
+      "stock": 8,
+      "tags": ["furniture", "storage", "ikea", "bedroom"],
+      "brand": "IKEA",
+      "trending": false
+    },
+    {
+      "name": "Weber Q1200 Liquid Propane Grill",
+      "cost": 149.00,
+      "price": 229.99,
+      "discount": 18,
+      "category": "Home & Garden",
+      "description": "Portable gas grill with 189 sq. in. cooking area, cast-iron grates, infinite control valve",
+      "is_available": true,
+      "stock": 16,
+      "tags": ["grill", "outdoor", "weber", "portable"],
+      "brand": "Weber",
+      "trending": true
+    },
+    {
+      "name": "Instant Pot Vortex Plus Air Fryer",
+      "cost": 89.00,
+      "price": 159.99,
+      "discount": 20,
+      "category": "Home & Garden",
+      "description": "6-in-1 air fryer with EvenCrisp technology, 6-quart capacity, 50+ one-touch programs",
+      "is_available": true,
+      "stock": 29,
+      "tags": ["air-fryer", "instant-pot", "kitchen", "healthy"],
+      "brand": "Instant Pot",
+      "trending": true
+    },
+    {
+      "name": "Atomic Habits Workbook",
+      "cost": 9.00,
+      "price": 22.99,
+      "discount": 15,
+      "category": "Books",
+      "description": "Companion journal with practical exercises and habit-tracking templates",
+      "is_available": true,
+      "stock": 63,
+      "tags": ["workbook", "habits", "self-help", "journal"],
+      "brand": "Penguin",
+      "trending": false
+    },
+    {
+      "name": "Nike Premier League Match Soccer Ball",
+      "cost": 45.00,
+      "price": 129.99,
+      "discount": 10,
+      "category": "Sports",
+      "description": "Official match ball with AerowSculpt technology, 12-panel design, FIFA Quality Pro certified",
+      "is_available": true,
+      "stock": 27,
+      "tags": ["soccer", "nike", "sports", "official"],
+      "brand": "Nike",
+      "trending": false
+    },
+    {
+      "name": "Adidas 3-Stripes Training Pants",
+      "cost": 28.00,
+      "price": 59.99,
+      "discount": 15,
+      "category": "Sports",
+      "description": "Climalite fabric, tapered fit, elastic waist with drawcord, signature 3-Stripes design",
+      "is_available": true,
+      "stock": 84,
+      "tags": ["pants", "training", "adidas", "sportswear"],
+      "brand": "Adidas",
+      "trending": false
+    },
+    {
+      "name": "Sony INZONE H9 Wireless Gaming Headset",
+      "cost": 179.00,
+      "price": 299.99,
+      "discount": 8,
+      "category": "Electronics",
+      "description": "360 Spatial Sound, noise-canceling mic, 32-hour battery, compatible with PS5/PC",
+      "is_available": true,
+      "stock": 19,
+      "tags": ["headset", "gaming", "sony", "wireless"],
+      "brand": "Sony",
+      "trending": true
+    },
+    {
+      "name": "Apple Magic Keyboard with Touch ID",
+      "cost": 79.00,
+      "price": 149.00,
+      "discount": 0,
+      "category": "Electronics",
+      "description": "Wireless keyboard with Touch ID, numeric keypad, scissor mechanism keys",
+      "is_available": true,
+      "stock": 42,
+      "tags": ["keyboard", "apple", "accessory", "productivity"],
+      "brand": "Apple",
+      "trending": false
+    },
+    {
+      "name": "The Hobbit Illustrated Edition",
+      "cost": 18.00,
+      "price": 39.99,
+      "discount": 10,
+      "category": "Books",
+      "description": "J.R.R. Tolkien's classic with illustrations by Jemima Catlin, hardcover collector's edition",
+      "is_available": true,
+      "stock": 57,
+      "tags": ["fantasy", "classic", "illustrated", "tolkien"],
+      "brand": "Harper",
+      "trending": true
+    },
+    {
+      "name": "Rich Dad's Cashflow Quadrant",
+      "cost": 8.00,
+      "price": 21.99,
+      "discount": 25,
+      "category": "Books",
+      "description": "Robert Kiyosaki's guide to financial freedom through business and investing",
+      "is_available": true,
+      "stock": 73,
+      "tags": ["finance", "business", "investing", "rich-dad"],
+      "brand": "Plata Publishing",
+      "trending": false
     }
-  }
-  
+  ],
+
+  "categories": [
+    {
+      "name": "Electronics",
+      "parent": null,
+      "description": "Devices and gadgets including phones, laptops, TVs, and more.",
+      "image": null
+    },
+    {
+      "name": "Smartphones",
+      "parent": "Electronics",
+      "description": "Mobile phones with advanced features.",
+      "image": null
+    },
+    {
+      "name": "Tablets",
+      "parent": "Electronics",
+      "description": "Portable touchscreen devices.",
+      "image": null
+    },
+    {
+      "name": "Streaming Devices",
+      "parent": "Electronics",
+      "description": "Media players and accessories for online content",
+      "image": null
+    },
+    {
+      "name": "Computer Accessories",
+      "parent": "Electronics",
+      "description": "Keyboards, mice, and other computer peripherals",
+      "image": null
+    },
+    {
+      "name": "Laptops",
+      "parent": "Electronics",
+      "description": "Portable computers for work and play.",
+      "image": null
+    },
+    {
+      "name": "TVs",
+      "parent": "Electronics",
+      "description": "Television sets including QLED and OLED.",
+      "image": null
+    },
+    {
+      "name": "Audio",
+      "parent": "Electronics",
+      "description": "Headphones, earbuds, and speakers.",
+      "image": null
+    },
+    {
+      "name": "Gaming Consoles",
+      "parent": "Electronics",
+      "description": "Home and portable gaming systems.",
+      "image": null
+    },
+    {
+      "name": "Wearables",
+      "parent": "Electronics",
+      "description": "Smartwatches and fitness trackers.",
+      "image": null
+    },
+    {
+      "name": "Fashion",
+      "parent": null,
+      "description": "Clothing, shoes, and accessories for all styles.",
+      "image": null
+    },
+    {
+      "name": "Shoes",
+      "parent": "Fashion",
+      "description": "Sneakers, running shoes, and more.",
+      "image": null
+    },
+    {
+      "name": "Clothing",
+      "parent": "Fashion",
+      "description": "T-shirts, jeans, jackets, and other apparel.",
+      "image": null
+    },
+    {
+      "name": "Accessories",
+      "parent": "Fashion",
+      "description": "Fashion accessories and add-ons.",
+      "image": null
+    },
+    {
+      "name": "Sports",
+      "parent": null,
+      "description": "Sports equipment, apparel, and accessories.",
+      "image": null
+    },
+    {
+      "name": "Equipment",
+      "parent": "Sports",
+      "description": "Balls, mats, and other sports gear.",
+      "image": null
+    },
+    {
+      "name": "Apparel",
+      "parent": "Sports",
+      "description": "Sportswear and active clothing.",
+      "image": null
+    },
+    {
+      "name": "Bags",
+      "parent": "Sports",
+      "description": "Backpacks and sports bags.",
+      "image": null
+    },
+    {
+      "name": "Home & Garden",
+      "parent": null,
+      "description": "Furniture, appliances, and decor for home and garden.",
+      "image": null
+    },
+    {
+      "name": "Furniture",
+      "parent": "Home & Garden",
+      "description": "Beds, sofas, and storage solutions.",
+      "image": null
+    },
+    {
+      "name": "Appliances",
+      "parent": "Home & Garden",
+      "description": "Kitchen and cleaning appliances.",
+      "image": null
+    },
+    {
+      "name": "Lighting",
+      "parent": "Home & Garden",
+      "description": "Smart and decorative lighting.",
+      "image": null
+    },
+    {
+      "name": "Outdoor",
+      "parent": "Home & Garden",
+      "description": "Grills and garden accessories.",
+      "image": null
+    },
+    {
+      "name": "Books",
+      "parent": null,
+      "description": "Fiction, non-fiction, and educational books.",
+      "image": null
+    },
+    {
+      "name": "Fiction",
+      "parent": "Books",
+      "description": "Novels and stories.",
+      "image": null
+    },
+    {
+      "name": "Non-Fiction",
+      "parent": "Books",
+      "description": "Biographies, history, and more.",
+      "image": null
+    },
+    {
+      "name": "Self-Help",
+      "parent": "Books",
+      "description": "Books for personal development.",
+      "image": null
+    },
+    {
+      "name": "Children",
+      "parent": "Books",
+      "description": "Books for kids and young readers.",
+      "image": null
+    }
+  ],
+  "brands": [
+    {
+      "name": "Apple",
+      "desc": "Innovative technology company known for premium smartphones, laptops, and wearables.",
+      "logo": "fa-apple"
+    },
+    {
+      "name": "Samsung",
+      "desc": "Global electronics leader producing smartphones, TVs, and home appliances.",
+      "logo": "fa-mobile-alt"
+    },
+    {
+      "name": "Nike",
+      "desc": "World-renowned sportswear brand specializing in athletic shoes, apparel, and equipment.",
+      "logo": "fa-running"
+    },
+    {
+      "name": "Adidas",
+      "desc": "Leading sports brand offering footwear, clothing, and accessories for athletes.",
+      "logo": "fa-shoe-prints"
+    },
+    {
+      "name": "Sony",
+      "desc": "Japanese multinational known for electronics, gaming consoles, and audio products.",
+      "logo": "fa-headphones"
+    },
+    {
+      "name": "Levi's",
+      "desc": "Iconic American brand famous for denim jeans and casual fashion.",
+      "logo": "fa-tshirt"
+    },
+    {
+      "name": "Nintendo",
+      "desc": "Pioneering video game company behind popular consoles and franchises.",
+      "logo": "fa-gamepad"
+    },
+    {
+      "name": "Amazon",
+      "desc": "E-commerce and technology giant producing Kindle e-readers and smart devices.",
+      "logo": "fa-amazon"
+    },
+    {
+      "name": "Penguin",
+      "desc": "Major publishing house known for bestselling fiction and non-fiction titles.",
+      "logo": "fa-book"
+    },
+    {
+      "name": "HarperOne",
+      "desc": "Publisher specializing in spirituality, personal growth, and inspirational books.",
+      "logo": "fa-book-open"
+    },
+    {
+      "name": "Scholastic",
+      "desc": "Leading publisher of children's books and educational materials.",
+      "logo": "fa-book-reader"
+    },
+    {
+      "name": "Dyson",
+      "desc": "Innovative home technology brand known for vacuums and air purifiers.",
+      "logo": "fa-wind"
+    },
+    {
+      "name": "Philips",
+      "desc": "Global leader in health technology and smart home lighting solutions.",
+      "logo": "fa-lightbulb"
+    },
+    {
+      "name": "IKEA",
+      "desc": "World's largest furniture retailer known for Scandinavian design principles.",
+      "logo": "fa-couch"
+    },
+    {
+      "name": "Weber",
+      "desc": "Premium outdoor cooking equipment manufacturer since 1952.",
+      "logo": "fa-fire"
+    },
+    {
+      "name": "Instant Pot",
+      "desc": "Revolutionary kitchen appliance brand famous for multi-cookers.",
+      "logo": "fa-utensils"
+    },
+    {
+      "name": "Harper",
+      "desc": "Publishing house offering diverse range of fiction and non-fiction works.",
+      "logo": "fa-book"
+    },
+    {
+      "name": "Plata Publishing",
+      "desc": "Financial education publisher focused on investing and wealth building.",
+      "logo": "fa-chart-line"
+    }
+  ],
+  "tags": [
+    {"name": "smartphone", "color": "#fff", "bg_color": "#007bff"},
+    {"name": "apple", "color": "#fff", "bg_color": "#333"},
+    {"name": "premium", "color": "#fff", "bg_color": "#6f42c1"},
+    {"name": "laptop", "color": "#fff", "bg_color": "#17a2b8"},
+    {"name": "productivity", "color": "#fff", "bg_color": "#20c997"},
+    {"name": "shoes", "color": "#fff", "bg_color": "#fd7e14"},
+    {"name": "basketball", "color": "#fff", "bg_color": "#dc3545"},
+    {"name": "sneakers", "color": "#fff", "bg_color": "#000"},
+    {"name": "tv", "color": "#fff", "bg_color": "#343a40"},
+    {"name": "4k", "color": "#fff", "bg_color": "#ffc107"},
+    {"name": "smart", "color": "#fff", "bg_color": "#28a745"},
+    {"name": "running", "color": "#fff", "bg_color": "#e83e8c"},
+    {"name": "athletic", "color": "#fff", "bg_color": "#6c757d"},
+    {"name": "headphones", "color": "#fff", "bg_color": "#007bff"},
+    {"name": "wireless", "color": "#fff", "bg_color": "#20c997"},
+    {"name": "noise-canceling", "color": "#fff", "bg_color": "#495057"},
+    {"name": "jeans", "color": "#fff", "bg_color": "#6f42c1"},
+    {"name": "denim", "color": "#fff", "bg_color": "#007bff"},
+    {"name": "casual", "color": "#fff", "bg_color": "#adb5bd"},
+    {"name": "gaming", "color": "#fff", "bg_color": "#6610f2"},
+    {"name": "console", "color": "#fff", "bg_color": "#343a40"},
+    {"name": "portable", "color": "#fff", "bg_color": "#17a2b8"},
+    {"name": "ereader", "color": "#fff", "bg_color": "#20c997"},
+    {"name": "books", "color": "#fff", "bg_color": "#ffc107"},
+    {"name": "sony", "color": "#fff", "bg_color": "#23272b"},
+    {"name": "smartwatch", "color": "#fff", "bg_color": "#007bff"},
+    {"name": "fitness", "color": "#fff", "bg_color": "#28a745"},
+    {"name": "soccer", "color": "#fff", "bg_color": "#fd7e14"},
+    {"name": "sports", "color": "#fff", "bg_color": "#20c997"},
+    {"name": "adidas", "color": "#fff", "bg_color": "#343a40"},
+    {"name": "tshirt", "color": "#fff", "bg_color": "#6f42c1"},
+    {"name": "nike", "color": "#fff", "bg_color": "#000"},
+    {"name": "sportswear", "color": "#fff", "bg_color": "#28a745"},
+    {"name": "earbuds", "color": "#fff", "bg_color": "#007bff"},
+    {"name": "samsung", "color": "#fff", "bg_color": "#23272b"},
+    {"name": "jacket", "color": "#fff", "bg_color": "#6c757d"},
+    {"name": "levis", "color": "#fff", "bg_color": "#dc3545"},
+    {"name": "oled", "color": "#fff", "bg_color": "#343a40"},
+    {"name": "controller", "color": "#fff", "bg_color": "#6610f2"},
+    {"name": "nintendo", "color": "#fff", "bg_color": "#e83e8c"},
+    {"name": "yoga", "color": "#fff", "bg_color": "#20c997"},
+    {"name": "mat", "color": "#fff", "bg_color": "#adb5bd"},
+    {"name": "backpack", "color": "#fff", "bg_color": "#007bff"},
+    {"name": "self-help", "color": "#fff", "bg_color": "#28a745"},
+    {"name": "habits", "color": "#fff", "bg_color": "#ffc107"},
+    {"name": "bestseller", "color": "#fff", "bg_color": "#fd7e14"},
+    {"name": "novel", "color": "#fff", "bg_color": "#6f42c1"},
+    {"name": "fiction", "color": "#fff", "bg_color": "#6610f2"},
+    {"name": "classic", "color": "#fff", "bg_color": "#343a40"},
+    {"name": "history", "color": "#fff", "bg_color": "#20c997"},
+    {"name": "non-fiction", "color": "#fff", "bg_color": "#6c757d"},
+    {"name": "finance", "color": "#fff", "bg_color": "#28a745"},
+    {"name": "fantasy", "color": "#fff", "bg_color": "#007bff"},
+    {"name": "children", "color": "#fff", "bg_color": "#ffc107"},
+    {"name": "vacuum", "color": "#fff", "bg_color": "#343a40"},
+    {"name": "cleaning", "color": "#fff", "bg_color": "#20c997"},
+    {"name": "cordless", "color": "#fff", "bg_color": "#6c757d"},
+    {"name": "lighting", "color": "#fff", "bg_color": "#ffc107"},
+    {"name": "smart-home", "color": "#fff", "bg_color": "#007bff"},
+    {"name": "led", "color": "#fff", "bg_color": "#20c997"},
+    {"name": "furniture", "color": "#fff", "bg_color": "#6f42c1"},
+    {"name": "bed", "color": "#fff", "bg_color": "#343a40"},
+    {"name": "storage", "color": "#fff", "bg_color": "#adb5bd"},
+    {"name": "grill", "color": "#fff", "bg_color": "#fd7e14"},
+    {"name": "outdoor", "color": "#fff", "bg_color": "#28a745"},
+    {"name": "bbq", "color": "#fff", "bg_color": "#dc3545"},
+    {"name": "kitchen", "color": "#fff", "bg_color": "#007bff"},
+    {"name": "cooker", "color": "#fff", "bg_color": "#20c997"},
+    {"name": "appliance", "color": "#fff", "bg_color": "#6c757d"},
+    {"name": "5g", "color": "#fff", "bg_color": "#17a2b8"},
+    {"name": "ultraportable", "color": "#fff", "bg_color": "#6c757d"},
+    {"name": "limited-edition", "color": "#fff", "bg_color": "#dc3545"},
+    {"name": "home-theater", "color": "#fff", "bg_color": "#6f42c1"},
+    {"name": "performance", "color": "#fff", "bg_color": "#20c997"},
+    {"name": "premium-audio", "color": "#fff", "bg_color": "#6610f2"},
+    {"name": "menswear", "color": "#fff", "bg_color": "#343a40"},
+    {"name": "family", "color": "#fff", "bg_color": "#e83e8c"},
+    {"name": "waterproof", "color": "#fff", "bg_color": "#007bff"},
+    {"name": "next-gen", "color": "#fff", "bg_color": "#ffc107"},
+    {"name": "health", "color": "#fff", "bg_color": "#28a745"},
+    {"name": "official", "color": "#fff", "bg_color": "#dc3545"},
+    {"name": "inspirational", "color": "#fff", "bg_color": "#17a2b8"},
+    {"name": "anthropology", "color": "#fff", "bg_color": "#6c757d"},
+    {"name": "investing", "color": "#fff", "bg_color": "#28a745"},
+    {"name": "illustrated", "color": "#fff", "bg_color": "#e83e8c"},
+    {"name": "automation", "color": "#fff", "bg_color": "#17a2b8"},
+    {"name": "modern", "color": "#fff", "bg_color": "#343a40"},
+    {"name": "stainless-steel", "color": "#fff", "bg_color": "#6c757d"},
+    {"name": "multi-function", "color": "#fff", "bg_color": "#6f42c1"},
+    {"name": "tablet", "color": "#fff", "bg_color": "#6c757d"},
+    {"name": "streetwear", "color": "#fff", "bg_color": "#343a40"},
+    {"name": "womens", "color": "#fff", "bg_color": "#e83e8c"},
+    {"name": "bundle", "color": "#fff", "bg_color": "#28a745"},
+    {"name": "streaming", "color": "#fff", "bg_color": "#dc3545"},
+    {"name": "oral-care", "color": "#fff", "bg_color": "#20c997"},
+    {"name": "rechargeable", "color": "#fff", "bg_color": "#17a2b8"},
+    {"name": "bedroom", "color": "#fff", "bg_color": "#6f42c1"},
+    {"name": "air-fryer", "color": "#fff", "bg_color": "#fd7e14"},
+    {"name": "healthy", "color": "#fff", "bg_color": "#28a745"},
+    {"name": "workbook", "color": "#fff", "bg_color": "#ffc107"},
+    {"name": "journal", "color": "#fff", "bg_color": "#6c757d"},
+    {"name": "pants", "color": "#fff", "bg_color": "#6610f2"},
+    {"name": "headset", "color": "#fff", "bg_color": "#007bff"},
+    {"name": "keyboard", "color": "#fff", "bg_color": "#343a40"},
+    {"name": "accessory", "color": "#fff", "bg_color": "#6c757d"},
+    {"name": "tolkien", "color": "#fff", "bg_color": "#6f42c1"},
+    {"name": "business", "color": "#fff", "bg_color": "#20c997"},
+    {"name": "rich-dad", "color": "#fff", "bg_color": "#ffc107"}
+  ]
+}

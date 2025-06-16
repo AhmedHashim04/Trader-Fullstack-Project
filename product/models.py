@@ -6,7 +6,6 @@ from django.urls import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Tag(models.Model):
-    key = models.CharField(max_length=40, unique=True)
     name = models.CharField(max_length=100)
     color = models.CharField(max_length=20, blank=True, null=True, verbose_name=_("Color"), help_text=_("Text color for tag (e.g. #fff or 'red')"))
     bg_color = models.CharField(max_length=20, blank=True, null=True, verbose_name=_("Background Color"), help_text=_("Background color for tag (e.g. #000 or 'blue')"))
@@ -21,8 +20,6 @@ class Product(models.Model):
     description = models.TextField(max_length=1000,verbose_name=_("Description"))
     price = models.DecimalField(max_digits=20,decimal_places=2,verbose_name=_("Price"),validators=[MinValueValidator(0)])
     cost = models.DecimalField(max_digits=20,decimal_places=2,verbose_name=_("Cost"),blank=True,null=True,validators=[MinValueValidator(0)])
-    created_at = models.DateTimeField(auto_now_add=True,verbose_name=_("Created At"),db_index=True)
-    updated_at = models.DateTimeField(auto_now=True,verbose_name=_("Updated At"))
     image = models.ImageField(upload_to='products/',verbose_name=_("Product Image"),blank=True,null=True)
     slug = models.SlugField(unique=True,blank=True,null=True,max_length=255,db_index=True)
     stock = models.PositiveIntegerField(default=0,verbose_name=_("Stock"),validators=[MinValueValidator(0)])
@@ -32,7 +29,9 @@ class Product(models.Model):
     trending = models.BooleanField(default=False,verbose_name=_("Trending"),help_text=_("Is this product trending?"),db_index=True)
     tags = models.ManyToManyField('Tag',verbose_name=_("Tags"),blank=True,related_name='products')
     viewed_by = models.ManyToManyField("account.Profile",verbose_name=_("Viewed By"),related_name="viewed_products",blank=True)
-
+    created_at = models.DateTimeField(auto_now_add=True,verbose_name=_("Created At"),db_index=True)
+    updated_at = models.DateTimeField(auto_now=True,verbose_name=_("Updated At"))
+    
     class Meta:
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
@@ -54,6 +53,7 @@ class Product(models.Model):
                 self.slug = f"{base_slug}-{counter}"
                 counter += 1
         super().save(*args, **kwargs)
+    
 
     def get_absolute_url(self):
         return reverse('product:product_detail', kwargs={'slug': self.slug})
@@ -70,6 +70,10 @@ class Product(models.Model):
     @property
     def has_discount(self):
         return self.discount > 0
+
+    @property
+    def is_on_sale(self):
+        return self.price_after_discount < self.price
 
     def update_rating(self):
         """Update rating aggregation using efficient database query"""

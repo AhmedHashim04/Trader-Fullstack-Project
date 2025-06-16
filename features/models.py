@@ -14,7 +14,8 @@ class ProductImage(models.Model):
 class Brand(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True)
     name  = models.CharField(max_length=40)
-    logo = models.ImageField(upload_to='brand_pictures/', verbose_name=_("Image"), blank=True, null=True)
+    logo = models.CharField(max_length=50, default="fa-mobile-alt", verbose_name=_("Logo (FontAwesome class)"))
+    image = models.ImageField(upload_to='brand_pictures/', verbose_name=_("Image"), blank=True, null=True)
     desc  = models.TextField(_("Brand description"),max_length=1000,blank=True, null=True)
     
     def __str__(self) -> str:
@@ -25,8 +26,7 @@ class Brand(models.Model):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
-    def get_absolute_url(self):
-        return reverse('settings:brand_detail', kwargs={'slug': self.slug})
+    
 class Collection(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)

@@ -4,7 +4,7 @@ from faker import Faker
 from decimal import Decimal
 from django.utils import timezone
 from datetime import timedelta
-from .models import Coupon  # عدل `yourapp` إلى اسم التطبيق الفعلي
+from .models import Coupon 
 
 fake = Faker()
 

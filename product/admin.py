@@ -34,13 +34,16 @@ class ProductInline(admin.TabularInline):
     extra = 1
 class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductImageInline, ProductInline]
-    list_display = ('name', 'price', 'cost', 'stock', 'created_at')
+    list_display = ('name', 'price', 'cost', 'profit', 'stock', 'created_at')
     list_filter = ('created_at', 'stock')
     search_fields = ('name', 'description')
     ordering = ('-created_at',)
     raw_id_fields = ('viewed_by',)
     actions = [export_products_to_csv]
 
+    def profit(self, obj):
+        return obj.price - obj.cost
+    profit.short_description = 'Profit'
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'parent', 'description')
