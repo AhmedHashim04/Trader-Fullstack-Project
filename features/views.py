@@ -8,7 +8,6 @@ from django.core.paginator import Paginator
 from django.core.cache import cache
 from django.db.models import Q
 
-
 class CollectionDetailView(ListView):
     model = Product
     context_object_name = 'products'
@@ -105,5 +104,6 @@ class CollectionDetailView(ListView):
             'is_paginated': products.has_other_pages(),
         })
         return context
-
     
+
+

@@ -1,18 +1,13 @@
 {% extends "base.html" %}
 
-
 {% block body %}
-
-
-
 <!-- Page Header -->
-<section class="page-header bg-light py-4 shadow-sm border-bottom">
+<section class="page-header bg-gradient-primary-to-secondary py-5 shadow border-bottom">
     <div class="container">
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0" id="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
-                {% comment %} <li class="breadcrumb-item"><a href="{% url 'features:collection_list' %}">{% if collection %}{{ collection.name }}{% else %}All Collections{% endif %}</a></li> {% endcomment %}
-                <li class="breadcrumb-item active" id="currentProduct">
+            <ol class="breadcrumb mb-0 bg-transparent p-0" id="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home:home' %}" class="text-primary fw-semibold">Home</a></li>
+                <li class="breadcrumb-item active text-dark" id="currentProduct">
                     {% if search_query %}
                         Search: "{{ search_query }}"
                     {% else %}
@@ -24,21 +19,21 @@
     </div>
 </section>
 <!-- Collection Title -->
-<section class="bg-light py-4">
+<section class="bg-white py-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="card bg-white shadow-sm border-0">
+                <div class="card border-0 shadow-lg rounded-4">
                     <div class="card-body">
-                        <h2 class="display-6">
+                        <h2 class="display-5 fw-bold text-gradient">
                             {% if collection %}
                                 <i class="fas fa-box-open me-2"></i> {{ collection.name }}
                             {% else %}
                                 All Products
                             {% endif %}
                         </h2>
-                        <p class="text-muted">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        <p class="text-muted fs-5">
+                            Discover our curated selection of products. Find what suits your needs and style.
                         </p>
                     </div>
                 </div>
@@ -52,19 +47,22 @@
     <div class="row">
         <!-- Sidebar Filters -->
         <aside class="col-lg-3 mb-4">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Filters</h5>
+            <div class="card border-0 shadow-lg rounded-4 sticky-top" style="top: 90px;">
+                <div class="card-header bg-gradient-primary-to-secondary text-white rounded-top-4">
+                    <h5 class="mb-0 fw-semibold"><i class="fas fa-filter me-2"></i>Filters</h5>
                 </div>
                 <div class="card-body">
-                    <form method="get" id="filtersForm" class="vstack gap-3">
+                    <form method="get" id="filtersForm" class="vstack gap-4">
                         <div>
-                            <label for="search" class="form-label">Search</label>
-                            <input type="text" name="search" id="search" value="{{ search_query }}" class="form-control" placeholder="Search products...">
+                            <label for="search" class="form-label fw-semibold">Search</label>
+                            <div class="input-group">
+                                <input type="text" name="search" id="search" value="{{ search_query }}" class="form-control rounded-pill" placeholder="Search products...">
+                                <span class="input-group-text bg-white border-0"><i class="fas fa-search text-primary"></i></span>
+                            </div>
                         </div>
                         <div>
-                            <label for="category" class="form-label">Category</label>
-                            <select name="category" id="category" class="form-select">
+                            <label for="category" class="form-label fw-semibold">Category</label>
+                            <select name="category" id="category" class="form-select rounded-pill">
                                 <option value="">All Categories</option>
                                 {% for cat in categories %}
                                     {% if cat.slug %}
@@ -76,8 +74,8 @@
                             </select>
                         </div>
                         <div>
-                            <label for="brand" class="form-label">Brand</label>
-                            <select name="brand" id="brand" class="form-select">
+                            <label for="brand" class="form-label fw-semibold">Brand</label>
+                            <select name="brand" id="brand" class="form-select rounded-pill">
                                 <option value="">All Brands</option>
                                 {% for brand in brands %}
                                     {% if brand.slug %}
@@ -88,19 +86,19 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="row">
+                        <div class="row g-2">
                             <div class="col">
-                                <label for="min_price" class="form-label">Min</label>
-                                <input type="number" name="min_price" id="min_price" value="{{ min_price }}" step="0.01" class="form-control" placeholder="0.00">
+                                <label for="min_price" class="form-label fw-semibold">Min</label>
+                                <input type="number" name="min_price" id="min_price" value="{{ min_price }}" step="0.01" class="form-control rounded-pill" placeholder="0.00">
                             </div>
                             <div class="col">
-                                <label for="max_price" class="form-label">Max</label>
-                                <input type="number" name="max_price" id="max_price" value="{{ max_price }}" step="0.01" class="form-control" placeholder="1000.00">
+                                <label for="max_price" class="form-label fw-semibold">Max</label>
+                                <input type="number" name="max_price" id="max_price" value="{{ max_price }}" step="0.01" class="form-control rounded-pill" placeholder="1000.00">
                             </div>
                         </div>
                         <div>
-                            <label for="sort_by" class="form-label">Sort by</label>
-                            <select name="sort_by" id="sort_by" class="form-select">
+                            <label for="sort_by" class="form-label fw-semibold">Sort by</label>
+                            <select name="sort_by" id="sort_by" class="form-select rounded-pill">
                                 <option value="">Default</option>
                                 <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
                                 <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
@@ -111,22 +109,22 @@
                         <div class="d-flex justify-content-between align-items-end">
                             <div class="btn-group">
                                 <input type="hidden" name="view_mode" id="viewModeInput" value="{{ view_mode }}">
-                                <button type="button" class="btn btn-outline-secondary {% if view_mode == 'grid' %}active{% endif %}" onclick="setViewMode('grid')">
+                                <button type="button" class="btn btn-outline-primary rounded-pill {% if view_mode == 'grid' %}active shadow{% endif %}" onclick="setViewMode('grid')" title="Grid view">
                                     <i class="fas fa-th"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary {% if view_mode == 'list' %}active{% endif %}" onclick="setViewMode('list')">
+                                <button type="button" class="btn btn-outline-primary rounded-pill {% if view_mode == 'list' %}active shadow{% endif %}" onclick="setViewMode('list')" title="List view">
                                     <i class="fas fa-list"></i>
                                 </button>
                             </div>
-                            <select class="form-select w-auto ms-2" name="items_per_page" onchange="document.getElementById('filtersForm').submit();">
+                            <select class="form-select w-auto ms-2 rounded-pill" name="items_per_page" onchange="document.getElementById('filtersForm').submit();">
                                 <option value="12" {% if items_per_page == '12' or items_per_page == 12 %}selected{% endif %}>12/page</option>
                                 <option value="24" {% if items_per_page == '24' or items_per_page == 24 %}selected{% endif %}>24/page</option>
                                 <option value="48" {% if items_per_page == '48' or items_per_page == 48 %}selected{% endif %}>48/page</option>
                             </select>
                         </div>
-                        <div class="d-grid mt-3">
-                            <button type="submit" class="btn btn-primary">Apply</button>
-                            <a href="{% url 'product:products_list' %}" class="btn btn-outline-danger mt-2">Reset</a>
+                        <div class="d-grid mt-4 gap-2">
+                            <button type="submit" class="btn btn-gradient-primary rounded-pill fw-semibold shadow">Apply</button>
+                            <a href="{% url 'product:products_list' %}" class="btn btn-outline-danger rounded-pill">Reset</a>
                         </div>
                     </form>
                 </div>
@@ -138,20 +136,20 @@
             <div id="productsContainer" class="row {% if view_mode == 'grid' %}row-cols-1 row-cols-sm-2 row-cols-md-3 g-4{% else %}gy-4{% endif %}">
                 {% for product in products %}
                     <div class="{% if view_mode == 'list' %}col-12{% else %}col{% endif %}">
-                        <div class="card h-100 shadow-sm {% if view_mode == 'list' %}flex-row{% endif %}">
+                        <div class="card h-100 border-0 shadow-lg rounded-4 overflow-hidden {% if view_mode == 'list' %}flex-row align-items-center{% endif %} product-card-hover">
                             {% if product.image %}
-                            <img src="{{ product.image.url }}" class="card-img-top {% if view_mode == 'list' %}w-25{% endif %}" alt="{{ product.name }}">
+                            <img src="{{ product.image.url }}" class="card-img-top object-fit-cover {% if view_mode == 'list' %}w-25 h-100 rounded-0{% else %}rounded-top-4{% endif %}" alt="{{ product.name }}" style="min-height:180px;max-height:220px;">
                             {% else %}
-                            <img src="{{ product.image }}" class="card-img-top {% if view_mode == 'list' %}w-25{% endif %}" alt="{{ product.name }}">
+                            <img src="{{ product.image }}" class="card-img-top object-fit-cover {% if view_mode == 'list' %}w-25 h-100 rounded-0{% else %}rounded-top-4{% endif %}" alt="{{ product.name }}" style="min-height:180px;max-height:220px;">
                             {% endif %}
-                                <div class="card-body d-flex flex-column justify-content-between">
+                            <div class="card-body d-flex flex-column justify-content-between p-4">
                                 <div>
-                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <h5 class="card-title fw-bold text-dark">{{ product.name }}</h5>
                                     <p class="card-text text-muted small">{{ product.description|truncatewords:20 }}</p>
                                 </div>
-                                <div>
-                                    <p class="fw-bold text-primary mb-2">${{ product.price }}</p>
-                                    <a href="{% url 'product:product_detail' product.slug %}" class="btn btn-sm btn-outline-primary">View Details</a>
+                                <div class="d-flex align-items-center justify-content-between mt-3">
+                                    <span class="fw-bold text-gradient fs-5">${{ product.price }}</span>
+                                    <a href="{% url 'product:product_detail' product.slug %}" class="btn btn-sm btn-gradient-primary rounded-pill px-3 shadow">View Details</a>
                                 </div>
                             </div>
                         </div>
@@ -161,10 +159,10 @@
 
             {% if not products %}
                 <div class="text-center py-5">
-                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <i class="fas fa-search fa-3x text-gradient mb-3"></i>
                     <h4 class="text-muted">No products found</h4>
                     <p class="text-muted">Try adjusting your search criteria or filters.</p>
-                    <a href="{% url 'product:products_list' %}" class="btn btn-primary">Reset Search</a>
+                    <a href="{% url 'product:products_list' %}" class="btn btn-gradient-primary rounded-pill px-4">Reset Search</a>
                 </div>
             {% endif %}
 
@@ -173,7 +171,7 @@
                     <ul class="pagination justify-content-center">
                         {% for page_num in products.paginator.page_range %}
                             <li class="page-item {% if products.number == page_num %}active{% endif %}">
-                                <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_num }}">{{ page_num }}</a>
+                                <a class="page-link rounded-pill shadow-sm" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_num }}">{{ page_num }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -183,12 +181,82 @@
     </div>
 </div>
 
+<style>
+/* Gradient backgrounds */
+.bg-gradient-primary-to-secondary {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+}
+.btn-gradient-primary {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    color: #fff;
+    border: none;
+}
+.btn-gradient-primary:hover, .btn-gradient-primary:focus {
+    background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+    color: #fff;
+}
+.text-gradient {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.product-card-hover {
+    transition: transform 0.18s cubic-bezier(.4,2,.6,1), box-shadow 0.18s;
+}
+.product-card-hover:hover {
+    transform: translateY(-6px) scale(1.025);
+    box-shadow: 0 8px 32px rgba(106,17,203,0.12), 0 2px 8px rgba(37,117,252,0.08);
+    z-index: 2;
+}
+.card-img-top.object-fit-cover {
+    object-fit: cover;
+    width: 100%;
+    height: 220px;
+}
+input[type="text"].form-control, input[type="number"].form-control, select.form-select {
+    background: #f8f9fa;
+    border-radius: 2rem;
+    border: 1px solid #e3e6ed;
+    transition: border-color 0.2s;
+}
+input[type="text"].form-control:focus, input[type="number"].form-control:focus, select.form-select:focus {
+    border-color: #6a11cb;
+    box-shadow: 0 0 0 0.15rem rgba(106,17,203,0.12);
+}
+.card {
+    border-radius: 1.5rem;
+}
+.card-header {
+    border-radius: 1.5rem 1.5rem 0 0;
+}
+.pagination .page-link {
+    border-radius: 2rem !important;
+    margin: 0 0.15rem;
+    color: #6a11cb;
+    border: none;
+    background: #f8f9fa;
+    transition: background 0.2s, color 0.2s;
+}
+.pagination .page-item.active .page-link,
+.pagination .page-link:hover {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    color: #fff;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    border-radius: 8px;
+}
+::-webkit-scrollbar {
+    width: 8px;
+    background: #f8f9fa;
+}
+</style>
+
 <script>
     function setViewMode(mode) {
         document.getElementById('viewModeInput').value = mode;
         document.getElementById('filtersForm').submit();
     }
 </script>
-
 {% endblock body %}
-

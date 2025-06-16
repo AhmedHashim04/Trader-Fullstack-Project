@@ -24,7 +24,7 @@
                                 </div>
                             {% endif %}
                         </div>
-                        <h5 class="brand-name mt-3">{{ brand.name|escape }}</h5>
+                        <h5 class="brand-name mt-3">{{ brand.name|truncatechars:10 }}</h5>
                         <span class="view-products">View Products <i class="fas fa-arrow-right ms-1"></i></span>
                     </a>
                 </div>

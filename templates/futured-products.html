@@ -536,9 +536,9 @@
                     <p>Discover what's popular right now</p>
                 </div>
                 <div class="filter-buttons">
-                    <button class="btn-filter {% if not tag_filter %}active{% endif %}" data-filter="all" onclick="window.location.href='?';">All</button>
+                    <button class="btn-filter {% if tag_filter|lower == 'all' %}active{% endif %}" data-filter="all" onclick="window.location.href='';">All</button>
                     {% for tag in tags %}
-                    <button class="btn-filter {% if tag_filter == tag %}active{% endif %}" data-filter="{{ tag }}" onclick="window.location.href='?tag={{ tag }}';">{{ tag|title }}</button>
+                    <button class="btn-filter {% if tag_filter|lower == tag.name|lower %}active{% endif %}" data-filter="{{ tag }}" onclick="window.location.href='?tag={{ tag }}';">{{ tag|title }}</button>
                     {% endfor %}
                 </div>    
              </div>
@@ -592,10 +592,10 @@
                         <div class="price-stock">
                             <div class="price">
                                 {% if product.discount > 0 %}
-                                <span class="original-price">${{ product.price }}</span>
-                                <span class="discount-price">${{ product.price_after_discount|floatformat:2 }}</span>
+                                <span class="original-price">{{ product.price }} EGP</span>
+                                <span class="discount-price">{{ product.price_after_discount|floatformat:2 }} EGP</span>
                                 {% else %}
-                                <span class="discount-price">${{ product.price }}</span>
+                                <span class="discount-price">{{ product.price }} EGP</span>
                                 {% endif %}
                             </div>
                             <span class="stock-badge {% if product.stock > 0 %}in-stock{% else %}out-stock{% endif %}">
@@ -636,7 +636,7 @@
                 {% endfor %}
             </div>     
             <div class="view-all">
-                <a href="{% url 'product:products_list' %}" class="view-all-btn">
+                <a href="{% url 'product:products_list' %}" class="view-all-btn text-decoration-none">
                     View All Products <i class="fas fa-arrow-right"></i>
                 </a>
             </div>

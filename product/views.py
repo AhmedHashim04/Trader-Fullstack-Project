@@ -120,13 +120,16 @@ class ProductListView(ListView):
         """Add filtering context and aggregations"""
         context = super().get_context_data(**kwargs)
         filters = self.applied_filters
-        
-        # Get min/max price range for all products
-        price_range = Product.objects.aggregate(
-            min_price=models.Min('price'),
-            max_price=models.Max('price')
-        )
-        
+        price_range = Product.objects.aggregate(min_price=models.Min('price'),max_price=models.Max('price'))
+
+        queryset = self.get_queryset()
+        paginate_by = self.get_paginate_by(queryset)
+        paginator = Paginator(queryset, paginate_by)
+        page_number = self.request.GET.get("page")
+        products = paginator.get_page(page_number)
+
+
+
         context.update({
             'categories': Category.objects.all(),
             'brands': Brand.objects.all(),
@@ -142,6 +145,9 @@ class ProductListView(ListView):
             'items_per_page_options': self.items_per_page_options,
             'global_min_price': price_range['min_price'],
             'global_max_price': price_range['max_price'],
+            'products': products,
+            'is_paginated': products.has_other_pages(),
+
         })
         
         return context

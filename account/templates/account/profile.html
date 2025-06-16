@@ -16,7 +16,7 @@
                 <div class="card-header bg-gradient-animated text-white text-center py-4">
                     <div class="avatar-container mb-3">
                         <div class="avatar-circle">
-                            <img src="{% if profile.profile_image %}{{ profile.profile_image.url }}{% else %}{% static 'account/img/avatars/avatar-1.jpg' %}{% endif %}" alt="Profile Picture" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
+                            <img src="{% if profile.profile_image %}{{ profile.profile_image.url }}{% else %}https://ui-avatars.com/api/?name={{ profile.user.get_full_name|urlencode }}&background=6B8DD6&color=fff&size=128{% endif %}" alt="Profile Picture" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
                         </div>
                     </div>
                     <h2 class="mb-0 fw-bold">{{ profile.user.get_full_name|default:"My Profile" }}</h2>

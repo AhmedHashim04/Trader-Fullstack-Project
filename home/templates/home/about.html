@@ -1,215 +1,239 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}About Trader - Your Ultimate Shopping Destination{% endblock %}
-<body>
-
-    <!-- Navigation -->
-    {% include 'header.html' %}
-    {% block body %}
-    <!-- Page Header -->
-    <section class="page-header py-5 shadow-sm" style="background: var(--gradient-dark);">
-
-<section class="page-header py-5 shadow-sm" style="background: var(--gradient-dark);">
-
+{% block body %}
+<!-- Navigation -->
+{% include 'header.html' %}
+<section class="page-header py-5 shadow-sm" >
 </section>
-    <section class="page-header bg-light py-4">
-        <div class="container">
-            <h1 class="h2 mb-0">About Trader</h1>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item active">About</li>
-                </ol>
-            </nav>
-        </div>
-    </section>
+<!-- Hero Section -->
+<section class="page-header py-5 shadow-sm trendy-hero" style="background: linear-gradient(120deg, #6b46c1 0%, #d53f8c 100%); color: #fff;">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3 animate__animated animate__fadeInDown">About Trader</h1>
+        <p class="lead mb-4 animate__animated animate__fadeInUp">Your Ultimate Shopping Destination</p>
+        <nav aria-label="breadcrumb" class="d-flex justify-content-center">
+            <ol class="breadcrumb bg-transparent p-0 mb-0">
+                <li class="breadcrumb-item"><a href="/" class="text-white-50">Home</a></li>
+                <li class="breadcrumb-item active text-white">About</li>
+            </ol>
+        </nav>
+    </div>
+</section>
 
-    <!-- About Content -->
-    <div class="container  py-5">
-        <div class="row">
-            <div class="col-lg-8 btn-secondary mx-auto">
-                <div class="about-content">
-                    <h2 class="mb-4">Our Story</h2>
-                    <p class="lead">Trader was founded with a simple mission: to make online shopping easy, enjoyable, and accessible to everyone.</p>
-                    
-                    <p>Since our inception, we've been committed to providing our customers with the highest quality products at competitive prices. We believe that shopping should be a pleasure, not a chore, which is why we've built our platform with user experience at the forefront.</p>
-                    
-                    <p>Our team consists of passionate professionals who are dedicated to innovation, customer service, and creating lasting relationships with our community. We continuously strive to improve our services and expand our product offerings to meet the evolving needs of our customers.</p>
-                    
-                    <h3 class="mt-5 mb-4">Our Values</h3>
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="value-card p-4 border rounded">
-                                <i class="fas fa-heart fa-2x text-primary mb-3"></i>
-                                <h5>Customer First</h5>
-                                <p class="text-muted">We put our customers at the center of everything we do, ensuring their satisfaction and building long-term relationships.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="value-card p-4 border rounded">
-                                <i class="fas fa-gem fa-2x text-primary mb-3"></i>
-                                <h5>Quality Products</h5>
-                                <p class="text-muted">We carefully curate our product selection to ensure only the best items reach our customers.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="value-card p-4 border rounded">
-                                <i class="fas fa-handshake fa-2x text-primary mb-3"></i>
-                                <h5>Trust & Integrity</h5>
-                                <p class="text-muted">We operate with transparency and honesty, building trust through reliable service and fair practices.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="value-card p-4 border rounded">
-                                <i class="fas fa-rocket fa-2x text-primary mb-3"></i>
-                                <h5>Innovation</h5>
-                                <p class="text-muted">We continuously evolve and improve our platform to provide the best shopping experience possible.</p>
-                            </div>
+<!-- About Content -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 bg-white rounded-4 shadow-lg p-5 trendy-fade">
+            <div class="about-content">
+                <h2 class="mb-4 fw-bold text-gradient">Our Story</h2>
+                <p class="lead">Trader was founded with a simple mission: to make online shopping easy, enjoyable, and accessible to everyone.</p>
+                <p>Since our inception, we've been committed to providing our customers with the highest quality products at competitive prices. We believe that shopping should be a pleasure, not a chore, which is why we've built our platform with user experience at the forefront.</p>
+                <p>Our team consists of passionate professionals who are dedicated to innovation, customer service, and creating lasting relationships with our community. We continuously strive to improve our services and expand our product offerings to meet the evolving needs of our customers.</p>
+                <h3 class="mt-5 mb-4 fw-semibold text-gradient">Our Values</h3>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="value-card p-4 border-0 rounded-4 shadow-sm bg-light h-100 trendy-hover">
+                            <i class="fas fa-heart fa-2x mb-3 text-gradient"></i>
+                            <h5>Customer First</h5>
+                            <p class="text-muted">We put our customers at the center of everything we do, ensuring their satisfaction and building long-term relationships.</p>
                         </div>
                     </div>
-                    
-                    <h3 class="mt-5 mb-4">Why Choose Trader?</h3>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Wide selection of high-quality products</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Competitive pricing and regular promotions</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Fast and reliable shipping</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Secure payment processing</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Excellent customer support</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Easy returns and exchanges</li>
-                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>User-friendly shopping experience</li>
-                    </ul>
+                    <div class="col-md-6">
+                        <div class="value-card p-4 border-0 rounded-4 shadow-sm bg-light h-100 trendy-hover">
+                            <i class="fas fa-gem fa-2x mb-3 text-gradient"></i>
+                            <h5>Quality Products</h5>
+                            <p class="text-muted">We carefully curate our product selection to ensure only the best items reach our customers.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="value-card p-4 border-0 rounded-4 shadow-sm bg-light h-100 trendy-hover">
+                            <i class="fas fa-handshake fa-2x mb-3 text-gradient"></i>
+                            <h5>Trust & Integrity</h5>
+                            <p class="text-muted">We operate with transparency and honesty, building trust through reliable service and fair practices.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="value-card p-4 border-0 rounded-4 shadow-sm bg-light h-100 trendy-hover">
+                            <i class="fas fa-rocket fa-2x mb-3 text-gradient"></i>
+                            <h5>Innovation</h5>
+                            <p class="text-muted">We continuously evolve and improve our platform to provide the best shopping experience possible.</p>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="mt-5 mb-4 fw-semibold text-gradient">Why Choose Trader?</h3>
+                <ul class="list-unstyled trendy-list">
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Wide selection of high-quality products</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Competitive pricing and regular promotions</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Fast and reliable shipping</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Secure payment processing</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Excellent customer support</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Easy returns and exchanges</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>User-friendly shopping experience</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Section -->
+<section class="py-5 bg-gradient trendy-stats">
+    <div class="container">
+        <div class="row text-center g-4">
+            <div class="col-md-3">
+                <div class="stat-card bg-white rounded-4 shadow-sm p-4 trendy-hover">
+                    <i class="fas fa-users fa-3x mb-3 text-gradient"></i>
+                    <h3 class="h2 fw-bold">50,000+</h3>
+                    <p class="text-muted">Happy Customers</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card bg-white rounded-4 shadow-sm p-4 trendy-hover">
+                    <i class="fas fa-box fa-3x mb-3 text-gradient"></i>
+                    <h3 class="h2 fw-bold">10,000+</h3>
+                    <p class="text-muted">Products Available</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card bg-white rounded-4 shadow-sm p-4 trendy-hover">
+                    <i class="fas fa-shipping-fast fa-3x mb-3 text-gradient"></i>
+                    <h3 class="h2 fw-bold">100,000+</h3>
+                    <p class="text-muted">Orders Delivered</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card bg-white rounded-4 shadow-sm p-4 trendy-hover">
+                    <i class="fas fa-globe fa-3x mb-3 text-gradient"></i>
+                    <h3 class="h2 fw-bold">25+</h3>
+                    <p class="text-muted">Countries Served</p>
                 </div>
             </div>
         </div>
     </div>
+</section>
 
-    <!-- Statistics Section -->
-    <section class="py-5 bg-light">
-        <div class="container btn-secondary">
-            <div class="row text-center g-4">
-                <div class="col-md-3">
-                    <div class="stat-card">
-                        <i class="fas fa-users fa-3x text-primary mb-3"></i>
-                        <h3 class="h2 fw-bold">50,000+</h3>
-                        <p class="text-muted">Happy Customers</p>
+<!-- Team Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 fw-bold text-gradient">Meet Our Team</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-4 col-md-6">
+                <div class="team-card text-center bg-white rounded-4 shadow-lg p-4 trendy-hover">
+                    <div class="team-avatar mx-auto mb-3 trendy-avatar">
+                        <img src="https://randomuser.me/api/portraits/men/20.jpg"  alt="Ahmed Hashim" class="rounded-circle shadow" width="80" height="80" loading="lazy">
                     </div>
+                    <h5 class="fw-semibold">Ahmed Hashim</h5>
+                    <p class="text-muted mb-1">CEO & Founder</p>
+                    <p class="small">Leading the vision and strategy for Trader's growth and customer satisfaction.</p>
                 </div>
-                <div class="col-md-3">
-                    <div class="stat-card">
-                        <i class="fas fa-box fa-3x text-primary mb-3"></i>
-                        <h3 class="h2 fw-bold">10,000+</h3>
-                        <p class="text-muted">Products Available</p>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="team-card text-center bg-white rounded-4 shadow-lg p-4 trendy-hover">
+                    <div class="team-avatar mx-auto mb-3 trendy-avatar">
+                        <img src="https://randomuser.me/api/portraits/men/10.jpg" alt="Ahmed Mohamed" class="rounded-circle shadow" width="80" height="80" loading="lazy">
                     </div>
+                    <h5 class="fw-semibold">Ahmed Mohamed</h5>
+                    <p class="text-muted mb-1">CTO</p>
+                    <p class="small">Overseeing technology development and ensuring our platform stays cutting-edge.</p>
                 </div>
-                <div class="col-md-3">
-                    <div class="stat-card">
-                        <i class="fas fa-shipping-fast fa-3x text-primary mb-3"></i>
-                        <h3 class="h2 fw-bold">100,000+</h3>
-                        <p class="text-muted">Orders Delivered</p>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="team-card text-center bg-white rounded-4 shadow-lg p-4 trendy-hover">
+                    <div class="team-avatar mx-auto mb-3 trendy-avatar">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Ahmed Ali" class="rounded-circle shadow" width="80" height="80" loading="lazy">
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stat-card">
-                        <i class="fas fa-globe fa-3x text-primary mb-3"></i>
-                        <h3 class="h2 fw-bold">25+</h3>
-                        <p class="text-muted">Countries Served</p>
-                    </div>
+                    <h5 class="fw-semibold">Ahmed Ali</h5>
+                    <p class="text-muted mb-1">Head of Customer Experience</p>
+                    <p class="small">Dedicated to ensuring every customer has an exceptional shopping experience.</p>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Team Section -->
-    <section class="py-5">
-        <div class="container btn-primary">
-            <h2 class="text-center mb-5">Meet Our Team</h2>
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="team-card text-center">
-                        <div class="team-avatar mx-auto mb-3">
-                            <i class="fas fa-user fa-3x text-muted"></i>
-                        </div>
-                        <h5>Ahmed Hashim</h5>
-                        <p class="text-muted">CEO & Founder</p>
-                        <p class="small">Leading the vision and strategy for Trader's growth and customer satisfaction.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="team-card text-center">
-                        <div class="team-avatar mx-auto mb-3">
-                            <i class="fas fa-user fa-3x text-muted"></i>
-                        </div>
-                        <h5>Ahmed Mohamed</h5>
-                        <p class="text-muted">CTO</p>
-                        <p class="small">Overseeing technology development and ensuring our platform stays cutting-edge.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="team-card text-center">
-                        <div class="team-avatar mx-auto mb-3">
-                            <i class="fas fa-user fa-3x text-muted"></i>
-                        </div>
-                        <h5>Ahmed Ali</h5>
-                        <p class="text-muted">Head of Customer Experience</p>
-                        <p class="small">Dedicated to ensuring every customer has an exceptional shopping experience.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Call to Action -->
-    <section class="py-5 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900  btn-secondary text-white relative overflow-hidden">
-        <style>
-            .text-white {
-                --bs-text-opacity: 1;
-                color: rgb(136, 47, 47) !important;
-            }
-        </style>
-        <div class="container text-center relative z-10">
-            <h2 class="mb-3 font-extrabold text-5xl sm:text-6xl leading-tight text-yellow-500">Kickstart Your Shopping Journey!</h2>
-            <p class="lead mb-6 text-lg sm:text-xl max-w-2xl mx-auto">Join a thriving community of savvy shoppers and discover exclusive deals and unique finds today.</p>
-            <a href="/products" class="btn btn-gradient btn-lg px-6 py-3 rounded-full shadow-lg hover:shadow-2xl transition-transform transform hover:scale-110">Explore Now</a>
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-r from-indigo-800 via-purple-800 to-pink-800 opacity-50"></div>
-        <div class="absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-white to-transparent opacity-20 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 right-0 w-60 h-60 bg-gradient-to-br from-white to-transparent opacity-20 rounded-full blur-3xl"></div>
-    </section>
+<!-- Call to Action -->
+<section class="py-5 trendy-cta position-relative overflow-hidden text-white" style="background: linear-gradient(90deg, #6b46c1 0%, #d53f8c 100%);">
+    <div class="container text-center position-relative z-2">
+        <h2 class="mb-3 fw-bold display-5 animate__animated animate__pulse text-gradient">Kickstart Your Shopping Journey!</h2>
+        <p class="lead mb-4">Join a thriving community of savvy shoppers and discover exclusive deals and unique finds today.</p>
+        <a href="/products" class="btn btn-gradient btn-lg px-5 py-3 rounded-pill shadow-lg trendy-hover">Explore Now</a>
+    </div>
+    <div class="trendy-bg-blur"></div>
+</section>
 
-    <style>
-        .btn-gradient {
-            background: linear-gradient(90deg, #6b46c1, #d53f8c);
-            color: white;
-            border: none;
-        }
-        .btn-gradient:hover {
-            background: linear-gradient(90deg, #805ad5, #e53e8b);
-        }
-        .hover\:scale-110:hover {
-            transform: scale(1.10);
-        }
-        .shadow-2xl {
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
-        .blur-3xl {
-            filter: blur(60px);
-        }
-    </style>
-    <script>
-        const exploreNow = document.querySelector('.btn-gradient');
-        exploreNow.addEventListener('mouseover', () => {
-            exploreNow.style.transform = 'translateY(-3px)';
-            exploreNow.style.transition = 'transform 0.3s ease';
-        });
-        exploreNow.addEventListener('mouseout', () => {
-            exploreNow.style.transform = 'translateY(0)';
-        });
-    </script>
-    {% endblock body %}
+<style>
+    .text-gradient {
+        background: linear-gradient(90deg, #6b46c1, #d53f8c);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .trendy-hero {
+        min-height: 320px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .trendy-fade {
+        animation: fadeInUp 1s;
+    }
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(40px);}
+        to { opacity: 1; transform: translateY(0);}
+    }
+    .trendy-hover {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .trendy-hover:hover {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 8px 32px rgba(107,70,193,0.12), 0 1.5px 6px rgba(213,63,140,0.08);
+    }
+    .trendy-list li {
+        font-size: 1.1rem;
+        letter-spacing: 0.01em;
+    }
+    .trendy-stats {
+        background: linear-gradient(90deg, #f3e8ff 0%, #ffe4f7 100%);
+    }
+    .trendy-avatar img {
+        border: 4px solid #fff;
+        background: #f3e8ff;
+    }
+    .btn-gradient {
+        background: linear-gradient(90deg, #6b46c1, #d53f8c);
+        color: #fff;
+        border: none;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        box-shadow: 0 4px 16px rgba(107,70,193,0.15);
+        transition: background 0.3s, transform 0.2s;
+    }
+    .btn-gradient:hover, .btn-gradient:focus {
+        background: linear-gradient(90deg, #805ad5, #e53e8b);
+        color: #fff;
+        transform: scale(1.06);
+    }
+    .trendy-cta {
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+    }
+    .trendy-bg-blur {
+        position: absolute;
+        top: -60px;
+        left: 50%;
+        width: 600px;
+        height: 300px;
+        background: radial-gradient(circle, #fff 0%, #d53f8c22 80%, transparent 100%);
+        filter: blur(80px);
+        opacity: 0.5;
+        z-index: 0;
+        transform: translateX(-50%);
+        pointer-events: none;
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
-    <!-- Footer -->
-     {% include 'footer.html' %}
-    </footer>
-
-    {% include 'scripts.html' %}
-</body>
-</html>
+{% include 'scripts.html' %}
+{% endblock body %}

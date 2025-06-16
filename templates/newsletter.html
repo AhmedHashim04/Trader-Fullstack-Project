@@ -1,3 +1,5 @@
+
+
 <section class="newsletter-section">
     <div class="newsletter-content">
         <div class="container">
@@ -5,13 +7,24 @@
                 <div class="col-lg-6">
                     <h2 class="h1 mb-3">Stay in the Loop!</h2>
                     <p class="lead mb-4">Get exclusive deals, new arrivals, and insider news delivered straight to your inbox.</p>
-                    <form class="newsletter-form" id="newsletterForm">
+                    <form class="newsletter-form" id="newsletterForm" method="post" novalidate>
+                        {% csrf_token %}
                         <div class="input-group input-group-lg">
-                            <input type="email" class="form-control newsletter-input" placeholder="Enter your email address" required>
+                            {{ newsletter_form.email }}
                             <button class="btn btn-light btn-lg" type="submit">
                                 <i class="fas fa-paper-plane me-2"></i>Subscribe
                             </button>
                         </div>
+                        {% if newsletter_form.non_field_errors %}
+                            <div class="text-danger mt-2">
+                                {{ newsletter_form.non_field_errors.0 }}
+                            </div>
+                        {% endif %}
+                        {% if newsletter_form.email.errors %}
+                            <div class="text-danger mt-2">
+                                {{ newsletter_form.email.errors.0 }}
+                            </div>
+                        {% endif %}
                         <small class="text-white-50 mt-2 d-block">No spam, unsubscribe anytime</small>
                     </form>
                 </div>

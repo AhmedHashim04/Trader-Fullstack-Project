@@ -81,13 +81,13 @@
 
                                     <span class="original-price">{{ item.price|floatformat:2 }} EGP</span>
                                     <div>
-                                        <span class="discount-price">-{{ item.discount|floatformat:2 }}</span>
+                                        <span class="discount-price">-{{ item.discount|floatformat:2 }} EGP</span>
 
                                     </div>
                                     {% else %}
                                     <span class="discount-price">{{ item.price|floatformat:2 }} EGP</span>
                                     {% endif %}    
-                                    <span class="fw-bold text-primary">{{ item.price_after_discount|floatformat:2 }}</span>
+                                    <span class="fw-bold text-primary">{{ item.price_after_discount|floatformat:2 }} EGP</span>
                                 </div>
                                 
                                 <!-- Quantity Update -->
@@ -128,7 +128,7 @@
                             <div class="row mt-2">
                                 <div class="col-12 text-end">
                                     <small class="text-muted">
-                                        Subtotal: <span class="fw-bold">{{ item.total_price|floatformat:2 }}</span>
+                                        Subtotal: <span class="fw-bold">{{ item.total_price|floatformat:2 }} EGP</span>
                                     </small>
                                 </div>
                             </div>
@@ -164,18 +164,18 @@
                 <div class="card-body">
                     <div class="summary-item d-flex justify-content-between mb-2">
                         <span>Subtotal:</span>
-                        <span>{{ cart_summary.total_price|floatformat:2}}</span>
+                        <span>{{ cart_summary.total_price|floatformat:2}} EGP</span>
                     </div>
                     <div class="summary-item d-flex justify-content-between mb-2">
                         <span>Subtotal Discount:</span>
-                        <span>{{ cart_summary.total_discount|floatformat:2 }}</span>
+                        <span>{{ cart_summary.total_discount|floatformat:2 }} EGP</span>
                     </div>                    <div class="summary-item d-flex justify-content-between mb-2">
                         <span>Subtotal (After Discount):</span>
-                        <span>{{ cart_summary.total_price_after_discount|floatformat:2 }}</span>
+                        <span>{{ cart_summary.total_price_after_discount|floatformat:2 }} EGP</span>
                     </div>
                     <div class="summary-item d-flex justify-content-between mb-2">
                         <span>Tax:</span>
-                        <span>{{ cart_summary.tax_amount|floatformat:2 }}</span>
+                        <span>{{ cart_summary.tax_amount|floatformat:2 }} EGP</span>
                     </div>
                     
                     {% if discount %}
@@ -195,7 +195,7 @@
                     
                     <div class="summary-total d-flex justify-content-between fw-bold h5 mb-4">
                         <span>Total:</span>
-                        <span class="text-primary">{{ cart_summary.total_price_after_discount_and_tax|floatformat:2 }}</span>
+                        <span class="text-primary">{{ cart_summary.total_price_after_discount_and_tax|floatformat:2 }} EGP</span>
                     </div>
                     
                     {% if request.user.is_authenticated %}
