@@ -2,7 +2,372 @@
 {% block body %}
 <!-- Page Header - Modern Gradient -->
 <section class="page-header py-5 shadow-sm" style="background: var(--gradient-dark);">
+    <style>
 
+        
+        .breadcrumb-item a {
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .breadcrumb-item a:hover {
+            color: #fff !important;
+        }
+        
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        /* Main content */
+        .sidebar {
+            position: sticky;
+            top: 20px;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        
+        .glass-card:hover {
+            box-shadow: var(--card-hover-shadow);
+            transform: translateY(-5px);
+        }
+        
+        .card-header.bg-gradient-primary {
+            background: var(--gradient-primary);
+        }
+        
+        .card-header.bg-gradient-secondary {
+            background: var(--gradient-accent);
+        }
+        
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .filter-form .form-control,
+        .filter-form .form-select {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 10px 15px;
+        }
+        
+        .apply-btn {
+            background: var(--gradient-primary);
+            border: none;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        .apply-btn:hover {
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        }
+        
+        .reset-btn {
+            border: 1px solid #dee2e6;
+        }
+        
+        /* Product card styles */
+        .product-card {
+            transition: var(--transition);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            box-shadow: var(--card-hover-shadow);
+            transform: translateY(-8px);
+        }
+        
+        .product-badges {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 10;
+        }
+        
+        .product-badges .badge {
+            font-size: 0.75rem;
+            padding: 5px 10px;
+            margin-right: 5px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .product-image {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: #f8f9fa;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .product-image img {
+            max-height: 100%;
+            width: auto;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .no-image-placeholder {
+            height: 100%;
+            width: 100%;
+            color: #adb5bd;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .card-title a {
+            color: var(--dark);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .card-title a:hover {
+            color: var(--primary);
+        }
+        
+        .rating-stars {
+            color: #ffc107;
+            font-size: 0.9rem;
+        }
+        
+        .price {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        .old-price {
+            text-decoration: line-through;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .product-tags {
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .tag-badge {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 50px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .tag-badge:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            background: #f1f3f5;
+            border-radius: 20px;
+            padding: 2px;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+        
+        .quantity-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+        }
+        
+        .action-btn {
+            flex: 1;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: var(--transition);
+        }
+        
+        .action-btn i {
+            font-size: 0.9rem;
+        }
+        
+        .cart-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+        }
+        
+        .cart-btn:hover {
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        }
+        
+        .wishlist-btn {
+            background: transparent;
+            border: 1px solid #dee2e6;
+            color: #495057;
+        }
+        
+        .wishlist-btn:hover {
+            background: #fff5f5;
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+        
+        .wishlist-btn.active {
+            background: #fff5f5;
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+        
+        /* Active filters */
+        .glass-badge {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 50px;
+            padding: 6px 12px;
+            font-weight: 500;
+        }
+        
+        /* Mobile filters offcanvas */
+        .offcanvas.glass-bg {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .glass-input {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Pagination */
+        .pagination .page-link {
+            border-radius: 50px !important;
+            margin: 0 5px;
+            border: none;
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .pagination .page-item.active .page-link {
+            background: var(--gradient-primary);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                position: static;
+                margin-bottom: 30px;
+            }
+            
+            .product-image {
+                height: 180px;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .product-image {
+                height: 160px;
+            }
+            
+            .product-actions {
+                flex-wrap: wrap;
+            }
+            
+            .quantity-control {
+                order: 1;
+            }
+            
+            .cart-btn {
+                order: 2;
+                flex: 1;
+            }
+            
+            .wishlist-btn {
+                order: 3;
+                flex: none;
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .product-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .product-card:nth-child(2) { animation-delay: 0.1s; }
+        .product-card:nth-child(3) { animation-delay: 0.2s; }
+        .product-card:nth-child(4) { animation-delay: 0.3s; }
+        .product-card:nth-child(5) { animation-delay: 0.4s; }
+        .product-card:nth-child(6) { animation-delay: 0.5s; }
+    </style>
 </section>
 <section class="page-header py-5 shadow-sm" style="background: var(--gradient-dark);">
     <div class="container">
@@ -65,7 +430,7 @@
 
             <!-- Filters Card -->
             <div class="filters-card card shadow-sm glass-card border-0 rounded-3 ">
-                <div class="card-header bg-gradient-secondary text-white">
+                <div class="card-header bg-gradient-primary text-white">
                     <h5 class="card-title mb-0">
                         <i class="fas fa-sliders-h me-2"></i>Filters
                     </h5>
@@ -78,9 +443,9 @@
                                 <i class="fas fa-search me-2"></i>Search
                             </label>
                             <div class="input-group">
-                                <span class="input-group-text bg-transparent"><i class="fas fa-search"></i></span>
+                                <span class="input-group-text bg-transparent">  <i class="fas fa-search"></i></span>
                                 <input type="text" name="search" id="search" value="{{ search_query }}" 
-                                       class="form-control rounded-pill" placeholder="Search products...">
+                                       class="form-control" placeholder="Search products...">
                             </div>
                         </div>
 
@@ -124,14 +489,14 @@
                                     <div class="input-group">
                                         <span class="input-group-text bg-transparent">Min</span>
                                         <input type="number" name="min_price" id="min_price" value="{{ min_price }}" 
-                                               step="0.01" class="form-control rounded-pill" placeholder="0.00">
+                                               step="0.01" class="form-control " placeholder="0.00">
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="input-group">
                                         <span class="input-group-text bg-transparent">Max</span>
                                         <input type="number" name="max_price" id="max_price" value="{{ max_price }}" 
-                                               step="0.01" class="form-control rounded-pill" placeholder="1000.00">
+                                               step="0.01" class="form-control " placeholder="1000.00">
                                     </div>
                                 </div>
                             </div>
@@ -155,20 +520,23 @@
                         <div class="filter-group mb-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="view-toggle btn-group glass-btn-group">
+                                    <div class="border  px-3 py-1 bg-light d-flex align-items-center " style="min-width: 10px;">
+                                        <span class="fw-semibold small text-muted">View Mode</span>
+                                    </div>
                                     <input type="hidden" name="view_mode" id="viewModeInput" value="{{ view_mode }}">
-                                    <button type="button" class="btn btn-outline-light {% if view_mode == 'grid' %}active{% endif %}" 
+                                    <button type="button" class="btn btn-outline-dark {% if view_mode == 'grid' %}active{% endif %}" 
                                             onclick="setViewMode('grid')" data-bs-toggle="tooltip" title="Grid View">
                                         <i class="fas fa-th"></i>
                                     </button>
-                                    <button type="button" class="btn btn-outline-light {% if view_mode == 'list' %}active{% endif %}" 
+                                    <button type="button" class="btn btn-outline-dark {% if view_mode == 'list' %}active{% endif %}" 
                                             onclick="setViewMode('list')" data-bs-toggle="tooltip" title="List View">
                                         <i class="fas fa-list"></i>
                                     </button>
                                 </div>
-                                <select class="form-select items-per-page glass-select rounded-pill" name="items_per_page">
-                                    <option value="12" {% if items_per_page == 12 %}selected{% endif %}>12/page</option>
-                                    <option value="24" {% if items_per_page == 24 %}selected{% endif %}>24/page</option>
-                                    <option value="48" {% if items_per_page == 48 %}selected{% endif %}>48/page</option>
+                                <select class="form-select items-per-page glass-select ms-2" style="width: 4rem" name="items_per_page">
+                                    <option value="12" {% if items_per_page == 12 %}selected{% endif %}>12</option>
+                                    <option value="24" {% if items_per_page == 24 %}selected{% endif %}>24</option>
+                                    <option value="48" {% if items_per_page == 48 %}selected{% endif %}>48</option>
                                 </select>
                             </div>
                         </div>
@@ -290,7 +658,7 @@
                                     <div class="d-flex align-items-center mb-2">
                                         <div class="rating-stars small me-2">
                                             {% for i in "12345" %}
-                                                {% if forloop.counter <= product.average_rating %}
+                                                {% if forloop.counter <= product.overall_rating %}
                                                     <i class="fas fa-star text-warning"></i>
                                                 {% else %}
                                                     <i class="far fa-star text-warning"></i>
@@ -302,16 +670,26 @@
                                     <p class="card-text text-muted small mb-2">
                                         {{ product.short_description|default:product.description|truncatewords:20 }}
                                     </p>
+                                    
+                                    <!-- Tags -->
+                                    {% if product.tags.all %}
+                                    <div class="product-tags">
+                                        {% for tag in product.tags.all %}
+                                            <span class="tag-badge">{{ tag.name }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
                                 </div>
                                 
                                 <div class="mt-auto">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <div class="price">
-                                            <span class="fw-bold text-primary">{{ product.price }} EGP</span>
-                                            {% if product.old_price %}
                                             <small class="text-muted text-decoration-line-through ms-1">
-                                                {{ product.old_price }} EGP
+                                                {{ product.price|floatformat:2 }} EGP
                                             </small>
+                                            <br>
+                                            {% if product.discount > 0 %}
+                                            <span class="fw-bold text-primary">{{ product.price_after_discount|floatformat:2 }} EGP</span>
                                             {% endif %}
                                         </div>
                                         {% if product.stock > 0 %}
@@ -325,17 +703,45 @@
                                         {% endif %}
                                     </div>
                                     
-                                    <div class="d-flex gap-2">
-                                        <a href="{% url 'product:product_detail' product.slug %}" 
-                                            class="btn btn-outline-primary btn-sm flex-grow-1 rounded-pill">
-                                            <i class="fas fa-eye me-1"></i> View
-                                        </a>
-                                        <button class="btn btn-sm compare-btn btn-outline-primary rounded-pill" 
-                                                data-product-slug="{{ product.slug }}" 
+                                    <!-- Product Actions -->
+                                    <div class="product-actions d-flex align-items-center gap-2 flex-nowrap">
+                                        {% if product.slug not in contextCart or not user.is_authenticated %}
+                                            <form method="POST" action="{% url 'cart:cart_add' product.slug %}" class="d-flex align-items-center flex-nowrap w-100">
+                                                {% csrf_token %}
+                                                <div class="quantity-control d-flex align-items-center flex-shrink-0" style="width: 90px; min-width: 90px;">
+                                                    <button class="quantity-btn minus btn btn-outline-secondary btn-sm px-2 py-1" type="button" tabindex="-1">-</button>
+                                                    <input type="number" name="quantity" class="quantity-input form-control form-control-sm mx-1 text-center" value="1" min="1" max="{{ product.stock }}" style="width: 90px;" required>
+                                                </div>
+                                                <button type="submit" class="action-btn cart-btn btn btn-primary btn-sm px-3 py-2 rounded-pill ms-3 flex-grow-1 d-flex align-items-center justify-content-center" style="min-width: 44px;">
+                                                    <i class="fas fa-shopping-cart me-2"></i>
+                                                </button>
+                                            </form>
+                                        {% else %}
+                                            <form method="POST" action="{% url 'cart:cart_remove' product.slug %}" class="d-inline-block flex-grow-1">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center" style="min-width: 44px;">
+                                                    <i class="fas fa-trash-alt me-2"></i>Remove
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                        {% if product in contextWishlist %}
+                                            <a class="action-btn wishlist-btn btn btn-outline-danger btn-sm rounded-pill active d-flex align-items-center justify-content-center flex-shrink-0" href="{% url 'product:add_remove_wishlist' product.slug %}"
+                                                title="Remove from wishlist" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-heart text-danger"></i>
+                                            </a>
+                                        {% else %}
+                                            <a class="action-btn wishlist-btn btn btn-outline-danger btn-sm rounded-pill d-flex align-items-center justify-content-center flex-shrink-0" href="{% url 'product:add_remove_wishlist' product.slug %}"
+                                                title="Add to wishlist" style="width: 40px; height: 40px;">
+                                                <i class="far fa-heart"></i>
+                                            </a>
+                                        {% endif %}
+                                        <button class="btn btn-sm compare-btn btn-outline-primary rounded-pill d-flex align-items-center justify-content-center flex-shrink-0"
+                                                data-product-slug="{{ product.slug }}"
                                                 onclick="toggleProductCompare('{{ product.slug }}'); return false;"
                                                 data-product-name="{{ product.name }}"
                                                 data-product-image="{% if product.image %}{{ product.image.url }}{% else %}{{ product.image }}{% endif %}"
-                                                data-bs-toggle="tooltip" title="Add to compare">
+                                                data-bs-toggle="tooltip" title="Add to compare"
+                                                style="width: 40px; height: 40px;">
                                             <i class="fas fa-exchange-alt"></i>
                                         </button>
                                     </div>
@@ -357,37 +763,6 @@
                 </div>
             {% endif %}
 
-            {% if is_paginated %}
-                <nav aria-label="Products pagination" class="mt-4">
-                    <ul class="pagination justify-content-center">
-                        {% if products.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link glass-btn rounded-pill me-2" href="?{% querystring request.GET page=products.previous_page_number %}">
-                                    <i class="fas fa-angle-left"></i> Prev
-                                </a>
-                            </li>
-                        {% endif %}
-                        
-                        {% for page_num in products.paginator.page_range %}
-                            {% if page_num >= products.number|add:-3 and page_num <= products.number|add:3 %}
-                                <li class="page-item {% if products.number == page_num %}active{% endif %}">
-                                    <a class="page-link glass-btn rounded-pill mx-1" href="?{% querystring request.GET page=page_num %}">
-                                        {{ page_num }}
-                                    </a>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-                        
-                        {% if products.has_next %}
-                            <li class="page-item">
-                                <a class="page-link glass-btn rounded-pill ms-2" href="?{% querystring request.GET page=products.next_page_number %}">
-                                    Next <i class="fas fa-angle-right"></i>
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-            {% endif %}
         </section>
     </div>
 </div>
@@ -407,7 +782,7 @@
                 <div class="input-group">
                     <span class="input-group-text bg-transparent text-light"><i class="fas fa-search"></i></span>
                     <input type="text" name="search" id="mobileSearch" value="{{ search_query }}" 
-                           class="form-control rounded-pill glass-input" placeholder="Search products...">
+                            class="form-control rounded-pill glass-input" placeholder="Search products...">
                 </div>
             </div>
             <div>
@@ -492,6 +867,37 @@
 </div>
 
 
+{% if is_paginated %}
+<nav aria-label="Products pagination" class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if products.has_previous %}
+            <li class="page-item">
+                <a class="page-link glass-btn rounded-pill me-2" href="?{% querystring request.GET page=products.previous_page_number %}">
+                    <i class="fas fa-angle-left"></i> Prev
+                </a>
+            </li>
+        {% endif %}
+        
+        {% for page_num in products.paginator.page_range %}
+            {% if page_num >= products.number|add:-3 and page_num <= products.number|add:3 %}
+                <li class="page-item {% if products.number == page_num %}active{% endif %}">
+                    <a class="page-link glass-btn rounded-pill mx-1" href="?{% querystring request.GET page=page_num %}">
+                        {{ page_num }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+        
+        {% if products.has_next %}
+            <li class="page-item">
+                <a class="page-link glass-btn rounded-pill ms-2" href="?{% querystring request.GET page=products.next_page_number %}">
+                    Next <i class="fas fa-angle-right"></i>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
 <script>
     // Initialize tooltips
     document.addEventListener('DOMContentLoaded', function() {
@@ -685,6 +1091,26 @@ function setMobileViewMode(mode) {
 document.getElementById('mobileViewModeInput').value = mode;
 }
 
+    // Quantity input controls
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('.quantity-input');
+                if (parseInt(input.value) > parseInt(input.min)) {
+                    input.value = parseInt(input.value) - 1;
+                }
+            });
+        });
+        
+        document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const input = this.parentElement.querySelector('.quantity-input');
+                if (parseInt(input.value) < parseInt(input.max)) {
+                    input.value = parseInt(input.value) + 1;
+                }
+            });
+        });
+    });
 </script>
 
 {% endblock %}

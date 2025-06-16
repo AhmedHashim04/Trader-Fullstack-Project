@@ -18,38 +18,34 @@
         </nav>
     </div>
 </section>
-
 <!-- Product Detail -->
-<section class="py-4">
+<section class="py-4 trendy-product-detail">
     <div class="container">
-        <div class="row g-4">
+        <div class="row g-5 align-items-start">
             <!-- Product Images -->
             <div class="col-lg-6">
-                <div class="product-gallery">
-                    <div class="main-image mb-3 border rounded-3 overflow-hidden">
+                <div class="product-gallery bg-white rounded-4 shadow-sm p-4">
+                    <div class="main-image mb-3 border rounded-4 overflow-hidden d-flex align-items-center justify-content-center" style="height: 420px;">
                         {% if product.image %}
                             <img src="{{ product.image.url }}" alt="{{ product.name }}" 
-                                 class="img-fluid w-100" id="mainProductImage" style="height: 400px; object-fit: contain;">
+                                 class="img-fluid w-100 h-100" id="mainProductImage" style="object-fit: contain; transition: transform 0.3s;">
                         {% else %}
-                            <div class="d-flex flex-column align-items-center justify-content-center bg-light" 
-                                 style="height: 400px;">
+                            <div class="d-flex flex-column align-items-center justify-content-center bg-light w-100 h-100">
                                 <i class="fas fa-image fa-4x text-primary mb-3"></i>
                                 <p class="text-primary">No product image</p>
                             </div>
                         {% endif %}
                     </div>
-                    
                     <div class="thumbnail-container d-flex flex-wrap gap-2">
                         {% if product.image %}
-                            <div class="thumbnail-item border rounded-2 overflow-hidden" style="width: 70px; height: 70px;">
+                            <div class="thumbnail-item border rounded-3 overflow-hidden bg-white shadow-sm" style="width: 70px; height: 70px;">
                                 <img src="{{ product.image.url }}" alt="{{ product.name }}" 
                                      class="img-fluid h-100 w-100" style="object-fit: cover; cursor: pointer;"
                                      onclick="changeMainImage(this)">
                             </div>
                         {% endif %}
-                        
                         {% for image in product.product_images.all %}
-                            <div class="thumbnail-item border rounded-2 overflow-hidden" style="width: 70px; height: 70px;">
+                            <div class="thumbnail-item border rounded-3 overflow-hidden bg-white shadow-sm" style="width: 70px; height: 70px;">
                                 <img src="{{ image.image.url }}" alt="Product image" 
                                      class="img-fluid h-100 w-100" style="object-fit: cover; cursor: pointer;"
                                      onclick="changeMainImage(this)">
@@ -58,101 +54,102 @@
                     </div>
                 </div>
             </div>
-            
             <!-- Product Info -->
             <div class="col-lg-6">
-                <div class="product-details p-3">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h1 class="h2 mb-0 text-primary">{{ product.name }}</h1>
-
-
-
-                            <div class="product-badges">
-                                {% if product.trending %}<span class="badge bg-primary">Trending</span>{% endif %}
-                                {% if product.tags %}
-                                {% for tag in product.tags.all %}
-                                <span style="color:{{ tag.color }}" class="badge bg-{{tag.bg_color}}">{{ tag.key }}</span>
-                                {% endfor %}
+                <div class="product-details bg-white rounded-4 shadow-sm p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                        <div>
+                            <h1 class="h3 mb-2 text-primary fw-bold trendy-title">{{ product.name }}</h1>
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                {% if product.trending %}
+                                    <span class="badge bg-gradient-primary fw-semibold px-3 py-1">Trending</span>
                                 {% endif %}
+                                {% for tag in product.tags.all %}
+                                    <span style="color:{{ tag.color }}" class="badge bg-{{tag.bg_color}} fw-semibold px-3 py-1">{{ tag.key }}</span>
+                                {% endfor %}
                             </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
                             {% if product in contextWishlist %}
                                 <a href="{% url 'product:add_remove_wishlist' product.slug %}" 
-                                   class="btn btn-link text-danger fs-5 p-1" title="Remove from wishlist">
+                                   class="btn btn-light border-0 text-danger fs-5 p-2 rounded-circle shadow-sm" title="Remove from wishlist">
                                     <i class="fas fa-heart"></i>
                                 </a>
                             {% else %}
                                 <a href="{% url 'product:add_remove_wishlist' product.slug %}" 
-                                   class="btn btn-link text-primary fs-5 p-1" title="Add to wishlist">
+                                   class="btn btn-light border-0 text-primary fs-5 p-2 rounded-circle shadow-sm" title="Add to wishlist">
                                     <i class="far fa-heart"></i>
                                 </a>
                             {% endif %}
-                            <button class="btn btn-link text-primary fs-5 p-1" title="Share product">
+                            <button class="btn btn-light border-0 text-primary fs-5 p-2 rounded-circle shadow-sm" title="Share product">
                                 <i class="fas fa-share-alt"></i>
                             </button>
                         </div>
                     </div>
-                    
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="rating-stars me-2">
-                            {% with rating=product.calculate_overall_rating %}
-                                {% for i in "12345" %}
-                                    {% if forloop.counter <= rating %}
-                                        <i class="fas fa-star text-warning"></i>
-                                    {% else %}
-                                        <i class="far fa-star text-warning"></i>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endwith %}
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <div class="rating-stars">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= product.overall_rating %}
+                                    <i class="fas fa-star text-warning fs-5"></i>
+                                {% else %}
+                                    <i class="far fa-star text-warning fs-5"></i>
+                                {% endif %}
+                            {% endfor %}
                         </div>
-                        <a href="#reviews" class="text-primary small">({{ reviews_count }} reviews)</a>
+                        <span class="text-muted small">({{ product_reviews.count }} reviews)</span>
                     </div>
-                    
+                    {% if product.tags.all %}
+                        <div class="product-tags mb-3">
+                            {% for tag in product.tags.all %}
+                                <span class="tag-badge trendy-tag">{{ tag.name }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                     <div class="price-section mb-4">
-                        <span class="price-current h3 text-primary fw-bold">{{ product.price }} EGP</span>
-                        {% if product.old_price %}
-                            <span class="price-old text-primary text-decoration-line-through ms-2">{{ product.old_price }} EGP</span>
-                            <span class="badge bg-danger ms-2">Save {{ product.get_discount_percentage }}%</span>
+                        {% if product.discount > 0 %}
+                            <span class="h4 text-primary fw-bold trendy-price me-2">{{ product.price_after_discount|floatformat:2 }} EGP</span>
+                            <small class="text-muted text-decoration-line-through trendy-old-price">{{ product.price|floatformat:2 }} EGP</small>
+                            <span class="badge bg-danger ms-2">-{{ product.discount }}%</span>
+                        {% else %}
+                            <span class="h4 text-primary fw-bold trendy-price">{{ product.price|floatformat:2 }} EGP</span>
                         {% endif %}
                     </div>
-                    
                     <div class="availability mb-4">
-                        <span class="badge bg-{% if product.stock > 0 %}success{% else %}danger{% endif %}">
+                        <span class="badge bg-{% if product.stock > 0 %}success{% else %}danger{% endif %} px-3 py-2 fs-6">
                             {% if product.stock > 0 %}
-                                <i class="fas fa-check-circle me-1"></i> In Stock ({{ product.stock }} available)
+                                <i class="fas fa-check-circle me-1"></i> In Stock ({{ product.stock }})
                             {% else %}
                                 <i class="fas fa-times-circle me-1"></i> Out of Stock
                             {% endif %}
                         </span>
                     </div>
-                    
                     <div class="product-description text-secondary mb-4">
-                        <p>{{ product.description|default:"No description available for this product." }}</p>
+                        <p class="mb-0">{{ product.description|default:"No description available for this product." }}</p>
                     </div>
-                    
                     <div class="product-actions mb-4">
                         {% if product.stock > 0 %}
                             {% if product.slug not in contextCart or not user.is_authenticated %}
-                                <form method="POST" action="{% url 'cart:cart_add' product.slug %}" class="d-flex align-items-center gap-3">
+                                <form method="POST" action="{% url 'cart:cart_add' product.slug %}" class="d-flex align-items-center gap-3 flex-wrap">
                                     {% csrf_token %}
-                                    <div class="input-group" style="width: 150px;">
-                                        <button class="btn btn-outline-secondary quantity-btn minus" type="button">-</button>
+                                    <div class="input-group trendy-quantity-group" style="width: 140px;">
+                                        <button class="btn btn-outline-secondary quantity-btn minus trendy-qty-btn" type="button">-</button>
                                         <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" 
-                                                class="form-control text-center quantity-input" required>
-                                        <button class="btn btn-outline-secondary quantity-btn plus" type="button">+</button>
+                                               class="form-control text-center quantity-input border-0 trendy-qty-input" required>
+                                        <button class="btn btn-outline-secondary quantity-btn plus trendy-qty-btn" type="button">+</button>
                                     </div>
-                                    <button type="submit" class="btn btn-primary flex-grow-1">
+                                    <button type="submit" class="btn btn-primary trendy-add-cart flex-grow-1">
                                         <i class="fas fa-shopping-cart me-2"></i>Add to Cart
                                     </button>
                                 </form>
                             {% else %}
-                                <div class="d-flex gap-2">
+                                <div class="d-flex gap-2 flex-wrap">
                                     <form method="POST" action="{% url 'cart:cart_remove' product.slug %}" class="d-inline-block">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-outline-danger flex-grow-1">
+                                        <button type="submit" class="btn btn-outline-danger flex-grow-1 trendy-remove-cart">
                                             <i class="fas fa-trash-alt me-2"></i>Remove from Cart
                                         </button>
                                     </form>
-                                    <a href="{% url 'cart:cart_list' %}" class="btn btn-primary">
+                                    <a href="{% url 'cart:cart_list' %}" class="btn btn-primary trendy-view-cart">
                                         <i class="fas fa-shopping-bag me-2"></i>View Cart
                                     </a>
                                 </div>
@@ -161,19 +158,18 @@
                             <button class="btn btn-secondary w-100" disabled>Out of Stock</button>
                         {% endif %}
                     </div>
-                    
                     <div class="product-meta">
-                        <div class="row g-2">
+                        <div class="row g-3">
                             <div class="col-md-6">
                                 <div class="d-flex align-items-center text-primary">
                                     <i class="fas fa-tag me-2"></i>
-                                    <span>Category: {{ product.category.name }}</span>
+                                    <span>Category: <span class="fw-semibold">{{ product.category.name }}</span></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex align-items-center text-primary">
                                     <i class="fas fa-barcode me-2"></i>
-                                    <span>SKU: {{ product.sku|default:"N/A" }}</span>
+                                    <span>SKU: <span class="fw-semibold">{{ product.sku|default:"N/A" }}</span></span>
                                 </div>
                             </div>
                         </div>
@@ -183,32 +179,170 @@
         </div>
     </div>
 </section>
+<style>
+    .trendy-product-detail {
+        background: linear-gradient(135deg, #f8fafd 0%, #f3f6fb 100%);
+    }
+    .trendy-title {
+        letter-spacing: 0.5px;
+    }
+    .trendy-tag {
+        background: #e7f1ff;
+        color: #0d6efd;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        margin-right: 5px;
+        margin-bottom: 2px;
+        padding: 4px 14px;
+        font-weight: 500;
+        transition: background 0.2s, color 0.2s;
+    }
+    .trendy-tag:hover {
+        background: #0d6efd;
+        color: #fff;
+    }
+    .trendy-price {
+        font-size: 2rem;
+        letter-spacing: 1px;
+    }
+    .trendy-old-price {
+        font-size: 1rem;
+        vertical-align: middle;
+    }
+    .trendy-quantity-group {
+        border-radius: 50px;
+        overflow: hidden;
+        background: #f8f9fa;
+        border: 1px solid #e3e6ed;
+    }
+    .trendy-qty-btn {
+        border: none;
+        background: #f8f9fa;
+        color: #0d6efd;
+        font-weight: bold;
+        font-size: 1.2rem;
+        width: 38px;
+        transition: background 0.2s, color 0.2s;
+    }
+    .trendy-qty-btn:hover {
+        background: #e7f1ff;
+        color: #6610f2;
+    }
+    .trendy-qty-input {
+        border: none !important;
+        background: transparent !important;
+        font-size: 1.1rem;
+        font-weight: 500;
+        width: 48px;
+    }
+    .trendy-add-cart, .trendy-view-cart, .trendy-remove-cart {
+        border-radius: 50px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        min-width: 160px;
+        box-shadow: 0 2px 8px rgba(13,110,253,0.07);
+        transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+    .trendy-add-cart:hover, .trendy-view-cart:hover {
+        background: linear-gradient(90deg, #0d6efd 0%, #6610f2 100%);
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(13,110,253,0.12);
+    }
+    .trendy-remove-cart:hover {
+        background: #dc3545;
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(220,53,69,0.12);
+    }
+    .product-gallery .main-image img {
+        transition: transform 0.3s;
+    }
+    .product-gallery .main-image img:hover {
+        transform: scale(1.04);
+    }
+    .product-gallery .thumbnail-item {
+        border: 2px solid #e3e6ed;
+        transition: border-color 0.2s, transform 0.2s;
+        cursor: pointer;
+        background: #fff;
+    }
+    .product-gallery .thumbnail-item:hover {
+        border-color: #0d6efd;
+        transform: scale(1.08);
+    }
+    @media (max-width: 991px) {
+        .trendy-product-detail .row {
+            flex-direction: column;
+        }
+        .product-details, .product-gallery {
+            margin-bottom: 2rem;
+        }
+    }
+</style>
 
 <!-- Product Tabs -->
 <section class="py-5 bg-light">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                <ul class="nav nav-tabs trendy-tabs mb-4" id="productTabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="description-tab" data-bs-toggle="tab" 
-                                data-bs-target="#description" type="button" role="tab">
-                            Description
+                        <button class="nav-link active trendy-tab-btn" id="description-tab" data-bs-toggle="tab"
+                                data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">
+                            <i class="fas fa-info-circle me-1"></i> Description
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="specifications-tab" data-bs-toggle="tab" 
-                                data-bs-target="#specifications" type="button" role="tab">
-                            Specifications
+                        <button class="nav-link trendy-tab-btn" id="specifications-tab" data-bs-toggle="tab"
+                                data-bs-target="#specifications" type="button" role="tab" aria-controls="specifications" aria-selected="false">
+                            <i class="fas fa-list-alt me-1"></i> Specifications
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" 
-                                data-bs-target="#reviews" type="button" role="tab">
-                            Reviews ({{ reviews_count }})
+                        <button class="nav-link trendy-tab-btn" id="reviews-tab" data-bs-toggle="tab"
+                                data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">
+                            <i class="fas fa-star me-1"></i> Reviews <span class="badge bg-primary ms-1">{{ product_reviews.count }}</span>
                         </button>
                     </li>
                 </ul>
+                <style>
+                    .trendy-tabs {
+                        border-bottom: none;
+                        background: #fff;
+                        border-radius: 1rem 1rem 0 0;
+                        box-shadow: 0 2px 8px rgba(13,110,253,0.07);
+                        overflow: hidden;
+                    }
+                    .trendy-tab-btn {
+                        color: #0d6efd;
+                        font-weight: 600;
+                        background: transparent;
+                        border: none;
+                        border-radius: 0;
+                        padding: 14px 32px;
+                        transition: background 0.2s, color 0.2s;
+                        position: relative;
+                    }
+                    .trendy-tab-btn .badge {
+                        font-size: 0.85em;
+                        vertical-align: middle;
+                    }
+                    .trendy-tab-btn.active, .trendy-tab-btn:hover, .trendy-tab-btn:focus {
+                        background: linear-gradient(90deg, #0d6efd 0%, #6610f2 100%);
+                        color:rgb(155, 94, 94) 0% !important;
+                        border: none;
+                        box-shadow: 0 4px 16px rgba(13,110,253,0.08);
+                    }
+
+                    .trendy-tabs .nav-link:not(.active) {
+                        border: none;
+                    }
+                    @media (max-width: 767px) {
+                        .trendy-tab-btn {
+                            padding: 10px 12px;
+                            font-size: 0.95em;
+                        }
+                    }
+                </style>
                 
                 <div class="tab-content bg-white p-4 border-start border-end border-bottom rounded-bottom">
                     <!-- Description Tab -->
@@ -254,20 +388,33 @@
                             <div class="col-md-5">
                                 <div class="card border-0 shadow-sm mb-4">
                                     <div class="card-body text-center">
-                                        <h3 class="mb-2">{{ overall_rating|floatformat:1 }}/5</h3>
+                                        <h3 class="mb-2">{{ product.overall_rating|floatformat:1 }}/5</h3>
                                         <div class="rating-stars mb-3">
                                             {% for i in "12345" %}
-                                                {% if forloop.counter <= overall_rating %}
+                                            
+                                                {% if forloop.counter <= product.overall_rating %}
                                                     <i class="fas fa-star text-warning fs-4"></i>
                                                 {% else %}
                                                     <i class="far fa-star text-warning fs-4"></i>
                                                 {% endif %}
                                             {% endfor %}
                                         </div>
-                                        <p class="text-primary">Based on {{ reviews_count }} reviews</p>
+                                        <h5 class="text-primary">Based on {{ product_reviews.count }} reviews</h5>
                                     </div>
                                 </div>
-                                
+                                <!-- Filter by rating -->
+                                <div class="mb-4 text-center">
+                                    <form method="get" action="#reviews" class="d-inline-block">
+                                        <div class="btn-group" role="group" aria-label="Filter by rating">
+                                            <a href="?{% if request.GET.page %}page={{ request.GET.page }}&{% endif %}#reviews" class="btn btn-outline-primary btn-sm {% if not rating_filter %}active{% endif %}">All</a>
+                                            {% for i in "54321" %}
+                                                <a href="?rating={{ i }}#reviews" class="btn btn-outline-primary btn-sm {% if rating_filter == i %}active{% endif %}">
+                                                    {{ i }} <i class="fas fa-star text-warning"></i>
+                                                </a>
+                                            {% endfor %}
+                                        </div>
+                                    </form>
+                                </div>
                                 <!-- Review Form -->
                                 {% if user.is_authenticated %}
                                     <div class="card border-0 shadow-sm">
@@ -429,9 +576,11 @@
                                 <a href="{{ rp.get_absolute_url }}" class="text-dark text-decoration-none">{{ rp.name|truncatechars:40 }}</a>
                             </h6>
                             <div class="price mb-3">
-                                <span class="text-primary fw-bold">{{ rp.price }} EGP</span>
-                                {% if rp.old_price %}
-                                    <small class="text-muted text-decoration-line-through ms-1">{{ rp.old_price }} EGP</small>
+                                <span class="text-primary fw-bold">{{ rp.price_after_discount|floatformat:2 }} EGP</span>
+                                {% if rp.discount %}
+                                
+                                <small class="text-muted text-decoration-line-through ms-1">{{ rp.price|floatformat:2 }} EGP</small>
+                                <span class="badge bg-danger ms-2">-{{ rp.discount }}%</span>
                                 {% endif %}
                             </div>
                             <div class="d-flex justify-content-center gap-2">
@@ -496,7 +645,14 @@
                             <h6 class="card-title mb-1">
                                 <a href="{{ rv.get_absolute_url }}" class="text-dark text-decoration-none">{{ rv.name|truncatechars:30 }}</a>
                             </h6>
-                            <p class="card-text text-primary fw-bold mb-0 small">{{ rv.price }} EGP</p>
+                                {% if product.discount > 0 %}
+                                    <p class="card-text text-primary fw-bold mb-0 small">{{ rv.price_after_discount|floatformat:2 }} EGP</p>
+                                    <small class="text-muted text-decoration-line-through trendy-old-price">{{ rv.price|floatformat:2 }} EGP</small>
+                                    <span class="badge bg-danger ms-2">-{{ rv.discount }}%</span>
+                                {% else %}
+                                    <span class="h4 text-primary fw-bold trendy-price">{{ rv.price|floatformat:2 }} EGP</span>
+                                {% endif %}
+                            
                         </div>
                     </div>
                 </div>
@@ -616,6 +772,31 @@
         left: 10px;
         z-index: 1;
     }
+
+
+    .product-tags {
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .tag-badge {
+        background-color: rgba(67, 97, 238, 0.1);
+        color: var(--primary);
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        border-radius: 50px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        display: inline-block;
+        transition: var(--transition);
+        cursor: pointer;
+    }
+    
+    .tag-badge:hover {
+        background-color: var(--primary);
+        color: white;
+    }
+
 </style>
 
 <script>

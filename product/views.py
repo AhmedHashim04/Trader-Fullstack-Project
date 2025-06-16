@@ -166,8 +166,6 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         product = self.object
-        
-        # Update recently viewed
         recently_viewed = self.update_recently_viewed(product)
         
         # Get filtered reviews
@@ -186,13 +184,15 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
             category=product.category
         ).exclude(id=product.id).order_by('?')[:4]
         
+        product_reviews = Review.objects.filter(product=self.object)
         context.update({
-            'form': ReviewForm(),
+            'review_form': ReviewForm(),
             'reviews': page_obj.object_list,
             'page_obj': page_obj,
             'related_products': related_products,
             'recently_viewed': recently_viewed,
             'rating_filter': rating_filter,
+            'product_reviews': product_reviews
         })
         return context
 
@@ -275,7 +275,13 @@ class CompareProductsView(LoginRequiredMixin, TemplateView):
             for product in products:
                 # Handle special fields
                 if field == 'price_after_discount':
-                    value = product.price_after_discount
+                    value = getattr(product, 'price_after_discount', None)
+                    if value is not None:
+                        value = f"{float(value):.2f}"
+                elif field == 'price':
+                    value = getattr(product, 'price', None)
+                    if value is not None:
+                        value = f"{float(value):.2f}"
                 elif field == 'category':
                     value = product.category.name if product.category else ''
                 elif field == 'brand':
@@ -299,7 +305,7 @@ class CompareProductsView(LoginRequiredMixin, TemplateView):
             'specifications': specifications,
         })
         return context
-
+ 
 class WishlistViewDetail(LoginRequiredMixin, TemplateView):
     template_name = 'product/wishlist.html'
 

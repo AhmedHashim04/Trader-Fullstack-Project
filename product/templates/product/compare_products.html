@@ -8,7 +8,7 @@
         <div class="col-12">
             <div class="d-flex justify-content-between btn-primary align-items-center mb-4">
                 <h2>Compare Products</h2>
-                <a href="{% url 'product:products_list' %}" class="btn btn-outline-primary">
+                <a href="{% url 'product:products_list' %}" class="btn btn-secondary">
                     <i class="fas fa-plus"></i> Add More Products
                 </a>
             </div>
@@ -29,7 +29,7 @@
 
                                         <img src="{% if product.image %}{{ product.image.url }}{% else %}{% endif %}" alt="{{ product.name }}" class="img-fluid mb-2" style="max-height: 100px; object-fit: contain;">
                                         <h5 class="mb-1">{{ product.name }}</h5>
-                                        <div class="text-primary fw-bold mb-2">${{ product.price }}</div>
+                                        <div class="text-primary fw-bold mb-2">${{ product.price|floatformat:2 }}</div>
                                         <a href="{{ product.get_absolute_url }}" class="btn btn-sm btn-outline-primary">View Details</a>
                                     </div>
                                 </th>
