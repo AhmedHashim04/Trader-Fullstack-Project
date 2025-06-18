@@ -11,9 +11,9 @@
       "stock": 42,
       "tags": ["smartphone", "apple", "premium", "5g"],
       "brand": "Apple",
-      "trending": true
-
-    },
+      "trending": true,
+      "image": "https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-max-1.jpg"
+        },
     {
       "name": "MacBook Air M3",
       "cost": 899.00,
