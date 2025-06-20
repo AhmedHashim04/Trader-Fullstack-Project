@@ -12,7 +12,7 @@ from django.views.generic import DetailView, ListView, TemplateView
 from .forms import ReviewForm
 from .models import Product, Review, Category, Tag
 from account.models import Profile
-from features.models import Brand
+from features.models import Brand, Collection
 from django.db import models
 import decimal
 
@@ -20,7 +20,7 @@ class ProductListView(ListView):
     model = Product
     context_object_name = 'products'
     template_name = 'product/products.html'
-    paginate_by = 12  # Default pagination
+    paginate_by = 12 
     sort_options = {
         'default': '-created_at',
         'price_asc': 'price',
@@ -132,6 +132,7 @@ class ProductListView(ListView):
         paginator = Paginator(queryset, paginate_by)
         page_number = self.request.GET.get("page")
         products = paginator.get_page(page_number)
+        context['featuredCollections'] = Collection.objects.all()
 
 
 
@@ -318,7 +319,7 @@ class CompareProductsView(LoginRequiredMixin, TemplateView):
             'specifications': specifications,
         })
         return context
- 
+
 class WishlistViewDetail(LoginRequiredMixin, TemplateView):
     template_name = 'product/wishlist.html'
 

@@ -32,13 +32,6 @@ def cart_add(request, slug):
     if not (product.is_available and product.is_in_stock):
         messages.warning(request, f'{product.name} is currently unavailable')
         return redirect(referer_url)
-    
-    # FIX: Check available stock considering current cart quantity
-    current_quantity = cart.cart.get(str(product.slug), {}).get('quantity', 0)
-    if quantity + current_quantity > product.stock:
-        messages.warning(request, 
-            f'Only {product.stock - current_quantity} additional units available for {product.name}')
-        return redirect(referer_url)
 
     cart.add(product=product, quantity=quantity)
     messages.success(request, f'{product.name} added to cart successfully')

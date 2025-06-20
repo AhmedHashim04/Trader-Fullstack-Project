@@ -1,0 +1,138 @@
+<div class="filters-card card shadow-sm glass-card border-0 rounded-3 ">
+    <div class="card-header bg-gradient-primary text-white">
+        <h5 class="card-title mb-0">
+            <i class="fas fa-sliders-h me-2"></i>Filters
+        </h5>
+    </div>
+    <div class="card-body bg-light">
+        <form method="get" id="filtersForm" class="filter-form">
+            <!-- Search Filter -->
+            <div class="filter-group mb-3">
+                <label for="search" class="filter-label fw-bold text-dark">
+                    <i class="fas fa-search me-2"></i>Search
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent">  <i class="fas fa-search"></i></span>
+                    <input type="text" name="search" id="search" value="{{ search_query }}" 
+                           class="form-control" placeholder="Search products...">
+                </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="filter-group mb-3">
+                <label for="category" class="filter-label fw-bold text-dark">
+                    <i class="fas fa-tags me-2"></i>Category
+                </label>
+                <select name="category" id="category" class="form-select rounded-pill">
+                    <option value="">All Categories</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>
+                            {{ cat.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <!-- Category Filter -->
+            <div class="filter-group mb-3">
+                <label for="tag" class="filter-label fw-bold text-dark">
+                    <i class="fas fa-tags me-2"></i>Tag
+                </label>
+                <select name="tag" id="tag" class="form-select rounded-pill">
+                    <option value="">All Tags</option>
+                    {% for tag in tags %}
+                        <option value="{{ tag.name }}" {% if selected_tag == tag.slug %}selected{% endif %}>
+                            {{ tag.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Brand Filter -->
+            <div class="filter-group mb-3">
+                <label for="brand" class="filter-label fw-bold text-dark">
+                    <i class="fas fa-copyright me-2"></i>Brand
+                </label>
+                <select name="brand" id="brand" class="form-select rounded-pill">
+                    <option value="">All Brands</option>
+                    {% for brand in brands %}
+                        <option value="{{ brand.slug }}" {% if selected_brand == brand.slug %}selected{% endif %}>
+                            {{ brand.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Price Range Filter -->
+            <div class="filter-group mb-3">
+                <label class="filter-label fw-bold text-dark">
+                    <i class="fas fa-dollar-sign me-2"></i>Price Range
+                </label>
+                <div class="row g-2">
+                    <div class="col">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent">Min</span>
+                            <input type="number" name="min_price" id="min_price" value="{{ min_price }}" 
+                                   step="0.01" class="form-control " placeholder="0.00">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent">Max</span>
+                            <input type="number" name="max_price" id="max_price" value="{{ max_price }}" 
+                                   step="0.01" class="form-control " placeholder="1000.00">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sort Filter -->
+            <div class="filter-group mb-3">
+                <label for="sort_by" class="filter-label fw-bold text-dark">
+                    <i class="fas fa-sort me-2"></i>Sort by
+                </label>
+                <select name="sort_by" id="sort_by" class="form-select rounded-pill">
+                    <option value="">Default</option>
+                    <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                    <option value="name_asc" {% if sort_by == 'name_asc' %}selected{% endif %}>Name: A to Z</option>
+                    <option value="name_desc" {% if sort_by == 'name_desc' %}selected{% endif %}>Name: Z to A</option>
+                </select>
+            </div>
+
+            <!-- View Controls -->
+            <div class="filter-group mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="view-toggle btn-group glass-btn-group">
+                        <div class="border  px-3 py-1 bg-light d-flex align-items-center " style="min-width: 10px;">
+                            <span class="fw-semibold small text-muted">View Mode</span>
+                        </div>
+                        <input type="hidden" name="view_mode" id="viewModeInput" value="{{ view_mode }}">
+                        <button type="button" class="btn btn-outline-dark {% if view_mode == 'grid' %}active{% endif %}" 
+                                onclick="setViewMode('grid')" data-bs-toggle="tooltip" title="Grid View">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-dark {% if view_mode == 'list' %}active{% endif %}" 
+                                onclick="setViewMode('list')" data-bs-toggle="tooltip" title="List View">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                    <select class="form-select items-per-page glass-select ms-2" style="width: 4rem" name="items_per_page">
+                        <option value="12" {% if items_per_page == 12 %}selected{% endif %}>12</option>
+                        <option value="24" {% if items_per_page == 24 %}selected{% endif %}>24</option>
+                        <option value="48" {% if items_per_page == 48 %}selected{% endif %}>48</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="filter-actions mt-4">
+                <button type="submit" class="btn btn-primary w-100 apply-btn rounded-pill shadow-primary">
+                    <i class="fas fa-filter me-2"></i>Apply Filters
+                </button>
+                <a href="{% url 'product:products_list' %}" class="btn btn-outline-secondary w-100 mt-2 reset-btn rounded-pill">
+                    <i class="fas fa-undo me-2"></i>Reset
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -20,7 +20,6 @@ window.Trader = {
 
 // DOM Content Loaded Event
 document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
     const gridViewBtn = document.getElementById('gridView');
     const listViewBtn = document.getElementById('listView');
     const productsContainer = document.getElementById('productsContainer'); // Define productsContainer
@@ -52,11 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 function initializeApp() {
     try {
-        initializeNavigation();
-        initializeLoadingOverlay();
-        initializeErrorHandling();
-        updateCartCounter();
-        loadCategories();
+
         
         // Page-specific initialization
         const currentPage = getCurrentPage();

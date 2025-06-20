@@ -2,9 +2,11 @@
 
 {% extends "base.html" %}
 {% load static %}
+{% block title %}Shipping Addresses Trader - Your Ultimate Shopping Destination{% endblock %}
 
 {% block body %}
-<div class="container mt-4 btn-primary">
+
+<div class="container mt-4 ">
     <h2 class="mb-3">Your Shipping Addresses</h2>
 
     {% if addresses %}
@@ -28,6 +30,7 @@
         <p>No addresses yet.</p>
     {% endif %}
 
+    <a style="display: inline" href="{% url 'cart:cart_list' %}" class="btn btn-outline-warning">Back to Cart</a>
     <hr class="my-4">
 
     <h4>Add New Address</h4>
@@ -44,7 +47,8 @@
                 </div>
             {% endfor %}
         </div>
-        <button type="submit" class="btn btn-primary">Add Address</button>
+        <button type="submit" class="btn btn-secondary">Add Address</button>
     </form>
+    <br>
 </div>
 {% endblock %}

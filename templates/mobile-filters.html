@@ -1,0 +1,98 @@
+
+<!-- Mobile Filters Offcanvas -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="filtersOffcanvas" aria-labelledby="filtersOffcanvasLabel">
+    <div class="offcanvas-header border-bottom bg-gradient-secondary text-white">
+        <h5 class="offcanvas-title" id="filtersOffcanvasLabel">
+            <i class="fas fa-sliders-h me-2"></i>Filters
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body glass-bg">
+        <form method="get" id="mobileFiltersForm" class="vstack gap-3">
+            <div>
+                <label for="mobileSearch" class="form-label text-light">Search</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent text-light"><i class="fas fa-search"></i></span>
+                    <input type="text" name="search" id="mobileSearch" value="{{ search_query }}" 
+                            class="form-control rounded-pill glass-input" placeholder="Search products...">
+                </div>
+            </div>
+            <div>
+                <label for="mobileCategory" class="form-label text-light">Category</label>
+                <select name="category" id="mobileCategory" class="form-select rounded-pill glass-input">
+                    <option value="">All Categories</option>
+                    {% for cat in categories %}
+                        <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>
+                            {{ cat.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="mobileBrand" class="form-label text-light">Brand</label>
+                <select name="brand" id="mobileBrand" class="form-select rounded-pill glass-input">
+                    <option value="">All Brands</option>
+                    {% for brand in brands %}
+                        <option value="{{ brand.slug }}" {% if selected_brand == brand.slug %}selected{% endif %}>
+                            {{ brand.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="mobileMinPrice" class="form-label text-light">Min Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent text-light">Min</span>
+                        <input type="number" name="min_price" id="mobileMinPrice" value="{{ min_price }}" 
+                               step="0.01" class="form-control rounded-pill glass-input" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="mobileMaxPrice" class="form-label text-light">Max Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent text-light">Max</span>
+                        <input type="number" name="max_price" id="mobileMaxPrice" value="{{ max_price }}" 
+                               step="0.01" class="form-control rounded-pill glass-input" placeholder="1000.00">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label for="mobileSortBy" class="form-label text-light">Sort by</label>
+                <select name="sort_by" id="mobileSortBy" class="form-select rounded-pill glass-input">
+                    <option value="">Default</option>
+                    <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                    <option value="name_asc" {% if sort_by == 'name_asc' %}selected{% endif %}>Name: A to Z</option>
+                    <option value="name_desc" {% if sort_by == 'name_desc' %}selected{% endif %}>Name: Z to A</option>
+                </select>
+            </div>
+            <div class="d-flex justify-content-between align-items-end">
+                <div class="btn-group glass-btn-group">
+                    <input type="hidden" name="view_mode" id="mobileViewModeInput" value="{{ view_mode }}">
+                    <button type="button" class="btn btn-outline-light {% if view_mode == 'grid' %}active{% endif %}" 
+                            onclick="setMobileViewMode('grid')" data-bs-toggle="tooltip" title="Grid View">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-light {% if view_mode == 'list' %}active{% endif %}" 
+                            onclick="setMobileViewMode('list')" data-bs-toggle="tooltip" title="List View">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+                <select class="form-select w-auto ms-2 glass-select rounded-pill" name="items_per_page">
+                    <option value="12" {% if items_per_page == 12 %}selected{% endif %}>12/page</option>
+                    <option value="24" {% if items_per_page == 24 %}selected{% endif %}>24/page</option>
+                    <option value="48" {% if items_per_page == 48 %}selected{% endif %}>48/page</option>
+                </select>
+            </div>
+            <div class="d-grid gap-2 mt-3">
+                <button type="submit" class="btn btn-primary rounded-pill shadow-primary" data-bs-dismiss="offcanvas">
+                    <i class="fas fa-filter me-1"></i> Apply Filters
+                </button>
+                <a href="{% url 'product:products_list' %}" class="btn btn-outline-light rounded-pill">
+                    <i class="fas fa-undo me-1"></i> Reset
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

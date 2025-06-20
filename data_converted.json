@@ -1,4 +1,5 @@
 [
+
   {
     "model": "product.tag",
     "pk": 1,
@@ -1480,7 +1481,7 @@
       ],
       "created_at": "2024-06-01T10:00:00Z",
       "updated_at": "2024-06-01T10:00:00Z",
-      "brand": 1,    
+      "brand": 1,
       "trending": true
     }
   },
@@ -2808,6 +2809,195 @@
       "updated_at": "2024-06-01T10:00:00Z",
       "brand": null,
       "trending": true
+    }
+  },
+  {
+    "model": "features.collection",
+    "fields": {
+      "name": "Latest Electronics",
+      "slug": "latest-electronics",
+      "description": "The latest electronic devices including phones, laptops, and tablets",
+      "products": [
+        274,
+        275,
+        279,
+        283,
+        287,
+        291,
+        299,
+        304,
+        310,
+        320,
+        321
+      ],
+      "is_active": true,
+      "created_at": "2024-06-11T00:00:00Z"
+    }
+  },
+  {
+    "model": "features.collection",
+    "fields": {
+      "name": "Sports Gear",
+      "slug": "sports-gear",
+      "description": "Everything you need for sports: shoes, clothes, and balls",
+      "products": [
+        276,
+        278,
+        285,
+        292,
+        293,
+        305,
+        307,
+        308,
+        318,
+        319,
+        326
+      ],
+      "is_active": true,
+      "created_at": "2024-06-11T00:00:00Z"
+    }
+  },
+  {
+    "model": "features.collection",
+    "fields": {
+      "name": "Bestseller Books",
+      "slug": "bestseller-books",
+      "description": "A collection of the world's bestselling books",
+      "products": [
+        294,
+        295,
+        296,
+        297,
+        298,
+        311,
+        317,
+        322,
+        323,
+        328
+      ],
+      "is_active": true,
+      "created_at": "2024-06-11T00:00:00Z"
+    }
+  },
+  {
+    "model": "features.collection",
+    "fields": {
+      "name": "Smart Home",
+      "slug": "smart-home",
+      "description": "Smart products to make your home more comfortable and advanced",
+      "products": [
+        299,
+        300,
+        312,
+        313,
+        316,
+        327
+      ],
+      "is_active": true,
+      "created_at": "2024-06-11T00:00:00Z"
+    }
+  },
+  {
+    "model": "features.collection",
+    "fields": {
+      "name": "Special Offers",
+      "slug": "special-offers",
+      "description": "Products with discounts and special offers for a limited time",
+      "products": [
+        276,
+        277,
+        278,
+        280,
+        282,
+        285,
+        286,
+        288,
+        289,
+        292,
+        293,
+        294,
+        295,
+        297,
+        300,
+        301,
+        302,
+        303,
+        305,
+        307,
+        308,
+        309,
+        310,
+        311,
+        313,
+        315,
+        316,
+        317,
+        318,
+        319,
+        323,
+        325,
+        326,
+        327
+      ],
+      "is_active": true,
+      "created_at": "2024-06-11T00:00:00Z"
+    }
+  },
+  {
+    "model": "features.collection",
+    "fields": {
+      "name": "Apple Products",
+      "slug": "apple-products",
+      "description": "All Apple products: phones, tablets, watches, and more",
+      "products": [
+        274,
+        275,
+        284,
+        291,
+        321
+      ],
+      "is_active": true,
+      "created_at": "2024-06-11T00:00:00Z"
+    }
+  },
+  {
+    "model": "features.collection",
+    "fields": {
+      "name": "Home Appliances",
+      "slug": "home-appliances",
+      "description": "Home appliances to improve daily life quality",
+      "products": [
+        299,
+        300,
+        301,
+        302,
+        303,
+        312,
+        313,
+        314,
+        315,
+        316
+      ],
+      "is_active": true,
+      "created_at": "2024-06-11T00:00:00Z"
+    }
+  },
+  {
+    "model": "features.collection",
+    "fields": {
+      "name": "Entertainment & Gaming",
+      "slug": "entertainment-gaming",
+      "description": "Latest gaming and home entertainment devices",
+      "products": [
+        281,
+        283,
+        289,
+        290,
+        309,
+        320
+      ],
+      "is_active": true,
+      "created_at": "2024-06-11T00:00:00Z"
     }
   }
 ]

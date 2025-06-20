@@ -1,0 +1,23 @@
+<div class="compare-card card shadow-sm glass-card border-0 rounded-3 mb-4">
+    <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">
+            <i class="fas fa-exchange-alt me-2"></i>Compare Products
+        </h5>
+        <span class="compare-count badge bg-light text-primary rounded-pill">0</span>
+    </div>
+    <div class="card-body bg-light">
+        <div class="compare-empty-state text-center py-3">
+            <i class="empty-icon fas fa-exchange-alt fa-2x text-muted"></i>
+            <p class="empty-text text-muted mt-2">Select products to compare</p>
+        </div>
+        <ul class="compare-list list-group mb-3 d-none"></ul>
+        <div class="compare-actions d-flex gap-2">
+            <button onclick="clearcom()" class="clear-btn btn btn-sm btn-outline-danger w-50 d-none">
+                <i class="fas fa-trash-alt me-1"></i> Clear
+            </button>
+            <a href="#" class="compare-btn btn btn-sm btn-primary w-50 d-none">
+                <i class="fas fa-chart-bar me-1"></i> Compare
+            </a>
+        </div>
+    </div>
+</div>
