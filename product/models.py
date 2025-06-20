@@ -14,7 +14,7 @@ class Tag(models.Model):
         return self.name
 
 class Product(models.Model):
-    name = models.CharField(max_length=40,verbose_name=_("Name"),db_index=True)
+    name = models.CharField(max_length=255,verbose_name=_("Name"),db_index=True)
     category = models.ForeignKey('Category',on_delete=models.PROTECT,verbose_name=_("Category"),blank=True,null=True,related_name='products')
     brand = models.ForeignKey('features.Brand',on_delete=models.PROTECT,verbose_name=_("Brand"),blank=True,null=True,related_name='products')
     description = models.TextField(max_length=1000,verbose_name=_("Description"))
@@ -31,7 +31,7 @@ class Product(models.Model):
     viewed_by = models.ManyToManyField("account.Profile",verbose_name=_("Viewed By"),related_name="viewed_products",blank=True)
     created_at = models.DateTimeField(auto_now_add=True,verbose_name=_("Created At"),db_index=True)
     updated_at = models.DateTimeField(auto_now=True,verbose_name=_("Updated At"))
-    
+    weight = models.DecimalField(max_digits=5,decimal_places=2,verbose_name=_("Weight"),blank=True,null=True,validators=[MinValueValidator(0)])
     class Meta:
         verbose_name = _("Product")
         verbose_name_plural = _("Products")

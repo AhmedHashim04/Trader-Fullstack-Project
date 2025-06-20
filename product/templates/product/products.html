@@ -463,6 +463,20 @@
                                 {% endfor %}
                             </select>
                         </div>
+                        <!-- Category Filter -->
+                        <div class="filter-group mb-3">
+                            <label for="tag" class="filter-label fw-bold text-dark">
+                                <i class="fas fa-tags me-2"></i>Tags
+                            </label>
+                            <select name="tag" id="tag" class="form-select rounded-pill">
+                                <option value="">All Tags</option>
+                                {% for tag in tags %}
+                                    <option value="{{ tag.name }}" {% if selected_tag == tag.slug %}selected{% endif %}>
+                                        {{ tag.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
                         <!-- Brand Filter -->
                         <div class="filter-group mb-3">
@@ -635,15 +649,17 @@
                             <!-- Product Image -->
                             <div class="product-image {% if view_mode == 'list' %}w-25{% else %}p-3{% endif %}">
                                 <a href="{% url 'product:product_detail' product.slug %}">
-                                    {% if product.image %}
-                                    <img src="{{ product.image.url }}" class="card-img-top rounded-3 h-100" alt="{{ product.name }}" 
-                                         style="object-fit: {% if view_mode == 'list' %}cover{% else %}contain{% endif %};">
-                                    {% else %}
-                                    <div class="no-image-placeholder d-flex align-items-center justify-content-center bg-light rounded-3" 
-                                         style="height: {% if view_mode == 'list' %}100%{% else %}200px{% endif %};">
-                                        <i class="fas fa-image fa-2x text-muted"></i>
-                                    </div>
-                                    {% endif %}
+                                    <div class="main-image mb-3 border rounded-4 overflow-hidden d-flex align-items-center justify-content-center" style="height: 100%;">
+                                        {% if product.image %}
+                                            <img src="{{ product.image.url }}" alt="{{ product.name }}" 
+                                                class="img-fluid w-100 h-100" id="mainProductImage" style="object-fit: contain; transition: transform 0.3s;">
+                                        {% else %}
+                                            <div class="d-flex flex-column align-items-center justify-content-center bg-light w-100 h-100">
+                                                <i class="fas fa-image fa-4x text-primary mb-3"></i>
+                                                <p class="text-primary">No product image</p>
+                                            </div>
+                                        {% endif %}
+                                    </div>    
                                 </a>
                             </div>
                             

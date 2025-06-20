@@ -1465,20 +1465,22 @@
       "image": "media/products/1.png",
       "name": "iPhone 15 Pro Max",
       "slug": "iphone-15-pro-max",
-      "cost": 899.00,
-      "price": 1199.00,
+      "cost": 899.0,
+      "price": 1199.0,
       "discount": 0,
-      "category": "Smartphones",
+      "category": 6,
       "description": "6.7-inch Super Retina XDR display, A17 Pro chip, 48MP triple-camera system with Cinematic mode, Titanium design, 5G capable",
       "is_available": true,
       "stock": 42,
       "tags": [
-        "smartphone",
-        "apple",
-        "premium",
-        "5g"
+        1,
+        2,
+        3,
+        70
       ],
-      "brand": "Apple",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 1,
       "trending": true
     }
   },
@@ -1488,20 +1490,22 @@
       "image": "media/products/2.png",
       "name": "MacBook Air M3",
       "slug": "macbook-air-m3",
-      "cost": 899.00,
-      "price": 1099.00,
+      "cost": 899.0,
+      "price": 1099.0,
       "discount": 0,
-      "category": "Laptops",
+      "category": 10,
       "description": "13.6-inch Liquid Retina display, Apple M3 chip, 18-hour battery life, 8GB RAM, 256GB SSD, Fanless design",
       "is_available": true,
       "stock": 28,
       "tags": [
-        "laptop",
-        "apple",
-        "productivity",
-        "ultraportable"
+        4,
+        2,
+        5,
+        71
       ],
-      "brand": "Apple",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 1,
       "trending": true
     }
   },
@@ -1511,20 +1515,22 @@
       "image": "media/products/3.png",
       "name": "Nike Air Jordan 1 Retro High",
       "slug": "nike-air-jordan-1-retro-high",
-      "cost": 75.00,
-      "price": 170.00,
+      "cost": 75.0,
+      "price": 170.0,
       "discount": 10,
-      "category": "Shoes",
+      "category": 15,
       "description": "Classic high-top basketball sneakers with genuine leather, Air-Sole unit, Nike's iconic wing logo, and padded collar",
       "is_available": true,
       "stock": 16,
       "tags": [
-        "shoes",
-        "basketball",
-        "sneakers",
-        "limited-edition"
+        6,
+        7,
+        8,
+        72
       ],
-      "brand": "Nike",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 3,
       "trending": true
     }
   },
@@ -1534,21 +1540,22 @@
       "image": "media/products/4.webp",
       "name": "Samsung 65\" Q80C QLED 4K Smart TV",
       "slug": "samsung-65-q80c-qled-4k-smart-tv",
-      "cost": 749.00,
-      "price": 1199.00,
+      "cost": 749.0,
+      "price": 1199.0,
       "discount": 15,
-      "category": "TVs",
+      "category": 11,
       "description": "Quantum HDR 16X, Direct Full Array, Quantum Processor 4K, Object Tracking Sound, Alexa/Google Assistant built-in",
       "is_available": true,
       "stock": 9,
       "tags": [
-        "tv",
-        "4k",
-        "smart",
-        "qled",
-        "home-theater"
+        9,
+        10,
+        11,
+        73
       ],
-      "brand": "Samsung",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 2,
       "trending": false
     }
   },
@@ -1558,20 +1565,22 @@
       "image": "media/products/5.png",
       "name": "Adidas Ultraboost Light",
       "slug": "adidas-ultraboost-light",
-      "cost": 85.00,
-      "price": 190.00,
+      "cost": 85.0,
+      "price": 190.0,
       "discount": 15,
-      "category": "Shoes",
+      "category": 15,
       "description": "Running shoes with Lightboost foam, Primeknit+ upper, Torsion System, Continental rubber outsole",
       "is_available": true,
       "stock": 32,
       "tags": [
-        "shoes",
-        "running",
-        "athletic",
-        "performance"
+        6,
+        12,
+        13,
+        74
       ],
-      "brand": "Adidas",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 4,
       "trending": false
     }
   },
@@ -1581,20 +1590,22 @@
       "image": "media/products/6.png",
       "name": "Sony WH-1000XM5 Wireless Noise Canceling Headphones",
       "slug": "sony-wh-1000xm5-wireless-noise-canceling-headphones",
-      "cost": 279.00,
-      "price": 399.00,
+      "cost": 279.0,
+      "price": 399.0,
       "discount": 0,
-      "category": "Audio",
+      "category": 12,
       "description": "Industry-leading ANC, 30-hour battery, HD Noise Canceling Processor QN1, Speak-to-Chat technology, Multipoint connection",
       "is_available": true,
       "stock": 22,
       "tags": [
-        "headphones",
-        "wireless",
-        "noise-canceling",
-        "premium-audio"
+        14,
+        15,
+        16,
+        75
       ],
-      "brand": "Sony",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 5,
       "trending": true
     }
   },
@@ -1604,20 +1615,22 @@
       "image": "media/products/7.webp",
       "name": "Levi's 511 Slim Fit Jeans",
       "slug": "levis-511-slim-fit-jeans",
-      "cost": 35.00,
+      "cost": 35.0,
       "price": 69.99,
       "discount": 20,
-      "category": "Clothing",
+      "category": 16,
       "description": "Classic slim fit, 99% cotton 1% elastane, mid-rise, zip fly, available in multiple washes",
       "is_available": true,
       "stock": 87,
       "tags": [
-        "jeans",
-        "denim",
-        "casual",
-        "menswear"
+        17,
+        18,
+        19,
+        76
       ],
-      "brand": "Levi's",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 6,
       "trending": false
     }
   },
@@ -1627,20 +1640,22 @@
       "image": "media/products/8.png",
       "name": "Nintendo Switch OLED Model",
       "slug": "nintendo-switch-oled-model",
-      "cost": 299.00,
+      "cost": 299.0,
       "price": 349.99,
       "discount": 0,
-      "category": "Gaming Consoles",
+      "category": 13,
       "description": "7-inch OLED screen, 64GB internal storage, adjustable stand, dock with wired LAN port, enhanced audio",
       "is_available": true,
       "stock": 14,
       "tags": [
-        "gaming",
-        "console",
-        "portable",
-        "family"
+        20,
+        21,
+        22,
+        77
       ],
-      "brand": "Nintendo",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 7,
       "trending": true
     }
   },
@@ -1650,20 +1665,22 @@
       "image": "media/products/9.jpg",
       "name": "Kindle Paperwhite Signature Edition",
       "slug": "kindle-paperwhite-signature-edition",
-      "cost": 139.00,
+      "cost": 139.0,
       "price": 189.99,
       "discount": 10,
-      "category": "Non-Fiction",
+      "category": 26,
       "description": "6.8\" glare-free display, adjustable warm light, wireless charging, 32GB storage, IPX8 waterproof",
       "is_available": true,
       "stock": 31,
       "tags": [
-        "ereader",
-        "books",
-        "portable",
-        "waterproof"
+        23,
+        24,
+        22,
+        78
       ],
-      "brand": "Amazon",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 8,
       "trending": false
     }
   },
@@ -1673,20 +1690,22 @@
       "image": "media/products/10.jpeg",
       "name": "Sony PlayStation 5 Digital Edition",
       "slug": "sony-playstation-5-digital-edition",
-      "cost": 399.00,
+      "cost": 399.0,
       "price": 449.99,
       "discount": 0,
-      "category": "Gaming Consoles",
+      "category": 13,
       "description": "Ultra-high speed SSD, integrated I/O, 3D Audio, DualSense wireless controller, 4K/120fps output",
       "is_available": true,
       "stock": 7,
       "tags": [
-        "gaming",
-        "console",
-        "sony",
-        "next-gen"
+        20,
+        21,
+        25,
+        79
       ],
-      "brand": "Sony",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 5,
       "trending": true
     }
   },
@@ -1696,20 +1715,22 @@
       "image": "media/products/11.png",
       "name": "Apple Watch Series 9 GPS + Cellular",
       "slug": "apple-watch-series-9-gps-cellular",
-      "cost": 329.00,
-      "price": 499.00,
+      "cost": 329.0,
+      "price": 499.0,
       "discount": 5,
-      "category": "Wearables",
+      "category": 14,
       "description": "Always-On Retina display, ECG app, blood oxygen monitoring, crash detection, 18-hour battery",
       "is_available": true,
       "stock": 25,
       "tags": [
-        "smartwatch",
-        "apple",
-        "fitness",
-        "health"
+        26,
+        2,
+        27,
+        80
       ],
-      "brand": "Apple",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 1,
       "trending": true
     }
   },
@@ -1719,20 +1740,22 @@
       "image": "media/products/12.jpeg",
       "name": "Adidas UEFA Champions League Pro Ball",
       "slug": "adidas-uefa-champions-league-pro-ball",
-      "cost": 39.00,
+      "cost": 39.0,
       "price": 129.99,
       "discount": 15,
-      "category": "Equipment",
+      "category": 18,
       "description": "Official match ball with Connected Ball technology, 20-panel design, FIFA Quality Pro certified",
       "is_available": true,
       "stock": 36,
       "tags": [
-        "soccer",
-        "sports",
-        "adidas",
-        "official"
+        28,
+        29,
+        30,
+        81
       ],
-      "brand": "Adidas",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 4,
       "trending": false
     }
   },
@@ -1742,20 +1765,22 @@
       "image": "media/products/13.jpg",
       "name": "Nike Dri-FIT Legend Men's Training T-Shirt",
       "slug": "nike-dri-fit-legend-mens-training-t-shirt",
-      "cost": 12.00,
+      "cost": 12.0,
       "price": 34.99,
       "discount": 10,
-      "category": "Apparel",
+      "category": 19,
       "description": "100% polyester, sweat-wicking technology, standard fit, embroidered Swoosh logo",
       "is_available": true,
       "stock": 143,
       "tags": [
-        "tshirt",
-        "nike",
-        "sportswear",
-        "athletic"
+        31,
+        32,
+        33,
+        13
       ],
-      "brand": "Nike",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 3,
       "trending": false
     }
   },
@@ -1765,20 +1790,22 @@
       "image": "media/products/14.jpeg",
       "name": "Samsung Galaxy Buds2 Pro",
       "slug": "samsung-galaxy-buds2-pro",
-      "cost": 149.00,
+      "cost": 149.0,
       "price": 229.99,
       "discount": 0,
-      "category": "Audio",
+      "category": 12,
       "description": "Intelligent ANC, 360 Audio, Hi-Fi 24bit audio, IPX7 water resistance, 8-hour battery",
       "is_available": true,
       "stock": 38,
       "tags": [
-        "earbuds",
-        "wireless",
-        "samsung",
-        "noise-canceling"
+        34,
+        15,
+        35,
+        16
       ],
-      "brand": "Samsung",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 2,
       "trending": true
     }
   },
@@ -1788,20 +1815,22 @@
       "image": "media/products/15.jpeg",
       "name": "Levi's Men's Trucker Jacket",
       "slug": "levis-mens-trucker-jacket",
-      "cost": 45.00,
-      "price": 98.00,
+      "cost": 45.0,
+      "price": 98.0,
       "discount": 15,
-      "category": "Clothing",
+      "category": 16,
       "description": "Classic denim jacket with corduroy collar, button-front closure, two chest pockets, regular fit",
       "is_available": true,
       "stock": 64,
       "tags": [
-        "jacket",
-        "denim",
-        "levis",
-        "casual"
+        36,
+        18,
+        37,
+        19
       ],
-      "brand": "Levi's",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 6,
       "trending": false
     }
   },
@@ -1811,20 +1840,22 @@
       "image": "media/products/16.jpeg",
       "name": "Sony Bravia XR A80L 55\" OLED TV",
       "slug": "sony-bravia-xr-a80l-55-oled-tv",
-      "cost": 1099.00,
+      "cost": 1099.0,
       "price": 1799.99,
       "discount": 12,
-      "category": "TVs",
+      "category": 11,
       "description": "Cognitive Processor XR, Acoustic Surface Audio+, Google TV, Dolby Vision/Atmos, IMAX Enhanced",
       "is_available": true,
       "stock": 5,
       "tags": [
-        "tv",
-        "oled",
-        "sony",
-        "home-theater"
+        9,
+        38,
+        25,
+        73
       ],
-      "brand": "Sony",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 5,
       "trending": false
     }
   },
@@ -1834,20 +1865,22 @@
       "image": "media/products/17.webp",
       "name": "Nintendo Switch Pro Controller",
       "slug": "nintendo-switch-pro-controller",
-      "cost": 42.00,
+      "cost": 42.0,
       "price": 69.99,
       "discount": 0,
-      "category": "Gaming Consoles",
+      "category": 13,
       "description": "Motion controls, HD rumble, built-in amiibo functionality, 40-hour battery life",
       "is_available": true,
       "stock": 52,
       "tags": [
-        "controller",
-        "gaming",
-        "nintendo",
-        "wireless"
+        39,
+        20,
+        40,
+        15
       ],
-      "brand": "Nintendo",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 7,
       "trending": false
     }
   },
@@ -1857,20 +1890,22 @@
       "image": "media/products/18.jpg",
       "name": "Apple AirPods Pro (2nd Generation)",
       "slug": "apple-airpods-pro-2nd-generation",
-      "cost": 159.00,
-      "price": 249.00,
+      "cost": 159.0,
+      "price": 249.0,
       "discount": 0,
-      "category": "Audio",
+      "category": 12,
       "description": "Active Noise Cancellation, Adaptive Transparency, Personalized Spatial Audio, MagSafe charging case",
       "is_available": true,
       "stock": 47,
       "tags": [
-        "earbuds",
-        "apple",
-        "wireless",
-        "noise-canceling"
+        34,
+        2,
+        15,
+        16
       ],
-      "brand": "Apple",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 1,
       "trending": true
     }
   },
@@ -1880,20 +1915,22 @@
       "image": "media/products/19.jpg",
       "name": "Adidas Yoga Essentials Mat",
       "slug": "adidas-yoga-essentials-mat",
-      "cost": 22.00,
+      "cost": 22.0,
       "price": 49.99,
       "discount": 20,
-      "category": "Equipment",
+      "category": 18,
       "description": "6mm thickness, non-slip surface, moisture-resistant, alignment markers, includes carrying strap",
       "is_available": true,
       "stock": 78,
       "tags": [
-        "yoga",
-        "mat",
-        "adidas",
-        "fitness"
+        41,
+        42,
+        30,
+        27
       ],
-      "brand": "Adidas",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 4,
       "trending": false
     }
   },
@@ -1903,20 +1940,21 @@
       "image": "media/products/20.jpg",
       "name": "Nike Elite Training Backpack",
       "slug": "nike-elite-training-backpack",
-      "cost": 34.00,
+      "cost": 34.0,
       "price": 79.99,
       "discount": 15,
-      "category": "Bags",
+      "category": 20,
       "description": "30L capacity, ventilated shoe compartment, padded laptop sleeve, water-resistant, multiple pockets",
       "is_available": true,
       "stock": 62,
       "tags": [
-        "backpack",
-        "nike",
-        "sports",
-        "gym"
+        43,
+        32,
+        29
       ],
-      "brand": "Nike",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 3,
       "trending": false
     }
   },
@@ -1926,20 +1964,21 @@
       "image": "media/products/21.webp",
       "name": "Atomic Habits by James Clear",
       "slug": "atomic-habits-by-james-clear",
-      "cost": 8.50,
+      "cost": 8.5,
       "price": 19.99,
       "discount": 20,
-      "category": "Self-Help",
+      "category": 27,
       "description": "New York Times bestseller, practical framework for building good habits and breaking bad ones",
       "is_available": true,
       "stock": 93,
       "tags": [
-        "self-help",
-        "habits",
-        "bestseller",
-        "personal-development"
+        44,
+        45,
+        46
       ],
-      "brand": "Penguin",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 9,
       "trending": true
     }
   },
@@ -1952,17 +1991,19 @@
       "cost": 6.75,
       "price": 16.99,
       "discount": 15,
-      "category": "Fiction",
+      "category": 25,
       "description": "25th Anniversary Edition, international bestseller about following your dreams and listening to your heart",
       "is_available": true,
       "stock": 127,
       "tags": [
-        "novel",
-        "fiction",
-        "classic",
-        "inspirational"
+        47,
+        48,
+        49,
+        82
       ],
-      "brand": "HarperOne",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 10,
       "trending": false
     }
   },
@@ -1972,20 +2013,22 @@
       "image": "media/products/23.jpg",
       "name": "Sapiens: A Brief History of Humankind",
       "slug": "sapiens-a-brief-history-of-humankind",
-      "cost": 11.00,
+      "cost": 11.0,
       "price": 24.99,
       "discount": 10,
-      "category": "Non-Fiction",
+      "category": 26,
       "description": "New York Times bestseller exploring how biology and history have defined humanity",
       "is_available": true,
       "stock": 68,
       "tags": [
-        "history",
-        "non-fiction",
-        "bestseller",
-        "anthropology"
+        50,
+        51,
+        46,
+        83
       ],
-      "brand": "Harper",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 17,
       "trending": true
     }
   },
@@ -1998,17 +2041,19 @@
       "cost": 7.25,
       "price": 18.99,
       "discount": 25,
-      "category": "Self-Help",
+      "category": 27,
       "description": "20th Anniversary Edition, challenges conventional beliefs about money and investing",
       "is_available": true,
       "stock": 105,
       "tags": [
-        "finance",
-        "self-help",
-        "classic",
-        "investing"
+        52,
+        44,
+        49,
+        84
       ],
-      "brand": "Plata Publishing",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 18,
       "trending": false
     }
   },
@@ -2021,17 +2066,19 @@
       "cost": 6.99,
       "price": 14.99,
       "discount": 0,
-      "category": "Children",
+      "category": 28,
       "description": "Illustrated Edition by Jim Kay, full-color artwork throughout, hardcover",
       "is_available": true,
       "stock": 142,
       "tags": [
-        "fantasy",
-        "children",
-        "bestseller",
-        "illustrated"
+        53,
+        54,
+        46,
+        85
       ],
-      "brand": "Scholastic",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 11,
       "trending": true
     }
   },
@@ -2041,20 +2088,22 @@
       "image": "media/products/26.webp",
       "name": "Dyson V11 Torque Drive Cordless Vacuum",
       "slug": "dyson-v11-torque-drive-cordless-vacuum",
-      "cost": 399.00,
+      "cost": 399.0,
       "price": 599.99,
       "discount": 10,
-      "category": "Appliances",
+      "category": 22,
       "description": "60-minute runtime, LCD screen, 3 power modes, whole-machine filtration, includes 10 accessories",
       "is_available": true,
       "stock": 18,
       "tags": [
-        "vacuum",
-        "cleaning",
-        "cordless",
-        "smart"
+        55,
+        56,
+        57,
+        11
       ],
-      "brand": "Dyson",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 12,
       "trending": true
     }
   },
@@ -2064,20 +2113,22 @@
       "image": "media/products/27.webp",
       "name": "Philips Hue White & Color Ambiance Starter Kit",
       "slug": "philips-hue-white-color-ambiance-starter-kit",
-      "cost": 149.00,
+      "cost": 149.0,
       "price": 199.99,
       "discount": 15,
-      "category": "Lighting",
+      "category": 23,
       "description": "3 A19 bulbs, hub, 16 million colors, voice control (Alexa/Google/HomeKit), geofencing",
       "is_available": true,
       "stock": 37,
       "tags": [
-        "lighting",
-        "smart-home",
-        "led",
-        "automation"
+        58,
+        59,
+        60,
+        86
       ],
-      "brand": "Philips",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 13,
       "trending": false
     }
   },
@@ -2087,20 +2138,22 @@
       "image": "media/products/28.jpg",
       "name": "IKEA MALM Queen Bed Frame with Storage",
       "slug": "ikea-malm-queen-bed-frame-with-storage",
-      "cost": 229.00,
+      "cost": 229.0,
       "price": 349.99,
       "discount": 10,
-      "category": "Furniture",
+      "category": 21,
       "description": "High-gloss white finish, 4 storage drawers, slatted bed base included, minimal Scandinavian design",
       "is_available": true,
       "stock": 11,
       "tags": [
-        "furniture",
-        "bed",
-        "storage",
-        "modern"
+        61,
+        62,
+        63,
+        87
       ],
-      "brand": "IKEA",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 14,
       "trending": true
     }
   },
@@ -2110,20 +2163,22 @@
       "image": "media/products/29.webp",
       "name": "Weber Spirit II E-310 3-Burner Gas Grill",
       "slug": "weber-spirit-ii-e-310-3-burner-gas-grill",
-      "cost": 449.00,
+      "cost": 449.0,
       "price": 549.99,
       "discount": 5,
-      "category": "Outdoor",
+      "category": 24,
       "description": "529 sq. in. cooking area, GS4 grilling system, Infinity ignition, 10-year warranty",
       "is_available": true,
       "stock": 8,
       "tags": [
-        "grill",
-        "outdoor",
-        "bbq",
-        "stainless-steel"
+        64,
+        65,
+        66,
+        88
       ],
-      "brand": "Weber",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 15,
       "trending": false
     }
   },
@@ -2133,20 +2188,22 @@
       "image": "media/products/30.jpg",
       "name": "Instant Pot Duo Plus 9-in-1 Pressure Cooker",
       "slug": "instant-pot-duo-plus-9-in-1-pressure-cooker",
-      "cost": 69.00,
+      "cost": 69.0,
       "price": 129.99,
       "discount": 20,
-      "category": "Appliances",
+      "category": 22,
       "description": "6-quart capacity, 48 programs, sterilizer function, sous vide, cake maker, yogurt maker",
       "is_available": true,
       "stock": 53,
       "tags": [
-        "kitchen",
-        "cooker",
-        "appliance",
-        "multi-function"
+        67,
+        68,
+        69,
+        89
       ],
-      "brand": "Instant Pot",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 16,
       "trending": true
     }
   },
@@ -2156,20 +2213,22 @@
       "image": "media/products/31.avif",
       "name": "Samsung Galaxy Tab S9 Ultra",
       "slug": "samsung-galaxy-tab-s9-ultra",
-      "cost": 699.00,
+      "cost": 699.0,
       "price": 1099.99,
       "discount": 5,
-      "category": "Tablets",
+      "category": 7,
       "description": "14.6-inch Dynamic AMOLED display, Snapdragon 8 Gen 2, S Pen included, IP68 water resistance, 12GB RAM",
       "is_available": true,
       "stock": 15,
       "tags": [
-        "tablet",
-        "samsung",
-        "productivity",
-        "premium"
+        90,
+        35,
+        5,
+        3
       ],
-      "brand": "Samsung",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 2,
       "trending": true
     }
   },
@@ -2179,20 +2238,22 @@
       "image": "media/products/32.avif",
       "name": "Nike React Infinity Run Flyknit 3",
       "slug": "nike-react-infinity-run-flyknit-3",
-      "cost": 80.00,
-      "price": 160.00,
+      "cost": 80.0,
+      "price": 160.0,
       "discount": 15,
-      "category": "Shoes",
+      "category": 15,
       "description": "Road running shoes with Flyknit upper, React foam midsole, rocker geometry for smooth transitions",
       "is_available": true,
       "stock": 45,
       "tags": [
-        "shoes",
-        "running",
-        "nike",
-        "performance"
+        6,
+        12,
+        32,
+        74
       ],
-      "brand": "Nike",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 3,
       "trending": true
     }
   },
@@ -2202,20 +2263,21 @@
       "image": "media/products/33.avif",
       "name": "Sony SRS-XB43 Extra Bass Bluetooth Speaker",
       "slug": "sony-srs-xb43-extra-bass-bluetooth-speaker",
-      "cost": 149.00,
-      "price": 248.00,
+      "cost": 149.0,
+      "price": 248.0,
       "discount": 12,
-      "category": "Audio",
+      "category": 12,
       "description": "Waterproof portable speaker with 24-hour battery, party lights, and deep bass sound",
       "is_available": true,
       "stock": 21,
       "tags": [
-        "speaker",
-        "wireless",
-        "sony",
-        "portable"
+        15,
+        25,
+        22
       ],
-      "brand": "Sony",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 5,
       "trending": false
     }
   },
@@ -2225,20 +2287,21 @@
       "image": "media/products/34.jpeg",
       "name": "Adidas Originals Trefoil Hoodie",
       "slug": "adidas-originals-trefoil-hoodie",
-      "cost": 35.00,
+      "cost": 35.0,
       "price": 79.99,
       "discount": 10,
-      "category": "Clothing",
+      "category": 16,
       "description": "Classic fleece hoodie with signature Trefoil logo, kangaroo pocket, ribbed cuffs",
       "is_available": true,
       "stock": 68,
       "tags": [
-        "hoodie",
-        "casual",
-        "adidas",
-        "streetwear"
+        19,
+        30,
+        91
       ],
-      "brand": "Adidas",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 4,
       "trending": true
     }
   },
@@ -2248,20 +2311,22 @@
       "image": "media/products/35.jpeg",
       "name": "Levi's Women's 721 High Rise Skinny Jeans",
       "slug": "levis-womens-721-high-rise-skinny-jeans",
-      "cost": 42.00,
+      "cost": 42.0,
       "price": 79.99,
       "discount": 15,
-      "category": "Clothing",
+      "category": 16,
       "description": "High-rise skinny jeans with sculpt technology, 79% cotton/20% polyester/1% elastane",
       "is_available": true,
       "stock": 53,
       "tags": [
-        "jeans",
-        "denim",
-        "levis",
-        "womens"
+        17,
+        18,
+        37,
+        92
       ],
-      "brand": "Levi's",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 6,
       "trending": false
     }
   },
@@ -2271,20 +2336,22 @@
       "image": "media/products/36.webp",
       "name": "Nintendo Switch Sports Bundle",
       "slug": "nintendo-switch-sports-bundle",
-      "cost": 269.00,
+      "cost": 269.0,
       "price": 349.99,
       "discount": 8,
-      "category": "Gaming Consoles",
+      "category": 13,
       "description": "Includes Switch console, Joy-Con controllers, Nintendo Switch Sports game",
       "is_available": true,
       "stock": 11,
       "tags": [
-        "gaming",
-        "console",
-        "nintendo",
-        "bundle"
+        20,
+        21,
+        40,
+        93
       ],
-      "brand": "Nintendo",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 7,
       "trending": true
     }
   },
@@ -2294,20 +2361,21 @@
       "image": "media/products/37.webp",
       "name": "Amazon Fire TV Stick 4K Max",
       "slug": "amazon-fire-tv-stick-4k-max",
-      "cost": 34.00,
+      "cost": 34.0,
       "price": 59.99,
       "discount": 25,
-      "category": "Streaming Devices",
+      "category": 8,
       "description": "4K streaming with Wi-Fi 6, Alexa Voice Remote, Dolby Vision/Atmos support",
       "is_available": true,
       "stock": 87,
       "tags": [
-        "streaming",
-        "smart",
-        "amazon",
-        "4k"
+        94,
+        11,
+        10
       ],
-      "brand": "Amazon",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 8,
       "trending": true
     }
   },
@@ -2316,20 +2384,21 @@
     "fields": {
       "image": "media/products/38.jpg",
       "name": "The 7 Habits of Highly Effective People",
-      "cost": 7.50,
+      "cost": 7.5,
       "price": 18.99,
       "discount": 20,
-      "category": "Self-Help",
+      "category": 27,
       "description": "Stephen Covey's classic principles for personal and professional effectiveness",
       "is_available": true,
       "stock": 92,
       "tags": [
-        "self-help",
-        "bestseller",
-        "personal-development",
-        "business"
+        44,
+        46,
+        107
       ],
-      "brand": "Penguin",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 9,
       "trending": false,
       "slug": "the-7-habits-of-highly-effective-people"
     }
@@ -2339,20 +2408,20 @@
     "fields": {
       "image": "media/products/39.jpg",
       "name": "Dyson Purifier Cool Autoreact TP7A",
-      "cost": 399.00,
+      "cost": 399.0,
       "price": 549.99,
       "discount": 12,
-      "category": "Appliances",
+      "category": 22,
       "description": "Air purifier and fan with HEPA filtration, detects pollutants automatically, 350° oscillation",
       "is_available": true,
       "stock": 14,
       "tags": [
-        "air-purifier",
-        "dyson",
-        "appliance",
-        "smart-home"
+        69,
+        59
       ],
-      "brand": "Dyson",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 12,
       "trending": true,
       "slug": "dyson-purifier-cool-autoreact-tp7a"
     }
@@ -2362,20 +2431,21 @@
     "fields": {
       "image": "media/products/40.webp",
       "name": "Philips Sonicare ProtectiveClean 6100",
-      "cost": 69.00,
+      "cost": 69.0,
       "price": 119.99,
       "discount": 15,
-      "category": "Appliances",
+      "category": 22,
       "description": "Electric toothbrush with pressure sensor, 3 modes, 2-week battery life, brush sync app",
       "is_available": true,
       "stock": 37,
       "tags": [
-        "oral-care",
-        "philips",
-        "health",
-        "rechargeable"
+        95,
+        80,
+        96
       ],
-      "brand": "Philips",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 13,
       "trending": false,
       "slug": "philips-sonicare-protectiveclean-6100"
     }
@@ -2385,20 +2455,21 @@
     "fields": {
       "image": "media/products/41.avif",
       "name": "IKEA HEMNES 8-Drawer Dresser",
-      "cost": 199.00,
+      "cost": 199.0,
       "price": 349.99,
       "discount": 10,
-      "category": "Furniture",
+      "category": 21,
       "description": "Solid wood construction, soft-closing drawers, timeless Scandinavian design",
       "is_available": true,
       "stock": 8,
       "tags": [
-        "furniture",
-        "storage",
-        "ikea",
-        "bedroom"
+        61,
+        63,
+        97
       ],
-      "brand": "IKEA",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 14,
       "trending": false,
       "slug": "ikea-hemnes-8-drawer-dresser"
     }
@@ -2408,20 +2479,21 @@
     "fields": {
       "image": "media/products/42.jpg",
       "name": "Weber Q1200 Liquid Propane Grill",
-      "cost": 149.00,
+      "cost": 149.0,
       "price": 229.99,
       "discount": 18,
-      "category": "Outdoor",
+      "category": 24,
       "description": "Portable gas grill with 189 sq. in. cooking area, cast-iron grates, infinite control valve",
       "is_available": true,
       "stock": 16,
       "tags": [
-        "grill",
-        "outdoor",
-        "weber",
-        "portable"
+        64,
+        65,
+        22
       ],
-      "brand": "Weber",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 15,
       "trending": true,
       "slug": "weber-q1200-liquid-propane-grill"
     }
@@ -2431,20 +2503,21 @@
     "fields": {
       "image": "media/products/43.jpg",
       "name": "Instant Pot Vortex Plus Air Fryer",
-      "cost": 89.00,
+      "cost": 89.0,
       "price": 159.99,
       "discount": 20,
-      "category": "Appliances",
+      "category": 22,
       "description": "6-in-1 air fryer with EvenCrisp technology, 6-quart capacity, 50+ one-touch programs",
       "is_available": true,
       "stock": 29,
       "tags": [
-        "air-fryer",
-        "instant-pot",
-        "kitchen",
-        "healthy"
+        98,
+        67,
+        99
       ],
-      "brand": "Instant Pot",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 16,
       "trending": true,
       "slug": "instant-pot-vortex-plus-air-fryer"
     }
@@ -2454,20 +2527,22 @@
     "fields": {
       "image": "media/products/44.jpg",
       "name": "Atomic Habits Workbook",
-      "cost": 9.00,
+      "cost": 9.0,
       "price": 22.99,
       "discount": 15,
-      "category": "Self-Help",
+      "category": 27,
       "description": "Companion journal with practical exercises and habit-tracking templates",
       "is_available": true,
       "stock": 63,
       "tags": [
-        "workbook",
-        "habits",
-        "self-help",
-        "journal"
+        100,
+        45,
+        44,
+        101
       ],
-      "brand": "Penguin",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 9,
       "trending": false,
       "slug": "atomic-habits-workbook"
     }
@@ -2477,20 +2552,22 @@
     "fields": {
       "image": "media/products/45.jpg",
       "name": "Nike Premier League Match Soccer Ball",
-      "cost": 45.00,
+      "cost": 45.0,
       "price": 129.99,
       "discount": 10,
-      "category": "Equipment",
+      "category": 18,
       "description": "Official match ball with AerowSculpt technology, 12-panel design, FIFA Quality Pro certified",
       "is_available": true,
       "stock": 27,
       "tags": [
-        "soccer",
-        "nike",
-        "sports",
-        "official"
+        28,
+        32,
+        29,
+        81
       ],
-      "brand": "Nike",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 3,
       "trending": false,
       "slug": "nike-premier-league-match-soccer-ball"
     }
@@ -2500,20 +2577,21 @@
     "fields": {
       "image": "media/products/46.avif",
       "name": "Adidas 3-Stripes Training Pants",
-      "cost": 28.00,
+      "cost": 28.0,
       "price": 59.99,
       "discount": 15,
-      "category": "Apparel",
+      "category": 19,
       "description": "Climalite fabric, tapered fit, elastic waist with drawcord, signature 3-Stripes design",
       "is_available": true,
       "stock": 84,
       "tags": [
-        "pants",
-        "training",
-        "adidas",
-        "sportswear"
+        102,
+        30,
+        33
       ],
-      "brand": "Adidas",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 4,
       "trending": false,
       "slug": "adidas-3-stripes-training-pants"
     }
@@ -2523,20 +2601,22 @@
     "fields": {
       "image": "media/products/47.jpg",
       "name": "Sony INZONE H9 Wireless Gaming Headset",
-      "cost": 179.00,
+      "cost": 179.0,
       "price": 299.99,
       "discount": 8,
-      "category": "Audio",
+      "category": 12,
       "description": "360 Spatial Sound, noise-canceling mic, 32-hour battery, compatible with PS5/PC",
       "is_available": true,
       "stock": 19,
       "tags": [
-        "headset",
-        "gaming",
-        "sony",
-        "wireless"
+        103,
+        20,
+        25,
+        15
       ],
-      "brand": "Sony",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 5,
       "trending": true,
       "slug": "sony-inzone-h9-wireless-gaming-headset"
     }
@@ -2546,20 +2626,22 @@
     "fields": {
       "image": "media/products/48.webp",
       "name": "Apple Magic Keyboard with Touch ID",
-      "cost": 79.00,
-      "price": 149.00,
+      "cost": 79.0,
+      "price": 149.0,
       "discount": 0,
-      "category": "Computer Accessories",
+      "category": 9,
       "description": "Wireless keyboard with Touch ID, numeric keypad, scissor mechanism keys",
       "is_available": true,
       "stock": 42,
       "tags": [
-        "keyboard",
-        "apple",
-        "accessory",
-        "productivity"
+        104,
+        2,
+        105,
+        5
       ],
-      "brand": "Apple",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 1,
       "trending": false,
       "slug": "apple-magic-keyboard-with-touch-id"
     }
@@ -2570,20 +2652,22 @@
       "image": "media/products/49.jpg",
       "name": "The Hobbit Illustrated Edition",
       "slug": "the-hobbit-illustrated-edition",
-      "cost": 18.00,
+      "cost": 18.0,
       "price": 39.99,
       "discount": 10,
-      "category": "Fiction",
+      "category": 25,
       "description": "J.R.R. Tolkien's classic with illustrations by Jemima Catlin, hardcover collector's edition",
       "is_available": true,
       "stock": 57,
       "tags": [
-        "fantasy",
-        "classic",
-        "illustrated",
-        "tolkien"
+        53,
+        49,
+        85,
+        106
       ],
-      "brand": "Harper",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 17,
       "trending": true
     }
   },
@@ -2593,20 +2677,22 @@
       "image": "media/products/50.jpg",
       "name": "Rich Dad's Cashflow Quadrant",
       "slug": "rich-dads-cashflow-quadrant",
-      "cost": 8.00,
+      "cost": 8.0,
       "price": 21.99,
       "discount": 25,
-      "category": "Self-Help",
+      "category": 27,
       "description": "Robert Kiyosaki's guide to financial freedom through business and investing",
       "is_available": true,
       "stock": 73,
       "tags": [
-        "finance",
-        "business",
-        "investing",
-        "rich-dad"
+        52,
+        107,
+        84,
+        108
       ],
-      "brand": "Plata Publishing",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": 18,
       "trending": false
     }
   },
@@ -2619,17 +2705,16 @@
       "cost": 19.99,
       "price": 39.99,
       "discount": 10,
-      "category": "Accessories",
+      "category": 17,
       "description": "Premium leather strap compatible with Fossil Gen 6 smartwatches, quick-release pins",
       "is_available": true,
       "stock": 50,
       "tags": [
-        "watchband",
-        "fashion",
-        "accessory",
-        "leather"
+        105
       ],
-      "brand": "Fossil",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": null,
       "trending": false
     }
   },
@@ -2642,17 +2727,17 @@
       "cost": 99.99,
       "price": 159.99,
       "discount": 15,
-      "category": "Wearables",
+      "category": 14,
       "description": "Advanced health metrics with ECG, GPS tracking, 7-day battery life",
       "is_available": true,
       "stock": 35,
       "tags": [
-        "fitness",
-        "tracker",
-        "health",
-        "wearable"
+        27,
+        80
       ],
-      "brand": "Fitbit",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": null,
       "trending": true
     }
   },
@@ -2665,17 +2750,16 @@
       "cost": 39.99,
       "price": 74.99,
       "discount": 20,
-      "category": "Bags",
+      "category": 20,
       "description": "Water-resistant duffel with multiple compartments and shoe pocket",
       "is_available": true,
       "stock": 40,
       "tags": [
-        "duffel",
-        "gym",
-        "sports",
-        "travel"
+        29
       ],
-      "brand": "Under Armour",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": null,
       "trending": false
     }
   },
@@ -2688,17 +2772,18 @@
       "cost": 49.99,
       "price": 89.99,
       "discount": 15,
-      "category": "Lighting",
+      "category": 23,
       "description": "16 million colors, voice control compatible, no hub required",
       "is_available": true,
       "stock": 25,
       "tags": [
-        "smart",
-        "lighting",
-        "led",
-        "home-automation"
+        11,
+        58,
+        60
       ],
-      "brand": "LIFX",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": null,
       "trending": true
     }
   },
@@ -2711,17 +2796,17 @@
       "cost": 5.99,
       "price": 7.99,
       "discount": 0,
-      "category": "Children",
+      "category": 28,
       "description": "Eric Carle's classic children's book with sturdy pages for toddlers",
       "is_available": true,
       "stock": 120,
       "tags": [
-        "children",
-        "boardbook",
-        "classic",
-        "toddler"
+        54,
+        49
       ],
-      "brand": "World of Eric Carle",
+      "created_at": "2024-06-01T10:00:00Z",
+      "updated_at": "2024-06-01T10:00:00Z",
+      "brand": null,
       "trending": true
     }
   }

@@ -158,8 +158,13 @@
             z-index: 2;
             display: flex;
             gap: 8px;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
         }
 
+        .product-card:hover .product-badges {
+            transform: translateY(-30px);
+        }
         .badge {
             font-size: 0.75rem;
             font-weight: 600;
@@ -467,7 +472,22 @@
             margin-left: auto;
             margin-right: auto;
         }
-
+        .product-gallery .main-image img {
+            transition: transform 0.3s;
+        }
+        .product-gallery .main-image img:hover {
+            transform: scale(1.04);
+        }
+        .product-gallery .thumbnail-item {
+            border: 2px solid #e3e6ed;
+            transition: border-color 0.2s, transform 0.2s;
+            cursor: pointer;
+            background: #fff;
+        }
+        .product-gallery .thumbnail-item:hover {
+            border-color: #0d6efd;
+            transform: scale(1.08);
+        }
         /* View All Button */
         .view-all {
             text-align: center;
@@ -536,7 +556,7 @@
                     <p>Discover what's popular right now</p>
                 </div>
                 <div class="filter-buttons">
-                    <button class="btn-filter {% if tag_filter|lower == 'all' %}active{% endif %}" data-filter="all" onclick="window.location.href='';">All</button>
+                    <button class="btn-filter {% if tag_filter|lower == 'all' %}active{% endif %}" data-filter="all" onclick="window.location.href='?';">All</button>
                     {% for tag in tags %}
                     <button class="btn-filter {% if tag_filter|lower == tag.name|lower %}active{% endif %}" data-filter="{{ tag }}" onclick="window.location.href='?tag={{ tag }}';">{{ tag|title }}</button>
                     {% endfor %}
@@ -545,18 +565,38 @@
             <div class="products-grid" id="featured-products">
                 {% for product in featuredProducts %}
                 <div class="product-card" data-product-id="{{ product.id }}" data-trending="{{ product.trending }}" data-sale="{{ product.discount|yesno:'sale,' }}">
-                    <div class="product-badges">
+                    <div class="product-badges" style="flex-wrap: wrap; max-width: 95%; row-gap: 4px; gap: 6px;">
                         {% if product.trending %}
-                        <span class="badge bg-primary">Trending</span>
+                            <span class="badge bg-warning" title="Trending" style="display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(255,193,7,0.15); font-size: 0.8rem;">
+                                <i class="fas fa-fire" style="color: #ff9800; animation: pulseFire 1s infinite alternate;"></i>
+                                <span style="font-weight: 700;">Hot</span>
+                            </span>
+                        {% endif %}
+                        {% if product.discount > 0 %}
+                            <span class="badge bg-danger" title="On Sale" style="display: flex; align-items: center; gap: 4px; box-shadow: 0 2px 8px rgba(239,68,68,0.12); font-size: 0.8rem;">
+                                <i class="fas fa-bolt" style="color: #fff700;"></i>
+                                <span>Sale</span>
+                            </span>
                         {% endif %}
                         {% if product.tags %}
-                        {% for tag in product.tags.all %}
-                        <span style="color:{{ tag.color }}" class="badge bg-{{tag.bg_color}}">{{ tag.key }}</span>
-                        {% endfor %}
+                            {% for tag in product.tags.all|slice:":3" %}
+                                <span class="badge" style="color:{{ tag.color }};background:{{ tag.bg_color }}; border: 1.5px solid {{ tag.color }}; font-size: 0.8rem; font-weight: 600; box-shadow: 0 1px 6px rgba(0,0,0,0.06); letter-spacing: 0.3px;">
+                                    #{{ tag.name|truncatechars:10 }}
+                                </span>
+                            {% endfor %}
+                            {% if product.tags.count > 3 %}
+                                <span class="badge bg-primary" title="More tags" style="font-size: 0.8rem; font-weight: 600; background: linear-gradient(90deg, var(--primary), var(--secondary)); color: #fff;">
+                                    +{{ product.tags.count|add:"-3" }}
+                                </span>
+                            {% endif %}
                         {% endif %}
-
                     </div>
-                    <div class="wishlist-btn">
+                    <style>
+                    @keyframes pulseFire {
+                        0% { filter: drop-shadow(0 0 0 #ff9800); }
+                        100% { filter: drop-shadow(0 0 8px #ff9800); }
+                    }
+                    </style>     <div class="wishlist-btn">
                         {% if product in contextWishlist %}
                         <a href="{% url 'product:add_remove_wishlist' product.slug %}" style="color: var(--warning);" title="Remove from wishlist">
                             <i class="fas fa-times"></i>
@@ -569,11 +609,17 @@
                     </div>
 
                     <div class="product-image">
-                        {% if product.image %}
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                        {% else %}
-                        <img src="https://picsum.photos/400?random={{ forloop.counter }}" alt="{{ product.name }}">
-                        {% endif %}
+                        <div class="main-image mb-3 border rounded-4 overflow-hidden d-flex align-items-center justify-content-center" style="height: 100%;">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" 
+                                    class="img-fluid w-100 h-100" id="mainProductImage" style="object-fit: contain; transition: transform 0.3s;">
+                            {% else %}
+                                <div class="d-flex flex-column align-items-center justify-content-center bg-light w-100 h-100">
+                                    <i class="fas fa-image fa-4x text-primary mb-3"></i>
+                                    <p class="text-primary">No product image</p>
+                                </div>
+                            {% endif %}
+                        </div>    
                         <div class="image-overlay"></div>
                         <div class="quick-view-btn">
                             <a href="{% url 'product:product_detail' product.slug %}">Quick View</a>
@@ -613,7 +659,6 @@
                                     <i class="fas fa-trash"></i> Remove
                                 </button>
                             </form>
-    
                             {% else %}
                             <form class="quantity-control" method="post" action="{% url 'cart:cart_add' product.slug %}">
                                 {% csrf_token %}
@@ -625,15 +670,13 @@
                                 </button>
                             </form>
                             {% endif %}
-    
                         {% else %}
                         <button class="remove-cart-btn" disabled>
                             <i class="fas fa-shopping-bag"></i> Out of Stock
                         </button>
                         {% endif %}
                     </div>
-                </div>
-                {% endfor %}
+                </div>     {% endfor %}
             </div>     
             <div class="view-all">
                 <a href="{% url 'product:products_list' %}" class="view-all-btn text-decoration-none">

@@ -10,7 +10,7 @@ from django.utils.functional import cached_property
 from django.utils.http import urlencode
 from django.views.generic import DetailView, ListView, TemplateView
 from .forms import ReviewForm
-from .models import Product, Review, Category
+from .models import Product, Review, Category, Tag
 from account.models import Profile
 from features.models import Brand
 from django.db import models
@@ -38,6 +38,7 @@ class ProductListView(ListView):
         params = self.request.GET.copy()
         return {
             'search': params.get('search', '').strip(),
+            'tag': params.get('tag', '').strip(),
             'category': params.get('category', '').strip(),
             'brand': params.get('brand', '').strip(),
             'sort_by': params.get('sort_by', 'default'),
@@ -79,6 +80,10 @@ class ProductListView(ListView):
             if filters['category']:
                 queryset = queryset.filter(category__slug=filters['category'])
             
+            # Apply tag filter  
+            if filters['tag']:
+                queryset = queryset.filter(tags__name__iexact=filters['tag'])
+
             # Apply brand filter
             if filters['brand']:
                 queryset = queryset.filter(brand__slug=filters['brand'])
@@ -133,9 +138,11 @@ class ProductListView(ListView):
         context.update({
             'categories': Category.objects.all(),
             'brands': Brand.objects.all(),
+            'tags': Tag.objects.all(),
             'search_query': filters['search'],
             'selected_category': filters['category'],
             'selected_brand': filters['brand'],
+            'selected_tag': filters['tag'],
             'sort_by': filters['sort_by'],
             'min_price_filter': filters['min_price'] or price_range['min_price'],
             'max_price_filter': filters['max_price'] or price_range['max_price'],
