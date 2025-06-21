@@ -2,8 +2,7 @@
 {% block title %}Your Wishlist Trader - Your Ultimate Shopping Destination{% endblock %}
 
 {% block body %}
-
-<section class="wishlist-hero">
+    <section class="wishlist-hero">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">
@@ -81,12 +80,26 @@
                         </p>
                         {% endif %}
                         <div class="mt-auto">
-                            {% if product.slug in contextCart %}
-                            <a href="{% url 'cart:cart_remove' product.slug %}" class="btn btn-outline-primary btn-sm w-100 btn-add-to-cart" ><i class="fas fa-shopping-cart me-1"></i>Added!</a>
-                            {% else %}
-                            <a href="{% url 'cart:cart_add' product.slug %}" class="btn btn-primary btn-sm w-100 btn-add-to-cart" ><i class="fas fa-check me-1"></i>Add to Cart</a>
-                            {% endif %}
-
+                        <div class="product-actions d-flex align-items-center gap-2 flex-nowrap">
+                            {% if product.slug not in contextCart or not user.is_authenticated %}
+                            <form method="POST" action="{% url 'cart:cart_add' product.slug %}" class="d-flex align-items-center flex-nowrap w-100">
+                                {% csrf_token %}
+                                <div class="quantity-control d-flex align-items-center flex-shrink-0" style="width: 90px; min-width: 90px;">
+                                    <input type="number" name="quantity" class="quantity-input form-control form-control-sm mx-1 text-center" value="1" min="1" max="{{ product.stock }}" style="width: 90px;" required>
+                                </div>
+                                <button type="submit" class="action-btn cart-btn btn btn-primary btn-sm px-3 py-2 rounded-pill ms-3 flex-grow-1 d-flex align-items-center justify-content-center" style="min-width: 44px;">
+                                    <i class="fas fa-shopping-cart me-2"></i>
+                                </button>
+                            </form>
+                        {% else %}
+                            <form method="POST" action="{% url 'cart:cart_remove' product.slug %}" class="d-inline-block flex-grow-1">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center" style="min-width: 44px;">
+                                    <i class="fas fa-trash-alt me-2"></i>Remove
+                                </button>
+                            </form>
+                        {% endif %}
+                </div>
                         </div>
                     </div>
                 </div>
@@ -108,3 +121,28 @@
     </div>
 </section>
 {% endblock body %}
+
+
+<script>
+
+        // Quantity input controls
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.quantity-btn.minus').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('.quantity-input');
+                    if (parseInt(input.value) > parseInt(input.min)) {
+                        input.value = parseInt(input.value) - 1;
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.quantity-btn.plus').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const input = this.parentElement.querySelector('.quantity-input');
+                    if (parseInt(input.value) < parseInt(input.max)) {
+                        input.value = parseInt(input.value) + 1;
+                    }
+                });
+            });
+        });
+</script>

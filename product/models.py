@@ -86,7 +86,7 @@ class Review(models.Model):
     RATING_CHOICES = [(i, str(i)) for i in range(1, 6)]
 
     product = models.ForeignKey(Product,on_delete=models.CASCADE,related_name="reviews",verbose_name=_("Product"))
-    user = models.ForeignKey('auth.User',on_delete=models.CASCADE,related_name="reviews",verbose_name=_("User"))
+    user = models.ForeignKey('auth.User',on_delete=models.CASCADE,related_name="reviews",verbose_name=_("User"),null=True,blank=True)
     content = models.TextField(max_length=1000,verbose_name=_("Review"),default="")
     rating = models.IntegerField(choices=RATING_CHOICES,default=3,verbose_name=_("Rating"))
     created_at = models.DateTimeField(auto_now_add=True,verbose_name=_("Created At"),db_index=True)

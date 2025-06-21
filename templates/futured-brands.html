@@ -1,265 +1,189 @@
-<!-- Featured Brands -->
-<section class="brands-section py-5 bg-light">
-    <div class="container">
-        <div class="section-header text-center mb-5">
-            <h2 class="section-title mb-3">Shop by Brand</h2>
-            <p class="section-subtitle text-muted">Discover our trusted brands</p>
+<div class="featured-brands-section py-5 d-flex flex-column align-items-center" style="background: linear-gradient(135deg,#f8fafc 60%, #e0e7ff 100%);">
+    <h3 class="section-title text-center mb-5 fw-bold" style="letter-spacing: 2px; color: #22223b;">✨ Featured Brands ✨</h3>
+    
+    <div class="featured-brands-slider-wrapper position-relative w-100">
+        <button class="slider-nav-btn prev-btn position-absolute start-0 top-50 translate-middle-y bg-white border-0 rounded-circle shadow-sm" style="width: 40px; height: 40px; z-index: 10;">
+            <i class="fas fa-chevron-left text-primary"></i>
+        </button>
+        
+        <div class="featured-brands-slider d-flex flex-row flex-nowrap overflow-hidden gap-4 pb-2 px-4" style="scroll-snap-type: x mandatory;">
+            {% for brand in featuredBrands %}
+            <div class="brand-slide card border-0 shadow-lg text-center px-4 py-3" style="min-width: 200px; border-radius: 22px; background: linear-gradient(145deg,rgba(178, 24, 255, 0.41),rgb(119, 56, 255)); scroll-snap-align: start; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+                <a href="{% url 'product:products_list' %}?brand={{ brand.slug|escape }}" class="brand-item text-decoration-none text-dark d-flex flex-column align-items-center">
+                    <div class="brand-logo-container mb-3 d-flex align-items-center justify-content-center" style="height:70px;">
+                        {% if brand.image %}
+                            <img src="{{ brand.image.url }}" alt="{{ brand.name }}" class="brand-logo-img img-fluid" style="max-height: 60px; max-width: 100px; filter: drop-shadow(0 2px 8pxrgb(60, 85, 167));">
+                        {% else %}
+                            <div class="brand-icon d-flex align-items-center justify-content-center rounded-circle bg-light" style="height:60px; width:60px;">
+                                <i class="fas {{ brand.logo|default:'fa-tag' }} fa-2x text-secondary"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <h5 class="brand-name mt-2 mb-1 fw-semibold" style="color: #3a3a40;">{{ brand.name|truncatechars:12 }}</h5>
+                </a>
+                    </div>
+            {% endfor %}
         </div>
         
-        <div class="brands-slider position-relative">
-            <button class="slider-nav prev" aria-label="Previous brands">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            
-            <div class="brands-track" id="brandsTrack">
-                {% for brand in featuredBrands %}
-                <div class="brand-slide">
-                    <a href="{% url 'product:products_list' %}?brand={{ brand.slug|escape }}" class="brand-item">
-                        <div class="brand-logo-container">
-                            {% if brand.logo %}
-                                <img src="{{ brand.logo.url }}" alt="{{ brand.name }}" class="brand-logo-img">
-                            {% else %}
-                                <div class="brand-icon">
-                                    <i class="fas fa-{{ brand.icon|default:'tag' }}"></i>
-                                </div>
-                            {% endif %}
-                        </div>
-                        <h5 class="brand-name mt-3">{{ brand.name|truncatechars:10 }}</h5>
-                        <span class="view-products">View Products <i class="fas fa-arrow-right ms-1"></i></span>
-                    </a>
-                </div>
-                {% endfor %}
-            </div>
-            
-            <button class="slider-nav next" aria-label="Next brands">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-        
-
+        <button class="slider-nav-btn next-btn position-absolute end-0 top-50 translate-middle-y bg-white border-0 rounded-circle shadow-sm" style="width: 40px; height: 40px; z-index: 10;">
+            <i class="fas fa-chevron-right text-primary"></i>
+        </button>
     </div>
-</section>
+    
+    <div class="slider-dots mt-4 d-flex gap-2">
+        {% for brand in featuredBrands %}
+        <button class="slider-dot bg-secondary border-0 rounded-circle" style="width: 10px; height: 10px; opacity: 0.3; transition: all 0.3s ease;"></button>
+        {% endfor %}
+    </div>
+</div>
 
 <style>
-    /* Brands Section */
-    .brands-section {
-        background-color: #f8f9fa;
-        overflow: hidden;
+    .featured-brands-slider {
+        scrollbar-width: thin;
+        scrollbar-color: #b4b8f8 #e0e7ff;
     }
     
-    .section-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #2c3e50;
-        position: relative;
-        display: inline-block;
+    .featured-brands-slider::-webkit-scrollbar {
+        height: 8px;
+        background: #e0e7ff;
+        border-radius: 4px;
     }
     
-    .section-title:after {
-        content: '';
-        position: absolute;
-        width: 50px;
-        height: 3px;
-        background: linear-gradient(90deg, #3498db, #9b59b6);
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
+    .featured-brands-slider::-webkit-scrollbar-thumb {
+        background: #b4b8f8;
+        border-radius: 4px;
     }
     
-    .section-subtitle {
-        font-size: 1.1rem;
-        max-width: 600px;
-        margin: 0 auto;
+    .brand-slide:hover {
+        transform: translateY(-8px) scale(1.04);
+        box-shadow: 0 12px 24px rgba(80, 80, 160, 0.15);
+        background: linear-gradient(145deg, #ffffff, #e9e0ff) !important;
     }
     
-    /* Brands Slider */
-    .brands-slider {
-        padding: 0 40px;
-        position: relative;
-    }
-    
-    .slider-nav {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: white;
-        border: none;
-        color: #3498db;
-        font-size: 1rem;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    .slider-nav:hover {
-        background: #3498db;
-        color: white;
-        transform: translateY(-50%) scale(1.1);
-    }
-    
-    .slider-nav.prev {
-        left: 0;
-    }
-    
-    .slider-nav.next {
-        right: 0;
-    }
-    
-    .brands-track {
-        display: flex;
-        gap: 20px;
-        overflow-x: auto;
-        scroll-behavior: smooth;
-        padding: 20px 0;
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
-    }
-    
-    .brands-track::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
-    }
-    
-    .brand-slide {
-        flex: 0 0 calc(16.666% - 17px);
-        min-width: 180px;
-    }
-    
-    /* Brand Item */
-    .brand-item {
-        display: block;
-        text-align: center;
-        background: var(--gradient-secondary,rgb(107, 40, 147));
-        border-radius: 12px;
-        padding: 30px 20px;
-        height: 100%;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        text-decoration: none;
-        color: inherit;
-    }
-    
-    .brand-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        color: #3498db;
-    }
-    
-    .brand-logo-container {
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-    }
-    
-    .brand-logo-img {
-        max-height: 100%;
-        max-width: 100%;
-        object-fit: contain;
-        filter: grayscale(100%);
-        opacity: 0.8;
-        transition: all 0.3s ease;
-    }
-    
-    .brand-icon {
-        font-size: 2.5rem;
-        color: #6c757d;
-        transition: all 0.3s ease;
-    }
-    
-    .brand-item:hover .brand-logo-img {
-        filter: grayscale(0%);
-        opacity: 1;
-    }
-    
-    .brand-item:hover .brand-icon {
-        color: #3498db;
+    .brand-slide:hover .brand-logo-img {
+        filter: drop-shadow(0 4px 16px rgba(180, 184, 248, 0.7));
         transform: scale(1.1);
     }
     
-    .brand-name {
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        transition: color 0.3s ease;
+    .brand-slide:hover .brand-name {
+        color: #4f46e5 !important;
     }
     
-    .view-products {
-        font-size: 0.85rem;
-        color: #6c757d;
-        opacity: 0;
+    .brand-slide:hover .brand-hover-indicator {
+        width: 40px !important;
+    }
+    
+    .slider-nav-btn {
         transition: all 0.3s ease;
     }
     
-    .brand-item:hover .view-products {
-        opacity: 1;
-        color: #3498db;
+    .slider-nav-btn:hover {
+        transform: scale(1.1);
+        background: #4f46e5 !important;
+        color: white !important;
     }
     
-    /* Responsive Adjustments */
-    @media (max-width: 992px) {
-        .brand-slide {
-            flex: 0 0 calc(25% - 15px);
-        }
+    .slider-nav-btn:active {
+        transform: scale(0.95);
     }
     
-    @media (max-width: 768px) {
-        .brands-slider {
-            padding: 0 30px;
-        }
-        
-        .brand-slide {
-            flex: 0 0 calc(33.333% - 14px);
-        }
-        
-        .section-title {
-            font-size: 2rem;
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .brand-slide {
-            flex: 0 0 calc(50% - 10px);
-        }
-        
-        .slider-nav {
-            width: 30px;
-            height: 30px;
-            font-size: 0.8rem;
-        }
+    .slider-dot.active {
+        opacity: 1 !important;
+        background: #4f46e5 !important;
+        transform: scale(1.2);
     }
 </style>
 
 <script>
-    // Simple slider functionality
     document.addEventListener('DOMContentLoaded', function() {
-        const track = document.getElementById('brandsTrack');
-        const prevBtn = document.querySelector('.slider-nav.prev');
-        const nextBtn = document.querySelector('.slider-nav.next');
-        const brandSlides = document.querySelectorAll('.brand-slide');
-        const slideWidth = brandSlides[0].offsetWidth + 20; // including gap
+        const slider = document.querySelector('.featured-brands-slider');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        const dots = document.querySelectorAll('.slider-dot');
+        const slides = document.querySelectorAll('.brand-slide');
+        const slideWidth = slides[0].offsetWidth + 16; // width + gap
         
-        prevBtn.addEventListener('click', () => {
-            track.scrollBy({ left: -slideWidth, behavior: 'smooth' });
-        });
+        let currentIndex = 0;
+        let autoScrollInterval;
         
-        nextBtn.addEventListener('click', () => {
-            track.scrollBy({ left: slideWidth, behavior: 'smooth' });
-        });
+        // Initialize dots
+        dots[0].classList.add('active');
         
-        // Hide arrows when at start/end
-        function checkArrows() {
-            prevBtn.style.visibility = track.scrollLeft <= 0 ? 'hidden' : 'visible';
-            nextBtn.style.visibility = track.scrollLeft >= track.scrollWidth - track.clientWidth ? 'hidden' : 'visible';
+        // Navigation functions
+        function goToSlide(index) {
+            if (index < 0) index = slides.length - 1;
+            if (index >= slides.length) index = 0;
+            
+            currentIndex = index;
+            slider.scrollTo({
+                left: index * slideWidth,
+                behavior: 'smooth'
+            });
+            
+            updateDots();
         }
         
-        track.addEventListener('scroll', checkArrows);
-        checkArrows();
+        function updateDots() {
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentIndex);
+            });
+        }
+        
+        // Button event listeners
+        prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+        nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+        
+        // Dot navigation
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', () => goToSlide(i));
+        });
+        
+        // Auto-scroll (optional)
+        function startAutoScroll() {
+            autoScrollInterval = setInterval(() => {
+                goToSlide(currentIndex + 1);
+            }, 3000);
+        }
+        
+        function stopAutoScroll() {
+            clearInterval(autoScrollInterval);
+        }
+        
+        // Start auto-scroll and pause on hover
+        startAutoScroll();
+        slider.addEventListener('mouseenter', stopAutoScroll);
+        slider.addEventListener('mouseleave', startAutoScroll);
+        
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        slider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+        
+        slider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+        
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                goToSlide(currentIndex + 1); // Swipe left
+            }
+            if (touchEndX > touchStartX + 50) {
+                goToSlide(currentIndex - 1); // Swipe right
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                goToSlide(currentIndex - 1);
+            } else if (e.key === 'ArrowRight') {
+                goToSlide(currentIndex + 1);
+            }
+        });
     });
 </script>
+

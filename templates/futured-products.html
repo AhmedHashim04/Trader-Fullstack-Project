@@ -596,7 +596,8 @@
                         0% { filter: drop-shadow(0 0 0 #ff9800); }
                         100% { filter: drop-shadow(0 0 8px #ff9800); }
                     }
-                    </style>     <div class="wishlist-btn">
+                    </style>
+                    <div class="wishlist-btn">
                         {% if product in contextWishlist %}
                         <a href="{% url 'product:add_remove_wishlist' product.slug %}" style="color: var(--warning);" title="Remove from wishlist">
                             <i class="fas fa-times"></i>
