@@ -47,12 +47,10 @@ class ProductListView(ListView):
             'view_mode': params.get('view_mode', 'grid'),
             'items_per_page': params.get('items_per_page', str(self.paginate_by)),
         }
-
     def get_queryset(self):
         """Get optimized queryset with filtering and annotations"""
         cache_key = f"products_{urlencode(self.request.GET)}"
         queryset = cache.get(cache_key)
-        
         if queryset is None:
             # Start with optimized base queryset
             queryset = Product.objects.select_related(
@@ -64,9 +62,7 @@ class ProductListView(ListView):
             ).annotate(
                 review_count=Count('reviews')
             )
-            
             filters = self.applied_filters
-            
             # Apply search filter
             if filters['search']:
                 queryset = queryset.filter(
@@ -75,7 +71,6 @@ class ProductListView(ListView):
                     Q(category__name__icontains=filters['search']) |
                     Q(brand__name__icontains=filters['search'])
                 )
-            
             # Apply category filter
             if filters['category']:
                 queryset = queryset.filter(
@@ -85,7 +80,6 @@ class ProductListView(ListView):
             # Apply tag filter  
             if filters['tag']:
                 queryset = queryset.filter(tags__name__iexact=filters['tag'])
-
             # Apply brand filter
             if filters['brand']:
                 queryset = queryset.filter(brand__slug=filters['brand'])
@@ -96,20 +90,17 @@ class ProductListView(ListView):
                 queryset = queryset.filter(price__gte=min_price)
             except (ValueError, TypeError):
                 pass
-            
             try:
                 max_price = float(filters['max_price']) if filters['max_price'] else decimal('inf')
                 queryset = queryset.filter(price__lte=max_price)
             except (ValueError, TypeError):
                 pass
-            
             # Apply sorting
             sort_field = self.sort_options.get(
                 filters['sort_by'], 
                 self.sort_options['default']
             )
             queryset = queryset.order_by(sort_field)
-            
             # Cache for 5 minutes
             cache.set(cache_key, queryset, 60*5)
         
@@ -136,8 +127,6 @@ class ProductListView(ListView):
         products = paginator.get_page(page_number)
         context['featuredCollections'] = Collection.objects.all()
 
-
-
         context.update({
             'categories': Category.objects.all(),
             'brands': Brand.objects.all(),
@@ -157,11 +146,8 @@ class ProductListView(ListView):
             'global_max_price': price_range['max_price'],
             'products': products,
             'is_paginated': products.has_other_pages(),
-
         })
-        
         return context
-
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
@@ -257,7 +243,6 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
         messages.error(self.request, "Please correct the errors below.")
         return self.render_to_response(self.get_context_data(form=form))
 
-
 class CompareProductsView(LoginRequiredMixin, TemplateView):
     template_name = 'product/compare_products.html'
     max_products = 4
@@ -270,7 +255,6 @@ class CompareProductsView(LoginRequiredMixin, TemplateView):
             raise Http404("Select at least 2 products to compare")
         
         products = Product.objects.filter(slug__in=slugs)
-        
         # Field comparison configuration
         comparable_fields = {
             'name': 'Name',
@@ -339,9 +323,7 @@ class WishlistViewDetail(LoginRequiredMixin, TemplateView):
 @login_required
 def add_remove_wishlist(request,slug):
     product = Product.objects.get(slug=slug)
-
     user = get_object_or_404(Profile, user=request.user)
-    
     if product in user.wishlist.all() :
         user.wishlist.remove(product)
         messages.success(request, 'The product has been removed from the wishlist!')
@@ -351,8 +333,6 @@ def add_remove_wishlist(request,slug):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
-
-
 @login_required
 def clear_wishlist(request):
     user = get_object_or_404(Profile, user=request.user)
@@ -360,10 +340,6 @@ def clear_wishlist(request):
     user.wishlist.clear()
     messages.success(request, 'Wishlist cleared successfully!')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
-
-
-
 
 def user_see_product(request,slug):
     product = Product.objects.get(slug=slug)

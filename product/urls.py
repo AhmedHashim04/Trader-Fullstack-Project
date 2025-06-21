@@ -18,7 +18,7 @@ urlpatterns = [
     path('compare/', CompareProductsView.as_view(), name='compare_products'),
     path('clear-wishlist/', clear_wishlist, name="clear_wishlist"),
     path('<slug:slug>/', ProductDetailView.as_view(), name="product_detail"),
-    path('<slug:slug>/view/', user_see_product, name="product_view"),
+    path('<slug:slug>/view/', user_see_product, name="user_see_product"),
     path('<slug:slug>/wishlist/', add_remove_wishlist, name="add_remove_wishlist"),
 
 ]

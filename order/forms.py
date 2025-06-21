@@ -18,9 +18,6 @@ class OrderCreateForm(forms.ModelForm):
         if user:
             self.fields['address'].queryset = Address.objects.filter(user=user)
 
-
-# order/forms.py
-
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
