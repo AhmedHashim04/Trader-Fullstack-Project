@@ -78,8 +78,10 @@ class ProductListView(ListView):
             
             # Apply category filter
             if filters['category']:
-                queryset = queryset.filter(category__slug=filters['category'])
-            
+                queryset = queryset.filter(
+                    Q(category__slug=filters['category']) |
+                    Q(category__parent__slug=filters['category'])
+                )
             # Apply tag filter  
             if filters['tag']:
                 queryset = queryset.filter(tags__name__iexact=filters['tag'])
@@ -109,7 +111,7 @@ class ProductListView(ListView):
             queryset = queryset.order_by(sort_field)
             
             # Cache for 5 minutes
-            cache.set(cache_key, queryset, 300)
+            cache.set(cache_key, queryset, 60*5)
         
         return queryset
 

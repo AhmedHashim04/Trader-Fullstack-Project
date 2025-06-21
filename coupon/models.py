@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
 from django.utils import timezone
 from django.core.validators import MinValueValidator
+from decimal import Decimal
 
 def get_default_expiry_date():
     return timezone.now() + timedelta(days=30)
@@ -50,11 +51,14 @@ class Coupon(models.Model):
     def apply_discount(self, original_price):
         if self.discount_type == self.DiscountType.FIXED:
             return max(original_price - self.amount, 0)
+        
         elif self.discount_type == self.DiscountType.PERCENT:
-            discount = original_price * (self.amount / 100)
+            discount = original_price * (self.amount / Decimal("100"))
             if self.max_discount:
                 discount = min(discount, self.max_discount)
+                
             return max(original_price - discount, 0)
+        
         elif self.discount_type == self.DiscountType.FREE_SHIPPING:
             return original_price  # Shipping handled separately
         return original_price
