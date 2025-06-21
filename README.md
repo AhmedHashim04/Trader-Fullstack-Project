@@ -1,55 +1,75 @@
 
-# 🛒 Trader - E-commerce Platform
+🛒 Trader - E-commerce Platform
 
-**Trader** is a fully-featured e-commerce platform built with Django and PostgreSQL. Inspired by Noon, it includes product management, a full order system, integrated payment methods (including Vodafone Cash), CSV import/export, and a modern frontend using Bootstrap.
+Trader is a full-featured e-commerce platform built with Django and PostgreSQL. Inspired by Noon, it offers complete product and order management, integrated payment systems (including Vodafone Cash), CSV import/export, and a modern responsive frontend using Bootstrap.
+🚀 Features
 
----
+    🧾 Product & Category Management with inventory control
 
-## 🚀 Features
+    💳 Secure Payments, including Vodafone Cash integration
 
-- 🧾 Product and category management with inventory control
-- 💳 Secure payment system (including Vodafone Cash integration)
-- 🛍️ Shopping cart and order management
-- 📊 Upload/download products using CSV files
-- ⏱️ Background tasks with Redis & Celery (e.g., order notifications)
-- 🎨 Responsive frontend using Bootstrap, HTML5, and CSS3
-- 🧪 Full test coverage using Pytest
-- 💌 Email Notifications (for orders, password reset, promotions)
-- 🧾 Invoices & Order History (PDF export, detailed receipts)
-- 💬 Product Reviews and Ratings
-- 💚 Wishlist / Favorites
-- 👥 User Profiles & Address Book (multiple addresses for shipping)
-- 🔎 Advanced Search & Filtering (by price, rating, brand, etc.)
-- 📦 Order Tracking System (Even basic status: Processing → Shipped → Delivered)
+    🛍️ Shopping Cart & Order Management
 
-## 🚧 New Features in Development
+    📊 CSV Import/Export for product data
 
-### 👥 User Experience Enhancements
-- User profiles with support for multiple shipping addresses  
-- Advanced product search and filtering (by price, rating, brand, etc.)  
-- Product tags and highlights (e.g., "New", "Hot", "Sale")  
-- Related products and "Frequently Bought Together" suggestions  
+    ⏱️ Background Tasks using Redis & Celery (e.g., order notifications)
 
-### 📊 Admin Tools & Analytics
-- Interactive admin dashboard with sales analytics  
-- Bulk editing capabilities for products in the admin panel  
-- Discount code and promotional offer system  
+    🎨 Responsive Frontend using Bootstrap, HTML5, and CSS3
 
-### 🌐 Site Management & Content
-- Multi-language support for international users  
-- Multi-currency support with automatic conversion  
-- Static pages (About Us, Terms of Service, Privacy Policy, etc.)
+    🧪 Test Coverage with Pytest for core functionalities
 
-### 🚚 Shipping & Order Management
-- Region-based shipping cost calculations
-  
-### 🛡️ Security & Performance Improvements
-- API authentication with JWT or OAuth2  
-- Rate limiting and throttling for API endpoints  
-- Redis-based caching for products and categories  
-- Admin activity logging for enhanced security and monitoring  
+    💌 Email Notifications for orders, password resets, and promotions
 
----
+    🧾 Invoices & Order History, including PDF export
+
+    💬 Product Reviews & Ratings
+
+    💚 Wishlist / Favorites System
+
+    👥 User Profiles with multi-address shipping support
+
+    🔎 Advanced Search & Filtering (price, rating, brand, etc.)
+
+    📦 Order Tracking with status updates (Processing → Shipped → Delivered)
+
+    🛍️ Related Products and "Frequently Bought Together" suggestions
+
+    📄 Static Pages (About Us, Terms, Privacy Policy, etc.)
+
+    🚚 Region-Based Shipping Cost Calculations
+
+    ⚡ Redis-Based Caching for products and categories
+
+    🛡️ Admin Activity Logging for enhanced monitoring and security
+
+🚧 Upcoming Features
+🧵 Product Variants
+
+    Support for multiple colors, sizes, and other attributes
+
+⚖️ Shipping Weight Calculations
+
+    Dynamic shipping cost based on product weight
+
+📊 Admin Tools & Analytics
+
+    Interactive dashboard with sales analytics
+
+    Bulk product editing in admin panel
+
+    Discount code and promotional offer system
+
+🌐 Internationalization & Localization
+
+    Multi-language support
+
+    Multi-currency support with real-time conversion
+
+🛡️ Security & Performance
+
+    API authentication using JWT or OAuth2
+
+    Rate limiting & throttling for public APIs
 
 ## 🛠️ Tech Stack
 
