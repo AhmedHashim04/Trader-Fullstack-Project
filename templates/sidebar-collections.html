@@ -5,8 +5,8 @@
     <div class="card-body p-3">
         <ul class="list-unstyled mb-0">
             {% for collection in featuredCollections %}
-            <li class="mb-3">
-                <a href="{% url 'features:collection_detail' collection.slug %}" class="d-flex align-items-center text-decoration-none">
+            <li class="mb-3 sidebar-collection-item">
+                <a href="{% url 'features:collection_detail' collection.slug %}" class="d-flex align-items-center text-decoration-none sidebar-collection-link">
                     <div class="me-3" style="width:48px; height:48px; border-radius:8px; overflow:hidden; background:#f8f9fa; position:relative;">
                         <div class="d-flex flex-wrap w-100 h-100" style="position:absolute;top:0;left:0;">
                             {% for product in collection.products.all|slice:":4" %}
@@ -23,6 +23,13 @@
                     </div>
                 </a>
             </li>
+            <style>
+                .sidebar-collection-link:hover {
+                    background-color: #f1f3f5;
+                    border-radius: 8px;
+                    color: #212529 !important;
+                }
+            </style>
             {% endfor %}
         </ul>
     </div>
