@@ -12,6 +12,10 @@ from django.views.generic import View
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
+from coupon.models import Coupon
+from coupon.views import remove_coupon
+
+
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'order/order_list.html'
@@ -43,11 +47,18 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         order.shipping_cost = order.calculate_shipping_cost(weight=1)
         # apply discount and tax from cart
         discount = cart.get_total_discount() or Decimal('0.00')
+        print(discount)
         tax = cart.get_tax() or Decimal('0.00')
         # compute subtotal of items
+        if self.request.session.get('coupon_discount'):
+            discount += Decimal(self.request.session['coupon_discount'])
+            order.coupon = Coupon.objects.get(code=self.request.session.get('coupon_code', None))
         items_total = sum(item['price'] * item['quantity'] for item in cart)
+
         order.total_price = (items_total + order.shipping_cost + tax - discount).quantize(Decimal('0.01'))
+        if order.total_price < 0:order.total_price = 0
         order.save()
+        remove_coupon(self.request)
 
         # create order items
         for item in cart:

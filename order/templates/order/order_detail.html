@@ -42,13 +42,28 @@
                                     <i class="fas fa-calendar-alt me-3 text-primary"></i>
                                     <div>
                                         <small class="text-muted">Order {{ order.status.title }} at </small>
-                                        <div class="fw-bold">{{ order.status_changed_at|date:"F j, Y H:i" }}</div>
+                                        <div class="fw-bold">{{ order.updated_at|date:"F j, Y H:i" }}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         {% endif %}
 
+                        {% if order.coupon %}
+                        <div class="detail-card p-3 rounded-3 flex-fill">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-ticket-alt me-3 text-primary"></i>
+                                <div>
+                                    <small class="text-muted">Coupon Applied</small>
+                                    <div>
+                                        <span class="badge rounded-pill bg-info text-dark">
+                                            #{{ order.coupon.code }} : -{{ order.coupon.amount }}{% if order.coupon.discount_type == 'percent' %}%{% else %} EGP{% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
 
                             <div class="detail-card p-3 rounded-3">
                                 <div class="d-flex align-items-center">
@@ -60,7 +75,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        
                         <div class="col-md-6">
                             <div class="detail-card p-3 rounded-3">
                                 <div class="d-flex align-items-center">
@@ -71,6 +86,7 @@
                                     </div>
                                 </div>
                             </div>
+    
                             <div class="detail-card p-3 rounded-3">
                                 <div class="d-flex align-items-center">
                                     <i class="fas fa-credit-card me-3 text-primary"></i>

@@ -55,6 +55,7 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     status_changed_at = models.DateTimeField(null=True, blank=True)
     paid = models.BooleanField(_("Paid"), default=False)
+    coupon = models.ForeignKey('coupon.Coupon', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         ordering = ['-created_at']
@@ -79,26 +80,21 @@ class Order(models.Model):
             return Decimal('0.00')
         return Decimal('0.00')
 
-    def calculate_total_price(self):
-        items_total = sum(item.get_total_price() for item in self.get_items())
-        self.total_price = (items_total + self.shipping_cost).quantize(Decimal('0.01'))
-
     def save(self, *args, **kwargs):
         if not self.shipping_cost:
             self.shipping_cost = self.calculate_shipping_cost(weight=1.0)
-        self.calculate_total_price()
         super().save(*args, **kwargs)
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
     quantity = models.PositiveIntegerField(default=1)
-    price = models.DecimalField(max_digits=10, decimal_places=2)  
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name} in Order {self.order.id}"
 
-    def get_total_price(self) -> Decimal:
-        discount_amount = (self.price * self.quantity * self.product.discount) / 100
-        return (self.price * self.quantity) - discount_amount
+    # def get_total_price(self) -> Decimal:
+    #     discount_amount = (self.price * self.quantity * self.product.discount) / 100
+    #     return (self.price * self.quantity) - discount_amount
 

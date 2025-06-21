@@ -75,11 +75,15 @@
                     <div class="footer-section">
                         <h5 class="section-title">Account</h5>
                         <ul class="footer-links">
-                            <li><a href="{% url 'account:login' %}">🔐 Login</a></li>
-                            <li><a href="{% url 'account:register' %}">📝 Sign Up</a></li>
+                            {% if request.user.is_authenticated %}
                             <li><a href="{% url 'account:user_profile' user.profile.id %}">👤 My Profile</a></li>
                             <li><a href="/order/">📋 Order History</a></li>
                             <li><a href="{% url 'account:user_profile_edit' user.profile.id %}">⚙️ Settings</a></li>
+                            {% else %}                            
+                            <li><a href="{% url 'account:login' %}">🔐 Login</a></li>
+                            <li><a href="{% url 'account:register' %}">📝 Sign Up</a></li>
+                            {% endif %}
+                        
                         </ul>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block title %}Your Cart Trader - Your Ultimate Shopping Destination{% endblock %}
 {% block body %}
 
 <section class="page-header bg-gradient-animated py-5">
@@ -167,13 +167,58 @@
                     <div class="summary-item d-flex justify-content-between mb-2">
                         <span>Subtotal Discount:</span>
                         <span>{{ cart_summary.total_discount|floatformat:2 }} EGP</span>
-                    </div>                    <div class="summary-item d-flex justify-content-between mb-2">
-                        <span>Subtotal (After Discount):</span>
-                        <span>{{ cart_summary.total_price_after_discount|floatformat:2 }} EGP</span>
                     </div>
-                    <div class="summary-item d-flex justify-content-between mb-2">
-                        <span>Tax:</span>
-                        <span>{{ cart_summary.tax_amount|floatformat:2 }} EGP</span>
+                    <!-- Tax Summary -->
+                    <div class="summary-item d-flex justify-content-between align-items-center mb-2">
+                        <span>
+                            <i class="fas fa-receipt text-primary me-1"></i>
+                            Tax
+                            <span class="badge bg-light text-primary ms-1" style="font-size: 0.8em;">
+                                {% if cart_summary.total_price_after_discount >= 3000 %}
+                                    0.5%
+                                {% elif cart_summary.total_price_after_discount >= 1000 %}
+                                    0.2%
+                                {% else %}
+                                    0.1%
+                                {% endif %}
+                            </span>
+                        </span>
+                        <span class="fw-bold">{{ cart_summary.tax_amount|floatformat:2 }} EGP</span>
+                    </div>
+                    <!-- Tax Calculation Details -->
+                    <div class="mb-3">
+                        <div class="card border-0 shadow-sm bg-light">
+                            <div class="card-body py-2 px-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.97em;">
+                                    <span>Subtotal (After Discount):</span>
+                                    <span class="fw-semibold">{{ cart_summary.total_price_after_discount|floatformat:2 }} EGP</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.97em;">
+                                    <span>Tax Rate:</span>
+                                    <span class="fw-semibold">
+                                        {% if cart_summary.total_price_after_discount >= 3000 %}
+                                            0.5%
+                                        {% elif cart_summary.total_price_after_discount >= 1000 %}
+                                            0.2%
+                                        {% else %}
+                                            0.1%
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center" style="font-size: 0.97em;">
+                                    <span>Tax Amount:</span>
+                                    <span class="fw-semibold">{{ cart_summary.tax_amount|floatformat:2 }} EGP</span>
+                                </div>
+                                <hr class="my-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Tax is calculated based on subtotal after discount:<br>
+                                    <span class="ms-3">- 0.5% if subtotal ≥ 3000 EGP</span><br>
+                                    <span class="ms-3">- 0.2% if subtotal ≥ 1000 EGP</span><br>
+                                    <span class="ms-3">- 0.1% if subtotal &lt; 1000 EGP</span>
+                                </small>
+                            </div>
+                        </div>
                     </div>
                     
                     {% if discount %}
@@ -211,11 +256,10 @@
                             </div>
                             
                             <div class="coupon-details mt-2" style="display: flex; gap: 15px; flex-wrap: wrap;">
-
                                 
                                 <div class="detail-item" style="background: white; padding: 8px 12px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                                     <div style="font-size: 0.8em; color: #6c757d;">Discount</div>
-                                    <div style="font-weight: bold; color: #dc3545;">{% if request.session.coupon_type == 'percent' %}{{ request.session.coupon_amount }}%{% else %}-{{ request.session.coupon_amount }}{% endif %}</div>
+                                    <div style="font-weight: bold; color: #dc3545;">{% if request.session.discount_type == 'percent' %}{{ request.session.coupon_amount|floatformat:2 }}%{% else %}-{{ request.session.coupon_amount|floatformat:2 }}{% endif %}</div>
                                 </div>
                                 
                                 <div class="detail-item" style="background: #e8f5e9; padding: 8px 12px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
@@ -225,7 +269,6 @@
                                         <span style="font-size: 0.8em; color: #6c757d;">+Tax</span>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         </div>
@@ -243,7 +286,8 @@
                             .detail-item:hover {
                                 transform: translateY(-2px);
                             }
-                        </style>                        {% else %}
+                        </style>
+                        {% else %}
                         <h6 class="fw-bold mb-3">
                             <i class="fas fa-tag me-2"></i>Promo Code
                         </h6>
@@ -257,6 +301,8 @@
                                 </button>
                             </div>
                         </form>
+                        <br>
+
                     </div>
                         {% endif %}
                         {% endif %}
