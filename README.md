@@ -173,6 +173,7 @@ pytest
 ## 🖼️ Screenshots
 
 > _UI screenshots and GIFs below to showcase the frontend._
+![image](https://github.com/user-attachments/assets/660522d4-138d-42f1-a1c3-8eaf49e9cd31)
 
 - ![Homepage](screenshots/homepage.png)
 - ![Product Detail](screenshots/product-detail.png)
