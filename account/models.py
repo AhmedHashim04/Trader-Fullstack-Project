@@ -36,6 +36,7 @@ class Profile(models.Model):
 
     class Countries(models.TextChoices):
         EGYPT = 'مصر', _('مصر')
+
     id = models.UUIDField(_("ID"), primary_key=True, editable=False, default=uuid.uuid4,db_index=True)
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile",verbose_name=_("User"))
     email = models.EmailField(_("Email"), max_length=100,blank=True,null=True)
@@ -116,9 +117,9 @@ class Profile(models.Model):
             return timezone.now() > self.activation_key_expires
         return True
 
-    def get_city_display_ar(self):
-        """Get Arabic city name directly"""
-        return self.get_city_display()
+    # def get_city_display_ar(self):
+    #     """Get Arabic city name directly"""
+    #     return self.get_city_display()
 
 
 @receiver(post_save, sender=User)

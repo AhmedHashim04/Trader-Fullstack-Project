@@ -1,4 +1,4 @@
-from django.contrib.auth import logout
+from django.contrib.auth import login
 from django.http import HttpResponseRedirect
 from django.views import View
 from django.contrib import messages
@@ -85,7 +85,6 @@ class ActivateAccountView(View):
         user.is_active = True
         user.profile.activation_key = ''
         # user.profile.activation_key_expires = None
-        from django.contrib.auth import login
         login(request, user)
         user.save()
         messages.success(request, 'Your account has been activated successfully!')
@@ -108,6 +107,13 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
     context_object_name = "profile"
     pk_url_kwarg = "id"
 
+    def dispatch(self, request, *args, **kwargs):
+        # Prevent access if not the profile owner
+        profile = self.get_object()
+        if profile.user != request.user:
+            raise Http404("You cannot edit this profile.")
+        return super().dispatch(request, *args, **kwargs)
+    
     def get_queryset(self):
         return super().get_queryset().filter(user=self.request.user)
     
@@ -117,6 +123,8 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
         return response
 
     def get_success_url(self):
+        if self.request.user.profile.id != self.object.id:
+            raise Http404("You cannot update this profile.")
         return reverse('account:user_profile', kwargs={'id': self.object.id})
 
 
