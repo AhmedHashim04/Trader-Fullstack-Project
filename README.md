@@ -128,8 +128,23 @@ pytest
 
 ## 📁 Project Structure
 
+<<<<<<< HEAD
 <details>
 <summary>Click to view simplified structure</summary>
+=======
+> _UI screenshots and GIFs below to showcase the frontend._
+![image](https://github.com/user-attachments/assets/660522d4-138d-42f1-a1c3-8eaf49e9cd31)
+
+- ![Homepage](screenshots/homepage.png)
+- ![Product Detail](screenshots/product-detail.png)
+- ![Cart](screenshots/cart.png)
+- ![Checkout](screenshots/checkout.png)
+- ![Admin Panel](screenshots/admin.png)
+
+---
+
+## 📁 Project Structure (simplified)
+>>>>>>> a4a338fc396ea5dab7f786828a5492b82e42ef94
 
 ```bash
 ├── account/
