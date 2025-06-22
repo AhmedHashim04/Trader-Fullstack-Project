@@ -2,7 +2,11 @@
 from .utils.paymob import get_auth_token, create_paymob_order, generate_payment_key
 from django.shortcuts import redirect, get_object_or_404
 from order.models import Order
-
+from .forms import PaymentProofForm
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.urls import reverse
+from .models import VodafoneCashPayment
 
 def pay_with_paymob(request, order_id):
     order = get_object_or_404(Order, id=order_id)
@@ -89,3 +93,18 @@ def payment_callback(request):
                 return HttpResponse("Order not found", status=404)
 
     return HttpResponse("FAILED", status=400)
+
+
+
+
+@login_required
+def resend_payment_proof(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    payment = VodafoneCashPayment.objects.filter(order=order).first()
+    if payment:
+        print(payment)
+        payment.delete()
+        order.status = "pending"
+        order.save()
+
+    return redirect(reverse("order:order_detail", kwargs={"pk": order_id}))

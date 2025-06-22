@@ -85,6 +85,8 @@ class Order(models.Model):
             self.shipping_cost = self.calculate_shipping_cost(weight=1.0)
         super().save(*args, **kwargs)
 
+
+    
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.PROTECT)

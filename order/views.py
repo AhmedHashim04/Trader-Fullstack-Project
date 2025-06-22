@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from cart.cart import Cart
-from .models import Order, OrderItem, Address
+from .models import Order, OrderItem, Address ,OrderStatus
 from .forms import OrderCreateForm
 from django.views.generic import View
 from django.http import HttpResponseRedirect
@@ -14,7 +14,9 @@ from django.urls import reverse
 from django.contrib import messages
 from coupon.models import Coupon
 from coupon.views import remove_coupon
-
+from payment.forms import PaymentProofForm
+from payment.models import VodafoneCashPayment
+from django.conf import settings
 
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
@@ -24,10 +26,73 @@ class OrderListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user)
 
+
 class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = 'order/order_detail.html'
     context_object_name = 'order'
+
+    def get_payment_status(self, order):
+        """Determine if payment form should be shown."""
+        has_payment = VodafoneCashPayment.objects.filter(order=order).exists()
+        is_vodafone_cash = order.payment_method and order.payment_method.lower() == "vodafone_cash"
+        print(is_vodafone_cash,has_payment)
+        return not has_payment and is_vodafone_cash
+
+    def get_vodafone_number(self):
+        """Return Vodafone number from settings or fallback."""
+        return getattr(settings, "VODAFONE_CASH_NUMBER", "01012345678")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order = self.object
+        show_payment_form = self.get_payment_status(order)
+
+        context.update({
+            "form": PaymentProofForm(instance=order) if show_payment_form else None,
+            "vodafone_number": self.get_vodafone_number() if show_payment_form else None,
+            "show_payment_form": show_payment_form,
+        })
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        order = self.object
+        show_payment_form = self.get_payment_status(order)
+
+        if not show_payment_form:
+            messages.info(request, "Payment proof is not required or already submitted for this order.")
+            return redirect(reverse("order:order_detail", kwargs={"pk": order.pk}))
+
+        form = PaymentProofForm(request.POST, request.FILES, instance=order)
+
+        if form.is_valid():
+            # Save order with proof
+            form.save()
+
+            # Create VodafoneCashPayment record
+            VodafoneCashPayment.objects.create(
+                order=order,
+                transaction_id=form.cleaned_data.get('transaction_id'),
+                screenshot=form.cleaned_data.get('screenshot')
+            )
+
+            # Update order status
+            order.status = OrderStatus.PROCESSING
+            order.save()
+
+            messages.success(request, "Payment proof submitted successfully. Your order is now being processed.")
+            return redirect(reverse("order:order_detail", kwargs={"pk": order.pk}))
+        
+        messages.error(request, "There was an error with your payment proof. Please check the details and try again.")
+        
+        context = {
+            "order": order,
+            "form": form,
+            "vodafone_number": self.get_vodafone_number() if show_payment_form else None,
+            "show_payment_form": show_payment_form,
+        }
+        return render(request, self.template_name, context)
 
 class OrderCreateView(LoginRequiredMixin, CreateView):
     model = Order

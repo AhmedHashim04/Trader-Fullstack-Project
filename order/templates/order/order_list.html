@@ -66,9 +66,15 @@
                                     
                                     <div class="col-md-6 text-md-end mt-3 mt-md-0">
                                         {% if order.status == 'pending' %}
-                                            <a href="{% url 'payment:pay_with_paymob' %}?amount={{ order.total_price }}" class="btn btn-primary btn-sm rounded-pill hover-scale">
-                                                <i class="fas fa-credit-card me-2"></i>Complete Payment
-                                            </a>
+                                                {% if order.get_payment_method_display != 'Cash on Delivery' %}
+                                                <a href="{% url 'payment:pay_with_paymob' %}?amount={{ order.total_price }}" class="btn btn-primary btn-sm rounded-pill hover-scale">
+                                                    <i class="fas fa-credit-card me-2"></i>Complete Payment
+                                                </a>
+                                                    {% else %}
+                                                <span class="badge bg-secondary rounded-pill px-4 py-2 fs-6">
+                                                    <i class="fas fa-clock me-1"></i>Awaiting Payment
+                                                </span>
+                                                {% endif %}
                                         {% elif order.status == 'cancelled' %}
                                             <span class="badge bg-danger rounded-pill px-3 py-2">
                                                 <i class="fas fa-times-circle me-1"></i>Cancelled

@@ -146,9 +146,20 @@
                                         </div>
                                         <div>
                                             {% if order.status == 'pending' %}
+                                                {% if order.get_payment_method_display == 'Cash on Delivery' %}
+                                                <span class="badge bg-secondary rounded-pill px-4 py-2 fs-6">
+                                                    <i class="fas fa-clock me-1"></i>Awaiting Payment
+                                                </span>
+                                                {% elif order.get_payment_method_display == 'Vodafone Cash' and order.status == 'pending' %}
+                                                <a href="#payment-section" class="btn btn-danger rounded-pill px-4 py-2 fs-6">
+                                                    <i class="fas fa-mobile me-1"></i>Complete Vodafone Cash Payment
+                                                </a>
+                                                {% else %}
                                                 <a href="{% url 'payment:pay_with_paymob' %}?amount={{ order.total_price }}" class="btn btn-gradient-primary btn-lg rounded-pill px-4 py-2 hover-scale shadow-sm">
                                                     <i class="fas fa-credit-card me-2"></i>Complete Payment
                                                 </a>
+                                                
+                                                {% endif %}
                                             {% elif order.status == 'cancelled' %}
                                                 <span class="badge bg-danger rounded-pill px-4 py-2 fs-6">
                                                     <i class="fas fa-times-circle me-1"></i>Cancelled
@@ -157,6 +168,10 @@
                                                 <span class="badge bg-warning rounded-pill px-4 py-2 fs-6">
                                                     <i class="fas fa-exclamation-circle me-1"></i>Failed
                                                 </span>
+                                            {% elif order.get_payment_method_display == 'Vodafone Cash' and order.status == 'processing' %}
+                                            <span class="badge bg-info text-dark rounded-pill px-4 py-2 fs-6 d-inline-flex align-items-center">
+                                                <i class="fas fa-mobile me-2"></i>Our team is verifying your Vodafone Cash payment
+                                            </span>
                                             {% else %}
                                                 <span class="badge bg-success rounded-pill px-4 py-2 fs-6">
                                                     <i class="fas fa-check-circle me-1"></i>Paid
@@ -224,8 +239,8 @@
                     </div>
                     
                     <!-- Payment Section -->
-                    {% if order.payment_method == 'vodafone_cash' %}
-                    <div class="payment-section mt-5 p-4 rounded-4">
+                    {% if show_payment_form %}
+                    <div id="payment-section" class="payment-section mt-5 p-4 rounded-4">
                         <h4 class="mb-4 text-primary">
                             <i class="fas fa-money-bill-wave me-2"></i>Payment Details
                         </h4>
@@ -243,65 +258,86 @@
                                 </div>
                                 <div class="payment-instructions">
                                     <p class="mb-2">1. Send <span class="fw-bold">{{ order.total_price|floatformat:2 }} EGP</span> to:</p>
-                                    <h4 class="text-vodafone mb-3">01001234567</h4>
+                                    <h4 class="text-vodafone mb-3">{{ vodafone_number }}</h4>
                                     <p class="mb-3">2. Enter the transaction details below:</p>
+                                    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                                        {% csrf_token %}
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    {{ form.transaction_id }}
+                                                    <label for="{{ form.transaction_id.id_for_label }}">
+                                                        <i class="fas fa-receipt me-2"></i>Transaction ID
+                                                    </label>
+                                                    {% if form.transaction_id.errors %}
+                                                        <div class="invalid-feedback d-block">
+                                                            {{ form.transaction_id.errors.0 }}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    {{ form.screenshot }}
+                                                    <label for="{{ form.screenshot.id_for_label }}">
+                                                        <i class="fas fa-camera me-2"></i>Receipt Screenshot
+                                                    </label>
+                                                    {% if form.screenshot.errors %}
+                                                        <div class="invalid-feedback d-block">
+                                                            {{ form.screenshot.errors.0 }}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if form.non_field_errors %}
+                                            <div class="alert alert-danger mt-3">
+                                                {{ form.non_field_errors }}
+                                            </div>
+                                        {% endif %}
+                                        
+                                        <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                                            <h4 class="text-secondary mb-0">
+                                                <strong>Total Amount:</strong>
+                                            </h4>
+                                            <h3 class="text-success mb-0">{{ order.total_price|floatformat:2 }} EGP</h3>
+                                        </div>
+                                        
+                                        <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mt-5">
+                                            <button type="submit" class="btn btn-success btn-lg rounded-pill hover-scale flex-grow-1">
+                                                <i class="fas fa-check-circle me-2"></i>Confirm Payment
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                             
                         </div>
-                        
-                        <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
-                            {% csrf_token %}
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" name="transaction_id" id="transaction_id" 
-                                               class="form-control modern-input" placeholder=" " required>
-                                        <label for="transaction_id">
-                                            <i class="fas fa-receipt me-2"></i>Transaction ID
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="file" name="screenshot" id="screenshot" 
-                                               class="form-control modern-input" placeholder=" " required>
-                                        <label for="screenshot">
-                                            <i class="fas fa-camera me-2"></i>Receipt Screenshot
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
-                                <h4 class="text-secondary mb-0">
-                                    <strong>Total Amount:</strong>
-                                </h4>
-                                <h3 class="text-success mb-0">{{ order.total_price|floatformat:2 }} EGP</h3>
-                            </div>
-                            
-                            <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mt-5">
-                                <button type="submit" class="btn btn-success btn-lg rounded-pill hover-scale flex-grow-1">
-                                    <i class="fas fa-check-circle me-2"></i>Confirm Payment
-                                </button>
-                            </div>
-                        </form>
-                        {% endif %}
+                {% elif order.payment_method == 'vodafone_cash' and order.status == 'processing'  %}
+                <div class="alert alert-info d-flex flex-column align-items-center text-center p-4 rounded-4 shadow-sm">
+                    <i class="fas fa-info-circle fa-2x mb-3 text-primary"></i>
+                    <div class="mb-3">
+                        Your Vodafone Cash payment is being processed.<br>
+                        Please wait for confirmation.
                     </div>
-                    <div class="d-flex flex-row-reverse align-items-center gap-3">
-                            {% if order.status != 'cancelled' %}
-                            <form method="post" action="{% url 'order:cancel_order' order.id %}" class="d-inline m-0 p-0" style="flex: 1;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-outline-danger btn-lg rounded-pill hover-scale w-100">
-                                    <i class="fas fa-arrow-right me-2"></i>Cancel Order
-                                </button>
-                            </form>
-                            {% endif %}
-                            <a href="{% url 'order:order_list' %}" class="btn btn-outline-secondary btn-lg rounded-pill hover-scale w-100" style="flex: 1;">
-                                <i class="fas fa-arrow-left me-2"></i>Back to Orders
-                            </a>
-                        </div>
-                
+                    <a href="{% url 'payment:resend_payment_proof' order.id %}" class="btn btn-gradient-primary btn-lg rounded-pill px-4 py-2 hover-scale shadow-sm mt-2">
+                        <i class="fas fa-credit-card me-2"></i>Resend Payment
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="d-flex flex-row-reverse align-items-center gap-3">
+                {% if order.status != 'cancelled' %}
+                <form method="post" action="{% url 'order:cancel_order' order.id %}" class="d-inline m-0 p-0" style="flex: 1;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger btn-lg rounded-pill hover-scale w-100">
+                        <i class="fas fa-arrow-right me-2"></i>Cancel Order
+                    </button>
+                </form>
+                {% endif %}
+                <a href="{% url 'order:order_list' %}" class="btn btn-outline-secondary btn-lg rounded-pill hover-scale w-100" style="flex: 1;">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Orders
+                </a>
             </div>
         </div>
     </div>

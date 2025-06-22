@@ -128,12 +128,14 @@
                         <div class="mt-auto">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div class="price">
+                                    {% if product.discount > 0 %}
                                     <small class="text-muted text-decoration-line-through ms-1">
                                         {{ product.price|floatformat:2 }} EGP
                                     </small>
                                     <br>
-                                    {% if product.discount > 0 %}
                                     <span class="fw-bold text-primary">{{ product.price_after_discount|floatformat:2 }} EGP</span>
+                                    {% else %}
+                                    <span class="fw-bold text-primary">{{ product.price|floatformat:2 }} EGP</span>
                                     {% endif %}
                                 </div>
                                 {% if product.stock > 0 %}

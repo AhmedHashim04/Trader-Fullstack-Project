@@ -137,8 +137,6 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('product:category_detail', kwargs={'slug': self.slug})
 
-
-
     # ("new", _("New")),
     # ("best", _("Best")),
     # ("sale", _("Sale")),

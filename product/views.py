@@ -47,6 +47,7 @@ class ProductListView(ListView):
             'view_mode': params.get('view_mode', 'grid'),
             'items_per_page': params.get('items_per_page', str(self.paginate_by)),
         }
+    
     def get_queryset(self):
         """Get optimized queryset with filtering and annotations"""
         cache_key = f"products_{urlencode(self.request.GET)}"
