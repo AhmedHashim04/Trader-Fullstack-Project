@@ -17,8 +17,7 @@ class Profile(models.Model):
     """
     Advanced User Profile Model with best practices implementation
     """
-    
-    # Constants for choices
+
     class Cities(models.TextChoices):
         CAIRO = 'القاهرة', _('القاهرة')
         GIZA = 'الجيزة', _('الجيزة')
@@ -37,13 +36,12 @@ class Profile(models.Model):
     class Countries(models.TextChoices):
         EGYPT = 'مصر', _('مصر')
 
-    id = models.UUIDField(_("ID"), primary_key=True, editable=False, default=uuid.uuid4,db_index=True)
+    id = models.UUIDField(_("ID"), primary_key=True, editable=False, default=uuid.uuid4)
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="profile",verbose_name=_("User"))
-    email = models.EmailField(_("Email"), max_length=100,blank=True,null=True)
     phone_number = models.CharField(_("Phone Number"),max_length=20,blank=True,null=True,validators=[RegexValidator(regex=r'^01[0125][0-9]{8}$',message=_("Enter a valid Egyptian phone number"))])
-    address = models.CharField(_("Address"),validators=[RegexValidator(regex=r'^[\u0600-\u06FF\s\d]+(?:\s[\u0600-\u06FF\s\d]+)*$',message=_("Enter a valid Egyptian Address in Arabic"))],max_length=255,blank=True,null=True)
     city = models.CharField(_("City"),choices=Cities.choices,max_length=100,blank=True,null=True)
     country = models.CharField(_("Country"),choices=Countries.choices,max_length=100,blank=True,null=True,default=Countries.EGYPT)
+    address = models.CharField(_("Address"),validators=[RegexValidator(regex=r'^[\u0600-\u06FF\s\d]+(?:\s[\u0600-\u06FF\s\d]+)*$',message=_("Enter a valid Egyptian Address in Arabic"))],max_length=255,blank=True,null=True)
     postal_code = models.CharField(_("Postal Code"),validators=[RegexValidator(regex=r'^(?:[1-9]\d{2}|[1-9]\d{4})$',message=_("Enter a valid Egyptian Postal Code"))],max_length=10,blank=True,null=True)
     profile_image = models.ImageField(_("Profile Image"),upload_to='profile_pictures/%Y/%m/%d/',blank=True,null=True,help_text=_("Upload a profile picture (max 2MB)"))
     date_of_birth = models.DateField(_("Date of Birth"),blank=True,null=True)
@@ -56,15 +54,13 @@ class Profile(models.Model):
     class Meta:
         verbose_name = _("Profile")
         verbose_name_plural = _("Profiles")
-        ordering = ['-date_joined']
-        indexes = [
-            models.Index(fields=['city']),
-            models.Index(fields=['date_joined']),
-        ]
+        # ordering = ['-date_joined']
+        # indexes = [
+        #     models.Index(fields=['city']),
+        #     models.Index(fields=['date_joined']),
+        # ]
 
     def save(self, *args, **kwargs):
-        if not self.email and self.user.email:
-            self.email = self.user.email
         # Optimize and resize profile image before saving
         if self.profile_image:
             self.profile_image = self.optimize_image(self.profile_image)
@@ -121,12 +117,3 @@ class Profile(models.Model):
     #     """Get Arabic city name directly"""
     #     return self.get_city_display()
 
-
-@receiver(post_save, sender=User)
-def create_or_update_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-    else:
-        # Only save if profile exists to prevent unnecessary queries
-        if hasattr(instance, 'profile'):
-            instance.profile.save()

@@ -34,12 +34,12 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
 
-    'account',
+    'account.apps.AccountsConfig',
     'contact',
     'product',
     'home',
     'features',
-    'cart',
+    'cart.apps.CartConfig',
     'order.apps.OrderConfig',
     # 'order',
     'coupon',
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
 ]
 
 LOGIN_URL = '/account/login/'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -66,7 +67,8 @@ MIDDLEWARE = [
 ]
 ROOT_URLCONF = 'project.urls'
 
-
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True 
+# SESSION_COOKIE_AGE = 1 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

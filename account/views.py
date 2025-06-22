@@ -1,5 +1,5 @@
 from django.contrib.auth import login
-from django.http import HttpResponseRedirect
+from cart.cart import Cart
 from django.views import View
 from django.contrib import messages
 from django.shortcuts import redirect, get_object_or_404, render
@@ -127,6 +127,7 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
             raise Http404("You cannot update this profile.")
         return reverse('account:user_profile', kwargs={'id': self.object.id})
 
+from django.contrib import messages
 
 class MyLoginView(LoginView):
     redirect_authenticated_user = True
@@ -135,8 +136,16 @@ class MyLoginView(LoginView):
         user = form.get_user()
         user.last_login = timezone.now()
         user.save(update_fields=['last_login'])
-        return super().form_valid(form)
+        old_session_key = self.request.session.session_key
+        response = super().form_valid(form)
+        added_items_count = Cart.merge_on_login(self.request.user, old_session_key)
+        if added_items_count > 0:
+            messages.info(
+                self.request, 
+                f"{added_items_count} item(s) from your previous cart have been merged into your current cart."
+            )
 
+        return response
 
 class MyLogoutView(LogoutView):
     next_page = 'home:home'

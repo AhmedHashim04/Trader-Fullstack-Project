@@ -7,6 +7,7 @@ from typing import Iterator, Dict, Any
 from .utils import calculate_tax
 class Cart:
     def __init__(self, request):
+
         self.request = request
         self.session = request.session
         self.session_id = settings.CART_SESSION_ID
@@ -146,3 +147,35 @@ class Cart:
             'tax_amount': tax_amount,
             'total_price_after_discount_and_tax': total_price_after_discount_and_tax
         }
+    @staticmethod
+    def merge_on_login(user, old_session_key) -> int:
+        session_cart_key = f"cart_session_{old_session_key}"
+        user_cart_key = f"cart_user_{user.id}"
+
+        session_cart = cache.get(session_cart_key, {})
+        user_cart = cache.get(user_cart_key, {})
+
+        merged_cart = user_cart.copy()
+        added_count = 0
+
+        for product_id, item in session_cart.items():
+            try:
+                product = Product.objects.get(slug=product_id)
+            except Product.DoesNotExist:
+                continue
+
+            new_quantity = item['quantity']
+            if product_id in merged_cart:
+                new_quantity += merged_cart[product_id]['quantity']
+
+            if new_quantity > product.stock:
+                continue
+
+            merged_cart[product_id] = item.copy()
+            merged_cart[product_id]['quantity'] = new_quantity
+            added_count += 1
+
+        cache.set(user_cart_key, merged_cart, timeout=3600)
+        cache.delete(session_cart_key)
+        
+        return added_count
