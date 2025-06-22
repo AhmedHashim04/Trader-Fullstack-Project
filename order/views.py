@@ -18,6 +18,13 @@ from payment.forms import PaymentProofForm
 from payment.models import VodafoneCashPayment
 from django.conf import settings
 
+from django.template.loader import render_to_string
+from weasyprint import HTML
+from django.core.files.storage import default_storage
+from django.http import FileResponse
+import os
+import tempfile
+
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'order/order_list.html'
@@ -108,30 +115,60 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
 
         order = form.save(commit=False)
         order.user = self.request.user
-        # calculate shipping cost
         order.shipping_cost = order.calculate_shipping_cost(weight=1)
-        # apply discount and tax from cart
+
         discount = cart.get_total_discount() or Decimal('0.00')
-        print(discount)
         tax = cart.get_tax() or Decimal('0.00')
-        # compute subtotal of items
         if self.request.session.get('coupon_discount'):
             discount += Decimal(self.request.session['coupon_discount'])
             order.coupon = Coupon.objects.get(code=self.request.session.get('coupon_code', None))
-        items_total = sum(item['price'] * item['quantity'] for item in cart)
 
+        items_total = sum(item['price'] * item['quantity'] for item in cart)
         order.total_price = (items_total + order.shipping_cost + tax - discount).quantize(Decimal('0.01'))
-        if order.total_price < 0:order.total_price = 0
+        if order.total_price < 0:
+            order.total_price = 0
+
         order.save()
+        self.object = order  
         remove_coupon(self.request)
 
-        # create order items
         for item in cart:
-            OrderItem.objects.create(order=order, product=item['product'], quantity=item['quantity'], price=item['price'])
+            OrderItem.objects.create(
+                order=order,
+                product=item['product'],
+                quantity=item['quantity'],
+                price=item['price']
+            )
 
+        # 🧾 Generate PDF Invoice
+        html_string = render_to_string('order/pdf_invoice.html', {'order': order})
+        html = HTML(string=html_string, base_url=self.request.build_absolute_uri())
+
+        with tempfile.NamedTemporaryFile(delete=True, suffix=".pdf") as output:
+            html.write_pdf(target=output.name)
+            output.seek(0)
+            pdf_content = output.read()
+
+            # Save PDF file if needed
+            filename = f'invoices/order_{order.id}.pdf'
+            full_path = os.path.join(settings.MEDIA_ROOT, filename)
+            with open(full_path, 'wb') as f:
+                f.write(pdf_content)
+            self.download_pdf(filename, order)
+            
         cart.clear()
-        messages.success(self.request, 'Your order has been placed successfully. Order Status email has been sent to you.')
+
+        messages.success(self.request, 'Your order has been placed successfully. Invoice PDF generated.')
         return super().form_valid(form)
+
+        # Serve PDF directly as a download response
+
+
+    def download_pdf(self, filename, order):
+        pdf_path = os.path.join(settings.MEDIA_ROOT, filename)
+        response = FileResponse(open(pdf_path, 'rb'), as_attachment=True, filename=f'order_{order.id}.pdf')
+        return response
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['cart'] = Cart(self.request)
