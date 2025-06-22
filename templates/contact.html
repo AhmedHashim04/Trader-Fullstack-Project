@@ -50,9 +50,15 @@
                                         {% render_field form.name class+="form-control modern-input" placeholder=" " %}
                                         <label for="{{ form.name.id_for_label }}" class="floating-label">Your Full Name</label>
                                     </div>
-                                    <div class="invalid-feedback animated fadeIn">
-                                        <i class="fas fa-exclamation-circle me-2"></i>Please provide your name
-                                    </div>
+                                    {% if form.name.errors %}
+                                        <div class="invalid-feedback d-block animated fadeIn">
+                                            <i class="fas fa-exclamation-circle me-2"></i>{{ form.name.errors.0 }}
+                                        </div>
+                                    {% else %}
+                                        <div class="invalid-feedback animated fadeIn">
+                                            <i class="fas fa-exclamation-circle me-2"></i>Please provide your name
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                             
@@ -66,9 +72,15 @@
                                         {% render_field form.from_email class+="form-control modern-input" placeholder=" " %}
                                         <label for="{{ form.from_email.id_for_label }}" class="floating-label">Email Address</label>
                                     </div>
-                                    <div class="invalid-feedback animated fadeIn">
-                                        <i class="fas fa-exclamation-circle me-2"></i>Please provide a valid email
-                                    </div>
+                                    {% if form.from_email.errors %}
+                                        <div class="invalid-feedback d-block animated fadeIn">
+                                            <i class="fas fa-exclamation-circle me-2"></i>{{ form.from_email.errors.0 }}
+                                        </div>
+                                    {% else %}
+                                        <div class="invalid-feedback animated fadeIn">
+                                            <i class="fas fa-exclamation-circle me-2"></i>Please provide a valid email
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                             
@@ -82,9 +94,15 @@
                                         {% render_field form.title class+="form-control modern-input" placeholder=" " %}
                                         <label for="{{ form.title.id_for_label }}" class="floating-label">Subject</label>
                                     </div>
-                                    <div class="invalid-feedback animated fadeIn">
-                                        <i class="fas fa-exclamation-circle me-2"></i>Please provide a subject
-                                    </div>
+                                    {% if form.title.errors %}
+                                        <div class="invalid-feedback d-block animated fadeIn">
+                                            <i class="fas fa-exclamation-circle me-2"></i>{{ form.title.errors.0 }}
+                                        </div>
+                                    {% else %}
+                                        <div class="invalid-feedback animated fadeIn">
+                                            <i class="fas fa-exclamation-circle me-2"></i>Please provide a subject
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                             
@@ -92,13 +110,19 @@
                             <div class="col-12">
                                 <div class="form-group floating-label-group">
                                     <div class="input-group">
-                                        {% render_field form.message class+="form-control modern-input" placeholder=" " rows="5" %}
+                                        {% render_field form.message class+="form-control modern-input" placeholder=" " %}
                                         <label for="{{ form.message.id_for_label }}" class="floating-label">Your Message</label>
                                     </div>
                                     <div class="d-flex justify-content-between mt-2">
-                                        <div class="invalid-feedback animated fadeIn">
-                                            <i class="fas fa-exclamation-circle me-2"></i>Please enter your message
-                                        </div>
+                                        {% if form.message.errors %}
+                                            <div class="invalid-feedback d-block animated fadeIn">
+                                                <i class="fas fa-exclamation-circle me-2"></i>{{ form.message.errors.0 }}
+                                            </div>
+                                        {% else %}
+                                            <div class="invalid-feedback animated fadeIn">
+                                                <i class="fas fa-exclamation-circle me-2"></i>Please enter your message
+                                            </div>
+                                        {% endif %}
                                         <div class="form-text text-end">
                                             <span id="messageCounter">0</span>/500 characters
                                         </div>
