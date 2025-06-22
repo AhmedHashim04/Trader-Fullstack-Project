@@ -56,7 +56,7 @@ class Order(models.Model):
     status_changed_at = models.DateTimeField(null=True, blank=True)
     paid = models.BooleanField(_("Paid"), default=False)
     coupon = models.ForeignKey('coupon.Coupon', on_delete=models.SET_NULL, null=True, blank=True)
-
+    invoice_pdf = models.FileField(upload_to='invoices/',null=True,blank=True,verbose_name='Invoice PDF')
     class Meta:
         ordering = ['-created_at']
 

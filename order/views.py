@@ -1,29 +1,32 @@
+import logging
 from decimal import Decimal
-from django.shortcuts import redirect, render
-from django.contrib.auth.decorators import login_required
-from .forms import AddressForm
-from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from cart.cart import Cart
-from .models import Order, OrderItem, Address ,OrderStatus
-from .forms import OrderCreateForm
-from django.views.generic import View
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from io import BytesIO
+
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.files.base import ContentFile
+from django.db import transaction
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, DetailView, ListView, View
+
+from cart.cart import Cart
 from coupon.models import Coupon
 from coupon.views import remove_coupon
 from payment.forms import PaymentProofForm
 from payment.models import VodafoneCashPayment
-from django.conf import settings
 
-from django.template.loader import render_to_string
+from .forms import AddressForm, OrderCreateForm
+from .models import Address, Order, OrderItem, OrderStatus
+
 from weasyprint import HTML
-from django.core.files.storage import default_storage
-from django.http import FileResponse
-import os
-import tempfile
+
+logger = logging.getLogger(__name__)
+
 
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
@@ -113,67 +116,95 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
             form.add_error(None, 'Your cart is empty.')
             return super().form_invalid(form)
 
+        try:
+            with transaction.atomic():
+                order = self._create_order_object(form, cart)
+                self._create_order_items(order, cart)
+                self.object = order
+                
+            self._schedule_invoice_generation(order)
+            self._cleanup_session(cart)
+            messages.success(
+                self.request,
+                'Your order has been placed successfully. '
+                'Your invoice is being generated and will be available shortly.'
+            )
+
+        except Exception as e:
+            logger.exception("Order processing failed")
+            form.add_error(None, f'Error processing your order: {str(e)}')
+            return super().form_invalid(form)
+
+        return super().form_valid(form)
+
+    def _create_order_object(self, form, cart):
         order = form.save(commit=False)
         order.user = self.request.user
-        order.shipping_cost = order.calculate_shipping_cost(weight=1)
+        order.shipping_cost = order.calculate_shipping_cost(weight=0)
 
-        discount = cart.get_total_discount() or Decimal('0.00')
+        # Calculate financials
+        items_total = cart.get_total_price_after_discount()
         tax = cart.get_tax() or Decimal('0.00')
-        if self.request.session.get('coupon_discount'):
-            discount += Decimal(self.request.session['coupon_discount'])
-            order.coupon = Coupon.objects.get(code=self.request.session.get('coupon_code', None))
+        discount = cart.get_total_discount() or Decimal('0.00')
 
-        items_total = sum(item['price'] * item['quantity'] for item in cart)
-        order.total_price = (items_total + order.shipping_cost + tax - discount).quantize(Decimal('0.01'))
-        if order.total_price < 0:
-            order.total_price = 0
+        # Apply coupon if exists
+        if coupon_discount := self.request.session.get('coupon_discount'):
+            discount += Decimal(coupon_discount)
+            try:
+                order.coupon = Coupon.objects.get(
+                    code=self.request.session['coupon_code']
+                )
+            except Coupon.DoesNotExist:
+                logger.warning("Missing coupon: %s", self.request.session.get('coupon_code'))
 
+        # Final price calculation
+        order.total_price = max(
+            (items_total + order.shipping_cost + tax - discount).quantize(Decimal('0.01')),
+            Decimal('0.00')
+        )
         order.save()
-        self.object = order  
-        remove_coupon(self.request)
+        return order
 
+    def _create_order_items(self, order, cart):
         for item in cart:
             OrderItem.objects.create(
                 order=order,
                 product=item['product'],
                 quantity=item['quantity'],
-                price=item['price']
+                price=item['price'],
             )
 
-        # 🧾 Generate PDF Invoice
-        html_string = render_to_string('order/pdf_invoice.html', {'order': order})
-        html = HTML(string=html_string, base_url=self.request.build_absolute_uri())
-
-        with tempfile.NamedTemporaryFile(delete=True, suffix=".pdf") as output:
-            html.write_pdf(target=output.name)
-            output.seek(0)
-            pdf_content = output.read()
-
-            # Save PDF file if needed
-            filename = f'invoices/order_{order.id}.pdf'
-            full_path = os.path.join(settings.MEDIA_ROOT, filename)
-            with open(full_path, 'wb') as f:
-                f.write(pdf_content)
-            self.download_pdf(filename, order)
+    def _schedule_invoice_generation(self, order):
+        """Schedule PDF generation as async task"""
+        try:
+            base_url = self.request.build_absolute_uri('/')
             
+            async_task(
+                'orders.tasks.generate_invoice_pdf',
+                order.id,
+                base_url,
+                hook='orders.tasks.invoice_generation_hook'
+            )
+            logger.info("Scheduled invoice generation for order %s", order.id)
+
+        except Exception as e:
+            logger.error(
+                "Failed to schedule invoice task for order %s: %s",
+                order.id,
+                str(e)
+            )
+            # Don't show error to user - order is still valid
+            # We'll have monitoring for failed tasks
+
+    def _cleanup_session(self, cart):
+        """Clean session data after successful order"""
         cart.clear()
-
-        messages.success(self.request, 'Your order has been placed successfully. Invoice PDF generated.')
-        return super().form_valid(form)
-
-        # Serve PDF directly as a download response
-
-
-    def download_pdf(self, filename, order):
-        pdf_path = os.path.join(settings.MEDIA_ROOT, filename)
-        response = FileResponse(open(pdf_path, 'rb'), as_attachment=True, filename=f'order_{order.id}.pdf')
-        return response
+        remove_coupon(self.request)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['cart'] = Cart(self.request)
         return context
-
 
 class OrderCancelView(LoginRequiredMixin, View):
     def post(self, request, pk):
@@ -181,7 +212,11 @@ class OrderCancelView(LoginRequiredMixin, View):
         if order and hasattr(order, 'status'):
             order.update_status('cancelled')
         return HttpResponseRedirect(reverse('order:order_detail', args=[order.pk]))
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['order'] = self.object
+        return context
+    
 
 @login_required
 def address_list_create_view(request):

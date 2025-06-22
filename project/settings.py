@@ -204,4 +204,14 @@ CACHES = {
     }
 }
 
-VODAFONE_CASH_NUMBER = "01012345678"
+VODAFONE_CASH_NUMBER = "01080240372"
+
+Q_CLUSTER = {
+    'name': 'DjangoORM',
+    'workers': 4,
+    'timeout': 90,
+    'retry': 120,
+    'queue_limit': 50,
+    'bulk': 10,
+    'orm': 'default'
+}
