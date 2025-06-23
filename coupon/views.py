@@ -5,6 +5,23 @@ from .models import Coupon, CouponUsage
 from .forms import CouponApplyForm
 from cart.cart import Cart as ShoppingCart
 
+
+def store_coupon_in_session(request, coupon, discount_amount):
+    request.session['coupon'] = {
+        "id": coupon.id,
+        "code": coupon.code,
+        "amount": str(coupon.amount),
+        "discount": str(discount_amount),
+        "type": coupon.discount_type,
+    }
+
+def remove_coupon_from_session(request):
+    request.session.pop('coupon', None)
+
+def get_coupon_from_session(request):
+    return request.session.get('coupon')
+
+
 def coupon_list(request):
     coupons = Coupon.objects.filter(active=True)
     context = {
@@ -27,7 +44,6 @@ def apply_coupon(request):
                 if coupon.is_valid(user=request.user, cart_total=cart_total):
                     discount_amount = coupon.apply_discount(cart_total)
                     
-                    # Record usage AFTER validation
                     CouponUsage.objects.create(
                         coupon=coupon, 
                         user=request.user, 
@@ -35,12 +51,7 @@ def apply_coupon(request):
                     )
                     coupon.used_count += 1
                     coupon.save()
-                    
-                    request.session['coupon_id'] = coupon.id
-                    request.session['coupon_code'] = coupon.code
-                    request.session['coupon_amount'] = str(coupon.amount)
-                    request.session['coupon_discount'] = str(discount_amount)
-                    request.session['discount_type'] = str(coupon.discount_type)
+                    store_coupon_in_session(request, coupon, discount_amount)
                     
                     messages.success(request, f'Coupon "{coupon.code}" applied successfully!')
                 else:
@@ -54,13 +65,8 @@ def apply_coupon(request):
 
 @login_required
 def remove_coupon(request):
-    if 'coupon_id' in request.session:
-        del request.session['coupon_id']
-        del request.session['coupon_code']
-        del request.session['coupon_amount']
-        del request.session['coupon_discount']
-        del request.session['discount_type']
-
+    if 'coupon' in request.session:
+        remove_coupon_from_session(request)
         messages.success(request, 'Coupon removed successfully.')
     return redirect('cart:cart_list')
 

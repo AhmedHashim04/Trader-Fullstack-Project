@@ -26,9 +26,11 @@ class Coupon(models.Model):
     usage_limit = models.PositiveIntegerField(null=True,blank=True,verbose_name=_("Total Usage Limit"))
     used_count = models.PositiveIntegerField(default=0)
     usage_limit_per_user = models.PositiveIntegerField(null=True,blank=True)
+    # Min. order value (if set, coupon will only be applied if the order total is greater than or equal to this value)
     min_order_value = models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
     
     def is_valid(self, user=None, cart_total=0):
         now = timezone.now()
@@ -37,7 +39,7 @@ class Coupon(models.Model):
             self.valid_from <= now <= self.valid_to and
             (self.usage_limit is None or self.used_count < self.usage_limit)
         )
-        
+
         if self.min_order_value and cart_total < self.min_order_value:
             valid = False
             
@@ -45,7 +47,7 @@ class Coupon(models.Model):
             user_usage = CouponUsage.objects.filter(coupon=self, user=user).count()
             if user_usage >= self.usage_limit_per_user:
                 valid = False
-                
+
         return valid
     
     def apply_discount(self, original_price):

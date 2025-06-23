@@ -7,11 +7,11 @@ from typing import Iterator, Dict, Any
 from .utils import calculate_tax
 class Cart:
     def __init__(self, request):
-
         self.request = request
         self.session = request.session
         self.session_id = settings.CART_SESSION_ID
         self.cart = self._get_or_create_cart()
+        
     def _get_or_create_cart(self):
         if self.request.user.is_authenticated:
             cache_key = f"cart_user_{self.request.user.id}"
@@ -24,8 +24,7 @@ class Cart:
             cart = self.session.get(self.session_id, {})
             if not isinstance(cart, dict):
                 cart = {}
-            
-            # FIX: Set cache for both user types
+
             if self.request.user.is_authenticated:
                 cache_key = f"cart_user_{self.request.user.id}"
             else:
@@ -139,6 +138,7 @@ class Cart:
         total_price_after_discount = self.get_total_price_after_discount()
         tax_amount = (self.get_tax()*total_price_after_discount)
         total_price_after_discount_and_tax = total_price_after_discount + tax_amount
+        
         return {
             'total_items': len(self),
             'total_price': self.get_total_price(),
@@ -147,6 +147,7 @@ class Cart:
             'tax_amount': tax_amount,
             'total_price_after_discount_and_tax': total_price_after_discount_and_tax
         }
+    
     @staticmethod
     def merge_on_login(user, old_session_key) -> int:
         session_cart_key = f"cart_session_{old_session_key}"

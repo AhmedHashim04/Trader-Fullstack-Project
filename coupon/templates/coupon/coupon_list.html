@@ -3,65 +3,65 @@
 
 {% block body %}
 <div class="container py-5">
-<div class="btn-secondary container mt-4">
-    <h2 class="btn-primary mb-4">{{ title }}</h2>
-    
-    <div class="btn-outline-primary btn-lg px-4 py-3 row">
+    <div class="mb-5 text-center">
+        <h2 class="display-5 fw-bold text-primary">{{ title }}</h2>
+        <hr class="w-25 mx-auto mb-4" style="border-top: 2px solid #0d6efd;">
+    </div>
+    <div class="row g-4">
         {% for coupon in coupons %}
-        <div class="col-md-4 mb-4 ">
-            <div class="card {% if not coupon.is_valid %}bg-light{% endif %}">
-                <div class="card-header btn-primary text-white">
-                    <h5 class="card-title  mb-0">{{ coupon.name|default:coupon.code }}</h5>
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm border-0 h-100 {% if not coupon.is_valid %}bg-light opacity-75{% endif %} position-relative">
+                {% if not coupon.is_valid %}
+                <span class="position-absolute top-0 end-0 badge rounded-pill bg-warning text-dark m-2">Expired</span>
+                {% endif %}
+                <div class="card-header bg-gradient bg-primary text-white text-center">
+                    <h5 class="card-title mb-0 text-truncate">{{ coupon.name|default:coupon.code }}</h5>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">
-                        <strong>Discount:</strong> 
-                        {% if coupon.discount_type == 'fixed' %}
-                            ${{ coupon.amount }} off
-                        {% elif coupon.discount_type == 'percent' %}
-                            {{ coupon.amount }}% off
-                            {% if coupon.max_discount %}
-                                (up to ${{ coupon.max_discount }})
+                    <p class="card-text mb-2">
+                        <span class="badge bg-success fs-6">
+                            {% if coupon.discount_type == 'fixed' %}
+                                ${{ coupon.amount }} OFF
+                            {% elif coupon.discount_type == 'percent' %}
+                                {{ coupon.amount }}% OFF
+                                {% if coupon.max_discount %}
+                                    <small>(max ${{ coupon.max_discount }})</small>
+                                {% endif %}
+                            {% else %}
+                                Free Shipping
                             {% endif %}
-                        {% else %}
-                            Free Shipping
-                        {% endif %}
+                        </span>
                     </p>
-                    
                     {% if coupon.min_order_value %}
-                    <p class="card-text">
+                    <p class="card-text mb-2">
+                        <i class="bi bi-cart-check"></i>
                         <strong>Min. Order:</strong> ${{ coupon.min_order_value }}
                     </p>
                     {% endif %}
-                    
-                    <p class="card-text">
-                        <strong>Valid:</strong> 
+                    <p class="card-text mb-2">
+                        <i class="bi bi-calendar-range"></i>
+                        <strong>Valid:</strong>
                         {{ coupon.valid_from|date:"M d, Y" }} - {{ coupon.valid_to|date:"M d, Y" }}
                     </p>
-                    
-                    {% if not coupon.is_valid %}
-                    <div class="alert alert-warning mt-2">
-                        This coupon is not currently valid
-                    </div>
-                    {% endif %}
                 </div>
-                <div class="card-footer text-muted">
-                    {% if coupon.usage_limit %}
-                        {{ coupon.used_count }} of {{ coupon.usage_limit }} uses
-                    {% else %}
-                        Unlimited uses
-                    {% endif %}
+                <div class="card-footer bg-white border-0 text-center">
+                    <span class="text-muted small">
+                        {% if coupon.usage_limit %}
+                            <i class="bi bi-people"></i> {{ coupon.used_count }} / {{ coupon.usage_limit }} uses
+                        {% else %}
+                            <i class="bi bi-infinity"></i> Unlimited uses
+                        {% endif %}
+                    </span>
                 </div>
             </div>
         </div>
         {% empty %}
         <div class="col-12">
-            <div class="alert alert-info">
-                No coupons available at the moment.
+            <div class="alert alert-info text-center shadow-sm">
+                <i class="bi bi-info-circle"></i> No coupons available at the moment.
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
 {% endblock %}
-</div>

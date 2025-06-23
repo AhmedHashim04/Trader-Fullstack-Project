@@ -1,7 +1,8 @@
 import logging
 from decimal import Decimal
 from io import BytesIO
-
+#import async task from DjangoQ
+from django_q.tasks import async_task
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -22,7 +23,7 @@ from payment.models import VodafoneCashPayment
 
 from .forms import AddressForm, OrderCreateForm
 from .models import Address, Order, OrderItem, OrderStatus
-
+from coupon.views import get_coupon_from_session, remove_coupon_from_session
 from weasyprint import HTML
 
 logger = logging.getLogger(__name__)
@@ -46,7 +47,6 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
         """Determine if payment form should be shown."""
         has_payment = VodafoneCashPayment.objects.filter(order=order).exists()
         is_vodafone_cash = order.payment_method and order.payment_method.lower() == "vodafone_cash"
-        print(is_vodafone_cash,has_payment)
         return not has_payment and is_vodafone_cash
 
     def get_vodafone_number(self):
@@ -77,7 +77,6 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
         form = PaymentProofForm(request.POST, request.FILES, instance=order)
 
         if form.is_valid():
-            # Save order with proof
             form.save()
 
             # Create VodafoneCashPayment record
@@ -148,14 +147,14 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         discount = cart.get_total_discount() or Decimal('0.00')
 
         # Apply coupon if exists
-        if coupon_discount := self.request.session.get('coupon_discount'):
+        if coupon_discount := get_coupon_from_session(self.request)['discount']:
             discount += Decimal(coupon_discount)
             try:
                 order.coupon = Coupon.objects.get(
-                    code=self.request.session['coupon_code']
+                    code=get_coupon_from_session(self.request)['code']
                 )
             except Coupon.DoesNotExist:
-                logger.warning("Missing coupon: %s", self.request.session.get('coupon_code'))
+                logger.warning("Missing coupon: %s", get_coupon_from_session(self.request)['code'])
 
         # Final price calculation
         order.total_price = max(
