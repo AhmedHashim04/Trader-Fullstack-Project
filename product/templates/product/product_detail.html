@@ -2,6 +2,7 @@
 {% block title %}Product Detail Trader - Your Ultimate Shopping Destination{% endblock %}
 {% block body %}
 {% load widget_tweaks %}
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 
 <!-- Breadcrumb -->
@@ -442,7 +443,7 @@
                                     </div>
                                 {% else %}
                                     <div class="alert alert-info">
-                                        Please <a href="{% url 'account_login' %}?next={{ request.path }}">login</a> to submit a review.
+                                        Please <a href="{% url 'account:login' %}?next={{ request.path }}">login</a> to submit a review.
                                     </div>
                                 {% endif %}
                             </div>

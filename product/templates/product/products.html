@@ -431,32 +431,6 @@
 </div>
 
 <script>
-    // Initialize tooltips
-    document.addEventListener('DOMContentLoaded', function() {
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-        
-        // Auto-submit form when items per page changes
-        document.querySelector('.items-per-page').addEventListener('change', function() {
-            document.getElementById('filtersForm').submit();
-        });
-    });
-
-    // View mode toggle function
-    function setViewMode(mode) {
-        document.getElementById('viewModeInput').value = mode;
-        document.getElementById('filtersForm').submit();
-    }
-
-    // Initialize tooltips
-    document.addEventListener('DOMContentLoaded', function() {
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-    });
 
     // Compare Products Functionality
     document.addEventListener('DOMContentLoaded', function() {
@@ -581,37 +555,8 @@
     // تهيئة الواجهة
     updateCompareUI();
     });
-    // Filter Products Function
-    function filterProducts(filter) {
-        // Remove active class from all buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        
-        // Add active class to clicked button
-        event.target.classList.add('active');
-        
-        // Here you would implement your actual filtering logic
-        console.log('Filtering by:', filter);
-        
-        // Example filtering logic (would need to be implemented properly):
-        // const products = document.querySelectorAll('.product-card');
-        // products.forEach(product => {
-        //     if (filter === 'all' || product.dataset[filter] === 'true') {
-        //         product.style.display = 'block';
-        //     } else {
-        //         product.style.display = 'none';
-        //     }
-        // });
-    }
 
-    // Add click event listeners to filter buttons
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const filter = this.dataset.filter;
-            filterProducts(filter);
-        });
-    });
+
 
     // View mode functions
     function setViewMode(mode) {
@@ -643,9 +588,7 @@
                 });
             });
         });
-        function clearcom() {
-            localStorage.clear();
-            }   
+
 </script>
 
 {% endblock %}

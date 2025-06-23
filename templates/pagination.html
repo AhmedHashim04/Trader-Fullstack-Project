@@ -2,7 +2,7 @@
     <ul class="pagination justify-content-center">
         {% if products.has_previous %}
             <li class="page-item">
-                <a class="page-link glass-btn rounded-pill me-2" href="?{% querystring request.GET page=products.previous_page_number %}">
+                <a class="page-link glass-btn rounded-pill me-2" href="{% querystring request.GET page=products.previous_page_number %}">
                     <i class="fas fa-angle-left"></i> Prev
                 </a>
             </li>
@@ -10,8 +10,8 @@
         
         {% for page_num in products.paginator.page_range %}
             {% if page_num >= products.number|add:-3 and page_num <= products.number|add:3 %}
-                <li class="page-item {% if products.number == page_num %}active{% endif %}">
-                    <a class="page-link glass-btn rounded-pill mx-1" href="?{% querystring request.GET page=page_num %}">
+                <li class="page-item{% if products.number == page_num %} active{% endif %}">
+                    <a class="page-link glass-btn rounded-pill mx-1{% if products.number == page_num %} text-light bg-primary border-primary{% endif %}" href="?{% querystring request.GET page=page_num %}">
                         {{ page_num }}
                     </a>
                 </li>

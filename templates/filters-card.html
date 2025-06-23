@@ -23,7 +23,7 @@
                 <label for="category" class="filter-label fw-bold text-dark">
                     <i class="fas fa-tags me-2"></i>Category
                 </label>
-                <select name="category" id="category" class="form-select rounded-pill">
+                <select name="category" id="category" class="btn-outline-primary text-secondary form-select rounded-pill">
                     <option value="">All Categories</option>
                     {% for cat in categories %}
                         <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>
@@ -32,15 +32,15 @@
                     {% endfor %}
                 </select>
             </div>
-            <!-- Category Filter -->
+            <!-- Tags Filter -->
             <div class="filter-group mb-3">
                 <label for="tag" class="filter-label fw-bold text-dark">
                     <i class="fas fa-tags me-2"></i>Tag
                 </label>
-                <select name="tag" id="tag" class="form-select rounded-pill">
+                <select name="tag" id="tag" class="btn-outline-primary text-secondary form-select rounded-pill">
                     <option value="">All Tags</option>
                     {% for tag in tags %}
-                        <option value="{{ tag.name }}" {% if selected_tag == tag.slug %}selected{% endif %}>
+                        <option value="{{ tag.name }}" {% if selected_tag == tag.name %}selected{% endif %}>
                             {{ tag.name }}
                         </option>
                     {% endfor %}
@@ -52,10 +52,10 @@
                 <label for="brand" class="filter-label fw-bold text-dark">
                     <i class="fas fa-copyright me-2"></i>Brand
                 </label>
-                <select name="brand" id="brand" class="form-select rounded-pill">
+                <select name="brand" id="brand" class="btn-outline-primary text-secondary form-select rounded-pill">
                     <option value="">All Brands</option>
                     {% for brand in brands %}
-                        <option value="{{ brand.slug }}" {% if selected_brand == brand.slug %}selected{% endif %}>
+                        <option class="btn-outline-primary text-primary " value="{{ brand.slug }}" {% if selected_brand == brand.slug %}selected{% endif %}>
                             {{ brand.name }}
                         </option>
                     {% endfor %}
@@ -70,16 +70,16 @@
                 <div class="row g-2">
                     <div class="col">
                         <div class="input-group">
-                            <span class="input-group-text bg-transparent">Min</span>
+                            <span class="input-group-text bg-transparent btn-outline-primary ">Min</span>
                             <input type="number" name="min_price" id="min_price" value="{{ min_price }}" 
-                                   step="0.01" class="form-control " placeholder="0.00">
+                                   step="0.1" class="form-control " placeholder="0.00">
                         </div>
                     </div>
                     <div class="col">
                         <div class="input-group">
-                            <span class="input-group-text bg-transparent">Max</span>
+                            <span class="input-group-text bg-transparent btn-outline-primary">Max</span>
                             <input type="number" name="max_price" id="max_price" value="{{ max_price }}" 
-                                   step="0.01" class="form-control " placeholder="1000.00">
+                                   step="0.1" class="form-control " placeholder="9999.00">
                         </div>
                     </div>
                 </div>
@@ -90,12 +90,14 @@
                 <label for="sort_by" class="filter-label fw-bold text-dark">
                     <i class="fas fa-sort me-2"></i>Sort by
                 </label>
-                <select name="sort_by" id="sort_by" class="form-select rounded-pill">
+                <select name="sort_by" id="sort_by" class="btn-outline-primary text-secondary form-select rounded-pill">
                     <option value="">Default</option>
                     <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
                     <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
                     <option value="name_asc" {% if sort_by == 'name_asc' %}selected{% endif %}>Name: A to Z</option>
                     <option value="name_desc" {% if sort_by == 'name_desc' %}selected{% endif %}>Name: Z to A</option>
+                    <option value="rating_desc" {% if sort_by == 'rating_desc' %}selected{% endif %}>Rating: High to Low</option>
+                    <option value="popularity" {% if sort_by == 'popularity' %}selected{% endif %}>Popularity</option>
                 </select>
             </div>
 
@@ -116,7 +118,7 @@
                             <i class="fas fa-list"></i>
                         </button>
                     </div>
-                    <select class="form-select items-per-page glass-select ms-2" style="width: 4rem" name="items_per_page">
+                    <select class="btn-outline-primary text-secondary form-select items-per-page glass-select ms-2" style="width: 4rem" name="items_per_page">
                         <option value="12" {% if items_per_page == 12 %}selected{% endif %}>12</option>
                         <option value="24" {% if items_per_page == 24 %}selected{% endif %}>24</option>
                         <option value="48" {% if items_per_page == 48 %}selected{% endif %}>48</option>

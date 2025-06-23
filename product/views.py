@@ -15,6 +15,7 @@ from account.models import Profile
 from features.models import Brand, Collection
 from django.db import models
 import decimal
+from django.urls import reverse_lazy
 
 class ProductListView(ListView):
     model = Product
@@ -70,7 +71,8 @@ class ProductListView(ListView):
                     Q(name__icontains=filters['search']) |
                     Q(description__icontains=filters['search']) |
                     Q(category__name__icontains=filters['search']) |
-                    Q(brand__name__icontains=filters['search'])
+                    Q(brand__name__icontains=filters['search'])|
+                    Q(tags__name__icontains=filters['search'])
                 )
             # Apply category filter
             if filters['category']:
@@ -150,7 +152,7 @@ class ProductListView(ListView):
         })
         return context
 
-class ProductDetailView(LoginRequiredMixin, DetailView):
+class ProductDetailView(DetailView):
     model = Product
     template_name = 'product/product_detail.html'
     context_object_name = 'product'
@@ -165,6 +167,12 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
                             .prefetch_related('tags', 'reviews__user'),
             slug=self.kwargs['slug']
         )
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.method == 'POST' and not request.user.is_authenticated:
+            login_url = reverse_lazy('account:login')
+            return HttpResponseRedirect(f'{login_url}?next={request.path}')
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -244,7 +252,7 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
         messages.error(self.request, "Please correct the errors below.")
         return self.render_to_response(self.get_context_data(form=form))
 
-class CompareProductsView(LoginRequiredMixin, TemplateView):
+class CompareProductsView(TemplateView):
     template_name = 'product/compare_products.html'
     max_products = 4
     

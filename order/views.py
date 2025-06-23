@@ -1,8 +1,8 @@
 import logging
 from decimal import Decimal
 from io import BytesIO
-#import async task from DjangoQ
-from django_q.tasks import async_task
+#import async task from DjangoQ 
+# from django_q.tasks import async_task
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
